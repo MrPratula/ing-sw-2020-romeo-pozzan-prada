@@ -2647,7 +2647,7 @@
 											"top": 590,
 											"width": 118,
 											"height": 13,
-											"text": "-pos_x: int",
+											"text": "-posX: int",
 											"horizontalAlignment": 0
 										},
 										{
@@ -2664,7 +2664,7 @@
 											"top": 605,
 											"width": 118,
 											"height": 13,
-											"text": "-pos_y: int",
+											"text": "-posY: int",
 											"horizontalAlignment": 0
 										}
 									],
@@ -8070,7 +8070,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFw6VIxXA+gabg="
 							},
-							"name": "pos_x",
+							"name": "posX",
 							"visibility": "private",
 							"type": "int"
 						},
@@ -8080,7 +8080,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFw6VIxXA+gabg="
 							},
-							"name": "pos_y",
+							"name": "posY",
 							"visibility": "private",
 							"type": "int"
 						}
