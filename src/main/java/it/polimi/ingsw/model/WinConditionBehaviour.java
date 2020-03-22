@@ -4,7 +4,7 @@ import java.util.*;
 /**
  * 
  */
-public class WinConditionBehaviour {
+public interface WinConditionBehaviour {
 
     /**
      * Default constructor

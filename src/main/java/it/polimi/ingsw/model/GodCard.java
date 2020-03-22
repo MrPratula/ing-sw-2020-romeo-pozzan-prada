@@ -4,7 +4,7 @@ import java.util.*;
 /**
  * 
  */
-public class GodCard {
+public class GodCard implements MoveBehaviour, WinConditionBehaviour, BuildBehaviour {
 
     /**
      * Default constructor

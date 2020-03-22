@@ -4,7 +4,7 @@ import java.util.*;
 /**
  * 
  */
-public class BuildBehaviour {
+public interface BuildBehaviour {
 
     /**
      * Default constructor

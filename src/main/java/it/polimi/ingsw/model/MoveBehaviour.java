@@ -4,7 +4,7 @@ import java.util.*;
 /**
  * 
  */
-public class MoveBehaviour {
+public interface MoveBehaviour {
 
     /**
      * Default constructor
