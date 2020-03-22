@@ -11272,22 +11272,6 @@
 					]
 				},
 				{
-					"_type": "UMLModel",
-					"_id": "AAAAAAFw1KYj2KbfcwU=",
-					"_parent": {
-						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
-					},
-					"name": "Model1"
-				},
-				{
-					"_type": "UMLModel",
-					"_id": "AAAAAAFw1Kbd+MHls6o=",
-					"_parent": {
-						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
-					},
-					"name": "Controller"
-				},
-				{
 					"_type": "UMLClass",
 					"_id": "AAAAAAFw6Nl3cjHLNuI=",
 					"_parent": {
@@ -12304,22 +12288,6 @@
 					"name": "ModifyTurn"
 				},
 				{
-					"_type": "UMLPackage",
-					"_id": "AAAAAAFw7rRrUOlyEsI=",
-					"_parent": {
-						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
-					},
-					"name": "dubbio"
-				},
-				{
-					"_type": "UMLPackage",
-					"_id": "AAAAAAFw7rTM8u6YMXE=",
-					"_parent": {
-						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
-					},
-					"name": "dubbio"
-				},
-				{
 					"_type": "UMLClass",
 					"_id": "AAAAAAFw7rHkqMSGL4U=",
 					"_parent": {
@@ -12348,7 +12316,8 @@
 							"_parent": {
 								"$ref": "AAAAAAFw7rHkqMSGL4U="
 							},
-							"name": "didIBuildBeforeMove"
+							"name": "didIBuildBeforeMove",
+							"type": ""
 						}
 					],
 					"operations": [
