@@ -6,25 +6,15 @@ import java.util.*;
  */
 public class Cell {
 
-    /**
-     * Default constructor
-     */
-    public Cell() {
-    }
-
-    /**
-     * 
-     */
     private int posX;
-
-    /**
-     * 
-     */
     private int posY;
 
     /**
-     * 
+     * Default constructor
      */
-    public Battlefield 1;
-
+    public Cell(int x, int y) {
+        Cell cell = new Cell();
+        this.posX = x;
+        this.posY = y;
+    }
 }
