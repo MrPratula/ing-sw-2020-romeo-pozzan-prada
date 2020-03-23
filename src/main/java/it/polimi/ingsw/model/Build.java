@@ -1,3 +1,6 @@
+package it.polimi.ingsw.model;
+
+import it.polimi.ingsw.model.Cell;
 
 import java.util.*;
 
@@ -6,26 +9,19 @@ import java.util.*;
  */
 public class Build {
 
-    /**
-     * Default constructor
-     */
-    public Build() {
-    }
-
-    /**
-     * 
-     */
     private int height;
-
-    /**
-     * 
-     */
     private boolean isTerminated;
 
     /**
-     * 
+     * Default constructor
      */
-    private Cell position;
+    public Build(int height, boolean isTerminated) {
+
+        this.height = height;
+        this.isTerminated = isTerminated;
+    }
+
+
 
 
 }

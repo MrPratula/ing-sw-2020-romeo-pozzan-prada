@@ -1,21 +1,28 @@
-
-import java.util.*;
+package it.polimi.ingsw.model;
 
 /**
  * 
  */
 public class Battlefield {
 
+    private static final int battlefieldSize = 5;
+    Cell[][] battlefield;
+    PieceSet pieceSet;
+
     /**
      * Default constructor
      */
     public Battlefield() {
-    }
 
-    /**
-     * 
-     */
-    private Cell[5][5] cells;
+        Cell[][] battlefield = new Cell[battlefieldSize][battlefieldSize];
+
+        for(int x=0; x<5; x++) {
+            for (int y=0; y<5; y++) {
+                battlefield[x][y] = new Cell(x, y);
+            }
+        }
+        this.battlefield = battlefield;
+    }
 
     /**
      * 
@@ -23,16 +30,9 @@ public class Battlefield {
     private PieceSet[] pieceSets;
 
 
-    /**
-     * 
-     */
-    public Cell 25;
 
 
-    /**
-     * 
-     */
-    public PieceSet 1;
+
 
     /**
      * 
