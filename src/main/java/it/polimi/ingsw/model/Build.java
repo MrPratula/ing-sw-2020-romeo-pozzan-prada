@@ -1,27 +1,36 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.Cell;
-
-import java.util.*;
-
 /**
  * 
  */
 public class Build {
 
     private int height;
-    private boolean isTerminated;
+    private boolean isDome;
 
     /**
      * Default constructor
      */
-    public Build(int height, boolean isTerminated) {
+    public Build(int height, boolean isDome) {
 
         this.height = height;
-        this.isTerminated = isTerminated;
+        this.isDome = false;
     }
 
+    public int getHeight() {
+        return height;
+    }
 
+    public void incrementHeight() {
+        this.height++;
+    }
 
+    public boolean isDome() {
+        return isDome;
+    }
 
+    public void setTerminated() {
+        if (isDome) isDome = false;
+        else isDome = true;
+    }
 }

@@ -7,9 +7,15 @@ import java.util.*;
  */
 public class Cell {
 
+
+
     private int posX;
+
+
+
     private int posY;
     private Build build;
+
 
     /**
      * Default constructor
@@ -21,4 +27,17 @@ public class Cell {
 
         this.build = new Build(0, false);
     }
+
+    public int getposX() {
+        return posX;
+
+    }
+    public int getPosY() {
+        return posY;
+    }
+
+    public Build getBuild() {
+        return build;
+    }
+
 }

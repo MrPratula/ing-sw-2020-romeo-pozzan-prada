@@ -1,40 +1,32 @@
-
-import java.util.*;
+package it.polimi.ingsw.model;
 
 /**
  * 
  */
 public class Token {
 
+    private TokenColor tokenColor;
+    private Cell position;
+
     /**
      * Default constructor
      */
-    public Token() {
+    public Token(TokenColor tokenColor, Cell position) {
+
+        this.tokenColor = tokenColor;
+        this.position = position;
     }
 
-    /**
-     * 
-     */
-    private TokenColor tokenColor;
-
-    /**
-     * 
-     */
-    private Cell position;
-
-
-    /**
-     * 
-     */
-    public void validMoves() {
-        // TODO implement here
+    public int getPositionX () {
+        return position.getposX();
+    }
+    public int getPositionY () {
+        return position.getPosY();
     }
 
-    /**
-     * 
-     */
-    public void validBuilds() {
-        // TODO implement here
+    public int getHeight () {
+        return position.getBuild().getHeight();
     }
+
 
 }

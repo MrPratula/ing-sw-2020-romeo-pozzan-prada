@@ -6,8 +6,8 @@ package it.polimi.ingsw.model;
 public class Battlefield {
 
     private static final int battlefieldSize = 5;
-    Cell[][] battlefield;
-    PieceSet pieceSet;
+    private Cell[][] battlefield;
+    private PieceSet pieceSet;
 
     /**
      * Default constructor
@@ -19,26 +19,17 @@ public class Battlefield {
         for(int x=0; x<5; x++) {
             for (int y=0; y<5; y++) {
                 battlefield[x][y] = new Cell(x, y);
+                pieceSet.addCell(battlefield[x][y]);
             }
         }
         this.battlefield = battlefield;
     }
 
-    /**
-     * 
-     */
-    private PieceSet[] pieceSets;
-
-
-
-
-
-
-    /**
-     * 
-     */
-    public void battlefield() {
-        // TODO implement here
+    public Cell getCell (int posX, int posY) {
+        return battlefield[posX][posY];
     }
 
+    public PieceSet getPieceSet() {
+        return pieceSet;
+    }
 }
