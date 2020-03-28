@@ -32,4 +32,5 @@ public class Battlefield {
     public PieceSet getPieceSet() {
         return pieceSet;
     }
+
 }
