@@ -1,10 +1,12 @@
 
+package it.polimi.ingsw.model;
+
 import java.util.*;
 
 /**
  * 
  */
-public class BuildTwoLevels extends BuildBehaviour {
+public class BuildTwoLevels implements BuildBehaviour {
 
     /**
      * Default constructor

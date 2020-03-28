@@ -1,10 +1,11 @@
+package it.polimi.ingsw.model;
 
 import java.util.*;
 
 /**
  * 
  */
-public class MoveSwapping extends MoveBehaviour {
+public class MoveSwapping implements MoveBehaviour {
 
     /**
      * Default constructor

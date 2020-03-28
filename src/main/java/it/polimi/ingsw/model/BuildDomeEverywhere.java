@@ -1,10 +1,11 @@
+package it.polimi.ingsw.model;
 
 import java.util.*;
 
 /**
  * 
  */
-public class BuildDomeEverywhere extends BuildBehaviour {
+public class BuildDomeEverywhere implements BuildBehaviour {
 
     /**
      * Default constructor

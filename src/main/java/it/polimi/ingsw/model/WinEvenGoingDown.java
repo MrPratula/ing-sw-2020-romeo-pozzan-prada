@@ -1,10 +1,11 @@
+package it.polimi.ingsw.model;
 
 import java.util.*;
 
 /**
  * 
  */
-public class WinEvenGoingDown extends WinConditionBehaviour {
+public class WinEvenGoingDown implements WinConditionBehaviour {
 
     /**
      * Default constructor

@@ -1,10 +1,11 @@
+package it.polimi.ingsw.model;
 
 import java.util.*;
 
 /**
  * 
  */
-public class BuildTwoTimes extends BuildBehaviour {
+public class BuildTwoTimes implements BuildBehaviour {
 
     /**
      * Default constructor

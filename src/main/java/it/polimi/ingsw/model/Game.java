@@ -15,7 +15,7 @@ public class Game {
     /**
      * 
      */
-    public Player 2;
+
 
 
     /**

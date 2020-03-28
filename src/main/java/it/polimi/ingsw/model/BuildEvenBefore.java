@@ -1,10 +1,13 @@
+package it.polimi.ingsw.model;
+
+
 
 import java.util.*;
 
 /**
  * 
  */
-public class BuildEvenBefore extends BuildBehaviour {
+public class BuildEvenBefore implements BuildBehaviour {
 
     /**
      * Default constructor
@@ -15,7 +18,7 @@ public class BuildEvenBefore extends BuildBehaviour {
     /**
      * 
      */
-    public void didIBuildBeforeMove;
+    public boolean didIBuildBeforeMove;
 
     /**
      * 

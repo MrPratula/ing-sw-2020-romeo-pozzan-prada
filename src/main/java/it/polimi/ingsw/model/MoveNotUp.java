@@ -1,10 +1,11 @@
+package it.polimi.ingsw.model;
 
 import java.util.*;
 
 /**
  * 
  */
-public class MoveNotUp extends MoveBehaviour {
+public class MoveNotUp implements MoveBehaviour {
 
     /**
      * Default constructor
