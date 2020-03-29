@@ -1,39 +1,107 @@
 package it.polimi.ingsw.model;
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class Client {
 
-    public void recruitPlayers() {
+    public List<Player> recruitPlayers() {
 
-        String player1;
-        String player2;
-        String player3 = null;
+        List<String> playersName = new ArrayList<String>();
+
+        String player1Name;
+        String player2Name;
+        String player3Name;
 
         while (true) {
 
             System.out.println("benvenuto a santorini, come ti chiami?");
             Scanner s = new Scanner(System.in);
-            player1 = s.next();
-            System.out.println("ciao " + player1 + ". come si chiama il giocatore2?");
-            player2 = s.next();
-            System.out.println("ciao " + player2 + ".\nstart per giocare in 2 contro " + player1 + " o inserisci il nome del giocatore 3");
+            player1Name = s.next();
+            System.out.println("ciao " + player1Name + ". come si chiama il giocatore2?");
+            player2Name = s.next();
+            System.out.println("ciao " + player2Name + ".\nstart per giocare in 2 contro " + player1Name + " o inserisci il nome del giocatore 3");
             String choice = s.next();
 
             if (choice.equals("start")) {
-                System.out.println("avviata partita 2 giocatori " + player1 + " contro " + player2 + "!\nche vinca il migliore!");
-                // START HERE GAME WITH PLAYER1 AND PLAYER2
-                return;
+                System.out.println("avviata partita 2 giocatori " + player1Name + " contro " + player2Name + "!\nche vinca il migliore!");
+                playersName.add(player1Name);
+                playersName.add(player2Name);
+                return init2Players(playersName);
 
             } else {
-                player3 = choice;
-                System.out.println("vuoi avviare un match ffa tra " + player1 + " " + player2 + " e " + player3 + "? [yes][no]");
+                player3Name = choice;
+                System.out.println("vuoi avviare un match ffa tra " + player1Name + " " + player2Name + " e " + player3Name + "? [yes][no]");
                 String finalChoice = s.next();
                 if (finalChoice.equals("yes")) {
-                    System.out.println("avviata partita 3 giocatori " + player1 + " contro " + player2 + " contro " + player3 + "!\nche vinca il migliore!");
-                    // START HERE GAME WITH PLAYER1, PLAYER2 AND PLAYER3
-                    return;
+                    System.out.println("avviata partita 3 giocatori " + player1Name + " contro " + player2Name + " contro " + player3Name + "!\nche vinca il migliore!");
+                    playersName.add(player1Name);
+                    playersName.add(player2Name);
+                    playersName.add(player3Name);
+                    return init3Players(playersName);
                 }
             }
         }
+    }
+
+    public List<Player> init2Players (List<String> playersName) {
+
+        List<Player> players = new ArrayList<>();
+
+        Player player1 = new Player();
+        Player player2 = new Player();
+
+        player1.setNickname(playersName.get(0));
+        player2.setNickname(playersName.get(1));
+
+        player1.setTokenColor(0);
+        player2.setTokenColor(1);
+
+        player1.setToken1(new Token(player1.getTokenColor()));
+        player1.setToken2(new Token(player1.getTokenColor()));
+        player2.setToken1(new Token(player2.getTokenColor()));
+        player2.setToken2(new Token(player2.getTokenColor()));
+
+        players.add(player1);
+        players.add(player2);
+
+        return players;
+    }
+
+    public List<Player> init3Players (List<String> playersName) {
+
+        List<Player> players = new ArrayList<>();
+
+        Player player1 = new Player();
+        Player player2 = new Player();
+        Player player3 = new Player();
+
+        player1.setNickname(playersName.get(0));
+        player2.setNickname(playersName.get(1));
+        player3.setNickname(playersName.get(2));
+
+        player1.setTokenColor(0);
+        player2.setTokenColor(1);
+        player3.setTokenColor(2);
+
+        player1.setToken1(new Token(player1.getTokenColor()));
+        player1.setToken2(new Token(player1.getTokenColor()));
+        player2.setToken1(new Token(player2.getTokenColor()));
+        player2.setToken2(new Token(player2.getTokenColor()));
+        player3.setToken1(new Token(player3.getTokenColor()));
+        player3.setToken2(new Token(player3.getTokenColor()));
+
+        players.add(player1);
+        players.add(player2);
+        players.add(player3);
+
+        return players;
+    }
+
+    public void startNewGame (List<Player> players) {
+
+        Battlefield battlefield = new Battlefield();
+
+        // CONTINUE HERE!
+        return;
     }
 }

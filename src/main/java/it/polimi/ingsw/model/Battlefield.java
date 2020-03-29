@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import java.util.List;
+
 /**
  * 
  */
@@ -8,6 +10,7 @@ public class Battlefield {
     private static final int battlefieldSize = 5;
     private Cell[][] battlefield;
     private PieceSet pieceSet;
+    private List<Player> players;
 
     /**
      * Default constructor

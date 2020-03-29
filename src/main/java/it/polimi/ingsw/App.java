@@ -2,6 +2,9 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.model.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Hello world!
  *
@@ -12,9 +15,12 @@ public class App
 
         System.out.println( "Hello World!" );
 
-        Client client = new Client();
+        List<Player> players = new ArrayList<Player>();
 
-        client.recruitPlayers();
+        Client client = new Client();
+        players = client.recruitPlayers();
+
+        client.startNewGame(players);
 
 
     }

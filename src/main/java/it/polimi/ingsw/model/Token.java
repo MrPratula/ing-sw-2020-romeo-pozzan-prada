@@ -12,10 +12,9 @@ public class Token {
     /**
      * Default constructor
      */
-    public Token(TokenColor tokenColor, Cell tokenPosition) {
+    public Token(TokenColor tokenColor) {
 
         this.tokenColor = tokenColor;
-        this.tokenPosition = tokenPosition;
     }
 
     public int getPositionX () {
