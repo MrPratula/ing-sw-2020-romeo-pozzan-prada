@@ -12,19 +12,16 @@ public class Battlefield {
     private PieceSet pieceSet;
     private List<Player> players;
 
-    /**
-     * Default constructor
-     */
     public Battlefield() {
 
         Cell[][] battlefield = new Cell[battlefieldSize][battlefieldSize];
 
-        for(int x=0; x<5; x++) {
-            for (int y=0; y<5; y++) {
-                battlefield[x][y] = new Cell(x, y);
+        for(int x=0; x<battlefieldSize; x++) {
+            for (int y=0; y<battlefieldSize; y++) {
+                battlefield[x][y] = new Cell(x,y);
                 pieceSet.addCell(battlefield[x][y]);
             }
-        }
+    }
         this.battlefield = battlefield;
     }
 
@@ -36,4 +33,5 @@ public class Battlefield {
         return pieceSet;
     }
 
+    public List<Player> getPlayers() { return players; }
 }

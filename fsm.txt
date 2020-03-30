@@ -1,0 +1,25 @@
+
+
+apro santorini
+benvenuto
+
+QUANTI GIOCATORI?
+>>2 o 3
+
+INSERT NICKNAME1
+>>nickname
+
+***attesa altri players***
+
+SCELTO PLAYER INIZIALE
+
+ASSEGNAZIONE GODCARDS
+
+POSIZIONA DUE TOKEN
+>>pos1,pos2
+
+FAI MOSSA
+
+COSTRUISCI
+
+loop

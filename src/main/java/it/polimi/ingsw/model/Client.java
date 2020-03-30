@@ -7,33 +7,32 @@ public class Client {
     public List<Player> recruitPlayers() {
 
         List<String> playersName = new ArrayList<String>();
-
         String player1Name;
         String player2Name;
         String player3Name;
 
         while (true) {
 
-            System.out.println("benvenuto a santorini, come ti chiami?");
+            System.out.println("Benvenuto su Santorini, come ti chiami?");
             Scanner s = new Scanner(System.in);
             player1Name = s.next();
             System.out.println("ciao " + player1Name + ". come si chiama il giocatore2?");
             player2Name = s.next();
-            System.out.println("ciao " + player2Name + ".\nstart per giocare in 2 contro " + player1Name + " o inserisci il nome del giocatore 3");
+            System.out.println("ciao " + player2Name + ".\n scrivi start per giocare in 2 contro " + player1Name + " o inserisci il nome del giocatore 3");
             String choice = s.next();
 
             if (choice.equals("start")) {
-                System.out.println("avviata partita 2 giocatori " + player1Name + " contro " + player2Name + "!\nche vinca il migliore!");
+                System.out.println("avviata partita 2 giocatori: " + player1Name + " vs " + player2Name + "!\nChe vinca il migliore!");
                 playersName.add(player1Name);
                 playersName.add(player2Name);
                 return init2Players(playersName);
 
             } else {
                 player3Name = choice;
-                System.out.println("vuoi avviare un match ffa tra " + player1Name + " " + player2Name + " e " + player3Name + "? [yes][no]");
+                System.out.println("vuoi avviare un match ffa tra " + player1Name + ", " + player2Name + " e " + player3Name + "? [yes][no]");
                 String finalChoice = s.next();
                 if (finalChoice.equals("yes")) {
-                    System.out.println("avviata partita 3 giocatori " + player1Name + " contro " + player2Name + " contro " + player3Name + "!\nche vinca il migliore!");
+                    System.out.println("avviata partita 3 giocatori " + player1Name + " contro " + player2Name + " contro " + player3Name + "!\nChe vinca il migliore!");
                     playersName.add(player1Name);
                     playersName.add(player2Name);
                     playersName.add(player3Name);
@@ -46,7 +45,6 @@ public class Client {
     public List<Player> init2Players (List<String> playersName) {
 
         List<Player> players = new ArrayList<>();
-
         Player player1 = new Player();
         Player player2 = new Player();
 
@@ -70,7 +68,6 @@ public class Client {
     public List<Player> init3Players (List<String> playersName) {
 
         List<Player> players = new ArrayList<>();
-
         Player player1 = new Player();
         Player player2 = new Player();
         Player player3 = new Player();

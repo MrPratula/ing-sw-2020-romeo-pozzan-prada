@@ -7,19 +7,14 @@ public class Player {
 
     private String nickname;
     private TokenColor tokenColor;
-    private Token token1;
-    private Token token2;
+    private Token token1, token2;
     private GodCard god;
 
-
-    /**
-     * Default constructor
-     */
     public Player() {
         this.nickname = null;
         this.tokenColor = null;
         this.token1 = null;
-        this.token2=null;
+        this.token2 = null;
         this.god = null;
     }
 

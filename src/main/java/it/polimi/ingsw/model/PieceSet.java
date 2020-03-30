@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class PieceSet {
 
     private ArrayList<Cell> cells;
-    public ArrayList<Token> tokens;
+    public ArrayList<Token> tokens;   //perche public?
 
     /**
      * Default constructor
@@ -26,4 +26,7 @@ public class PieceSet {
     }
 
 
+    public ArrayList<Token> getTokens() {
+        return tokens;
+    }
 }
