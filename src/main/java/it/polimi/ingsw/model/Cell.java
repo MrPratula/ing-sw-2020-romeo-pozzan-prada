@@ -29,4 +29,9 @@ public class Cell {
         return build;
     }
 
+    public boolean samePositionAs (Cell cell) {
+        return cell.getPosY() == this.getPosY() &&
+                cell.getPosX() == this.getPosX();
+    }
+
 }

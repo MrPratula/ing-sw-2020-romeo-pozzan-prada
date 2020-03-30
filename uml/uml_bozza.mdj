@@ -658,41 +658,7 @@
 											"top": 950,
 											"width": 297.33056640625,
 											"height": 13,
-											"text": "+getPositionX(): int",
-											"horizontalAlignment": 0
-										},
-										{
-											"_type": "UMLOperationView",
-											"_id": "AAAAAAFxJeuwhJ07C9g=",
-											"_parent": {
-												"$ref": "AAAAAAFw02FJvPgPJO4="
-											},
-											"model": {
-												"$ref": "AAAAAAFxJeuwUp04Tg0="
-											},
-											"font": "Arial;13;0",
-											"left": 2245,
-											"top": 965,
-											"width": 297.33056640625,
-											"height": 13,
-											"text": "+getPositionY(): int",
-											"horizontalAlignment": 0
-										},
-										{
-											"_type": "UMLOperationView",
-											"_id": "AAAAAAFxJev/E58keWw=",
-											"_parent": {
-												"$ref": "AAAAAAFw02FJvPgPJO4="
-											},
-											"model": {
-												"$ref": "AAAAAAFxJev+5p8hB64="
-											},
-											"font": "Arial;13;0",
-											"left": 2245,
-											"top": 980,
-											"width": 297.33056640625,
-											"height": 13,
-											"text": "+getHeight(): int",
+											"text": "+getTokenPosition(): Cell",
 											"horizontalAlignment": 0
 										},
 										{
@@ -706,10 +672,10 @@
 											},
 											"font": "Arial;13;0",
 											"left": 2245,
-											"top": 995,
+											"top": 965,
 											"width": 297.33056640625,
 											"height": 13,
-											"text": "+validMoves(battlefield: Battlefield): ArrayList<Cell>",
+											"text": "+validMoves(battlefield: Battlefield): List<Cell>",
 											"horizontalAlignment": 0
 										}
 									],
@@ -717,7 +683,7 @@
 									"left": 2240,
 									"top": 943,
 									"width": 307.33056640625,
-									"height": 70
+									"height": 40
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -10502,7 +10468,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFw02FJuvgGho0="
 							},
-							"name": "getPositionX",
+							"name": "getTokenPosition",
 							"parameters": [
 								{
 									"_type": "UMLParameter",
@@ -10510,45 +10476,9 @@
 									"_parent": {
 										"$ref": "AAAAAAFxJer5gJr1Duw="
 									},
-									"type": "int",
-									"direction": "return"
-								}
-							]
-						},
-						{
-							"_type": "UMLOperation",
-							"_id": "AAAAAAFxJeuwUp04Tg0=",
-							"_parent": {
-								"$ref": "AAAAAAFw02FJuvgGho0="
-							},
-							"name": "getPositionY",
-							"parameters": [
-								{
-									"_type": "UMLParameter",
-									"_id": "AAAAAAFxJevCUp3VWoU=",
-									"_parent": {
-										"$ref": "AAAAAAFxJeuwUp04Tg0="
+									"type": {
+										"$ref": "AAAAAAFw6VIxXA+gabg="
 									},
-									"type": "int",
-									"direction": "return"
-								}
-							]
-						},
-						{
-							"_type": "UMLOperation",
-							"_id": "AAAAAAFxJev+5p8hB64=",
-							"_parent": {
-								"$ref": "AAAAAAFw02FJuvgGho0="
-							},
-							"name": "getHeight",
-							"parameters": [
-								{
-									"_type": "UMLParameter",
-									"_id": "AAAAAAFxJexmSqCvPN4=",
-									"_parent": {
-										"$ref": "AAAAAAFxJev+5p8hB64="
-									},
-									"type": "int",
 									"direction": "return"
 								}
 							]
@@ -10578,7 +10508,7 @@
 									"_parent": {
 										"$ref": "AAAAAAFxJeyvIqI3nq0="
 									},
-									"type": "ArrayList<Cell>",
+									"type": "List<Cell>",
 									"direction": "return"
 								}
 							]
