@@ -6,9 +6,7 @@ public class Client {
     public List<Player> recruitPlayers() {
 
         List<String> playersName = new ArrayList<>();
-        String player1Name;
-        String player2Name;
-        String player3Name;
+        String player1Name, player2Name, player3Name;
 
         while (true) {
 
@@ -101,8 +99,8 @@ public class Client {
         Game game = new Game(battlefield);
 
         game.initGame();
-        game.startGameRoutine();
-
-        // CONTINUE HERE!
+        game.startGameRoutine(battlefield);
     }
+
+
 }

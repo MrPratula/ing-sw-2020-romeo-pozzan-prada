@@ -26,9 +26,23 @@ public class Game {
         //  CONTINUE HERE
     }
 
-    public void startGameRoutine() {
-        //CONTINUE HERE
+    public void startGameRoutine(Battlefield battlefield) {
+        Token token;
+        while( battlefield.getPlayers().size()>=2 ){
+            for(Player p : battlefield.getPlayers()){
+                token = p.chooseToken();
+                p.move(token, battlefield);
+                if( p.checkWin(token) ){
+                    System.out.println("Il Player" + p + "ha vinto!");
+                    break;
+                }
+                p.build(token, battlefield);
+            }
+        }
+
     }
+
+
 
 
 }

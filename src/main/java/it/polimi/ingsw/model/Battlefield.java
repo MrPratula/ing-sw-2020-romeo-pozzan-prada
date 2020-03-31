@@ -20,7 +20,7 @@ public class Battlefield {
         for(int x=0; x<battlefieldSize; x++) {
             for (int y=0; y<battlefieldSize; y++) {
                 battlefield[x][y] = new Cell(x,y);
-                pieceSet.addCell(battlefield[x][y]);
+                //pieceSet.addCell(battlefield[x][y]);
             }
         }
         this.battlefield = battlefield;

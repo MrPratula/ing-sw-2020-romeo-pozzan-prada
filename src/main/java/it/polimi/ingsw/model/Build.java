@@ -30,6 +30,7 @@ public class Build {
 
     public void incrementHeight() {
         this.height++;
+        if(this.height == 4) this.isDome = true;
     }
 
     public void setTerminated() {
