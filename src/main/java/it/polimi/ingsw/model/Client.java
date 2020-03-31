@@ -1,12 +1,11 @@
 package it.polimi.ingsw.model;
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class Client {
 
     public List<Player> recruitPlayers() {
 
-        List<String> playersName = new ArrayList<String>();
+        List<String> playersName = new ArrayList<>();
         String player1Name;
         String player2Name;
         String player3Name;
@@ -97,8 +96,13 @@ public class Client {
     public void startNewGame (List<Player> players) {
 
         Battlefield battlefield = new Battlefield();
+        battlefield.setPlayers(players);
+
+        Game game = new Game(battlefield);
+
+        game.initGame();
+        game.startGameRoutine();
 
         // CONTINUE HERE!
-        return;
     }
 }

@@ -11,6 +11,7 @@ public class Battlefield {
     private Cell[][] battlefield;
     private PieceSet pieceSet;
     private List<Player> players;
+    private List<GodCard> allGodCards;
 
     public Battlefield() {
 
@@ -21,7 +22,7 @@ public class Battlefield {
                 battlefield[x][y] = new Cell(x,y);
                 pieceSet.addCell(battlefield[x][y]);
             }
-    }
+        }
         this.battlefield = battlefield;
     }
 
@@ -33,5 +34,14 @@ public class Battlefield {
         return pieceSet;
     }
 
-    public List<Player> getPlayers() { return players; }
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers (List<Player> players) {
+        this.players = players;
+    }
+
+
+
 }
