@@ -8,7 +8,7 @@ public class Player {
     private String nickname;
     private TokenColor tokenColor;
     private Token token1, token2;
-    private GodCard god;
+    private String god;
 
     public Player() {
         this.nickname = null;
@@ -27,14 +27,21 @@ public class Player {
     }
 
     public void setTokenColor (int color) {
+        TokenColor c;
         switch(color) {
+            case 0:
+                c = TokenColor.Red;
             case 1:
-                this.tokenColor = TokenColor.Red;
+                c = TokenColor.Blu;
             case 2:
-                this.tokenColor = TokenColor.Blu;
-            case 3:
-                this.tokenColor = TokenColor.Yellow;
+                c = TokenColor.Yellow;
+            default:
+                c= TokenColor.Red;
         }
+        this.tokenColor = c;
+        System.out.println(c);
+        token1.setTokenColor(c);
+        token2.setTokenColor(c);
     }
 
     public TokenColor getTokenColor() {
@@ -55,11 +62,11 @@ public class Player {
         this.token2 = token2;
     }
 
-    public void setGod(GodCard god) {
+    public void setGod(String god) {
         this.god = god;
     }
 
-    public GodCard getGod() {
+    public String getGod() {
         return god;
     }
 
@@ -125,6 +132,11 @@ public class Player {
 
         Cell chosenBuild = chooseBuild(token.validBuilds(battlefield));
         chosenBuild.getBuild().incrementHeight();
+    }
+
+    public void print () {
+        String out = "nome = "+nickname+"\ntokenColor = "+tokenColor+"\nGodCard = "+god;
+        System.out.println(out);
     }
 
 

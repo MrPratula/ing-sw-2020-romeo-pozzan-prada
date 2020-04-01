@@ -1,3 +1,5 @@
+/**
+
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.client.Client;
@@ -15,3 +17,5 @@ public class ClientApp
         }
     }
 }
+
+ */

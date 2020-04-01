@@ -1,3 +1,6 @@
+/**
+
+
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.Model;
@@ -34,3 +37,6 @@ public class Controller implements Observer<PlayerMove> {
         performMove(message);
     }
 }
+
+
+ */

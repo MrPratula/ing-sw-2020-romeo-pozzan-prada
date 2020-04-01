@@ -1,3 +1,6 @@
+/**
+
+
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.*;
@@ -28,3 +31,6 @@ public abstract class View extends Observable<PlayerMove> implements Observer<Mo
     }
 
 }
+
+
+ */

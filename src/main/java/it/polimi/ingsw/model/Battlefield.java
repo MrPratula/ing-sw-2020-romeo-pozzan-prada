@@ -1,17 +1,14 @@
 package it.polimi.ingsw.model;
+import java.util.*;
 
-import java.util.List;
 
-/**
- * 
- */
 public class Battlefield {
 
     private static final int battlefieldSize = 5;
     private Cell[][] battlefield;
     private PieceSet pieceSet;
     private List<Player> players;
-    private List<GodCard> allGodCards;
+    private List<GodCard> allGodCardsInGame;
 
     public Battlefield() {
 
@@ -53,7 +50,25 @@ public class Battlefield {
         this.players = players;
     }
 
-   /* public void print(){
+    public List<GodCard> getAllGodCardsInGame() {
+        return allGodCardsInGame;
+    }
+
+    public void setAllGodCardsInGame(List<GodCard> allGodCardsInGame) {
+        this.allGodCardsInGame = allGodCardsInGame;
+    }
+
+
+    }
+
+
+
+
+
+
+
+
+    /* public void print(){
         System.out.println("  0 1 2 3 4 ");
         for (int i = 0; i < battlefieldSize; i++) {
             System.out.print(i + "|");
@@ -65,4 +80,3 @@ public class Battlefield {
     }
     */
 
-}

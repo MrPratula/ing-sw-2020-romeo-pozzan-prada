@@ -1,13 +1,13 @@
+/**
+
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.server.Server;
 
 import java.io.IOException;
 
-/**
- * Hello world!
- *
- */
+
+
 public class ServerApp
 {
     public static void main( String[] args )
@@ -21,3 +21,5 @@ public class ServerApp
         }
     }
 }
+
+*/

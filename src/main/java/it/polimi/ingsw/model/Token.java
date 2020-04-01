@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * 
@@ -65,7 +64,6 @@ public class Token {
         return result;
     }
 
-
     public List<Cell> validBuilds (Battlefield battlefield) {
 
         List<Cell> result = new ArrayList<>();
@@ -98,6 +96,7 @@ public class Token {
         return result;
     }
 
-
-
+    public void setTokenColor (TokenColor color) {
+        this.tokenColor = color;
+    }
 }

@@ -1,3 +1,5 @@
+/**
+
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.observer.Observable;
@@ -86,3 +88,5 @@ public class SocketClientConnection extends Observable<String> implements Client
         }
     }
 }
+
+ */

@@ -15,7 +15,7 @@ public class Client {
             player1Name = s.next();
             System.out.println("ciao " + player1Name + ". come si chiama il giocatore2?");
             player2Name = s.next();
-            System.out.println("ciao " + player2Name + ".\n scrivi start per giocare in 2 contro " + player1Name + " o inserisci il nome del giocatore 3");
+            System.out.println("ciao " + player2Name + ".\nscrivi start per giocare in 2 contro " + player1Name + " o inserisci il nome del giocatore 3");
             String choice = s.next();
 
             if (choice.equals("start")) {
@@ -97,10 +97,8 @@ public class Client {
         battlefield.setPlayers(players);
 
         Game game = new Game(battlefield);
+        game.initGame(battlefield);
 
-        game.initGame();
         game.startGameRoutine(battlefield);
     }
-
-
 }

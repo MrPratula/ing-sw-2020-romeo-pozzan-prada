@@ -1,3 +1,6 @@
+/**
+ *
+
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.model.Board;
@@ -95,3 +98,4 @@ public class Client {
     }
 
 }
+ */
