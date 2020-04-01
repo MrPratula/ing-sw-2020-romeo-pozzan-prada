@@ -27,7 +27,11 @@ public class Battlefield {
     }
 
     public Cell getCell (int posX, int posY) {
-        return battlefield[posX][posY];
+        if(posX >= 0 && posY >= 0 && posX < battlefieldSize && posY < battlefieldSize){
+            return battlefield[posX][posY];
+        } else {
+            throw new RuntimeException();
+        }
     }
 
     public PieceSet getPieceSet() {
