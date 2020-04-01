@@ -34,6 +34,13 @@ public class Battlefield {
         }
     }
 
+    public void setCell(int posX, int posY, Cell marker) {
+        if(posX < 0 || posY < 0 || posX > 2 || posY > 2){
+            return;
+        }
+        battlefield[posX][posY] = marker;
+    }
+
     public PieceSet getPieceSet() {
         return pieceSet;
     }
@@ -46,6 +53,16 @@ public class Battlefield {
         this.players = players;
     }
 
-
+   /* public void print(){
+        System.out.println("  0 1 2 3 4 ");
+        for (int i = 0; i < battlefieldSize; i++) {
+            System.out.print(i + "|");
+            for (int j = 0; j < battlefieldSize; j++) {
+                System.out.print(battlefield[i][j] + "|");
+            }
+            System.out.println();
+        }
+    }
+    */
 
 }
