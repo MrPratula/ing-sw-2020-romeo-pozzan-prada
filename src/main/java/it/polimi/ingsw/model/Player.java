@@ -26,22 +26,8 @@ public class Player {
         this.nickname = nickname;
     }
 
-    public void setTokenColor (int color) {
-        TokenColor c;
-        switch(color) {
-            case 0:
-                c = TokenColor.Red;
-            case 1:
-                c = TokenColor.Blu;
-            case 2:
-                c = TokenColor.Yellow;
-            default:
-                c= TokenColor.Red;
-        }
-        this.tokenColor = c;
-        System.out.println(c);
-        token1.setTokenColor(c);
-        token2.setTokenColor(c);
+    public void setTokenColor (TokenColor color) {
+        this.tokenColor = color;
     }
 
     public TokenColor getTokenColor() {

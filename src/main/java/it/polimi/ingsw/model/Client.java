@@ -48,8 +48,8 @@ public class Client {
         player1.setNickname(playersName.get(0));
         player2.setNickname(playersName.get(1));
 
-        player1.setTokenColor(0);
-        player2.setTokenColor(1);
+        player1.setTokenColor(TokenColor.RED);
+        player2.setTokenColor(TokenColor.BLUE);
 
         player1.setToken1(new Token(player1.getTokenColor()));
         player1.setToken2(new Token(player1.getTokenColor()));
@@ -73,9 +73,9 @@ public class Client {
         player2.setNickname(playersName.get(1));
         player3.setNickname(playersName.get(2));
 
-        player1.setTokenColor(0);
-        player2.setTokenColor(1);
-        player3.setTokenColor(2);
+        player1.setTokenColor(TokenColor.RED);
+        player2.setTokenColor(TokenColor.BLUE);
+        player2.setTokenColor(TokenColor.YELLOW);
 
         player1.setToken1(new Token(player1.getTokenColor()));
         player1.setToken2(new Token(player1.getTokenColor()));

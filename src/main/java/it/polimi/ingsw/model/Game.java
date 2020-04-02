@@ -90,8 +90,6 @@ public class Game {
         allGodCardsName.add("Prometheus");
         setAllGodCards(allGodCardsName);
     }
-
-
 }
 
 
