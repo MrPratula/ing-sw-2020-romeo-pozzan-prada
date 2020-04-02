@@ -40,17 +40,22 @@ public class Game {
         }
 
         for (Player player: battlefield.getPlayers()) {
-            System.out.println(player.getNickname()+" in quale posizione vuoi mettere token1? x y");
-            Scanner s = new Scanner(System.in);
-            int valueX = s.nextInt();
-            int valueY = s.nextInt();
-            player.getToken1().setTokenPosition(battlefield.getCell(valueX, valueY));
+            Cell choose;
+            while (true) {
+                System.out.println(player.getNickname()+" in quale posizione vuoi mettere token1?");
+                choose = player.askForCell(battlefield);
+                if (choose.isFree()) break;
+                else System.out.println("quella casella è occupata, scegline un'altra!");
+            }
+            player.getToken1().setTokenPosition(choose);
 
-            System.out.println(player.getNickname()+" in quale posizione vuoi mettere token2? x y");
-            valueX = s.nextInt();
-            valueY = s.nextInt();
-            player.getToken1().setTokenPosition(battlefield.getCell(valueX, valueY));
-            s.close();
+            while (true) {
+                System.out.println(player.getNickname()+" in quale posizione vuoi mettere token2?");
+                choose = player.askForCell(battlefield);
+                if (choose.isFree()) break;
+                else System.out.println("quella casella è occupata, scegline un'altra!");
+            }
+            player.getToken2().setTokenPosition(choose);
         }
     }
 

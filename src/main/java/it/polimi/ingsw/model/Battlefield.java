@@ -31,6 +31,12 @@ public class Battlefield {
         }
     }
 
+    public Cell getCell (Cell cell) {
+        int inputX = cell.getPosX();
+        int inputY = cell.getPosY();
+        return battlefield[inputX][inputY];
+    }
+
     public void setCell(int posX, int posY, Cell marker) {
         if(posX < 0 || posY < 0 || posX > 2 || posY > 2){
             return;

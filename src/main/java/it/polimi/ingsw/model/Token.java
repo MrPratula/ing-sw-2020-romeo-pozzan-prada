@@ -27,19 +27,24 @@ public class Token {
     }
 
     public void setTokenPosition(Cell tokenPosition) {
-        this.tokenPosition = tokenPosition;
+
+        if (tokenPosition.isFree()) {
+            this.tokenPosition = tokenPosition;
+            tokenPosition.setOccupied();
+            return;
+        }
     }
 
     public List<Cell> validMoves (Battlefield battlefield) {
 
         List<Cell> result = new ArrayList<>();
         List<Player> players = battlefield.getPlayers();
-        List<Token> allOtherTokens = null;
+        List<Token> allTokens = null;
         int provX, provY;
 
         for (Player player:players) {
-                allOtherTokens.add(player.getToken1());
-                allOtherTokens.add(player.getToken2());
+                allTokens.add(player.getToken1());
+                allTokens.add(player.getToken2());
         }
         for (int i=-1; i<2; i++){                                                   // ciclo di +-1 intorno alla posizione del token
             provX = this.getTokenPosition().getPosX()+i;                            // per poter ottenere le 8 caselle in cui
@@ -51,7 +56,7 @@ public class Token {
                      tokenPosition.getBuild().getHeight()<=1) &&                            // l'altezza del token <= 1
                      (!battlefield.getCell(provX,provY).getBuild().getIsDome()) ) {         // non deve essere una cupola
 
-                    for (Token token:allOtherTokens) {
+                    for (Token token:allTokens) {
                         if (provX != token.getTokenPosition().getPosX() &&                 // il token non può andare dove c'è un altro token
                                 provY != token.getTokenPosition().getPosX()) {             // compreso sè stesso, quindi non può stare fermo
 

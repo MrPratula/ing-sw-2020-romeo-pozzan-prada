@@ -34,7 +34,9 @@ public class Player {
         return tokenColor;
     }
 
-    public Token getToken1() { return token1; }
+    public Token getToken1() {
+        return token1;
+    }
 
     public Token getToken2() {
         return token2;
@@ -57,12 +59,12 @@ public class Player {
     }
 
     public Token chooseToken(){
-        System.out.println("Scegli se usare Token [1][2]");
+        System.out.println(this.getNickname()+" scegli se usare Token [1][2]");
         while(true) {
             Scanner s = new Scanner(System.in);
-            String choice = s.next();
-            if( choice.equals("1") ) return getToken1();
-            if( choice.equals("2")) return getToken2();
+            int choice = s.nextInt();
+            if( choice == 1) return getToken1();
+            if( choice == 2) return getToken2();
             else System.out.println("Errore: Scrivere solamente 1 oppure 2");
         }
     }
@@ -121,12 +123,31 @@ public class Player {
     }
 
     public void print () {
-        String out = "nome = "+nickname+"\ntokenColor = "+tokenColor+"\nGodCard = "+god;
+        String out =
+                "nome = "+nickname+
+                "\ntokenColor = "+tokenColor+
+                "\nGodCard = "+god;
+
+       try {
+           out = out +
+           "\nToken1 at "+token1.getTokenPosition().getPosX()+" "+token1.getTokenPosition().getPosY()+
+           "\nToken2 at "+token2.getTokenPosition().getPosX()+" "+token2.getTokenPosition().getPosY();
+       } catch (Exception e){
+           out = out + "\nPosizione dei token non ancora disponibile!";
+       }
         System.out.println(out);
     }
+    
+    public Cell askForCell (Battlefield battlefield) {
+        while (true) {
+            Scanner s = new Scanner(System.in);
+            System.out.println("Scegli le coordinate della casella... x y");
+            int x = s.nextInt();
+            int y = s.nextInt();
 
-
-
-
-
+            if (battlefield.getCell(x, y) != null) {
+                return battlefield.getCell(x, y);
+            }
+        }
+    }
 }
