@@ -28,36 +28,40 @@ public class Game {
 
     public void initGame(Battlefield battlefield) {
 
-        createGodCards ();
-        for(Player p: battlefield.getPlayers()) {
+        createGodCards();
+        for (Player p : battlefield.getPlayers()) {
             assignGodCard(p);
         }
 
         System.out.println("Sta per iniziare una partita tra:");
-        for (Player p: battlefield.getPlayers()) {
+        for (Player p : battlefield.getPlayers()) {
             p.print();
             System.out.println("");
         }
 
-        for (Player player: battlefield.getPlayers()) {
-            Cell choose;
-            while (true) {
-                System.out.println(player.getNickname()+" in quale posizione vuoi mettere token1?");
-                choose = player.askForCell(battlefield);
-                if (choose.isFree()) break;
-                else System.out.println("quella casella è occupata, scegline un'altra!");
-            }
-            player.getToken1().setTokenPosition(choose);
 
-            while (true) {
-                System.out.println(player.getNickname()+" in quale posizione vuoi mettere token2?");
-                choose = player.askForCell(battlefield);
-                if (choose.isFree()) break;
-                else System.out.println("quella casella è occupata, scegline un'altra!");
-            }
-            player.getToken2().setTokenPosition(choose);
-        }
     }
+    /*
+        for (Player player: battlefield.getPlayers()) {
+        Cell choose;
+        while (true) {
+            System.out.println(player.getNickname()+" in quale posizione vuoi mettere token1?");
+            choose = player.askForCell(battlefield);
+            if (choose.isFree()) break;
+            else System.out.println("quella casella è occupata, scegline un'altra!");
+        }
+        player.getToken1().setTokenPosition(choose);
+
+        while (true) {
+            System.out.println(player.getNickname()+" in quale posizione vuoi mettere token2?");
+            choose = player.askForCell(battlefield);
+            if (choose.isFree()) break;
+            else System.out.println("quella casella è occupata, scegline un'altra!");
+        }
+        player.getToken2().setTokenPosition(choose);
+    }
+
+     */
 
     public void assignGodCard (Player player) {
         Random rand = new Random();
@@ -67,6 +71,8 @@ public class Game {
         allGodCards.remove(god);
     }
 
+
+    /*
     public void startGameRoutine(Battlefield battlefield) {
         Token token;
         while( battlefield.getPlayers().size()>=2 ){
@@ -81,6 +87,7 @@ public class Game {
             }
         }
     }
+    */
 
     public void createGodCards () {
         List<String> allGodCardsName = new ArrayList<String>();

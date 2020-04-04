@@ -91,14 +91,16 @@ public class Client {
         return players;
     }
 
-    public void startNewGame (List<Player> players) {
+    public Battlefield startNewGame (List<Player> players) {
 
+        //  Creo tutto cio che mi serve per avere un game
         Battlefield battlefield = new Battlefield();
         battlefield.setPlayers(players);
 
+        //  qua setuppo tutto = metto i token iniziali, assegno godcard a player e colore
         Game game = new Game(battlefield);
         game.initGame(battlefield);
 
-        game.startGameRoutine(battlefield);
+        return battlefield;
     }
 }
