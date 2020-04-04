@@ -104,7 +104,6 @@ public class Player {
     }
 
     public void move(Token token, Battlefield battlefield) {
-
         token.setOldHeight(token.getTokenPosition().getBuild().getHeight());
         List<Cell> validCells = token.validMoves(battlefield);
         Cell chosenCell = this.chooseCell(validCells);
@@ -117,7 +116,6 @@ public class Player {
     }
 
     public void build(Token token, Battlefield battlefield) {
-
         Cell chosenBuild = chooseBuild(token.validBuilds(battlefield));
         chosenBuild.getBuild().incrementHeight();
     }

@@ -19,10 +19,26 @@ public class Observable<T> {
         }
     }
 
-    protected void notify(T message){
+    protected void notifyMove(T message){
         synchronized (observers) {
             for(Observer<T> observer : observers){
-                observer.update(message);
+                observer.updateMove(message);
+            }
+        }
+    }
+
+    protected void notifyCheckWin(T message){
+        synchronized (observers) {
+            for(Observer<T> observer : observers){
+                observer.updateCheckWin(message);
+            }
+        }
+    }
+
+    protected void notifyBuild(T message){
+        synchronized (observers) {
+            for(Observer<T> observer : observers){
+                observer.updateBuild(message);
             }
         }
     }

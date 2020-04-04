@@ -1,4 +1,3 @@
-/**
 
 
 package it.polimi.ingsw.controller;
@@ -11,9 +10,10 @@ import it.polimi.ingsw.observer.Observer;
 public class Controller implements Observer<PlayerMove> {
 
     private final Model model;
+    //private View view;
 
     public Controller(Model model){
-        super();
+        // boh super();
         this.model = model;
     }
 
@@ -31,12 +31,14 @@ public class Controller implements Observer<PlayerMove> {
     }
 
 
-
+    //scelta del giocatore:
     @Override
-    public void update(PlayerMove message) {
-        performMove(message);
+    public void update(Observable o, Cell choose, Token token) {
+        if(o != view || !(arg instanceof Cell)){
+            throw new IllegalArgumentException();
+        }
+        model.token.setPosition((choose)arg);
+        game();
     }
 }
 
-
- */

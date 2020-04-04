@@ -18,8 +18,8 @@ public abstract class View extends Observable implements Observer {
     }
 
     public void runSetUpToken(Battlefield battlefield) {
-        while (true) {
 
+        while (true) {
             for (Player player: battlefield.getPlayers()) {
                 Cell choose;
                 while (true) {
@@ -28,8 +28,9 @@ public abstract class View extends Observable implements Observer {
                     if (choose.isFree()) break;
                     else System.out.println("quella casella è occupata, scegline un'altra!");
                 }
-                player.getToken1().setTokenPosition(choose);
-
+                //player.getToken1().setTokenPosition(choose);
+                setChanged();
+                notify(choose,player.getToken1());
                 while (true) {
                     System.out.println(player.getNickname()+" in quale posizione vuoi mettere token2?");
                     choose = player.askForCell(battlefield);
@@ -37,18 +38,22 @@ public abstract class View extends Observable implements Observer {
                     else System.out.println("quella casella è occupata, scegline un'altra!");
                 }
                 player.getToken2().setTokenPosition(choose);
+                setChanged();
+                notify();
             }
         }
     }
 
-    public void runGameRoutine (Battlefield battlefield) {
 
-        Token token;
+    public void runGameRoutine (Battlefield battlefield) {
+        Token token
         while( battlefield.getPlayers().size()>=2 ){
             for(Player p : battlefield.getPlayers()){
                 token = p.chooseToken();
                 p.move(token, battlefield);
-                if( p.checkWin(token) ){
+                setChanged();
+                notify();
+                if (p.checkWin(token)) {
                     System.out.println("Il Player" + p + "ha vinto!");
                     break;
                 }
@@ -56,6 +61,7 @@ public abstract class View extends Observable implements Observer {
             }
         }
     }
+
 
 
 }

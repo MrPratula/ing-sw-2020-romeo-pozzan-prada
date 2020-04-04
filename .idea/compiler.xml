@@ -6,9 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Santorini" />
-        <module name="ing-sw-2020-romeo-pozzan-prada" />
+        <module name="GC26" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="GC26" target="1.7" />
+    </bytecodeTargetLevel>
   </component>
 </project>

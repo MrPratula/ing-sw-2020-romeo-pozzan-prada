@@ -10,8 +10,7 @@ import java.util.List;
  * Hello world!
  *
  */
-public class App 
-{
+public class App {
     public static void main( String[] args ) {
 
         Model model = new Model();
@@ -31,39 +30,19 @@ public class App
 
         Battlefield battlefield = client.startNewGame(players);
 
-        // inizia la routine di gioco
+        // faccio il setup
         view.runSetUpToken(battlefield);
 
+        // inizia la routine di gioco
         while (/*esistono giocatori*/){
-            view.makeMove();
-            view.checkWin();
-            view.makeBuild();
+
+            view.runGameRoutine(battlefield);
+
+
         }
 
 
-        view.runGameRoutine(battlefield);
 
 
     }
 }
-
-/*
-
-public class App
-{
-    public static void main( String[] args )
-    {
-        Model model = new Model();
-        ModelView modelView = new ModelView();
-        View view = new View();
-        Controller controller = new Controller(model, view);
-
-        view.addObserver(controller);
-        model.addObserver(modelView);
-        modelView.addObserver(view);
-
-        view.run();
-
-    }
-}
-*/
