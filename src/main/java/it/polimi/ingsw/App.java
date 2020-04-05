@@ -41,6 +41,9 @@ public class App
         }
 
 
+        
+
+
         view.runGameRoutine(battlefield);
 
 
