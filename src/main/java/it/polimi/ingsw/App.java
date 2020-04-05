@@ -40,7 +40,7 @@ public class App
         //    view.checkWin();
          //   view.makeBuild();
         }
-        
+
 
     //    view.runGameRoutine(battlefield);
 

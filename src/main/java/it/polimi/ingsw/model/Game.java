@@ -39,29 +39,29 @@ public class Game {
             System.out.println("");
         }
 
-
-    }
-    /*
         for (Player player: battlefield.getPlayers()) {
-        Cell choose;
-        while (true) {
-            System.out.println(player.getNickname()+" in quale posizione vuoi mettere token1?");
-            choose = player.askForCell(battlefield);
-            if (choose.isFree()) break;
-            else System.out.println("quella casella è occupata, scegline un'altra!");
-        }
-        player.getToken1().setTokenPosition(choose);
+            Cell choose;
+            while (true) {
+                System.out.println(player.getNickname()+" in quale posizione vuoi mettere token1?");
+                choose = player.askForCell(battlefield);
+                if (choose.isFree()) break;
+                else System.out.println("quella casella è occupata, scegline un'altra!");
+            }
+            player.getToken1().setTokenPosition(choose);
 
-        while (true) {
-            System.out.println(player.getNickname()+" in quale posizione vuoi mettere token2?");
-            choose = player.askForCell(battlefield);
-            if (choose.isFree()) break;
-            else System.out.println("quella casella è occupata, scegline un'altra!");
+            while (true) {
+                System.out.println(player.getNickname()+" in quale posizione vuoi mettere token2?");
+                choose = player.askForCell(battlefield);
+                if (choose.isFree()) break;
+                else System.out.println("quella casella è occupata, scegline un'altra!");
+            }
+            player.getToken2().setTokenPosition(choose);
         }
-        player.getToken2().setTokenPosition(choose);
+
+
+
     }
 
-     */
 
     public void assignGodCard (Player player) {
         Random rand = new Random();
@@ -107,6 +107,11 @@ public class Game {
 
 
 
+
+
+public boolean checkWin (Cell oldPosition, Cell newPosition)
+
+    public void build (Cell cell)
 
 
 
