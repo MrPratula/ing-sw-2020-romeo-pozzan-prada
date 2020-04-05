@@ -29,6 +29,7 @@ public class App
         Client client = new Client();
         players = client.recruitPlayers();
 
+
         Battlefield battlefield = client.startNewGame(players);
 
         // inizia la routine di gioco
