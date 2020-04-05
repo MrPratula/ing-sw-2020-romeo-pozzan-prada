@@ -15,13 +15,13 @@ public class App
     public static void main( String[] args ) {
 
         Model model = new Model();
-        ModelView modelView = new ModelView();
-        View view = new View();
-        Controller controller = new Controller(model, view);
+     //   ModelView modelView = new ModelView();
+       // View view = new View();
+       // Controller controller = new Controller(model, view);
 
-        view.addObserver(controller);
-        model.addObserver(modelView);
-        modelView.addObserver(view);
+     //   view.addObserver(controller);
+     //   model.addObserver(modelView);
+     //   modelView.addObserver(view);
 
 
         List<Player> players = new ArrayList<Player>();
@@ -33,41 +33,17 @@ public class App
         Battlefield battlefield = client.startNewGame(players);
 
         // inizia la routine di gioco
-        view.runSetUpToken(battlefield);
+       // view.runSetUpToken(battlefield);
 
-        while (true/*esistono giocatori*/){
-            view.makeMove();
-            view.checkWin();
-            view.makeBuild();
+     //   while (true/*esistono giocatori*/){
+       //     view.makeMove();
+        //    view.checkWin();
+         //   view.makeBuild();
         }
-
-
         
 
+    //    view.runGameRoutine(battlefield);
 
-        view.runGameRoutine(battlefield);
-
-
-    }
-}
-
-/*
-
-public class App
-{
-    public static void main( String[] args )
-    {
-        Model model = new Model();
-        ModelView modelView = new ModelView();
-        View view = new View();
-        Controller controller = new Controller(model, view);
-
-        view.addObserver(controller);
-        model.addObserver(modelView);
-        modelView.addObserver(view);
-
-        view.run();
 
     }
-}
-*/
+
