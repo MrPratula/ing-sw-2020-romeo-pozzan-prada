@@ -34,7 +34,7 @@ public class App
         // inizia la routine di gioco
         view.runSetUpToken(battlefield);
 
-        while (/*esistono giocatori*/){
+        while (true/*esistono giocatori*/){
             view.makeMove();
             view.checkWin();
             view.makeBuild();
