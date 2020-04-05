@@ -1,6 +1,8 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.controller.Controller;
+import it.polimi.ingsw.model.Model;
+import it.polimi.ingsw.model.ModelView;
 import it.polimi.ingsw.view.View;
 
 import java.util.ArrayList;
@@ -10,8 +12,10 @@ import java.util.List;
  * Hello world!
  *
  */
+
 public class App {
-    public static void main( String[] args ) {
+
+    public static void main ( String[] args ) {
 
         Model model = new Model();
         ModelView modelView = new ModelView();
@@ -34,7 +38,7 @@ public class App {
         view.runSetUpToken(battlefield);
 
         // inizia la routine di gioco
-        while (/*esistono giocatori*/){
+        while (true/*esistono giocatori*/){
 
             view.runGameRoutine(battlefield);
 
