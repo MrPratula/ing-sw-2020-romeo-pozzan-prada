@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view;
+package java.it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.observer.Observable;
