@@ -57,9 +57,6 @@ public class Game {
             }
             player.getToken2().setTokenPosition(choose);
         }
-
-
-
     }
 
 
@@ -108,10 +105,10 @@ public class Game {
 
 
 
+/*
+public boolean checkWin (Cell oldPosition, Cell newPosition){}
 
-public boolean checkWin (Cell oldPosition, Cell newPosition)
-
-    public void build (Cell cell)
-
+    public void build (Cell cell){}
+*/
 
 

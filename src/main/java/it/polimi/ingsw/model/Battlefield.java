@@ -30,6 +30,7 @@ public class Battlefield {
             throw new RuntimeException();
         }
     }
+    /////////////////alert: metodi simili
 
     public Cell getCell (Cell cell) {
         int inputX = cell.getPosX();

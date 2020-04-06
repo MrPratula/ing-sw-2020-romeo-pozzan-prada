@@ -11,6 +11,7 @@ import it.polimi.ingsw.observer.Observer;
 public class Controller implements Observer<PlayerMove> {
 
     private final Model model;
+    //private final View view;
 
     public Controller(Model model){
         super();
