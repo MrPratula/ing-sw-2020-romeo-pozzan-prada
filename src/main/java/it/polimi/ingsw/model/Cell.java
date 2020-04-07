@@ -33,7 +33,7 @@ public class Cell {
         this.isDome = false;
     }
 
-    /**
+    /*
      * GETTER
      */
 
@@ -57,7 +57,7 @@ public class Cell {
         return this.isDome;
     }
 
-    /**
+    /*
      * SETTER
      */
 
@@ -109,5 +109,4 @@ public class Cell {
         else throw new CellHeightException(
                 String.format("Cell at (%d,%d) has height out of range", this.posX, this.posY));
     }
-
 }
