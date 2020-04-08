@@ -58,9 +58,10 @@ public class Cell {
         return this.isDome;
     }
 
-    /**
+    /*
      * SETTER
      */
+    
     public void setHeight(int newHeight) {
         this.height=newHeight;
     }

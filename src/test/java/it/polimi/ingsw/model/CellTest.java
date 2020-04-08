@@ -22,7 +22,11 @@ public class CellTest {
 
         cell = new Cell(posX, posY);
 
-        height = -1;
+        //    height = -1;
+        //    height = 0;
+        //    height = 2;
+            height = 3;
+        //    height = 4;
 
         cell.setHeight(height);
     }
@@ -38,11 +42,12 @@ public class CellTest {
 
         if (height>=0 && height<3) {
             System.out.println("height should be between 0 and 2 and it is "+cell.getHeight());
+            System.out.println("if it is 3 it's because isDome should be false and it is "+cell.IsDome());
             assertEquals(height+1, cell.getHeight());
         }
         else if (height==3) {
             System.out.println("height should be 3 and it is "+cell.getHeight());
-            System.out.println("is dome should be true and it is "+cell.IsDome());
+            System.out.println("isDome should be true and it is "+cell.IsDome());
 
             assertTrue(cell.IsDome());
             assertEquals(height, cell.getHeight());
