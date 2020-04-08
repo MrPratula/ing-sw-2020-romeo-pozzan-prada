@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model;
 import it.polimi.ingsw.exception.CellOutOfBattlefieldException;
-import it.polimi.ingsw.view.Player;
 
 import java.util.*;
 

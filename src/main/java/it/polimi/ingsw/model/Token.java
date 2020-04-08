@@ -21,7 +21,4 @@ public class Token {
     public Token(TokenColor color){
         this.tokenColor = color;
     }
-
-
-
 }

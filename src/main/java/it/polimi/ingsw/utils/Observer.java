@@ -1,8 +1,8 @@
 package it.polimi.ingsw.utils;
 
-public class Observer<Message> {
+public interface Observer<Message> {
 
-    void update(Message message) {
+    void update(Message message);
 
-    }
+
 }

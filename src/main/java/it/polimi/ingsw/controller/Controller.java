@@ -13,7 +13,7 @@ import it.polimi.ingsw.utils.Observer;
  * Other than the update message, each update should give Controller objects he need to perform
  * what is specified in the message.
  */
-public class Controller extends Observer {
+public class Controller implements Observer<Message> {
 
     private Battlefield battlefield; //non so se è giusto, ma per ora lo metto per avere accesso ai dati
 
@@ -22,6 +22,7 @@ public class Controller extends Observer {
      * The update method uses the message parameter to choose the correct method to run.
      * @param message is used to specify the method to run via the switch.
      */
+    @Override
     public void update(Message message) {
 
         switch (message) {
