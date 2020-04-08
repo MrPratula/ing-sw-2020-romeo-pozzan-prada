@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
-import java.util.*;
+import it.polimi.ingsw.exception.CellHeightException;
+import it.polimi.ingsw.exception.ReachHeightLimitException;
 
 /**
  * Each Cell is a little square that form the Battlefield.
@@ -57,9 +58,12 @@ public class Cell {
         return this.isDome;
     }
 
-    /*
+    /**
      * SETTER
      */
+    public void setHeight(int newHeight) {
+        this.height=newHeight;
+    }
 
     /**
      * Used when a player put a Token in this Cell
@@ -83,8 +87,6 @@ public class Cell {
         this.isDome = true;
     }
 
-    // per ora non penso altri setter siano necessari. Nel caso li aggiungo qui.
-
     /**
      * Increment the height of a Cell by one.
      * The height start from zero and can be incremented up to 3.
@@ -97,7 +99,7 @@ public class Cell {
 
         if (this.isDome) {
             throw new ReachHeightLimitException(
-                    String.format("Cell at (%d,%d) is a dome", this.posX, this.posY));
+                    String.format("Cell at (%d,%d) is a dome and can't be built anymore", this.posX, this.posY));
         }
         if (this.height == 3) {
             this.setTerminated();
@@ -107,6 +109,6 @@ public class Cell {
             this.height++;
         }
         else throw new CellHeightException(
-                String.format("Cell at (%d,%d) has height out of range", this.posX, this.posY));
+                String.format("Cell at (%d,%d) has height = %d out of range [0,3]", this.posX, this.posY, this.getHeight()));
     }
 }
