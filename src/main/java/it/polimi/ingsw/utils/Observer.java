@@ -5,5 +5,4 @@ public class Observer<Message> {
     void update(Message message) {
 
     }
-
 }

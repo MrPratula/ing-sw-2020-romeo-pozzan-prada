@@ -5,15 +5,19 @@ import it.polimi.ingsw.model.GodCard;
 import it.polimi.ingsw.model.Token;
 import it.polimi.ingsw.model.TokenColor;
 import it.polimi.ingsw.utils.Observable;
+import it.polimi.ingsw.utils.Observer;
 
 import java.util.*;
 
 /**
- *  A Player is an object that has an unique view. It interact with the network
+ *  A Player is an object that has an unique view.
+ *  It is an observable for the controller and
+ *  it is an observer of the controller.
+ *  It interact with the network
  *  and notify the observer of the controller to let the game run.
  */
 
-public class Player extends Observable {
+public class Player extends Observable { //dovrebbe essere anche observer per il model
 
     private String username;
     private TokenColor tokenColor;
@@ -22,5 +26,27 @@ public class Player extends Observable {
     private List<GodCard> opponentGodCards;
 
     private Battlefield battlefield; //penso che sia quella che vede il player sulla sua view
+
+    /**
+     * A new player is created when it connect to the server
+     * @param username the name of the player. It should be unique
+     * @param color the color that identify the player and his tokens
+     * @param battlefield the shared data to construct the view and notify the controller
+     */
+
+    public Player (String username, TokenColor color, Battlefield battlefield) {
+
+        this.username = username;
+        this.tokenColor = color;
+        this.token1 = new Token(color);
+        this.token2 = new Token(color);
+        this.battlefield = battlefield;
+
+    }
+
+
+
+
+
 
 }
