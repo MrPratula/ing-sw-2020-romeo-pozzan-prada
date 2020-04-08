@@ -61,7 +61,7 @@ public class Cell {
     /*
      * SETTER
      */
-    
+
     public void setHeight(int newHeight) {
         this.height=newHeight;
     }
