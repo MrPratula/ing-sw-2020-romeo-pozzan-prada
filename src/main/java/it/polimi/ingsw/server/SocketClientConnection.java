@@ -2,6 +2,7 @@ package it.polimi.ingsw.server;
 
 
 import it.polimi.ingsw.utils.Observable;
+import it.polimi.ingsw.view.RemoteView;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -49,6 +50,11 @@ public class SocketClientConnection extends Observable implements ClientConnecti
             System.err.println("Error when closing socket!");
         }
         active = false;
+    }
+
+    @Override
+    public void addObserver(RemoteView.MessageReceiver observer) {
+
     }
 
     /**

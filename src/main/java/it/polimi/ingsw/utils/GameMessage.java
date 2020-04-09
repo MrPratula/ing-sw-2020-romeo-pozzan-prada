@@ -4,6 +4,7 @@ public class GameMessage {
 
     public static String moveMessage = "Make your move (x,y):";
     public static String waitMessage = "Wait for the other player's move!";
+    public static String buildMessage = "Make your build (x,y):";   //new
     public static String winMessage = "You win!";
     public static String loseMessage = "You lose!";
     public static String drawMessage = "Draw!";

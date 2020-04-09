@@ -10,15 +10,15 @@ public class RemoteView extends View {
 
     private ClientConnection clientConnection;
 
-    public RemoteView(Player player, String opponent, ClientConnection c) {
+    public RemoteView(Player player, String opponent, ClientConnection c) {//list<string>
         super(player);
         this.clientConnection = c;
         c.addObserver(new MessageReceiver());
-        c.asyncSend("Your opponent is: " + opponent);
+        c.asyncSend("Your opponent is: " + opponent);  //are
     }
 
 
-    private class MessageReceiver implements Observer<Message> {
+    public class MessageReceiver implements Observer<Message> {
 
         @Override
         public void update(Message message) {
