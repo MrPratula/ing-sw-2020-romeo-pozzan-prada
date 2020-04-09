@@ -37,4 +37,13 @@ public class Player {
         this.battlefield = battlefield;
 
     }
+
+    /**
+     * used to return a player color to let
+     * game know if it is the player's turn
+     * @return the color of the player
+     */
+    public TokenColor getTokenColor() {
+        return this.tokenColor;
+    }
 }

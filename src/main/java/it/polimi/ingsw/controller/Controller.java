@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.Battlefield;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.utils.Message;
 import it.polimi.ingsw.utils.Observable;
 import it.polimi.ingsw.utils.Observer;
@@ -15,7 +16,15 @@ import it.polimi.ingsw.utils.Observer;
  */
 public class Controller implements Observer<Message> {
 
-    private Battlefield battlefield; //non so se è giusto, ma per ora lo metto per avere accesso ai dati
+    private Game game;
+
+
+
+    public Controller (Game game) {
+        this.game = game;
+    }
+
+
 
 
     /**
