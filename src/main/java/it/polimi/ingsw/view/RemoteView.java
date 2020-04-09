@@ -15,22 +15,35 @@ public class RemoteView extends View {
         this.clientConnection = c;
         c.addObserver(new MessageReceiver());
         c.asyncSend("Your opponent is: " + opponent);
-
     }
 
 
     private class MessageReceiver implements Observer<Message> {
 
         @Override
-        public void update(String message) {
+        public void update(Message message) {
             System.out.println("Received: " + message);
+
+            /**
+             * here we need to recognize what type of
+             * message we send, because till now we
+             * don't send string but pre-made message that need to be distinguished
+             */
             try{
-                String[] inputs = message.split(",");
-                handleMove(Integer.parseInt(inputs[0]), Integer.parseInt(inputs[1]));
+
+                /**
+                 * here the tris code split the input to get x-coords and y-coords to
+                 * select where to put X or O
+                 */
+
+                //String[] inputs = message.split(",");
+                //handleMove(Integer.parseInt(inputs[0]), Integer.parseInt(inputs[1]));
+
             }catch(IllegalArgumentException e){
                 clientConnection.asyncSend("Error!");
             }
         }
+
 
     }
 
