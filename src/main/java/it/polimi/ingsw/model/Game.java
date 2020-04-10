@@ -63,7 +63,7 @@ public class Game extends Observable {
                 if (numberOfPlayer == 2) {
                     this.turn = TokenColor.RED;
                 } else if (numberOfPlayer == 3) {
-                    this.turn = TokenColor.GREEN;
+                    this.turn = TokenColor.YELLOW;
                 }
                 else {
                     throw new WrongNumberPlayerException(
@@ -72,7 +72,7 @@ public class Game extends Observable {
                 break;
             }
 
-            case GREEN: {
+            case YELLOW: {
                 this.turn = TokenColor.RED;
                 break;
             }

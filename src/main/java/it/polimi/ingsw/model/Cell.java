@@ -48,7 +48,7 @@ public class Cell implements Serializable {
         return this.posY;
     }
 
-    public boolean ThereIsPlayer() {
+    public boolean getThereIsPlayer() {
         return thereIsPlayer;
     }
 
@@ -63,6 +63,10 @@ public class Cell implements Serializable {
     /*
      * SETTER
      */
+
+    public void setThereIsPlayer() {
+        this.thereIsPlayer = true;
+    }
 
     public void setHeight(int newHeight) {
         this.height=newHeight;

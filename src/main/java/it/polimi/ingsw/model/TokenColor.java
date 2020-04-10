@@ -9,7 +9,7 @@ public enum TokenColor {
 
     RED("\033[041m"),
     BLUE("\033[044m"),
-    GREEN("\033[042m");
+    YELLOW("\033[043m");
 
     static final String RESET = "\033[049m";
 
