@@ -11,4 +11,7 @@ public class GameMessage {
     public static String wrongTurnMessage = "It is not your turn!";
     public static String occupiedCellMessage = "The chosen cell is not empty!";
 
+    public void print (GameMessage message) {
+        System.out.println(message);
+    }
 }

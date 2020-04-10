@@ -1,6 +1,9 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.model.Battlefield;
+import it.polimi.ingsw.model.Cell;
+import it.polimi.ingsw.utils.GameMessage;
+import it.polimi.ingsw.utils.ObserverMessage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -70,11 +73,23 @@ public class Client {
                 try {
                     while (isActive()) {
                         Object inputObject = socketIn.readObject();
+
+                        /**
+                         * where do this input come from?
+                         * may I use this with ObserverMessage to set up a routine methods?
+                         */
+
                         if(inputObject instanceof String){
                             System.out.println((String)inputObject);
-                        } else if (inputObject instanceof Battlefield){
-                            ((Battlefield)inputObject).printCLI();
+
+                        } else if (inputObject instanceof Battlefield) {
+                            ((Battlefield) inputObject).printCLI();
+
+                        } else if (inputObject instanceof GameMessage) {
+                            ((GameMessage) inputObject).print((GameMessage) inputObject);
+
                         } else {
+                            System.out.println("errore oggetto input");
                             throw new IllegalArgumentException();
                         }
                     }

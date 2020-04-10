@@ -20,10 +20,14 @@ public class Game extends Observable {
     }
 
 
-    public String getBoardCopy() {
-        //maybe we need to link this with the print method in battlefield
-        return "this is the board";
+    public Battlefield getBattlefieldCopy() {
+        return battlefield.copy();
     }
+
+    public Battlefield getBattlefield() {
+        return this.battlefield;
+    }
+
 
 
     /**

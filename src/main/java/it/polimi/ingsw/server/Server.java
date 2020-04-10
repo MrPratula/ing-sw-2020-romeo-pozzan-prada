@@ -143,12 +143,32 @@ public class Server {
              * but why he ask for this and it is not pushed by the notify when
              * it changes?
              */
-            c1.asyncSend(game.getBoardCopy());
-            c2.asyncSend(game.getBoardCopy());
+
+            c1.asyncSend(game.getBattlefieldCopy());
+            c2.asyncSend(game.getBattlefieldCopy());
+
+            /**
+             * maybe here add the setup before the game start
+             */
+
+
+            /**
+             *
+             */
+
+
+
 
             /**
              * ok this should be fine,
              * just need to adapt to our moves
+             *
+             * if i send multiple message to c1, they are received at the same time or sequentially?
+             * can i make something like that?
+             *
+             *  c1.asyncSend(GameMessage.moveMessage);
+             *  c1.asyncSend(GameMessage.buildMessage);
+             *
              */
             if(game.isPlayerTurn(player1)){
                 c1.asyncSend(GameMessage.moveMessage);

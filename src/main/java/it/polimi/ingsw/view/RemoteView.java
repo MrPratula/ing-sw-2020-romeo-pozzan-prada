@@ -20,9 +20,8 @@ public class RemoteView extends View {
         super(player);
         this.clientConnection = c;
         c.addObserver(new MessageReceiver());
-        c.asyncSend("Your opponent is: " + opponent);  //are
+        c.asyncSend("Your opponent is: " + opponent);
     }
-
 
     public class MessageReceiver implements Observer<ObserverMessage> {
 

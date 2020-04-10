@@ -1,13 +1,14 @@
 package it.polimi.ingsw.model;
 import it.polimi.ingsw.exception.CellOutOfBattlefieldException;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * A Battlefield is a matrix of Cell.
  * It has a list with all the Players that are currently play on that Battlefield.
  */
-public class Battlefield {
+public class Battlefield implements Serializable {
 
     private static final int battlefieldSize = 5;
     private Cell[][] battlefield;
@@ -26,7 +27,6 @@ public class Battlefield {
             }
         }
         this.battlefield = battlefield;
-
     }
 
     /**
@@ -60,6 +60,22 @@ public class Battlefield {
         return battlefield[inputX][inputY];
     }
 
+
+    protected final Battlefield copy() {
+
+        final Battlefield battlefieldClone = new Battlefield();
+
+        for(int x=0; x<battlefieldSize; x++) {
+            for (int y=0; y<battlefieldSize; y++){
+                battlefieldClone.battlefield[x][y]= battlefield[x][y];
+            }
+        }
+
+        battlefieldClone.players=this.players;
+        return battlefieldClone;
+    }
+
+
     /**
      * This method is called by the client in asyncReadFromSocket
      * and print in stdout the battlefield when a player modifies the battlefield.
@@ -68,42 +84,49 @@ public class Battlefield {
 
         int n=battlefieldSize-1;
 
-        for(int x=0; x<battlefieldSize; x++){
+        for(int y=4; y>-1; y--){
             // first of all, let's print the index of the battlefield
-            System.out.print(n-- );
+            System.out.print(y );
 
-            for(int y=0; y<battlefieldSize; y++){
-                // then we check if exists a token from some players in this general position
+            for(int x=0; x<battlefieldSize; x++){
+                // then we check if exists a token from any player in this general position
 
                 if( !battlefield[x][y].ThereIsPlayer() ) {
-                    System.out.print(TokenColor.RESET);
+                    System.out.print("\033[030m");          //black written
+                    System.out.print("\033[047m");          //on white board
                     System.out.print(battlefield[x][y].getHeight());
+                    System.out.print(" ");
                 }
                 else{
+
                     for (Player p : players) {
-                        if (p.getToken1().getTokenPosition().equals(battlefield[x][y])) {
+                        if(p.getToken1().getTokenPosition().equals(battlefield[x][y])) {  //forse meglio fare i controlli singolarmente su posX e posY
+                            System.out.print("\033[039m");          //white written
                             TokenColor t = p.getTokenColor();
-                            System.out.print(t.getEscape());
-                            System.out.print(battlefield[x][y].getHeight() );
-                            System.out.print(TokenColor.RESET);
+                            System.out.print(t.getEscape());        //on a board of the player color
+                            System.out.print(battlefield[x][y].getHeight());
+                            System.out.print("\033[047m");          //on a white board
+                            System.out.print(" ");
                         }
-                        if (p.getToken2().getTokenPosition().equals(battlefield[x][y])) {
-                            TokenColor t = p.getTokenColor();
-                            System.out.print(t.getEscape());
-                            System.out.print(battlefield[x][y].getHeight() );
-                            System.out.print(TokenColor.RESET);
+                        else{
+                            if(p.getToken2().getTokenPosition().equals(battlefield[x][y])) {
+                                System.out.print("\033[039m");          //white written
+                                TokenColor t = p.getTokenColor();
+                                System.out.print(t.getEscape());        //on a board of the player color
+                                System.out.print(battlefield[x][y].getHeight());
+                                System.out.print("\033[047m");          //on a white board
+                                System.out.print(" ");
+                            }
                         }
                     }
+
+
                 }
-
-
             }
+            System.out.println("\033[039m");             //white written
+            System.out.println("\033[049m\n");           //on a black board
+            System.out.println("  0 1 2 3 4\n\n");
         }
-        System.out.println("  0 1 2 3 4");
-
     }
-
-
-
-
 }
+

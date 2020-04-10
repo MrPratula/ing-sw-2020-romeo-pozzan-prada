@@ -3,6 +3,8 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.exception.CellHeightException;
 import it.polimi.ingsw.exception.ReachHeightLimitException;
 
+import java.io.Serializable;
+
 /**
  * Each Cell is a little square that form the Battlefield.
  * Each one of them is uniquely identified by two int.
@@ -10,7 +12,7 @@ import it.polimi.ingsw.exception.ReachHeightLimitException;
  * and always has a boolean that tell us if there is a player on it.
  */
 
-public class Cell {
+public class Cell implements Serializable {
 
     private int posX;
     private int posY;
