@@ -62,10 +62,47 @@ public class Battlefield {
 
     /**
      * This method is called by the client in asyncReadFromSocket
-     * and print in stdout the battlefield when client ask for it.
+     * and print in stdout the battlefield when a player modifies the battlefield.
      */
-    public void print() {
-        System.out.println("questo è il battlefield printato coi colori fighi");
+    public void printCLI() {
+
+        int n=battlefieldSize-1;
+
+        for(int x=0; x<battlefieldSize; x++){
+            // first of all, let's print the index of the battlefield
+            System.out.print(n-- );
+
+            for(int y=0; y<battlefieldSize; y++){
+                // then we check if exist a token from some players in this general position
+
+                if( !battlefield[x][y].ThereIsPlayer() ) {
+                    System.out.print(battlefield[x][y].getHeight());
+                }
+                else{
+                    for (Player p : players) {
+                        if (p.getToken1().getTokenPosition().equals(battlefield[x][y])) {
+                            TokenColor t = p.getTokenColor();
+                            System.out.print(t.getEscape());
+                            System.out.print(battlefield[x][y].getHeight() );
+                            System.out.print(TokenColor.RESET);
+                        }
+                        if (p.getToken2().getTokenPosition().equals(battlefield[x][y])) {
+                            TokenColor t = p.getTokenColor();
+                            System.out.print(t.getEscape());
+                            System.out.print(battlefield[x][y].getHeight() );
+                            System.out.print(TokenColor.RESET);
+                        }
+                    }
+                }
+
+
+            }
+        }
+        System.out.println("  0 1 2 3 4");
+
     }
+
+
+
 
 }

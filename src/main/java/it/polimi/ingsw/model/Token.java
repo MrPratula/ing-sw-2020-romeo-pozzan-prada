@@ -21,4 +21,32 @@ public class Token {
     public Token(TokenColor color){
         this.tokenColor = color;
     }
+
+
+    /*   GETTER   */
+
+    public Cell getTokenPosition() {
+        return tokenPosition;
+    }
+
+    public int getOldHeight() {
+        return oldHeight;
+    }
+
+
+    /*   SETTER   */
+
+    public void setTokenPosition(Cell tokenPosition) {
+        this.tokenPosition = tokenPosition;
+    }
+
+    public void setOldHeight(int oldHeight) {
+        this.oldHeight = oldHeight;
+    }
+
+
+
 }
+
+
+

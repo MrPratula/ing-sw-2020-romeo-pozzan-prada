@@ -38,8 +38,29 @@ public class Player {
 
     }
 
+    /*  GETTER  */
+    public Token getToken1() {
+        return token1;
+    }
+
+    public Token getToken2() {
+        return token2;
+    }
+
+
+    /*  SETTER  */
+
+    public void setToken1(Token token1) {
+        this.token1 = token1;
+    }
+
+    public void setToken2(Token token2) {
+        this.token2 = token2;
+    }
+
+
     /**
-     * used to return a player color to let
+     * Used to return a player color to let
      * game know if it is the player's turn
      * @return the color of the player
      */

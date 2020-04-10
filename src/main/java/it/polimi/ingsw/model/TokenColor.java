@@ -7,11 +7,11 @@ package it.polimi.ingsw.model;
  */
 public enum TokenColor {
 
-    RED("\u001B[31m"),
-    BLUE("\u001B[34m"),
-    YELLOW("\u001B[33m");
+    RED("\033[041m"),
+    BLUE("\033[044m"),
+    GREEN("\033[042m");
 
-    static final String RESET = "\u001B[0m";
+    static final String RESET = "\033[049m";
 
     private String escape;
 
@@ -31,13 +31,7 @@ public enum TokenColor {
 }
 
 
-
 /*
-    Così viene stampato HELLo in rosso e WORLD in blu e da lì in poi resettati a nero
-
-    String redMessage =
-    Color.ANSI_RED + "HELLO " +
-    Color.ANSI_BLUE + "WORLD" +
     Color.RESET;
     System.out.println(redMessage);
 */

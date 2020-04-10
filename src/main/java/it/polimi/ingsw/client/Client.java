@@ -73,7 +73,7 @@ public class Client {
                         if(inputObject instanceof String){
                             System.out.println((String)inputObject);
                         } else if (inputObject instanceof Battlefield){
-                            ((Battlefield)inputObject).print();
+                            ((Battlefield)inputObject).printCLI();
                         } else {
                             throw new IllegalArgumentException();
                         }
