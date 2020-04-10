@@ -15194,6 +15194,18 @@
 							"propertyLabel": {
 								"$ref": "AAAAAAFxY0uYMUgyn4o="
 							}
+						},
+						{
+							"_type": "UMLNoteView",
+							"_id": "AAAAAAFxY2URPxLr6mE=",
+							"_parent": {
+								"$ref": "AAAAAAFF+qBtyKM79qY="
+							},
+							"font": "Arial;13;0",
+							"left": 3376,
+							"top": 8448,
+							"width": 1072,
+							"height": 608
 						}
 					]
 				},
@@ -17155,7 +17167,8 @@
 												"$ref": "AAAAAAFxY0l7RwCfUOQ="
 											},
 											"name": "name GodName",
-											"visibility": "private"
+											"visibility": "private",
+											"type": ""
 										},
 										{
 											"_type": "UMLAttribute",
@@ -17184,7 +17197,8 @@
 											"_parent": {
 												"$ref": "AAAAAAFxY0f3o9VclnA="
 											},
-											"name": "RED"
+											"name": "RED",
+											"type": ""
 										},
 										{
 											"_type": "UMLAttribute",
@@ -17192,7 +17206,8 @@
 											"_parent": {
 												"$ref": "AAAAAAFxY0f3o9VclnA="
 											},
-											"name": "BLUE"
+											"name": "BLUE",
+											"type": ""
 										},
 										{
 											"_type": "UMLAttribute",
@@ -17200,7 +17215,8 @@
 											"_parent": {
 												"$ref": "AAAAAAFxY0f3o9VclnA="
 											},
-											"name": "YELLOW"
+											"name": "YELLOW",
+											"type": ""
 										}
 									]
 								}
@@ -17868,7 +17884,8 @@
 									"_parent": {
 										"$ref": "AAAAAAFxYxqhSsxcvco="
 									},
-									"name": "SELECT"
+									"name": "SELECT",
+									"type": ""
 								},
 								{
 									"_type": "UMLAttribute",
@@ -17876,7 +17893,8 @@
 									"_parent": {
 										"$ref": "AAAAAAFxYxqhSsxcvco="
 									},
-									"name": "MOVE"
+									"name": "MOVE",
+									"type": ""
 								},
 								{
 									"_type": "UMLAttribute",
@@ -17884,7 +17902,8 @@
 									"_parent": {
 										"$ref": "AAAAAAFxYxqhSsxcvco="
 									},
-									"name": "BUILD"
+									"name": "BUILD",
+									"type": ""
 								}
 							]
 						}
@@ -18509,7 +18528,8 @@
 							"_parent": {
 								"$ref": "AAAAAAFxY0jip/b9USQ="
 							},
-							"name": "APOLLO"
+							"name": "APOLLO",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -18517,7 +18537,8 @@
 							"_parent": {
 								"$ref": "AAAAAAFxY0jip/b9USQ="
 							},
-							"name": "ARTEMIS"
+							"name": "ARTEMIS",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -18525,7 +18546,8 @@
 							"_parent": {
 								"$ref": "AAAAAAFxY0jip/b9USQ="
 							},
-							"name": "..."
+							"name": "...",
+							"type": ""
 						}
 					]
 				}

@@ -60,4 +60,12 @@ public class Battlefield {
         return battlefield[inputX][inputY];
     }
 
+    /**
+     * This method is called by the client in asyncReadFromSocket
+     * and print in stdout the battlefield when client ask for it.
+     */
+    public void print() {
+        System.out.println("questo è il battlefield printato coi colori fighi");
+    }
+
 }
