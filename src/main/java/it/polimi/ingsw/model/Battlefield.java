@@ -73,9 +73,10 @@ public class Battlefield {
             System.out.print(n-- );
 
             for(int y=0; y<battlefieldSize; y++){
-                // then we check if exist a token from some players in this general position
+                // then we check if exists a token from some players in this general position
 
                 if( !battlefield[x][y].ThereIsPlayer() ) {
+                    System.out.print(TokenColor.RESET);
                     System.out.print(battlefield[x][y].getHeight());
                 }
                 else{
