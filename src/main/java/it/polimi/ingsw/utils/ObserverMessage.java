@@ -1,6 +1,6 @@
 package it.polimi.ingsw.utils;
 
-public enum  Message {
+public enum ObserverMessage {
 
     SELECT,
     MOVE,

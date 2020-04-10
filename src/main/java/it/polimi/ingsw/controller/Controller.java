@@ -1,9 +1,7 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.model.Battlefield;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.utils.Message;
-import it.polimi.ingsw.utils.Observable;
+import it.polimi.ingsw.utils.ObserverMessage;
 import it.polimi.ingsw.utils.Observer;
 
 
@@ -14,7 +12,7 @@ import it.polimi.ingsw.utils.Observer;
  * Other than the update message, each update should give Controller objects he need to perform
  * what is specified in the message.
  */
-public class Controller implements Observer<Message> {
+public class Controller implements Observer<ObserverMessage> {
 
     private Game game;
 
@@ -32,7 +30,7 @@ public class Controller implements Observer<Message> {
      * @param message is used to specify the method to run via the switch.
      */
     @Override
-    public void update(Message message) {
+    public void update(ObserverMessage message) {
 
         switch (message) {
             case MOVE: {

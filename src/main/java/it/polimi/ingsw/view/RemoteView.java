@@ -2,9 +2,15 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.server.ClientConnection;
-import it.polimi.ingsw.utils.Message;
+import it.polimi.ingsw.utils.ObserverMessage;
 import it.polimi.ingsw.utils.Observer;
 
+
+/**
+ * The remote view should be the View inside the server.
+ * It act like a normal view in MVC pattern for letting the game run inside a server.
+ * It communicate via Socket with the View to let player know about changes.
+ */
 public class RemoteView extends View {
 
 
@@ -18,10 +24,10 @@ public class RemoteView extends View {
     }
 
 
-    public class MessageReceiver implements Observer<Message> {
+    public class MessageReceiver implements Observer<ObserverMessage> {
 
         @Override
-        public void update(Message message) {
+        public void update(ObserverMessage message) {
             System.out.println("Received: " + message);
 
             /**

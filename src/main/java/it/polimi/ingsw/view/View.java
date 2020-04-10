@@ -1,12 +1,11 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.model.GodCard;
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.utils.Message;
+import it.polimi.ingsw.utils.ObserverMessage;
 import it.polimi.ingsw.utils.Observable;
 import it.polimi.ingsw.utils.Observer;
 
-public class View extends Observable implements Observer<Message> {
+public class View extends Observable implements Observer<ObserverMessage> {
 
     private Player player;
 
@@ -21,7 +20,7 @@ public class View extends Observable implements Observer<Message> {
 
 
     @Override
-    public void update(Message message) {
+    public void update(ObserverMessage message) {
 
         switch (message) {
             case MOVE: {
