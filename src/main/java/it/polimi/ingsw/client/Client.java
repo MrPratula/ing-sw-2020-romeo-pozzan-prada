@@ -32,7 +32,7 @@ public class Client {
     /**
      * The clientApp call client.run to start a new client.
      * it needs the read and write methods written below to
-     * comunicate with socket
+     * communicate with socket
      * @throws IOException if something goes wrong
      */
     public void run() throws IOException {
