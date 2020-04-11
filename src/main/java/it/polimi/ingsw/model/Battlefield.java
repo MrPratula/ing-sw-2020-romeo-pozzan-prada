@@ -91,9 +91,14 @@ public class Battlefield implements Serializable {
     /**
      * This method is called by the client in asyncReadFromSocket
      * and print in stdout the battlefield when a player modifies the battlefield.
+     * It print a grey matrix with white numbers.
+     * The numbers are the cell height.
+     * The color of the background of a cell is where a token is.
+     * If the height is X it is a dome.
      */
     public void printCLI() {
 
+        System.out.print("\n");
 
         for(int y=4; y>-1; y--){
             // first of all, let's print the index of the battlefield
@@ -101,19 +106,29 @@ public class Battlefield implements Serializable {
             System.out.print(y+"  ");
 
             for(int x=0; x<battlefieldSize; x++){
-                // then we check if exists a token from any player in this general position
+                // then we check if exists a token of any player in this position
 
                 if( ! battlefield[x][y].getThereIsPlayer() ) {
                     System.out.print("\033[030m");          //black written
                     System.out.print("\033[047m");          //on white board
-                    System.out.print(battlefield[x][y].getHeight());
+                    if (battlefield[x][y].getHeight()<3) {                     // if height is <=3 i print it
+                        System.out.print(battlefield[x][y].getHeight());
+                    }
+                    else {                                                      // else
+                        if (!battlefield[x][y].IsDome()) {
+                            System.out.print(battlefield[x][y].getHeight());
+                        }
+                        else{
+                            System.out.print("X");
+                        }
+                    }
                     System.out.print("  ");
                 }
                 else{
 
                     for (Player p : players) {
                         if(p.getToken1().getTokenPosition().getPosX() == x  &&
-                           p.getToken1().getTokenPosition().getPosY() == y   ) {  //forse meglio fare i controlli singolarmente su posX e posY
+                           p.getToken1().getTokenPosition().getPosY() == y   ) {
                             System.out.print("\033[030m");          //white written
                             TokenColor t = p.getTokenColor();
                             System.out.print(t.getEscape());        //on a board of the player color
@@ -132,10 +147,7 @@ public class Battlefield implements Serializable {
                                 System.out.print("  ");
                             }
                         }
-
                     }
-
-
                 }
             }
             System.out.print("\033[039m");             //white written
@@ -146,7 +158,5 @@ public class Battlefield implements Serializable {
         System.out.print("\033[049m");           //on a black board
         System.out.print("   0  1  2  3  4\n");
     }
-
-
 }
 
