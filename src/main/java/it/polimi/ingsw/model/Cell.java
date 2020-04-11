@@ -56,7 +56,7 @@ public class Cell implements Serializable {
         return this.height;
     }
 
-    public boolean IsDome() {
+    public boolean getIsDome() {
         return this.isDome;
     }
 
@@ -90,7 +90,7 @@ public class Cell implements Serializable {
      * Make a Cell un-buildable.
      * This happen when incrementHeight method is called on a Cell's that is height 3.
      */
-    public void setTerminated() {
+    public void setIsDome() {
         this.isDome = true;
     }
 
@@ -109,7 +109,7 @@ public class Cell implements Serializable {
                     String.format("Cell at (%d,%d) is a dome and can't be built anymore", this.posX, this.posY));
         }
         if (this.height == 3) {
-            this.setTerminated();
+            this.setIsDome();
             return;
         }
         if (0<=this.height && this.height<3) {

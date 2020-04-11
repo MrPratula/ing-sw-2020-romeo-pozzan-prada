@@ -15,4 +15,5 @@ public class GameMessage {
     public void print (GameMessage message) {
         System.out.println(message);
     }
+
 }

@@ -115,7 +115,7 @@ public class Battlefield implements Serializable {
                         System.out.print(battlefield[x][y].getHeight());
                     }
                     else {                                                      // else
-                        if (!battlefield[x][y].IsDome()) {
+                        if (!battlefield[x][y].getIsDome()) {
                             System.out.print(battlefield[x][y].getHeight());
                         }
                         else{

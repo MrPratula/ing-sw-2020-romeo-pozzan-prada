@@ -44,6 +44,8 @@ public class BattlefieldTest {
         battlefield.getCell(0,4).setThereIsPlayer();
         battlefield.getCell(0,3).setThereIsPlayer();
 
+        //battlefield.getCell(1,4).setIsDome();
+
         battlefield.getCell(1,1).setHeight(1);
         battlefield.getCell(2,2).setHeight(2);
         battlefield.getCell(3,3).setHeight(3);

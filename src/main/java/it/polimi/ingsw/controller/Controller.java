@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.utils.GameMessage;
 import it.polimi.ingsw.utils.Observer;
 
 
@@ -11,7 +12,7 @@ import it.polimi.ingsw.utils.Observer;
  * Other than the update message, each update should give Controller objects he need to perform
  * what is specified in the message.
  */
-public class Controller implements Observer<ObserverMessage> {
+public class Controller implements Observer<GameMessage> {
 
     private Game game;
 
@@ -23,31 +24,30 @@ public class Controller implements Observer<ObserverMessage> {
 
 
 
-
     /**
      * The update method uses the message parameter to choose the correct method to run.
      * @param message is used to specify the method to run via the switch.
      */
+
     @Override
-    public void update(ObserverMessage message) {
+    public void update(GameMessage message) {     //impossibile usare switch su questi tipi
 
-        switch (message) {
-            case MOVE: {
+        if (GameMessage.moveMessage.equals(message.toString())) {   //dovrebbe andare con toString()
+            /*
+            public void move(Token token, Battlefield battlefield) {
 
-                break;
+                token.setOldHeight(token.getTokenPosition().getHeight());
+                List<Cell> validCells = token.validMoves(battlefield);
+                Cell chosenCell = this.chooseCell(validCells);
+                token.setTokenPosition(chosenCell);
+                choosenCell.setThereIsPlayer();          //added
             }
-
-            case BUILD: {
-
-                break;
-            }
-
-            case SELECT: {
-
-                break;
-            }
-
+            */
+        }
+        else if (GameMessage.buildMessage.equals(message.toString())) {
 
         }
     }
+
+
 }

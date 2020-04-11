@@ -7,8 +7,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Random;
-
 import static org.junit.Assert.*;
 
 public class CellTest {
@@ -43,14 +41,14 @@ public class CellTest {
 
         if (height>=0 && height<3) {
             System.out.println("height should be between 0 and 2 and it is "+cell.getHeight());
-            System.out.println("if it is 3 it's because isDome should be false and it is "+cell.IsDome());
+            System.out.println("if it is 3 it's because isDome should be false and it is "+cell.getIsDome());
             assertEquals(height+1, cell.getHeight());
         }
         else if (height==3) {
             System.out.println("height should be 3 and it is "+cell.getHeight());
-            System.out.println("isDome should be true and it is "+cell.IsDome());
+            System.out.println("isDome should be true and it is "+cell.getIsDome());
 
-            assertTrue(cell.IsDome());
+            assertTrue(cell.getIsDome());
             assertEquals(height, cell.getHeight());
         }
         else{
