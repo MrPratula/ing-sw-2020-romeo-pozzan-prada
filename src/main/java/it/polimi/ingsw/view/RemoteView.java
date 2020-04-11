@@ -2,7 +2,7 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.server.ClientConnection;
-import it.polimi.ingsw.utils.ObserverMessage;
+import it.polimi.ingsw.utils.GameMessage;
 import it.polimi.ingsw.utils.Observer;
 
 
@@ -16,17 +16,17 @@ public class RemoteView extends View {
 
     private ClientConnection clientConnection;
 
-    public RemoteView(Player player, String opponent, ClientConnection c) {//list<string>
+    public RemoteView(Player player, String opponent, ClientConnection c) {
         super(player);
         this.clientConnection = c;
         c.addObserver(new MessageReceiver());
-        c.asyncSend("Your opponent is: " + opponent);
+        c.asyncSend(String.format("Welcome %s, your opponent is: %s",player.getUsername(),opponent));
     }
 
-    public class MessageReceiver implements Observer<ObserverMessage> {
+    public class MessageReceiver implements Observer<GameMessage> {
 
         @Override
-        public void update(ObserverMessage message) {
+        public void update(GameMessage message) {
             System.out.println("Received: " + message);
 
             /**

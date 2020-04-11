@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.exception.CellHeightException;
 import it.polimi.ingsw.exception.ReachHeightLimitException;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

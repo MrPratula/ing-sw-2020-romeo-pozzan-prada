@@ -42,6 +42,7 @@ public class Server {
                 Socket newSocket = serverSocket.accept();
                 SocketClientConnection socketConnection = new SocketClientConnection(newSocket, this);
                 executor.submit(socketConnection);
+                System.out.println("New connection has been established!");
             } catch (IOException e) {
                 System.out.println("Connection Error!");
             }
@@ -87,7 +88,7 @@ public class Server {
              * Here I create the player with a color and a battlefield
              */
             Player player1 = new Player(keys.get(0), TokenColor.RED, battlefield);
-            Player player2 = new Player(keys.get(0), TokenColor.BLUE, battlefield);
+            Player player2 = new Player(keys.get(1), TokenColor.BLUE, battlefield);
 
             /**
              * Then I should create a remoteView,
@@ -133,7 +134,8 @@ public class Server {
             playingConnection.put(c2, c1);
 
             /**
-             * nor idea for this
+             * clear the waiting connection because the player
+             * are added to playing connection
              */
             waitingConnection.clear();
 
@@ -151,6 +153,12 @@ public class Server {
              * maybe here add the setup before the game start
              */
 
+            c1.asyncSend(GameMessage.chooseGodCardMessage);
+
+
+
+
+            c2.asyncSend(GameMessage.waitMessage);
 
             /**
              *
@@ -170,13 +178,18 @@ public class Server {
              *  c1.asyncSend(GameMessage.buildMessage);
              *
              */
+
+            /*
             if(game.isPlayerTurn(player1)){
                 c1.asyncSend(GameMessage.moveMessage);
                 c2.asyncSend(GameMessage.waitMessage);
             } else {
                 c2.asyncSend(GameMessage.moveMessage);
                 c1.asyncSend(GameMessage.waitMessage);
+
             }
+
+             */
         }
     }
 

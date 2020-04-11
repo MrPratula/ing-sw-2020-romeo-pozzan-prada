@@ -1,7 +1,6 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.utils.ObserverMessage;
 import it.polimi.ingsw.utils.Observer;
 
 

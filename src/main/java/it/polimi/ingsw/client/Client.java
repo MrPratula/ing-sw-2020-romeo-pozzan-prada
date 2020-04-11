@@ -1,9 +1,7 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.model.Battlefield;
-import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.utils.GameMessage;
-import it.polimi.ingsw.utils.ObserverMessage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

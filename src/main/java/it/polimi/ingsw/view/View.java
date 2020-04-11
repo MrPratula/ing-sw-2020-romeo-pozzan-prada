@@ -1,11 +1,11 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.utils.ObserverMessage;
+import it.polimi.ingsw.utils.GameMessage;
 import it.polimi.ingsw.utils.Observable;
 import it.polimi.ingsw.utils.Observer;
 
-public class View extends Observable implements Observer<ObserverMessage> {
+public class View extends Observable implements Observer<GameMessage> {
 
     private Player player;
 
@@ -20,23 +20,15 @@ public class View extends Observable implements Observer<ObserverMessage> {
 
 
     @Override
-    public void update(ObserverMessage message) {
+    public void update(GameMessage message) {
 
-        switch (message) {
-            case MOVE: {
+        if (message.waitMessage.equals(message)) {
 
-                break;
-            }
 
-            case BUILD: {
+        } else if (message.buildMessage.equals(message)) {
 
-                break;
-            }
 
-            case SELECT: {
-
-                break;
-            }
+        } else if (message.chooseGodCardMessage.equals(message)) {
 
 
         }

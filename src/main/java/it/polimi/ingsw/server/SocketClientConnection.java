@@ -84,7 +84,7 @@ public class SocketClientConnection extends Observable implements ClientConnecti
         try{
             in = new Scanner(socket.getInputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
-            send("Welcome!\nWhat is your name?");
+            send("Welcome to Santorini!\nWhat is your name?");
             String read = in.nextLine();
             name = read;
             server.lobby(this, name);
@@ -100,12 +100,6 @@ public class SocketClientConnection extends Observable implements ClientConnecti
     }
 
 
-
-
-
-
-
-
     private synchronized void send(Object message) {
         try {
             out.reset();
@@ -116,7 +110,6 @@ public class SocketClientConnection extends Observable implements ClientConnecti
         }
 
     }
-
 
     private synchronized boolean isActive(){
         return active;

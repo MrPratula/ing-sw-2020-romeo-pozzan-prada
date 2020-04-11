@@ -40,11 +40,15 @@ public class Player {
 
     /*  GETTER  */
     public Token getToken1() {
-        return token1;
+        return this.token1;
     }
 
     public Token getToken2() {
-        return token2;
+        return this.token2;
+    }
+
+    public String getUsername() {
+        return this.username;
     }
 
 

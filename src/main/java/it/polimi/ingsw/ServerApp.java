@@ -14,6 +14,7 @@ public class ServerApp
     {
         Server server;
         try {
+            System.out.println("Server is starting up!");
             server = new Server();
             server.run();
         } catch (IOException e) {

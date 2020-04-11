@@ -104,13 +104,13 @@ public class Battlefield implements Serializable {
             // first of all, let's print the index of the battlefield
             System.out.print("\033[030m");          //white written
             System.out.print(y+"  ");
-
             for(int x=0; x<battlefieldSize; x++){
                 // then we check if exists a token of any player in this position
-
                 if( ! battlefield[x][y].getThereIsPlayer() ) {
                     System.out.print("\033[030m");          //black written
                     System.out.print("\033[047m");          //on white board
+                    System.out.print("\033[047m");          //on a white board
+                    System.out.print(" ");
                     if (battlefield[x][y].getHeight()<3) {                     // if height is <=3 i print it
                         System.out.print(battlefield[x][y].getHeight());
                     }
@@ -122,29 +122,32 @@ public class Battlefield implements Serializable {
                             System.out.print("X");
                         }
                     }
-                    System.out.print("  ");
+                    System.out.print(" ");
                 }
                 else{
-
                     for (Player p : players) {
                         if(p.getToken1().getTokenPosition().getPosX() == x  &&
                            p.getToken1().getTokenPosition().getPosY() == y   ) {
+                            System.out.print("\033[047m");          //on a white board
+                            System.out.print(" ");
                             System.out.print("\033[030m");          //white written
                             TokenColor t = p.getTokenColor();
                             System.out.print(t.getEscape());        //on a board of the player color
                             System.out.print(battlefield[x][y].getHeight());
                             System.out.print("\033[047m");          //on a white board
-                            System.out.print("  ");
+                            System.out.print(" ");
                         }
                         else{
                             if(p.getToken2().getTokenPosition().getPosX() == x  &&
                                p.getToken2().getTokenPosition().getPosY() == y   ) {
+                                System.out.print("\033[047m");          //on a white board
+                                System.out.print(" ");
                                 System.out.print("\033[030m");          //white written
                                 TokenColor t = p.getTokenColor();
                                 System.out.print(t.getEscape());        //on a board of the player color
                                 System.out.print(battlefield[x][y].getHeight());
                                 System.out.print("\033[047m");          //on a white board
-                                System.out.print("  ");
+                                System.out.print(" ");
                             }
                         }
                     }
@@ -156,7 +159,7 @@ public class Battlefield implements Serializable {
         }
         System.out.print("\033[030m");             //white written
         System.out.print("\033[049m");           //on a black board
-        System.out.print("   0  1  2  3  4\n");
+        System.out.print("    0  1  2  3  4\n");
     }
 }
 
