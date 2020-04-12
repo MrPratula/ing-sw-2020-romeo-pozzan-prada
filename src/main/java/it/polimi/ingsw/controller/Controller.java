@@ -1,7 +1,9 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.utils.GameMessage;
+import it.polimi.ingsw.exception.CellOutOfBattlefieldException;
+import it.polimi.ingsw.model.Model;
+import it.polimi.ingsw.model.PlayerAction;
+import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.Observer;
 
 
@@ -12,28 +14,41 @@ import it.polimi.ingsw.utils.Observer;
  * Other than the update message, each update should give Controller objects he need to perform
  * what is specified in the message.
  */
-public class Controller implements Observer<GameMessage> {
+public class Controller implements Observer<PlayerAction> {
 
-    private Game game;
+    private Model model;
 
-
-
-    public Controller (Game game) {
-        this.game = game;
+    public Controller (Model model) {
+        this.model = model;
     }
-
 
 
     /**
      * The update method uses the message parameter to choose the correct method to run.
-     * @param message is used to specify the method to run via the switch.
+     * @param playerAction is used to specify the method to run via the switch.
      */
-
     @Override
-    public void update(GameMessage message) {     //impossibile usare switch su questi tipi
+    public void update(PlayerAction playerAction) throws CellOutOfBattlefieldException {
 
-        if (GameMessage.moveMessage.equals(message.toString())) {   //dovrebbe andare con toString()
-            /*
+
+        //model.setPlayerChoice(playerAction.getPlayer(), playerAction.getChoice());////
+
+        if( model.isPlayerTurn(playerAction.getPlayer()) ){
+
+            switch(playerAction.getAction()){
+                case selectToken:
+                   model.validMoves(playerAction.getToken());
+                case moveMessage:
+
+                case buildMessage:
+
+            }
+        }
+    }
+
+
+
+    /*
             public void move(Token token, Battlefield battlefield) {
 
                 token.setOldHeight(token.getTokenPosition().getHeight());
@@ -43,11 +58,8 @@ public class Controller implements Observer<GameMessage> {
                 choosenCell.setThereIsPlayer();          //added
             }
             */
-        }
-        else if (GameMessage.buildMessage.equals(message.toString())) {
 
-        }
-    }
+
 
 
 }

@@ -2,7 +2,7 @@
 
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.server.Server;
+import it.polimi.ingsw.view.Server;
 
 import java.io.IOException;
 

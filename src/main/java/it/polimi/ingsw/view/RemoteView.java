@@ -1,8 +1,6 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.server.ClientConnection;
-import it.polimi.ingsw.utils.GameMessage;
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.utils.Observer;
 
 
@@ -14,42 +12,45 @@ import it.polimi.ingsw.utils.Observer;
 public class RemoteView extends View {
 
 
-    private ClientConnection clientConnection;
+    private Connection connection;
 
-    public RemoteView(Player player, String opponent, ClientConnection c) {
-        super(player);
-        this.clientConnection = c;
-        c.addObserver(new MessageReceiver());
-        c.asyncSend(String.format("Welcome %s, your opponent is: %s",player.getUsername(),opponent));
-    }
 
-    public class MessageReceiver implements Observer<GameMessage> {
+    private class MessageReceiver implements Observer<String> {
 
         @Override
-        public void update(GameMessage message) {
-            System.out.println("Received: " + message);
-
+        public void update(String message) {
+            System.out.println("Received: " + message);  //stampa sul server la scelta del client
             /**
              * here we need to recognize what type of
              * message we send, because till now we
              * don't send string but pre-made message that need to be distinguished
              */
             try{
-
                 /**
                  * here the tris code split the input to get x-coords and y-coords to
                  * select where to put X or O
                  */
-
-                //String[] inputs = message.split(",");
-                //handleMove(Integer.parseInt(inputs[0]), Integer.parseInt(inputs[1]));
-
-            }catch(IllegalArgumentException e){
-                clientConnection.asyncSend("Error!");
+                Choice choice = Choice.parseInput(message);/////////////////////////chiama il model
+                processChoice(choice);//////////////////////////////////////////////per valutare la partita in gioco
+            } catch (IllegalArgumentException e) {
+                connection.send("Error! Make your move");
             }
         }
+    }
 
 
+    public RemoteView(Player player, String opponent, Connection c) {
+        super(player);
+        this.connection = c;
+        c.addObserver(new MessageReceiver());
+        c.send("Welcome"+ player.getUsername() +", your opponent is:"+ opponent );
+    }
+
+
+
+    @Override
+    protected void showModel(Model model) {
+        connection.send(model.getCopy() + "\tMake your move");////////
     }
 
 

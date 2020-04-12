@@ -1,11 +1,8 @@
-package it.polimi.ingsw.server;
-
+package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.utils.GameMessage;
-import it.polimi.ingsw.view.RemoteView;
-import it.polimi.ingsw.view.View;
+import it.polimi.ingsw.utils.Action;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -21,8 +18,9 @@ public class Server {
     private static final int PORT = 12345;
     private ServerSocket serverSocket;
     private ExecutorService executor = Executors.newFixedThreadPool(128);
-    private Map<String, ClientConnection> waitingConnection = new HashMap<>();
-    private Map<ClientConnection, ClientConnection> playingConnection = new HashMap<>();
+    private List<Connection> connections = new ArrayList<Connection>();
+    private Map<String, Connection> waitingConnection = new HashMap<>();
+    private Map<Connection, Connection> playingConnection = new HashMap<>();
 
     /**
      * Server's constructor
@@ -36,15 +34,17 @@ public class Server {
     /**
      * Start a server
      */
+
     public void run(){
-        while(true){
+        System.out.println("Server listening on port: " + PORT);
+        while(true){ //OGNI VOLTA CHE SI PARTE UN CLIENT , SI CONNETTE E GLI MANDA WHATS UR NAME
             try {
-                Socket newSocket = serverSocket.accept();
-                SocketClientConnection socketConnection = new SocketClientConnection(newSocket, this);
-                executor.submit(socketConnection);
-                System.out.println("New connection has been established!");
-            } catch (IOException e) {
-                System.out.println("Connection Error!");
+                Socket socket = serverSocket.accept();
+                Connection connection = new Connection(socket, this);
+                registerConnection(connection);
+                executor.submit(connection);
+            } catch (IOException e){
+                System.err.println("Connection error!");
             }
         }
     }
@@ -59,14 +59,7 @@ public class Server {
      * @param name name of the player
      */
 
-    public synchronized void lobby(ClientConnection c, String name){
-
-        /**
-         * When I create a player i have to assign them a battlefield
-         * so i should create it here and pass the same battlefield to
-         * all the player that share the same battlefield
-         */
-        Battlefield battlefield = new Battlefield();
+    public synchronized void lobby(Connection c, String name){
 
         /**
          * whiting connection is a map of <PlayerName, ClientConnection>
@@ -80,15 +73,23 @@ public class Server {
          * keys.get(1) is the connection of the player
          */
         if (waitingConnection.size() == 2) {
+
+            /**
+             * When I create a player i have to assign them a battlefield
+             * so i should create it here and pass the same battlefield to
+             * all the player that share the same battlefield
+             */
+            Battlefield battlefield = new Battlefield();
+
             List<String> keys = new ArrayList<>(waitingConnection.keySet());
-            ClientConnection c1 = waitingConnection.get(keys.get(0));
-            ClientConnection c2 = waitingConnection.get(keys.get(1));
+            Connection c1 = waitingConnection.get(keys.get(0));
+            Connection c2 = waitingConnection.get(keys.get(1));
 
             /**
              * Here I create the player with a color and a battlefield
              */
-            Player player1 = new Player(keys.get(0), TokenColor.RED, battlefield);
-            Player player2 = new Player(keys.get(1), TokenColor.BLUE, battlefield);
+            RemoteView player1 = new RemoteView( new Player(keys.get(0)), TokenColor.RED, battlefield);
+            RemoteView player2 = new RemoteView( new Player(keys.get(1)), TokenColor.BLUE, battlefield);
 
             /**
              * Then I should create a remoteView,
@@ -97,35 +98,34 @@ public class Server {
              *
              * Why do i need to pass both the keys.get() and the c1?
              */
-            View player1View = new RemoteView(player1, keys.get(1), c1);
-            View player2View = new RemoteView(player2, keys.get(0), c2);
+            ///////////////////////////
 
             /**
              * Here is created the whole model I think,
              * so may be a good idea to put the battlefield here
              */
-            Game game = new Game(battlefield);
+             Model model = new Model();
 
             /**
              * and then pass the model to a controller, so he knows
              * what to control
              */
-            Controller controller = new Controller(game);
+            Controller controller = new Controller(model);
 
             /**
              * then I have to bind the model with the view
              * so the model can update the view with his changes
              * and pass him the updated battlefield
              */
-            game.addObserver(player1View);
-            game.addObserver(player2View);
+            model.addObserver(player1View);
+            model.addObserver(player2View);
 
             /**
              * the same for the player view and the controller,
              * this one needs to be notified by the view when it want to do something
              */
-            player1View.addObserver(controller);
-            player2View.addObserver(controller);
+            player1.addObserver(controller);
+            player2.addObserver(controller);
 
             /**
              * definitely no idea what this is
@@ -145,21 +145,18 @@ public class Server {
              * but why he ask for this and it is not pushed by the notify when
              * it changes?
              */
-
-            c1.asyncSend(game.getBattlefieldCopy());
-            c2.asyncSend(game.getBattlefieldCopy());
-
+//////////////////////////////////////
+            c1.asyncSend(model.getBattlefieldCopy());
+            c2.asyncSend(model.getBattlefieldCopy());
+/////////////////////////////////////
             /**
              * maybe here add the setup before the game start
              */
+////////////////////////////////////
+            c1.asyncSend(Action.chooseGodCardMessage);
 
-            c1.asyncSend(GameMessage.chooseGodCardMessage);
-
-
-
-
-            c2.asyncSend(GameMessage.waitMessage);
-
+            c2.asyncSend(Action.waitMessage);
+///////////////////////////////////
             /**
              *
              */
@@ -195,22 +192,36 @@ public class Server {
 
 
     /**
+     * Register connection of a player
+     * @param c ClientConnection associated at player to deregister
+     */
+
+    private synchronized void registerConnection(Connection c){
+        connections.add(c);
+    }
+
+
+
+    /**
      * Deregister a ClientConnection of a player
      * @param c ClientConnection associated at player to deregister
      */
-    public synchronized void deregisterConnection(ClientConnection c) {
-        ClientConnection opponent = playingConnection.get(c);
+    public synchronized void deregisterConnection(Connection c) {
+        connections.remove(c);
+        Connection opponent = playingConnection.get(c);
+
         if(opponent != null) {
             opponent.closeConnection();
+            playingConnection.remove(c);
+            playingConnection.remove(opponent);
+            //Iterator<String> iterator = waitingConnection.keySet().iterator();
+            //while(iterator.hasNext()){
+            //    if(waitingConnection.get(iterator.next())==c){
+            //        iterator.remove();
+            //    }
+            //}
         }
-        playingConnection.remove(c);
-        playingConnection.remove(opponent);
-        Iterator<String> iterator = waitingConnection.keySet().iterator();
-        while(iterator.hasNext()){
-            if(waitingConnection.get(iterator.next())==c){
-                iterator.remove();
-            }
-        }
+
     }
 }
 

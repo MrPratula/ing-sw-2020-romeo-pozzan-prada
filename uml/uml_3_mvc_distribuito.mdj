@@ -8134,7 +8134,7 @@
 											"top": 3166,
 											"width": 222.193359375,
 											"height": 13,
-											"text": "-game: Game",
+											"text": "-model: Game",
 											"horizontalAlignment": 0
 										}
 									],
@@ -17699,7 +17699,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFxXzydYfGGz1o="
 							},
-							"name": "game",
+							"name": "model",
 							"visibility": "private",
 							"type": {
 								"$ref": "AAAAAAFxSvBBosCotAQ="
