@@ -65,7 +65,7 @@ public class Battlefield implements Serializable {
     }
 
 
-    protected final Battlefield copy() {
+    protected final Battlefield getCopy() {
 
         final Battlefield battlefieldClone = new Battlefield();
 
@@ -74,7 +74,6 @@ public class Battlefield implements Serializable {
                 battlefieldClone.battlefield[x][y]= battlefield[x][y];
             }
         }
-
         battlefieldClone.players=this.players;
         return battlefieldClone;
     }

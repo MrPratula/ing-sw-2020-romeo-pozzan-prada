@@ -88,8 +88,8 @@ public class Server {
             /**
              * Here I create the player with a color and a battlefield
              */
-            RemoteView player1 = new RemoteView( new Player(keys.get(0)), TokenColor.RED, battlefield);
-            RemoteView player2 = new RemoteView( new Player(keys.get(1)), TokenColor.BLUE, battlefield);
+            RemoteView player1 = new RemoteView( new Player(keys.get(0), TokenColor.RED, battlefield), keys.get(1), c1 );
+            RemoteView player2 = new RemoteView( new Player(keys.get(1), TokenColor.BLUE, battlefield), keys.get(0), c2 );
 
             /**
              * Then I should create a remoteView,
@@ -104,7 +104,7 @@ public class Server {
              * Here is created the whole model I think,
              * so may be a good idea to put the battlefield here
              */
-             Model model = new Model();
+             Model model = new Model(battlefield);
 
             /**
              * and then pass the model to a controller, so he knows
@@ -117,8 +117,8 @@ public class Server {
              * so the model can update the view with his changes
              * and pass him the updated battlefield
              */
-            model.addObserver(player1View);
-            model.addObserver(player2View);
+            model.addObserver(player1);
+            model.addObserver(player2);
 
             /**
              * the same for the player view and the controller,
@@ -138,30 +138,6 @@ public class Server {
              * are added to playing connection
              */
             waitingConnection.clear();
-
-
-            /**
-             * maybe this is the way the model get his copy of the battlefield,
-             * but why he ask for this and it is not pushed by the notify when
-             * it changes?
-             */
-//////////////////////////////////////
-            c1.asyncSend(model.getBattlefieldCopy());
-            c2.asyncSend(model.getBattlefieldCopy());
-/////////////////////////////////////
-            /**
-             * maybe here add the setup before the game start
-             */
-////////////////////////////////////
-            c1.asyncSend(Action.chooseGodCardMessage);
-
-            c2.asyncSend(Action.waitMessage);
-///////////////////////////////////
-            /**
-             *
-             */
-
-
 
 
             /**

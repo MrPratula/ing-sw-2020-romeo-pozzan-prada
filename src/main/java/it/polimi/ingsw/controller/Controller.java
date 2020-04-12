@@ -3,7 +3,6 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.exception.CellOutOfBattlefieldException;
 import it.polimi.ingsw.model.Model;
 import it.polimi.ingsw.model.PlayerAction;
-import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.Observer;
 
 
@@ -30,17 +29,14 @@ public class Controller implements Observer<PlayerAction> {
     @Override
     public void update(PlayerAction playerAction) throws CellOutOfBattlefieldException {
 
-
-        //model.setPlayerChoice(playerAction.getPlayer(), playerAction.getChoice());////
-
         if( model.isPlayerTurn(playerAction.getPlayer()) ){
 
             switch(playerAction.getAction()){
-                case selectToken:
+                case SELECT_TOKEN:
                    model.validMoves(playerAction.getToken());
-                case moveMessage:
+                case MOVE:
 
-                case buildMessage:
+                case BUILD:
 
             }
         }

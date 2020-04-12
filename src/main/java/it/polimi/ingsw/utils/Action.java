@@ -2,11 +2,11 @@ package it.polimi.ingsw.utils;
 
 public enum Action {
 
-    selectToken ("Select the token you want to move (x,y): "),
-    moveMessage ("Make your move (x,y):"),
-    waitMessage ("Wait for the other player's move!"),
+    SELECT_TOKEN("Select the token you want to move (x,y): "),
+    MOVE("Make your move (x,y):"),
+    BUILD("Make your build (x,y):"),
+    WAIT("Wait for the other player's move!"),
     chooseGodCardMessage ("Write the name of the god you want to play!"),
-    buildMessage ("Make your build (x,y):"),
     winMessage ("You win!"),
     loseMessage ("You lose!"),
     drawMessage ("Draw!"),
@@ -16,6 +16,7 @@ public enum Action {
     private String info;
 
     Action(String info){ this.info = info;}
+
     public void print (Action message) {
         System.out.println(message);
     }

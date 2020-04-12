@@ -18,31 +18,41 @@ public class Model extends Observable<Model> implements Cloneable {
     private int numberOfPlayer;
     private Map<List<Cell>, Token> validMoves = new HashMap<>();
     private Map<List<Cell>, Token> validBuilds = new HashMap<>();
-    private Map<Player, Choice> choices = new HashMap<>();
-    private Map<Player, Outcome> outcomes = new HashMap<>();
+    //private Map<Player, Action> choices = new HashMap<>();
+    //private Map<Player, Outcome> outcomes = new HashMap<>();
 
     public Model(Battlefield battlefield) {
         this.battlefield = battlefield;
     }
 
-
+    /*   GETTER   */
     public Battlefield getBattlefieldCopy() {
-        return battlefield.copy();
+        return battlefield.getCopy();
     }
 
     public Battlefield getBattlefield() {
         return this.battlefield;
     }
 
-    public Choice getPlayerSelection(Player player, Token token) {
-        return choices.get(player);
+    public Map<List<Cell>, Token> getValidMoves() {
+        return validMoves;
     }
 
-    public Outcome getOutcome(Player player) {
-        return outcomes.get(player);
+    public Map<List<Cell>, Token> getValidBuilds() {
+        return validBuilds;
     }
 
-    public void setPlayerChoice(Player player, Choice playerChoice){
+
+    /*   SETTER   */
+    public void setValidMoves(Map<List<Cell>, Token> validMoves) {
+        this.validMoves = validMoves;
+    }
+
+    public void setValidBuilds(Map<List<Cell>, Token> validBuilds) {
+        this.validBuilds = validBuilds;
+    }
+
+ /*   public void setPlayerChoice(Player player, PlayerAction playerAction){
         if(choices.size() == 2){
             choices.clear();
             outcomes.clear();
@@ -50,15 +60,15 @@ public class Model extends Observable<Model> implements Cloneable {
         if(!choices.containsKey(player)){
             if(choices.size() == 1){
                 Player other = new LinkedList<Player>(choices.keySet()).get(0);
-                outcomes.put(player, playerChoice.compareChoices(choices.get(other)));
-                outcomes.put(other, choices.get(other).compareChoices(playerChoice));
+                outcomes.put(player, playerAction.compareChoices(choices.get(other)));
+                outcomes.put(other, choices.get(other).compareChoices(playerAction));
             }
-            choices.put(player, playerChoice);
+            choices.put(player, playerAction);
         }
         if(choices.size() == 2){
             notify(this);
         }
-    }
+    }*/
 
 
     /**
@@ -72,8 +82,26 @@ public class Model extends Observable<Model> implements Cloneable {
     }
 
 
+    /**
+     * It returns a copy of the Model, but only of the
+     * printable and useful elements
+     * @return modelCopy
+     */
+    public Model getCopy(){
+        Battlefield battlefieldCopy = new Battlefield();
+        battlefieldCopy = battlefield.getCopy();
+        Model modelCopy = new Model(battlefieldCopy);
+        modelCopy.setValidMoves(this.getValidMoves());
+        modelCopy.setValidBuilds(this.getValidBuilds());
+        return modelCopy;
+    }
 
 
+    /**
+     * It calculates the valid moves for the selected token,
+     * @param token: token we want to move
+     * @throws CellOutOfBattlefieldException
+     */
     public void validMoves (Token token) throws CellOutOfBattlefieldException {
 
         List<Cell> result = new ArrayList<>();
@@ -111,10 +139,6 @@ public class Model extends Observable<Model> implements Cloneable {
         //return result;
     }
 
-    public String getCopy() {
-    }
-
-
 
     public void validBuilds (Token token) throws CellOutOfBattlefieldException {
 
@@ -149,11 +173,6 @@ public class Model extends Observable<Model> implements Cloneable {
         notify(this);
         //return result;
     }
-
-
-
-
-
 
 
 

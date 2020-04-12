@@ -32,5 +32,8 @@ public class PlayerAction {
         return this.cell;
     }
 
+    public void processAction(){
+
+    }
 
 }

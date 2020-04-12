@@ -1,5 +1,7 @@
 package it.polimi.ingsw.utils;
 
+import it.polimi.ingsw.exception.CellOutOfBattlefieldException;
+
 import java.util.*;
 
 public class Observable<Message> {
@@ -18,7 +20,7 @@ public class Observable<Message> {
         }
     }
 
-    protected void notify(Message message){
+    protected void notify(Message message) throws CellOutOfBattlefieldException {
         synchronized (observers) {
             for (Observer<Message> observer : observers) {
                 observer.update(message);

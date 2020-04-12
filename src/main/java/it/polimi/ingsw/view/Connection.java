@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.exception.CellOutOfBattlefieldException;
 import it.polimi.ingsw.utils.Observable;
 
 import java.io.IOException;
@@ -69,7 +70,7 @@ public class Connection extends Observable<String> implements Runnable {
                 String read = in.nextLine();  //per questo è observable di string,               legge la scelta
                 notify(read);
             }
-        } catch(IOException e){
+        } catch(IOException | CellOutOfBattlefieldException e){
             System.err.println(e.getMessage());
         } finally {
             close();
