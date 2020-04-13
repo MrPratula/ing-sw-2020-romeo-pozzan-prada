@@ -162,7 +162,7 @@ public class Server {
                 c1.send(Action.WAIT);
             }
       */
-            c1.send(Action.MOVE);
+            c1.send(Action.MOVE_TOKEN);
             c2.send(Action.WAIT);
         }
     }

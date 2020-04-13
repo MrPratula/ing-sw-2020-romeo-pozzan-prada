@@ -4,24 +4,41 @@ import it.polimi.ingsw.utils.Action;
 
 public class PlayerAction {
 
-    private final Player player;
-    private final Token token;
-    private final Cell cell;
     private final Action action;
 
-    public PlayerAction(Player player, Action action, Token token, Cell cell){
+    private final Player player;
+
+    private final Player oppo1;
+    private final Player oppo2;
+
+    private final Token token;
+
+    private final Cell cell;
+
+    public PlayerAction(Action action, Player player,  Player oppo1, Player oppo2, Token token, Cell cell){
+
+        this.action = action;
         this.player = player;
+        this.oppo1 = oppo1;
+        this.oppo2 = oppo2;
         this.token = token;
         this.cell = cell;
-        this.action = action;
+    }
+
+    public Action getAction(){
+        return this.action;
     }
 
     public Player getPlayer(){
         return this.player;
     }
 
-    public Action getAction(){
-        return this.action;
+    public Player getOppo1(){
+        return this.oppo1;
+    }
+
+    public Player getOppo2(){
+        return this.oppo2;
     }
 
     public Token getToken() {

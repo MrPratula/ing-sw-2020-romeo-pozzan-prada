@@ -100,28 +100,23 @@ public class Model extends Observable<Model> implements Cloneable {
 
     /**
      * It calculates the valid moves for the selected token,
-     * @param token: token we want to move
+     * @param movableToken: token we want to move
      * @throws CellOutOfBattlefieldException
      */
-    public void validMoves (Token token) throws CellOutOfBattlefieldException {
+    public void validMoves (Token movableToken, List<Token> allTokens) throws CellOutOfBattlefieldException {
 
-        List<Cell> result = new ArrayList<>();
-        List<Player> players = battlefield.getPlayers();
-        List<Token> allTokens = null;
+        List<Cell> validMoves = new ArrayList<>();
+
         int provX, provY;
 
-        for (Player player:players) {
-            allTokens.add(player.getToken1());
-            allTokens.add(player.getToken2());
-        }
         for (int i=-1; i<2; i++){                                                   // ciclo di +-1 intorno alla posizione del token
-            provX = token.getTokenPosition().getPosX()+i;                            // per poter ottenere le 8 caselle in cui
+            provX = movableToken.getTokenPosition().getPosX()+i;                            // per poter ottenere le 8 caselle in cui
             for (int j=-1; j<2; j++){                                               // posso muovere
-                provY = token.getTokenPosition().getPosY()+j;
+                provY = movableToken.getTokenPosition().getPosY()+j;
 
                 if ( (provX>=0 && provX <5) && (provY>=0 && provY<5) &&                     // la cella provv è dentro le dimensioni del battlefield
                         (battlefield.getCell(provX,provY).getHeight()-              // l'altezza della cella provv -
-                                token.getTokenPosition().getHeight()<=1) &&            // l'altezza del token <= 1
+                                movableToken.getTokenPosition().getHeight()<=1) &&            // l'altezza del token <= 1
                         (!battlefield.getCell(provX,provY).getIsDome())) {         // non deve essere una cupola
 
                     assert allTokens != null;   //suggerimento
@@ -129,15 +124,20 @@ public class Model extends Observable<Model> implements Cloneable {
                         if (provX != t.getTokenPosition().getPosX() &&                 // il token non può andare dove c'è un altro token
                                 provY != t.getTokenPosition().getPosX()) {             // compreso sè stesso, quindi non può stare fermo
 
-                            result.add(battlefield.getCell(provX, provY));
+                            validMoves.add(battlefield.getCell(provX, provY));
                         }
                     }
                 }
             }
         }
-        validMoves.put(result,token);
+        this.validMoves.put(validMoves,movableToken);
+
+        /**
+         * DA COSTRUIRE QUI IL MESSAGGIO PER L'OBSERVER DI RITORNO!!<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+         */
+
         notify(this);
-        //return result;
+
     }
 
 

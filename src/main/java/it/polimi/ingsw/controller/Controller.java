@@ -2,8 +2,12 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.exception.CellOutOfBattlefieldException;
 import it.polimi.ingsw.model.Model;
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.PlayerAction;
+import it.polimi.ingsw.model.Token;
 import it.polimi.ingsw.utils.Observer;
+
+import java.util.*;
 
 
 /**
@@ -32,13 +36,54 @@ public class Controller implements Observer<PlayerAction> {
         if( model.isPlayerTurn(playerAction.getPlayer()) ){
 
             switch(playerAction.getAction()){
-                case SELECT_TOKEN:
-                   model.validMoves(playerAction.getToken());
-                case MOVE:
 
-                case BUILD:
+                case SELECT_TOKEN: {
+
+                    Player player = playerAction.getPlayer();
+
+                    Player oppo1 = playerAction.getOppo1();
+                    Player oppo2 = playerAction.getOppo2();
+
+                    Token movableToken = playerAction.getToken();
+
+                    List<Token> allTokens = new ArrayList<Token>();
+                    List<Player> allPlayers = new ArrayList<Player>();
+
+                    allPlayers.add(player);
+                    allPlayers.add(oppo1);
+                    try{
+                        allPlayers.add(oppo2);
+                    } catch (NullPointerException e) {
+                        System.out.println("There is no player2");
+                    }
+
+                    for (Player p: allPlayers) {
+                        allTokens.add(p.getToken1());
+                        allTokens.add(p.getToken2());
+                    }
+
+                    model.validMoves(movableToken, allTokens);
+                    break;
+                }
+
+                case MOVE_TOKEN:{
+                    break;
+
+                }
+
+                case BUILD:{
+                    break;
+                }
+                case SELECT_CELL:{
+                    break;
+                }
 
             }
+        }
+        else {
+            /**
+             * mandare messaggio di "non è il tuo turno"
+             */
         }
     }
 

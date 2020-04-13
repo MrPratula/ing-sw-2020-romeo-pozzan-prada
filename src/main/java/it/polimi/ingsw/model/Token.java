@@ -15,6 +15,7 @@ import java.util.List;
  */
 public class Token {
 
+    private String id;
     private TokenColor tokenColor;
     private Cell tokenPosition;
     private int oldHeight;
@@ -36,6 +37,10 @@ public class Token {
 
     public int getOldHeight() {
         return oldHeight;
+    }
+
+    public String getId() {
+        return this.getId();
     }
 
 
