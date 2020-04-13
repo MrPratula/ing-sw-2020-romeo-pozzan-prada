@@ -152,17 +152,18 @@ public class Server {
              *
              */
 
-            /*
-            if(game.isPlayerTurn(player1)){
-                c1.asyncSend(GameMessage.moveMessage);
-                c2.asyncSend(GameMessage.waitMessage);
+             c1.send((Object)model.getCopy());
+             c2.send((Object)model.getCopy());
+      /*      if(model.isPlayerTurn(player1)){
+                c1.send(Action.MOVE);
+                c2.send(Action.WAIT);
             } else {
-                c2.asyncSend(GameMessage.moveMessage);
-                c1.asyncSend(GameMessage.waitMessage);
-
+                c2.send(Action.MOVE);
+                c1.send(Action.WAIT);
             }
-
-             */
+      */
+            c1.send(Action.MOVE);
+            c2.send(Action.WAIT);
         }
     }
 

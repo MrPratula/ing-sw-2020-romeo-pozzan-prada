@@ -4,6 +4,7 @@ import it.polimi.ingsw.exception.CellOutOfBattlefieldException;
 import it.polimi.ingsw.utils.Observable;
 
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
@@ -17,6 +18,8 @@ public class Connection extends Observable<String> implements Runnable {
     private String name;
     private boolean active = true;
 
+    private ObjectOutputStream obj;      ///modifica, per mandare obj
+
     public Connection(Socket socket, Server server){
         this.socket = socket;
         this.server = server;
@@ -25,10 +28,21 @@ public class Connection extends Observable<String> implements Runnable {
     private synchronized boolean isActive(){
         return active;
     }
-
+/*
     public void send(String message){
         out.println(message);
         out.flush();
+    }
+*/
+    void send(Object message) {  //ho tolto syncronized
+        try {                             ///modifica, per mandare obj
+            obj.reset();
+            obj.writeObject(message);
+            obj.flush();
+        } catch(IOException e){
+            System.err.println(e.getMessage());
+        }
+
     }
 
     public void asyncSend(final String message){
@@ -63,12 +77,16 @@ public class Connection extends Observable<String> implements Runnable {
             in = new Scanner(socket.getInputStream());
             out = new PrintWriter(socket.getOutputStream());
             send("Welcome! What's your name?"); //ATTENDE RISPOSTA VIA RETE SOCKET SERIALIZ (in)
-
             name = in.nextLine(); //RICEVE DAL CLIENT VIA SOCKET RISPOSTA
+
             server.lobby(this, name); //AGGIUNGE STO NUOVO TIZIO ALLA LOBBY
+
+            //send();
             while(isActive()){ ///////////////////////////////////////////////////////////////dopo che il server ha creato tutto, dopo aver raggiunto il num di player necessari,
                 String read = in.nextLine();  //per questo è observable di string,               legge la scelta
                 notify(read);
+
+
             }
         } catch(IOException | CellOutOfBattlefieldException e){
             System.err.println(e.getMessage());

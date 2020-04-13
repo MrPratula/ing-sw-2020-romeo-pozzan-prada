@@ -6,10 +6,9 @@ public enum Action {
     MOVE("Make your move (x,y):"),
     BUILD("Make your build (x,y):"),
     WAIT("Wait for the other player's move!"),
-    chooseGodCardMessage ("Write the name of the god you want to play!"),
+    //chooseGodCardMessage ("Write the name of the god you want to play!"),
     winMessage ("You win!"),
     loseMessage ("You lose!"),
-    drawMessage ("Draw!"),
     wrongTurnMessage ("It is not your turn!"),
     occupiedCellMessage ("The chosen cell is not empty!");
 

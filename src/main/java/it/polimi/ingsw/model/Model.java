@@ -3,6 +3,7 @@ import it.polimi.ingsw.exception.CellOutOfBattlefieldException;
 import it.polimi.ingsw.exception.ImpossibleTurnException;
 import it.polimi.ingsw.exception.WrongNumberPlayerException;
 import it.polimi.ingsw.utils.Observable;
+import it.polimi.ingsw.view.RemoteView;
 
 import java.util.*;
 
@@ -77,7 +78,7 @@ public class Model extends Observable<Model> implements Cloneable {
      * @param player the player to ask for color
      * @return true if it is it's turn, false otherwise.
      */
-    public boolean isPlayerTurn(Player player) {
+    public boolean isPlayerTurn(Player player) {////////////dubbia
         return turn == player.getTokenColor();
     }
 

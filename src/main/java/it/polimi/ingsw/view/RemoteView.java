@@ -56,11 +56,20 @@ public class RemoteView extends View {
         }
     }
 
-
+   // private Player player;
     private Connection connection;
 
+ /*   public Player getPlayer(){
+         return this.player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+*/
     public RemoteView(Player player, String opponent, Connection c) {
         super(player);
+    //    setPlayer(player);
         this.connection = c;
         c.addObserver(new MessageReceiver());
         //Here we assign randomly the GodCard to the player
@@ -69,7 +78,7 @@ public class RemoteView extends View {
         int index = rand.nextInt(allGods.length);
         GodCard godCard= allGods[index]; ///////////////////////////////problema: gestire godcard uguali
         c.send("Welcome "+ player.getUsername() +", your opponent is: "+ opponent+ ".\t\tThe GodCard we assign you for the game is "+godCard.name()+
-               "! Here's his power: "+godCard.getInfo()+".\t\tWhere do you want to put your first token? (x,y):");
+                "! Here's his power: "+godCard.getInfo());   //+".\t\tWhere do you want to put your first token? (x,y):"
     }
 
     /**
