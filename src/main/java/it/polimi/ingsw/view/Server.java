@@ -117,8 +117,8 @@ public class Server {
              * so the model can update the view with his changes
              * and pass him the updated battlefield
              */
-            model.addObserver(player1);
-            model.addObserver(player2);
+            //model.addObserver(player1);
+            //model.addObserver(player2);
 
             /**
              * the same for the player view and the controller,
@@ -163,7 +163,7 @@ public class Server {
             }
       */
             c1.send(Action.MOVE_TOKEN);
-            c2.send(Action.WAIT);
+            //c2.send(Action.WAIT);
         }
     }
 

@@ -1,26 +1,23 @@
 package it.polimi.ingsw.model;
-import it.polimi.ingsw.exception.CellOutOfBattlefieldException;
-import it.polimi.ingsw.exception.ImpossibleTurnException;
-import it.polimi.ingsw.exception.WrongNumberPlayerException;
+
+import it.polimi.ingsw.exception.*;
+import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.Observable;
-import it.polimi.ingsw.view.RemoteView;
+import it.polimi.ingsw.utils.PlayerAction;
+import it.polimi.ingsw.utils.ServerResponse;
 
 import java.util.*;
 
 
 /**
- * A Game is a Battlefield with an Observable for notify the player
- * when the model (me) change it's status
+ * The model contains a battlefield and the info to let the game run properly.
+ * It has also all the methods to change itself and to check if a move is valid or not.
  */
-public class Model extends Observable<Model> implements Cloneable {
+public class Model extends Observable<ServerResponse> implements Cloneable {
 
     private Battlefield battlefield;
     private TokenColor turn;
     private int numberOfPlayer;
-    private Map<List<Cell>, Token> validMoves = new HashMap<>();
-    private Map<List<Cell>, Token> validBuilds = new HashMap<>();
-    //private Map<Player, Action> choices = new HashMap<>();
-    //private Map<Player, Outcome> outcomes = new HashMap<>();
 
     public Model(Battlefield battlefield) {
         this.battlefield = battlefield;
@@ -35,42 +32,6 @@ public class Model extends Observable<Model> implements Cloneable {
         return this.battlefield;
     }
 
-    public Map<List<Cell>, Token> getValidMoves() {
-        return validMoves;
-    }
-
-    public Map<List<Cell>, Token> getValidBuilds() {
-        return validBuilds;
-    }
-
-
-    /*   SETTER   */
-    public void setValidMoves(Map<List<Cell>, Token> validMoves) {
-        this.validMoves = validMoves;
-    }
-
-    public void setValidBuilds(Map<List<Cell>, Token> validBuilds) {
-        this.validBuilds = validBuilds;
-    }
-
- /*   public void setPlayerChoice(Player player, PlayerAction playerAction){
-        if(choices.size() == 2){
-            choices.clear();
-            outcomes.clear();
-        }
-        if(!choices.containsKey(player)){
-            if(choices.size() == 1){
-                Player other = new LinkedList<Player>(choices.keySet()).get(0);
-                outcomes.put(player, playerAction.compareChoices(choices.get(other)));
-                outcomes.put(other, choices.get(other).compareChoices(playerAction));
-            }
-            choices.put(player, playerAction);
-        }
-        if(choices.size() == 2){
-            notify(this);
-        }
-    }*/
-
 
     /**
      * compare the current turn with a player's color.
@@ -84,26 +45,53 @@ public class Model extends Observable<Model> implements Cloneable {
 
 
     /**
-     * It returns a copy of the Model, but only of the
-     * printable and useful elements
+     * It returns a partial copy of the model.
+     * It contains the battlefield ready to be printed
+     *
      * @return modelCopy
      */
     public Model getCopy(){
         Battlefield battlefieldCopy = new Battlefield();
         battlefieldCopy = battlefield.getCopy();
         Model modelCopy = new Model(battlefieldCopy);
-        modelCopy.setValidMoves(this.getValidMoves());
-        modelCopy.setValidBuilds(this.getValidBuilds());
         return modelCopy;
     }
 
 
     /**
-     * It calculates the valid moves for the selected token,
-     * @param movableToken: token we want to move
-     * @throws CellOutOfBattlefieldException
+     * It calculates the valid moves that a player can make.
+     * A token CAN move one Cell around himself.
+     * A token can NOT move out of the battlefield,
+     * where there is another token (himself too),
+     * on a build height more than 1 of it's own,
+     * where there is a dome.
+     * @param playerAction the message from the observer that contain all the information.
+     * @return a list of Cell in which that token can move
+     * @throws CellOutOfBattlefieldException if something goes wrong
      */
-    public void validMoves (Token movableToken, List<Token> allTokens) throws CellOutOfBattlefieldException {
+    public List<Cell> validMoves (PlayerAction playerAction) throws CellOutOfBattlefieldException {
+
+        Player player = playerAction.getPlayer();
+
+        Player oppo1 = playerAction.getOppo1();
+
+        Token movableToken = playerAction.getToken();
+
+        List<Token> allTokens = new ArrayList<Token>();
+        List<Player> allPlayers = new ArrayList<Player>();
+
+        allPlayers.add(player);
+        allPlayers.add(oppo1);
+
+        if (numberOfPlayer == 3) {
+            Player oppo2 = playerAction.getOppo2();
+            allPlayers.add(oppo2);
+        }
+
+        for (Player p: allPlayers) {
+            allTokens.add(p.getToken1());
+            allTokens.add(p.getToken2());
+        }
 
         List<Cell> validMoves = new ArrayList<>();
 
@@ -119,7 +107,6 @@ public class Model extends Observable<Model> implements Cloneable {
                                 movableToken.getTokenPosition().getHeight()<=1) &&            // l'altezza del token <= 1
                         (!battlefield.getCell(provX,provY).getIsDome())) {         // non deve essere una cupola
 
-                    assert allTokens != null;   //suggerimento
                     for (Token t:allTokens) {
                         if (provX != t.getTokenPosition().getPosX() &&                 // il token non può andare dove c'è un altro token
                                 provY != t.getTokenPosition().getPosX()) {             // compreso sè stesso, quindi non può stare fermo
@@ -130,52 +117,113 @@ public class Model extends Observable<Model> implements Cloneable {
                 }
             }
         }
-        this.validMoves.put(validMoves,movableToken);
-
-        /**
-         * DA COSTRUIRE QUI IL MESSAGGIO PER L'OBSERVER DI RITORNO!!<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-         */
-
-        notify(this);
-
+        if (playerAction.getAction().equals(Action.SELECT_TOKEN)){
+            ServerResponse serverResponse = new ServerResponse(Action.ASK_FOR_MOVE, this.getCopy(), validMoves, null, null);
+            notify(serverResponse);
+        }
+        return validMoves;
     }
 
 
-    public void validBuilds (Token token) throws CellOutOfBattlefieldException {
+    /**
+     * Here is where the move is effectively done.
+     * The check for the legal move is made by the controller.
+     * @param playerAction the message from the observer that contain all the information.
+     * @throws CellOutOfBattlefieldException if something goes wrong.
+     */
+    public void performMove (PlayerAction playerAction) throws CellOutOfBattlefieldException {
 
-        List<Cell> result = new ArrayList<>();
-        List<Player> players = battlefield.getPlayers();
-        List<Token> allOtherTokens = null;
+        Cell targetCell = playerAction.getCell();
+        Token movableToken = playerAction.getToken();
+
+        movableToken.setTokenPosition(targetCell);
+
+        List<Cell> validBuilds = validBuilds(playerAction);
+
+        ServerResponse serverResponse = new ServerResponse(Action.ASK_FOR_BUILD, this.getCopy(), null, validBuilds, null);
+
+        notify(serverResponse);
+    }
+
+
+    /**
+     * It check for the legal Cell in which a player can build.
+     * A player CAN build around the token he moved.
+     * A token can NOT build out of the battlefield,
+     * where there is a token (himself too),
+     * where there is a dome.
+     * @param playerAction the message from the observer that contain all the information.
+     * @return a list of Cell in which the player can build around the token he moved.
+     * @throws CellOutOfBattlefieldException if something goes wrong.
+     */
+    public List<Cell> validBuilds (PlayerAction playerAction) throws CellOutOfBattlefieldException {
+
         int provX, provY;
 
-        for (Player player:players) {
-            allOtherTokens.add(player.getToken1());
-            allOtherTokens.add(player.getToken2());
+        Player player = playerAction.getPlayer();
+
+        Player oppo1 = playerAction.getOppo1();
+
+        Token canBuildToken = playerAction.getToken();
+
+        List<Token> allTokens = new ArrayList<Token>();
+        List<Player> allPlayers = new ArrayList<Player>();
+        List<Cell> buildableCells = new ArrayList<>();
+
+        allPlayers.add(player);
+        allPlayers.add(oppo1);
+
+        if (numberOfPlayer == 3) {
+            Player oppo2 = playerAction.getOppo2();
+            allPlayers.add(oppo2);
         }
+
+        for (Player p: allPlayers) {
+            allTokens.add(p.getToken1());
+            allTokens.add(p.getToken2());
+        }
+
         for (int i=-1; i<2; i++){                                                   // ciclo di +-1 intorno alla posizione del token
-            provX = token.getTokenPosition().getPosX()+i;                            // per poter ottenere le 8 caselle in cui
-            for (int j=-1; j<2; j++){                                               // posso muovere
-                provY = token.getTokenPosition().getPosY()+j;
+            provX = canBuildToken.getTokenPosition().getPosX()+i;                            // per poter ottenere le 8 caselle in cui
+            for (int j=-1; j<2; j++){                                               // posso costruire
+                provY = canBuildToken.getTokenPosition().getPosY()+j;
 
                 if ( (provX>=0 && provX <5) && (provY>=0 && provY<5) &&                       // la cella provv è dentro le dimensioni del battlefield
                         (!battlefield.getCell(provX,provY).getIsDome()) ) {        // non deve essere una cupola
 
-                    for (Token t:allOtherTokens) {
-                        if (provX != t.getTokenPosition().getPosX() &&                 // il token non può andare dove c'è un altro token
-                                provY != t.getTokenPosition().getPosX()) {             // compreso sè stesso, quindi non può stare fermo
+                    for (Token t:allTokens) {
+                        if (provX != t.getTokenPosition().getPosX() &&                 // il token non può costruire dove c'è un altro token
+                                provY != t.getTokenPosition().getPosX()) {             // compreso sè stesso, quindi non può costruire sotto i piedi
 
-                            result.add(battlefield.getCell(provX, provY));
+                            buildableCells.add(battlefield.getCell(provX, provY));
                         }
                     }
                 }
             }
         }
-        validBuilds.put(result,token);
-        notify(this);
-        //return result;
+        return buildableCells;
     }
 
+    /**
+     * It call the incrementHeight on the cell that a player has chosen to build.
+     * After a build has been made, the turn is updated.
+     * @param playerAction the message from the observer that contain all the information.
+     * @throws CellHeightException if something goes wrong.
+     * @throws ReachHeightLimitException if something goes wrong.
+     * @throws WrongNumberPlayerException if something goes wrong.
+     * @throws ImpossibleTurnException if something goes wrong.
+     */
+    public void performBuild (PlayerAction playerAction) throws CellHeightException, ReachHeightLimitException, WrongNumberPlayerException, ImpossibleTurnException {
 
+        Cell targetCell = playerAction.getCell();
+        battlefield.getCell(targetCell).incrementHeight();
+
+        this.updateTurn();
+
+        String askForSelect = String.format("Player %s select the token you want to move (x,y)");
+
+        ServerResponse serverResponse = new ServerResponse(Action.START_NEW_TURN, this.getCopy(), null, null, askForSelect);
+    }
 
 
     /**
@@ -220,5 +268,17 @@ public class Model extends Observable<Model> implements Cloneable {
         }
     }
 
+    /**
+     * It is called by the controller if a player make a request when it is not his turn.
+     * It creates a ServerResponse with a message that tells him whose player is turn.
+     * @throws CellOutOfBattlefieldException if something goes wrong.
+     */
+    public void notifyNotYourTurn() throws CellOutOfBattlefieldException {
 
+        String whoIsTurn = String.format("Now is player %s turn!", this.turn.toString());
+
+        ServerResponse serverResponse = new ServerResponse(Action.NOT_YOUR_TURN, null, null, null, whoIsTurn);
+
+        notify(serverResponse);
+    }
 }

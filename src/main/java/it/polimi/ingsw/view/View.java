@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.Observable;
 import it.polimi.ingsw.utils.Observer;
+import it.polimi.ingsw.utils.PlayerAction;
 
 public abstract class View extends Observable<PlayerAction> implements Observer<Model> {
 

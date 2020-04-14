@@ -1,5 +1,8 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.utils;
 
+import it.polimi.ingsw.model.Cell;
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.Token;
 import it.polimi.ingsw.utils.Action;
 
 public class PlayerAction {
