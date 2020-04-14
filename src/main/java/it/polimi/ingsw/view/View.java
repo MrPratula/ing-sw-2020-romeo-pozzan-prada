@@ -20,7 +20,7 @@ public abstract class View extends Observable<PlayerAction> implements Observer<
     }
 
     protected void notifyController(Player player, Action action, Token token, Cell cell) throws CellOutOfBattlefieldException {
-        notify(new PlayerAction(player, action, token, cell));
+        //notify(new PlayerAction(player, action, token, cell));
     }
 
     protected abstract void showModel(Model model);

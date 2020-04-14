@@ -3,7 +3,6 @@ package it.polimi.ingsw.utils;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Token;
-import it.polimi.ingsw.utils.Action;
 
 public class PlayerAction {
 
@@ -14,17 +13,19 @@ public class PlayerAction {
     private final Player oppo1;
     private final Player oppo2;
 
-    private final Token token;
+    private final Token tokenMain;
+    private final Token tokenOther;
 
     private final Cell cell;
 
-    public PlayerAction(Action action, Player player,  Player oppo1, Player oppo2, Token token, Cell cell){
+    public PlayerAction(Action action, Player player, Player oppo1, Player oppo2, Token tokenMain, Token tokenOther, Cell cell){
 
         this.action = action;
         this.player = player;
         this.oppo1 = oppo1;
         this.oppo2 = oppo2;
-        this.token = token;
+        this.tokenMain = tokenMain;
+        this.tokenOther = tokenOther;
         this.cell = cell;
     }
 
@@ -44,8 +45,12 @@ public class PlayerAction {
         return this.oppo2;
     }
 
-    public Token getToken() {
-        return this.token;
+    public Token getTokenMain() {
+        return this.tokenMain;
+    }
+
+    public Token getTokenOther() {
+        return this.tokenOther;
     }
 
     public Cell getCell() {

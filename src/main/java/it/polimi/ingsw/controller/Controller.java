@@ -1,8 +1,11 @@
 package it.polimi.ingsw.controller;
 
+;
 import it.polimi.ingsw.exception.*;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Model;
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.Token;
 import it.polimi.ingsw.utils.PlayerAction;
 import it.polimi.ingsw.utils.Observer;
 
@@ -48,7 +51,26 @@ public class Controller implements Observer<PlayerAction> {
                 }
 
                 case MOVE_TOKEN:{
-                    List<Cell> validMoves = model.validMoves(playerAction);
+
+                    Player player = playerAction.getPlayer();
+                    Player oppo1 = playerAction.getOppo1();
+                    List<Token> allTokens = new ArrayList<Token>();
+                    List<Player> allPlayers = new ArrayList<Player>();
+
+                    allPlayers.add(player);
+                    allPlayers.add(oppo1);
+
+                    if (playerAction.getOppo2()!=null) {
+                        Player oppo2 = playerAction.getOppo2();
+                        allPlayers.add(oppo2);
+                    }
+
+                    for (Player p: allPlayers) {
+                        allTokens.add(p.getToken1());
+                        allTokens.add(p.getToken2());
+                    }
+
+                    List<Cell> validMoves = model.computeValidMoves(playerAction.getTokenMain(), allTokens);
                     Cell targetCell = playerAction.getCell();
 
                     for (Cell c: validMoves) {

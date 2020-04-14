@@ -8,15 +8,26 @@ package it.polimi.ingsw.utils;
  */
 public enum Action {
 
+    /*
+    FROM CLIENT TO SERVER
+     */
     SELECT_TOKEN("A player has selected a token"),
     MOVE_TOKEN("A player has moved a token"),
     BUILD("A player has made a build. Switch turn"),
+
+    /*
+    FROM SERVER TO CLIENT
+     */
 
     NOT_YOUR_TURN("Wait your turn to perform your action!"),
 
     START_NEW_TURN("Your turn is ended!"),
     ASK_FOR_MOVE("Where do you want to move your token? (x,y)"),
-    ASK_FOR_BUILD("Where do you want to build? (x,y)");
+    ASK_FOR_BUILD("Where do you want to build? (x,y)"),
+
+    GAME_OVER("GAME OVER"),
+    TOKEN_NOT_MOVABLE("You can not move this token, please select a movable one!"),
+    PLAYER_LOST("You have lost the game, your token will be wiped!");
 
     private String info;
 
