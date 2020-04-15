@@ -32,11 +32,6 @@ public class Controller implements Observer<PlayerAction> {
      * method in the model.
      * The controller need to check the correct format of the input and always pass valid arguments to the model.
      * @param playerAction the message from the observer that contain all the information.
-     * @throws CellOutOfBattlefieldException if something goes wrong.
-     * @throws CellHeightException if something goes wrong.
-     * @throws ReachHeightLimitException if something goes wrong.
-     * @throws WrongNumberPlayerException if something goes wrong.
-     * @throws ImpossibleTurnException if something goes wrong.
      */
     @Override
     public void update(PlayerAction playerAction) throws CellOutOfBattlefieldException, CellHeightException, ReachHeightLimitException, WrongNumberPlayerException, ImpossibleTurnException {
@@ -92,7 +87,6 @@ public class Controller implements Observer<PlayerAction> {
                     }
                     break;
                 }
-
             }
         }
         else {
