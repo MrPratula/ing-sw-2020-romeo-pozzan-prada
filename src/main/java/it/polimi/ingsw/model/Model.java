@@ -1,11 +1,12 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.exception.*;
+import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.Observable;
 import it.polimi.ingsw.utils.PlayerAction;
 import it.polimi.ingsw.utils.ServerResponse;
 
+import java.io.IOException;
 import java.util.*;
 
 
@@ -71,7 +72,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * @return a list of Cell in which that token can move
      * @throws CellOutOfBattlefieldException if something goes wrong
      */
-    public void validMoves(PlayerAction playerAction) throws CellOutOfBattlefieldException, WrongNumberPlayerException, ImpossibleTurnException {
+    public void validMoves(PlayerAction playerAction) throws CellOutOfBattlefieldException, WrongNumberPlayerException, ImpossibleTurnException, CellHeightException, IOException, ReachHeightLimitException {
 
         Player player = playerAction.getPlayer();
 
@@ -191,7 +192,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * @param playerAction the message from the observer that contain all the information.
      * @throws CellOutOfBattlefieldException if something goes wrong.
      */
-    public void performMove (PlayerAction playerAction) throws CellOutOfBattlefieldException {
+    public void performMove (PlayerAction playerAction) throws CellOutOfBattlefieldException, ReachHeightLimitException, CellHeightException, IOException, ImpossibleTurnException, WrongNumberPlayerException {
 
         Cell targetCell = playerAction.getCell();
         Token movableToken = playerAction.getTokenMain();
@@ -392,7 +393,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * It creates a ServerResponse with a message that tells him whose player is turn.
      * @throws CellOutOfBattlefieldException if something goes wrong.
      */
-    public void notifyNotYourTurn() throws CellOutOfBattlefieldException {
+    public void notifyNotYourTurn() throws CellOutOfBattlefieldException, ReachHeightLimitException, CellHeightException, IOException, ImpossibleTurnException, WrongNumberPlayerException {
 
         String whoIsTurn = String.format("Now is player %s turn!", this.turn.toString());
 

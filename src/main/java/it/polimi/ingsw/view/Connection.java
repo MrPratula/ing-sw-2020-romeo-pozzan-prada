@@ -1,6 +1,9 @@
+/*
+
+
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.exception.CellOutOfBattlefieldException;
+import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
 import it.polimi.ingsw.utils.Observable;
 
 import java.io.IOException;
@@ -28,12 +31,12 @@ public class Connection extends Observable<String> implements Runnable {
     private synchronized boolean isActive(){
         return active;
     }
-/*
+
     public void send(String message){
         out.println(message);
         out.flush();
     }
-*/
+
     void send(Object message) {  //ho tolto syncronized
         try {                             ///modifica, per mandare obj
             obj.reset();
@@ -95,3 +98,4 @@ public class Connection extends Observable<String> implements Runnable {
         }
     }
 }
+*/

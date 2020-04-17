@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.exception.CellOutOfBattlefieldException;
+import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.utils.Observable;
 import it.polimi.ingsw.utils.ServerResponse;
 
@@ -42,6 +42,14 @@ public class Client extends Observable<ServerResponse> {
             }
         } catch(NoSuchElementException e){
             System.out.println("Connection closed from the client side");
+        } catch (WrongNumberPlayerException e) {
+            e.printStackTrace();
+        } catch (CellHeightException e) {
+            e.printStackTrace();
+        } catch (ImpossibleTurnException e) {
+            e.printStackTrace();
+        } catch (ReachHeightLimitException e) {
+            e.printStackTrace();
         } finally {
             System.out.println("Closing sockets.");
             ss.close();

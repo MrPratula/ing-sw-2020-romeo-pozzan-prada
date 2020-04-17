@@ -1,5 +1,5 @@
 package it.polimi.ingsw.model;
-import it.polimi.ingsw.exception.CellOutOfBattlefieldException;
+import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
 
 import java.io.Serializable;
 import java.util.*;
@@ -158,7 +158,7 @@ public class Battlefield implements Serializable {
         }
         System.out.print("\033[030m");             //white written
         System.out.print("\033[049m");           //on a black board
-        System.out.print("    0  1  2  3  4\n");
+        System.out.print("   0  1  2  3  4\n");
     }
 }
 

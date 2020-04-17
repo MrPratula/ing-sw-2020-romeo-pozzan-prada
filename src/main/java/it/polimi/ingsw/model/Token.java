@@ -1,10 +1,5 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.exception.CellOutOfBattlefieldException;
-
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Each Player has 2 tokens.
  * They are created with no position and when it is assigned they always have a position.

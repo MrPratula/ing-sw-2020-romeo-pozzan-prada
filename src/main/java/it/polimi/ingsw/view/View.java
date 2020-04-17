@@ -1,8 +1,10 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.exception.CellOutOfBattlefieldException;
+import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.utils.*;
+
+import java.io.IOException;
 
 public abstract class View extends Observable<PlayerAction> implements Observer<ServerResponse>  {
 
@@ -29,8 +31,8 @@ public abstract class View extends Observable<PlayerAction> implements Observer<
     }
 
 
-    
-    public void notifyRemoteController(PlayerAction playerAction) throws CellOutOfBattlefieldException {
+
+    public void notifyRemoteController(PlayerAction playerAction) throws CellOutOfBattlefieldException, ReachHeightLimitException, CellHeightException, IOException, ImpossibleTurnException, WrongNumberPlayerException {
         notify(playerAction);
     }
 

@@ -1,10 +1,7 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.exception.*;
-import it.polimi.ingsw.utils.Observable;
 import it.polimi.ingsw.utils.Observer;
 import it.polimi.ingsw.utils.PlayerAction;
-import it.polimi.ingsw.utils.ServerResponse;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;

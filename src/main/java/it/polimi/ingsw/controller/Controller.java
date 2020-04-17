@@ -1,7 +1,6 @@
 package it.polimi.ingsw.controller;
 
 ;
-import it.polimi.ingsw.exception.*;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Model;
 import it.polimi.ingsw.model.Player;
@@ -9,6 +8,7 @@ import it.polimi.ingsw.model.Token;
 import it.polimi.ingsw.utils.PlayerAction;
 import it.polimi.ingsw.utils.Observer;
 
+import java.io.IOException;
 import java.util.*;
 
 
@@ -34,7 +34,7 @@ public class Controller implements Observer<PlayerAction> {
      * @param playerAction the message from the observer that contain all the information.
      */
     @Override
-    public void update(PlayerAction playerAction) throws CellOutOfBattlefieldException, CellHeightException, ReachHeightLimitException, WrongNumberPlayerException, ImpossibleTurnException {
+    public void update(PlayerAction playerAction) throws CellOutOfBattlefieldException, CellHeightException, ReachHeightLimitException, WrongNumberPlayerException, ImpossibleTurnException, IOException {
 
         if( model.isPlayerTurn(playerAction.getPlayer()) ){
 

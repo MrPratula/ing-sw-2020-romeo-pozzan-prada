@@ -1,6 +1,6 @@
 package it.polimi.ingsw.utils;
 
-import it.polimi.ingsw.exception.*;
+import it.polimi.ingsw.controller.*;
 
 import java.io.IOException;
 
