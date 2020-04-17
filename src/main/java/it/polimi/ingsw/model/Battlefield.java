@@ -15,7 +15,7 @@ public class Battlefield implements Serializable {
     private List<Player> players;
 
     /**
-     * The constructor create a matrix N*N of Cell where N is the battlefieldSize.
+     * The constructor create a matrix N*N of Cell, where N is the battlefieldSize.
      */
     public Battlefield() {
 
@@ -73,8 +73,8 @@ public class Battlefield implements Serializable {
             for (int y=0; y<battlefieldSize; y++){
                 battlefieldClone.battlefield[x][y]= battlefield[x][y];
             }
-        }
-        battlefieldClone.players=this.players;
+        }       battlefieldClone.players = this.players;
+
         return battlefieldClone;
     }
 

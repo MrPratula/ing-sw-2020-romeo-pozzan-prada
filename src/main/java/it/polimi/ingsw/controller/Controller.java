@@ -45,7 +45,7 @@ public class Controller implements Observer<PlayerAction> {
                     break;
                 }
 
-                case MOVE_TOKEN:{
+                case MOVE:{
 
                     Player player = playerAction.getPlayer();
                     Player oppo1 = playerAction.getOppo1();

@@ -7,19 +7,15 @@ import it.polimi.ingsw.model.Token;
 public class PlayerAction {
 
     private final Action action;
-
     private final Player player;
-
     private final Player oppo1;
     private final Player oppo2;
-
     private final Token tokenMain;
     private final Token tokenOther;
 
     private final Cell cell;
 
     public PlayerAction(Action action, Player player, Player oppo1, Player oppo2, Token tokenMain, Token tokenOther, Cell cell){
-
         this.action = action;
         this.player = player;
         this.oppo1 = oppo1;

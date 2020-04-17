@@ -18,7 +18,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
     private Battlefield battlefield;
     private TokenColor turn;
-    private int numberOfPlayer;
+    private int numberOfPlayers;
 
     public Model(Battlefield battlefield) {
         this.battlefield = battlefield;
@@ -33,6 +33,13 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         return this.battlefield;
     }
 
+    public TokenColor getTurn() {
+        return turn;
+    }
+
+    public int getNumberOfPlayers() {
+        return numberOfPlayers;
+    }
 
     /**
      * compare the current turn with a player's color.
@@ -53,8 +60,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * @return modelCopy
      */
     public Model getCopy() {
-        Battlefield battlefieldCopy = new Battlefield();
-        battlefieldCopy = battlefield.getCopy();
+        Battlefield battlefieldCopy = battlefield.getCopy();
         Model modelCopy = new Model(battlefieldCopy);
         return modelCopy;
     }
@@ -84,7 +90,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         allPlayers.add(player);
         allPlayers.add(oppo1);
 
-        if (numberOfPlayer == 3) {
+        if (numberOfPlayers == 3) {
             Player oppo2 = playerAction.getOppo2();
             allPlayers.add(oppo2);
         }
@@ -123,10 +129,10 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     public ServerResponse checkLose(PlayerAction playerAction, List<Token> allTokens) throws CellOutOfBattlefieldException, WrongNumberPlayerException, ImpossibleTurnException {
 
         if (playerAction.getTokenOther() == null) {                              // se il secondo token non esiste
-            if (numberOfPlayer == 2) {                                             // se ci sono 2 player
+            if (numberOfPlayers == 2) {                                             // se ci sono 2 player
                 return gameOver(playerAction.getOppo1().getUsername());
             }
-            if (numberOfPlayer == 3) {                                             // se ci sono 3 player
+            if (numberOfPlayers == 3) {                                             // se ci sono 3 player
                 return playerLost(playerAction.getPlayer());
             }
         }
@@ -135,10 +141,10 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             validMoves2 = computeValidMoves(playerAction.getTokenOther(), allTokens);
 
             if (validMoves2 == null) {                                         // se non lo posso muovere
-                if (numberOfPlayer == 2) {                                     // se ci sono 2 player
+                if (numberOfPlayers == 2) {                                     // se ci sono 2 player
                     return gameOver(playerAction.getOppo1().getUsername());
                 }
-            if (numberOfPlayer == 3) {                                         // se ci sono 3 player
+            if (numberOfPlayers == 3) {                                         // se ci sono 3 player
                     return playerLost(playerAction.getPlayer());
                 }
             }
@@ -239,7 +245,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         allPlayers.add(player);
         allPlayers.add(oppo1);
 
-        if (numberOfPlayer == 3) {
+        if (numberOfPlayers == 3) {
             Player oppo2 = playerAction.getOppo2();
             allPlayers.add(oppo2);
         }
@@ -323,7 +329,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * @return the correct ServerResponse.
      */
     public ServerResponse playerLost (Player looser) throws WrongNumberPlayerException, ImpossibleTurnException {
-        numberOfPlayer = 2;
+        numberOfPlayers = 2;
         String lostMessage = String.format("%s HAS LOST! Better luck next time!", looser.getUsername().toUpperCase());
         removeFromTheGame(looser);
         return new ServerResponse (Action.PLAYER_LOST, this.getCopy(), null, null, lostMessage);
@@ -364,14 +370,14 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             }
 
             case BLUE: {
-                if (numberOfPlayer == 2) {
+                if (numberOfPlayers == 2) {
                     this.turn = TokenColor.RED;
-                } else if (numberOfPlayer == 3) {
+                } else if (numberOfPlayers == 3) {
                     this.turn = TokenColor.YELLOW;
                 }
                 else {
                     throw new WrongNumberPlayerException(
-                            String.format("There are %d players and it is not allowed!", numberOfPlayer));
+                            String.format("There are %d players and it is not allowed!", numberOfPlayers));
                 }
                 break;
             }

@@ -1,12 +1,13 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
 import it.polimi.ingsw.view.Client;
 
 import java.io.IOException;
-/*
+
 public class ClientApp {
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws CellOutOfBattlefieldException, ClassNotFoundException {
         Client client = new Client("127.0.0.1", 12345);
         try{
             client.run();
@@ -15,4 +16,3 @@ public class ClientApp {
         }
     }
 }
-*/
