@@ -106,7 +106,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         ServerResponse serverResponse;
 
         if (validMoves == null) {
-            serverResponse = checkLose(playerAction, allTokens);
+            serverResponse = checkLoseForMove(playerAction, allTokens);
         } else {
             serverResponse = new ServerResponse(Action.ASK_FOR_MOVE, this.getCopy(), validMoves, null, null);
         }
@@ -126,7 +126,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * It could be a TOKEN_NOT_MOVABLE, GAME_OVER or PLAYER_LOST.
      * @throws CellOutOfBattlefieldException if something goes wrong.
      */
-    public ServerResponse checkLose(PlayerAction playerAction, List<Token> allTokens) throws CellOutOfBattlefieldException, WrongNumberPlayerException, ImpossibleTurnException {
+    public ServerResponse checkLoseForMove(PlayerAction playerAction, List<Token> allTokens) throws CellOutOfBattlefieldException, WrongNumberPlayerException, ImpossibleTurnException {
 
         if (playerAction.getTokenOther() == null) {                              // se il secondo token non esiste
             if (numberOfPlayers == 2) {                                             // se ci sono 2 player
@@ -212,8 +212,21 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         }
         else {
             List<Cell> validBuilds = validBuilds(playerAction);
-            ServerResponse serverResponse = new ServerResponse(Action.ASK_FOR_BUILD, this.getCopy(), null, validBuilds, null);
-            notify(serverResponse);
+
+            if (validBuilds == null) {
+                if (numberOfPlayers == 3) {
+                    playerLost(playerAction.getPlayer());
+                }
+                else if(numberOfPlayers == 2) {
+                    updateTurn();
+                    String winner = getTurn().toString();
+                    gameOver(winner);
+                }
+            }
+            else {
+                ServerResponse serverResponse = new ServerResponse(Action.ASK_FOR_BUILD, this.getCopy(), null, validBuilds, null);
+                notify(serverResponse);
+            }
         }
     }
 
