@@ -1,4 +1,6 @@
-/*
+#ignore everything
+*
+#except this
 !.gitignore
 !README.md
 !pom.xml
