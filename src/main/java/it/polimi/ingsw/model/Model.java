@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.*;
+import it.polimi.ingsw.gameAction.ValidMoveContext;
+import it.polimi.ingsw.gameAction.SimpleComputeValidMoves;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.Observable;
 import it.polimi.ingsw.utils.PlayerAction;
@@ -18,7 +20,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
     private Battlefield battlefield;
     private TokenColor turn;
-    private int numberOfPlayers;
+    private List<Player> allPlayer;
 
     public Model(Battlefield battlefield) {
         this.battlefield = battlefield;
@@ -37,9 +39,6 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         return turn;
     }
 
-    public int getNumberOfPlayers() {
-        return numberOfPlayers;
-    }
 
     /**
      * compare the current turn with a player's color.
@@ -80,38 +79,109 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      */
     public void validMoves(PlayerAction playerAction) throws CellOutOfBattlefieldException, WrongNumberPlayerException, ImpossibleTurnException, CellHeightException, IOException, ReachHeightLimitException {
 
-        Player player = playerAction.getPlayer();
+        Player playerActive = playerAction.getPlayer();
 
-        Player oppo1 = playerAction.getOppo1();
+        List<Player> opponents = getOpponents(playerActive);
+        List<Token> enemyTokens = getTokens(opponents);
 
-        List<Token> allTokens = new ArrayList<Token>();
-        List<Player> allPlayers = new ArrayList<Player>();
+        int selectedTokenId = playerAction.getTokenMain();
+        int otherTokenId = playerAction.getTokenOther();
 
-        allPlayers.add(player);
-        allPlayers.add(oppo1);
+        Token selectedToken = parseToken(selectedTokenId);
+        Token otherToken = parseToken(otherTokenId);
 
-        if (numberOfPlayers == 3) {
-            Player oppo2 = playerAction.getOppo2();
-            allPlayers.add(oppo2);
-        }
-
-        for (Player p : allPlayers) {
-            allTokens.add(p.getToken1());
-            allTokens.add(p.getToken2());
-        }
+        GodCard myGodCard = playerActive.getMyGodCard();
+        List<GodCard> enemyGodCards = getGodCards(opponents);
 
         List<Cell> validMoves = new ArrayList<>();
 
-        validMoves = computeValidMoves(playerAction.getTokenMain(), allTokens);
+        validMoves = computeValidMoves(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, getBattlefield());
+
         ServerResponse serverResponse;
 
         if (validMoves == null) {
-            serverResponse = checkLoseForMove(playerAction, allTokens);
+            serverResponse = checkLoseForMove(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, getBattlefield(), opponents, playerActive);
         } else {
             serverResponse = new ServerResponse(Action.ASK_FOR_MOVE, this.getCopy(), validMoves, null, null);
         }
         notify(serverResponse);
     }
+
+    public List<Player> getOpponents(Player playerActive) {
+
+        List<Player> opponents = null;
+        for (Player p: allPlayer) {
+            if (!playerActive.getUsername().equals(p.getUsername())) {
+                opponents.add(p);
+            }
+        }
+        return opponents;
+    }
+
+    public List<Token> getTokens(List<Player> players) {
+        List<Token> tokens = null;
+        for (Player p: players) {
+            tokens.add(p.getToken1());
+            tokens.add(p.getToken2());
+        }
+        return tokens;
+    }
+
+    public List<GodCard> getGodCards(List<Player> players) {
+        List<GodCard> godCards = null;
+        for (Player p: players) {
+            godCards.add(p.getMyGodCard());
+        }
+        return godCards;
+    }
+
+    public Token parseToken(int tokenId) {
+        for (Player player: allPlayer) {
+            if (tokenId == player.getToken1().getId())
+                return player.getToken1();
+            else if(tokenId == player.getToken2().getId())
+                return player.getToken2();
+        }
+        return null;
+    }
+
+
+
+    public List<Cell> computeValidMoves(Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield) throws CellOutOfBattlefieldException {
+
+        switch (myGodCard) {
+            case APOLLO: {
+
+            }
+            default: {
+                ValidMoveContext thisMove = new ValidMoveContext(new SimpleComputeValidMoves());
+                return thisMove.executeValidMoves(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, battlefield);
+            }
+        }
+    }
+
+    public List<Cell> askValidMoves (PlayerAction playerAction) throws CellOutOfBattlefieldException {
+
+        Player playerActive = playerAction.getPlayer();
+
+        List<Player> opponents = getOpponents(playerActive);
+        List<Token> enemyTokens = getTokens(opponents);
+
+        int selectedTokenId = playerAction.getTokenMain();
+        int otherTokenId = playerAction.getTokenOther();
+
+        Token selectedToken = parseToken(selectedTokenId);
+        Token otherToken = parseToken(otherTokenId);
+
+        GodCard myGodCard = playerActive.getMyGodCard();
+        List<GodCard> enemyGodCards = getGodCards(opponents);
+
+        return computeValidMoves(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, getBattlefield());
+    }
+
+
+
+
 
     /**
      * This method is called when i check the valid moves of a player.
@@ -120,73 +190,34 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * If he lost it check how many player there are.
      * If 2 the other one wins the game,
      * if 3 this player is removed from the game.
-     * @param playerAction the message from the observer that contain all the information.
-     * @param allTokens all the token son the battlefield.
      * @return the correct ServerResponse to let the game routine run properly.
      * It could be a TOKEN_NOT_MOVABLE, GAME_OVER or PLAYER_LOST.
      * @throws CellOutOfBattlefieldException if something goes wrong.
      */
-    public ServerResponse checkLoseForMove(PlayerAction playerAction, List<Token> allTokens) throws CellOutOfBattlefieldException, WrongNumberPlayerException, ImpossibleTurnException {
+    public ServerResponse checkLoseForMove(Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield, List<Player> opponents, Player playerActive) throws CellOutOfBattlefieldException, WrongNumberPlayerException, ImpossibleTurnException {
 
-        if (playerAction.getTokenOther() == null) {                              // se il secondo token non esiste
-            if (numberOfPlayers == 2) {                                             // se ci sono 2 player
-                return gameOver(playerAction.getOppo1().getUsername());
+        if (otherToken == null) {                              // se il secondo token non esiste
+            if (allPlayer.size()==2) {                                             // se ci sono 2 player
+                return gameOver(opponents.get(0).getUsername());
             }
-            if (numberOfPlayers == 3) {                                             // se ci sono 3 player
-                return playerLost(playerAction.getPlayer());
+            if (allPlayer.size() == 3) {                                             // se ci sono 3 player
+                return playerLost(playerActive);
             }
         }
         else {                                                                  // se il secondo token esiste
             List<Cell> validMoves2 = new ArrayList<>();
-            validMoves2 = computeValidMoves(playerAction.getTokenOther(), allTokens);
+            validMoves2 = computeValidMoves(otherToken, null, enemyTokens, myGodCard, enemyGodCards, battlefield);
 
             if (validMoves2 == null) {                                         // se non lo posso muovere
-                if (numberOfPlayers == 2) {                                     // se ci sono 2 player
-                    return gameOver(playerAction.getOppo1().getUsername());
+                if (allPlayer.size() == 2) {                                     // se ci sono 2 player
+                    return gameOver(opponents.get(0).getUsername());
                 }
-            if (numberOfPlayers == 3) {                                         // se ci sono 3 player
-                    return playerLost(playerAction.getPlayer());
+            if (allPlayer.size() == 3) {                                         // se ci sono 3 player
+                    return playerLost(playerActive);
                 }
             }
         }
         return new ServerResponse(Action.TOKEN_NOT_MOVABLE, this.getCopy(), null, null, null);
-    }
-
-
-    /**
-     * It return the moves a token can perform
-     * @param movableToken the token i want move
-     * @param allTokens all the tokens on the battlefield
-     * @return a list of Cell in which I can move the token
-     * @throws CellOutOfBattlefieldException if something goes wrong.
-     */
-    public List<Cell> computeValidMoves(Token movableToken, List<Token> allTokens) throws CellOutOfBattlefieldException {
-
-        List<Cell> validMoves = new ArrayList<>();
-
-        int provX, provY;
-
-        for (int i=-1; i<2; i++){                                                   // ciclo di +-1 intorno alla posizione del token
-            provX = movableToken.getTokenPosition().getPosX()+i;                            // per poter ottenere le 8 caselle in cui
-            for (int j=-1; j<2; j++){                                               // posso muovere
-                provY = movableToken.getTokenPosition().getPosY()+j;
-
-                if ( (provX>=0 && provX <5) && (provY>=0 && provY<5) &&                     // la cella provv è dentro le dimensioni del battlefield
-                        (battlefield.getCell(provX,provY).getHeight()-              // l'altezza della cella provv -
-                                movableToken.getTokenPosition().getHeight()<=1) &&            // l'altezza del token <= 1
-                        (!battlefield.getCell(provX,provY).getIsDome())) {         // non deve essere una cupola
-
-                    for (Token t:allTokens) {
-                        if (provX != t.getTokenPosition().getPosX() &&                 // il token non può andare dove c'è un altro token
-                                provY != t.getTokenPosition().getPosX()) {             // compreso sè stesso, quindi non può stare fermo
-
-                            validMoves.add(battlefield.getCell(provX, provY));
-                        }
-                    }
-                }
-            }
-        }
-        return validMoves;
     }
 
     /**
@@ -214,10 +245,10 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             List<Cell> validBuilds = validBuilds(playerAction);
 
             if (validBuilds == null) {
-                if (numberOfPlayers == 3) {
+                if (allPlayer.size() == 3) {
                     playerLost(playerAction.getPlayer());
                 }
-                else if(numberOfPlayers == 2) {
+                else if(allPlayer.size() == 2) {
                     updateTurn();
                     String winner = getTurn().toString();
                     gameOver(winner);
@@ -258,7 +289,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         allPlayers.add(player);
         allPlayers.add(oppo1);
 
-        if (numberOfPlayers == 3) {
+        if (allPlayer.size() == 3) {
             Player oppo2 = playerAction.getOppo2();
             allPlayers.add(oppo2);
         }
@@ -342,7 +373,6 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * @return the correct ServerResponse.
      */
     public ServerResponse playerLost (Player looser) throws WrongNumberPlayerException, ImpossibleTurnException {
-        numberOfPlayers = 2;
         String lostMessage = String.format("%s HAS LOST! Better luck next time!", looser.getUsername().toUpperCase());
         removeFromTheGame(looser);
         return new ServerResponse (Action.PLAYER_LOST, this.getCopy(), null, null, lostMessage);
@@ -357,6 +387,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
         player.getToken1().getTokenPosition().setFree();
         player.getToken2().getTokenPosition().setFree();
+        allPlayer.remove(player);
 
         // probabilmente dovrei anche deallocare cose e liberarne altre, ma confido nel garbage collector <3
 
@@ -383,14 +414,14 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             }
 
             case BLUE: {
-                if (numberOfPlayers == 2) {
+                if (allPlayer.size() == 2) {
                     this.turn = TokenColor.RED;
-                } else if (numberOfPlayers == 3) {
+                } else if (allPlayer.size() == 3) {
                     this.turn = TokenColor.YELLOW;
                 }
                 else {
                     throw new WrongNumberPlayerException(
-                            String.format("There are %d players and it is not allowed!", numberOfPlayers));
+                            String.format("There are %d players and it is not allowed!", allPlayer.size()));
                 }
                 break;
             }

@@ -51,6 +51,10 @@ public class Player {
         return this.username;
     }
 
+    public GodCard getMyGodCard() {
+        return this.myGodCard;
+    }
+
 
     /*  SETTER  */
 

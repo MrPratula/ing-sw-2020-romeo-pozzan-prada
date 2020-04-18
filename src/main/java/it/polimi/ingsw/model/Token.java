@@ -10,7 +10,7 @@ package it.polimi.ingsw.model;
  */
 public class Token {
 
-    private String id;
+    private int id;
     private TokenColor tokenColor;
     private Cell tokenPosition;
     private int oldHeight;
@@ -34,8 +34,8 @@ public class Token {
         return oldHeight;
     }
 
-    public String getId() {
-        return this.getId();
+    public int getId() {
+        return this.id;
     }
 
 

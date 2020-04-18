@@ -12,7 +12,8 @@ public class Battlefield implements Serializable {
 
     private static final int battlefieldSize = 5;
     private Cell[][] battlefield;
-    private List<Player> players;
+
+    private List<Player> players = null;
 
     /**
      * The constructor create a matrix N*N of Cell, where N is the battlefieldSize.
@@ -73,19 +74,15 @@ public class Battlefield implements Serializable {
             for (int y=0; y<battlefieldSize; y++){
                 battlefieldClone.battlefield[x][y]= battlefield[x][y];
             }
-    }       battlefieldClone.players = this.players;
+        }
 
         return battlefieldClone;
     }
 
 
-    public List<Player> getPlayers() {
-        return players;
-    }
 
-    public void setPlayers(List<Player> players) {
-        this.players = players;
-    }
+
+
 
     /**
      * This method is called by the client in asyncReadFromSocket

@@ -47,25 +47,7 @@ public class Controller implements Observer<PlayerAction> {
 
                 case MOVE:{
 
-                    Player player = playerAction.getPlayer();
-                    Player oppo1 = playerAction.getOppo1();
-                    List<Token> allTokens = new ArrayList<Token>();
-                    List<Player> allPlayers = new ArrayList<Player>();
-
-                    allPlayers.add(player);
-                    allPlayers.add(oppo1);
-
-                    if (playerAction.getOppo2()!=null) {
-                        Player oppo2 = playerAction.getOppo2();
-                        allPlayers.add(oppo2);
-                    }
-
-                    for (Player p: allPlayers) {
-                        allTokens.add(p.getToken1());
-                        allTokens.add(p.getToken2());
-                    }
-
-                    List<Cell> validMoves = model.computeValidMoves(playerAction.getTokenMain(), allTokens);
+                    List<Cell> validMoves = model.askValidMoves(playerAction);
                     Cell targetCell = playerAction.getCell();
 
                     for (Cell c: validMoves) {
