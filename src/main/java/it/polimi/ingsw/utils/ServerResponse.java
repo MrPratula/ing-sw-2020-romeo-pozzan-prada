@@ -25,10 +25,8 @@ public class ServerResponse {
 
         this.action = action;
         this.modelCopy = modelCopy;
-
         this.validMoves = validMoves;
         this.validBuilds = validBuilds;
-
         this.outMessage = outMessage;
     }
 

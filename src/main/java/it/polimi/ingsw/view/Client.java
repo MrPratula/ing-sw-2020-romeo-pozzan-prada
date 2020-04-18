@@ -12,14 +12,19 @@ import java.util.NoSuchElementException;
 
 public class Client extends Observable<ServerResponse> {
 
-    public Client() {
+    private int port;
+    private String ip;
+
+    public Client(String ip, int port) {
+        this.ip = ip;
+        this.port = port;
     }
 
 
     /**
-     * Run a server.
-     * It waits till he receive a ServerResponse via socket from the remoteView.
-     * When a ServerResponce is received, it is notified to the view.
+     * Runs the server.
+     * It waits till he receives a ServerResponse via socket from the remoteView.
+     * When a ServerResponse is received, it is notified to the view.
      */
     public void run() throws IOException, ClassNotFoundException, CellOutOfBattlefieldException {
 

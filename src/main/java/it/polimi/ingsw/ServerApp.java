@@ -7,11 +7,10 @@ import java.io.IOException;
 
 
 /**
- * Hello world!
+ * This class creates the server and runs it
  *
  */
 
-/*
 public class ServerApp
 {
     public static void main( String[] args ) {
@@ -19,10 +18,9 @@ public class ServerApp
         try {
             server = new Server();
             server.run();
-        } catch(IOException e){
+        } catch(IOException | ClassNotFoundException e){
             System.err.println("Impossible to start the server!\n" + e.getMessage());
         }
 
     }
 }
-*/
