@@ -28,6 +28,7 @@ public class RemoteView implements Observer<ServerResponse> {
         this.objectOutputStream = run();
     }
 
+
     /**
      * The run method is called in the constructor to set up a Socket connection and
      * return the way to send object.
@@ -46,6 +47,7 @@ public class RemoteView implements Observer<ServerResponse> {
         return objectOutputStream;
     }
 
+
     /**
      * This is the update of the observer ServerResponse
      * The remote view observe the model and when it changes it send here the ServerResponse.
@@ -55,8 +57,6 @@ public class RemoteView implements Observer<ServerResponse> {
      */
     @Override
     public void update(ServerResponse serverResponse) throws IOException {
-
         objectOutputStream.writeObject(serverResponse);
-
     }
 }
