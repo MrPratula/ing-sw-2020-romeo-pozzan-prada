@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.*;
+import it.polimi.ingsw.gameAction.ApolloComputeValidMoves;
 import it.polimi.ingsw.gameAction.ValidMoveContext;
 import it.polimi.ingsw.gameAction.SimpleComputeValidMoves;
 import it.polimi.ingsw.utils.Action;
@@ -26,7 +27,9 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         this.battlefield = battlefield;
     }
 
-    /*   GETTER   */
+    /*
+    GETTER
+    */
     public Battlefield getBattlefieldCopy() {
         return battlefield.getCopy();
     }
@@ -73,9 +76,10 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * on a build height more than 1 of it's own,
      * where there is a dome.
      *
+     * This take all the values needed for call the properly method based on the god card and
+     * and call the methods passing it all the parameters.
+     *
      * @param playerAction the message from the observer that contain all the information.
-     * @return a list of Cell in which that token can move
-     * @throws CellOutOfBattlefieldException if something goes wrong
      */
     public void validMoves(PlayerAction playerAction) throws CellOutOfBattlefieldException, WrongNumberPlayerException, ImpossibleTurnException, CellHeightException, IOException, ReachHeightLimitException {
 
@@ -107,6 +111,11 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         notify(serverResponse);
     }
 
+
+    /**
+     * @param playerActive a player in the game.
+     * @return all the opponent of that player.
+     */
     public List<Player> getOpponents(Player playerActive) {
 
         List<Player> opponents = null;
@@ -118,6 +127,11 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         return opponents;
     }
 
+
+    /**
+     * @param players a list of players.
+     * @return all the tokens of those players.
+     */
     public List<Token> getTokens(List<Player> players) {
         List<Token> tokens = null;
         for (Player p: players) {
@@ -127,6 +141,11 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         return tokens;
     }
 
+
+    /**
+     * @param players a list of players.
+     * @return a list of all those players god cards.
+     */
     public List<GodCard> getGodCards(List<Player> players) {
         List<GodCard> godCards = null;
         for (Player p: players) {
@@ -135,6 +154,11 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         return godCards;
     }
 
+
+    /**
+     * @param tokenId a unique identifier of a token.
+     * @return the token who is associated with that token id. Null if there is no token with that id
+     */
     public Token parseToken(int tokenId) {
         for (Player player: allPlayer) {
             if (tokenId == player.getToken1().getId())
@@ -146,11 +170,20 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     }
 
 
-
+    /**
+     * Here there is the ad-hoc call for the computeValidMoves method.
+     * It is based on the player-in-turn god card.
+     * If that god card do not modify the move than it calls the default move.
+     * More JavaDOC inside the ad-hoc method.
+     */
     public List<Cell> computeValidMoves(Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield) throws CellOutOfBattlefieldException {
 
         switch (myGodCard) {
             case APOLLO: {
+                ValidMoveContext thisMove = new ValidMoveContext(( new ApolloComputeValidMoves()));
+                return thisMove.executeValidMoves(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, battlefield);
+            }
+            case ARTEMIS: {
 
             }
             default: {
@@ -160,6 +193,12 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         }
     }
 
+
+    /**
+     * This is called by the controller just to check that the real player has given an appropriate input in the
+     * move phase.
+     * It works exactly like the computeValidMoves but there is no need to check that there are no valid moves.
+     */
     public List<Cell> askValidMoves (PlayerAction playerAction) throws CellOutOfBattlefieldException {
 
         Player playerActive = playerAction.getPlayer();
@@ -178,9 +217,6 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
         return computeValidMoves(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, getBattlefield());
     }
-
-
-
 
 
     /**
@@ -220,6 +256,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         return new ServerResponse(Action.TOKEN_NOT_MOVABLE, this.getCopy(), null, null, null);
     }
 
+
     /**
      * Here is where the move is effectively done.
      * The check for the legal move is made by the controller.
@@ -232,11 +269,11 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     public void performMove (PlayerAction playerAction) throws CellOutOfBattlefieldException, ReachHeightLimitException, CellHeightException, IOException, ImpossibleTurnException, WrongNumberPlayerException {
 
         Cell targetCell = playerAction.getCell();
-        Token movableToken = playerAction.getTokenMain();
+        Token movableToken = parseToken(playerAction.getTokenMain());
 
         movableToken.setTokenPosition(targetCell);
 
-        if (this.checkWin(playerAction.getTokenMain())) {
+        if (this.checkWin(movableToken)) {
 
             String winner = playerAction.getPlayer().getUsername();
             gameOver(winner);
@@ -280,7 +317,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
         Player oppo1 = playerAction.getOppo1();
 
-        Token canBuildToken = playerAction.getTokenMain();
+        Token canBuildToken = parseToken(playerAction.getTokenMain());
 
         List<Token> allTokens = new ArrayList<Token>();
         List<Player> allPlayers = new ArrayList<Player>();
@@ -356,6 +393,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         return oldHeight == 2 && newHeight == 3;
     }
 
+
     /**
      * This method create a GAME OVER message because someone has won the game.
      * @param winner the player who win.
@@ -366,6 +404,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         String victoryMessage = String.format("%s HAS WIN!", winner.toUpperCase());
         return new ServerResponse (Action.GAME_OVER, this.getCopy(), null, null, victoryMessage);
     }
+
 
     /**
      * This method remove a player from the game because there are 3 player and one lost.

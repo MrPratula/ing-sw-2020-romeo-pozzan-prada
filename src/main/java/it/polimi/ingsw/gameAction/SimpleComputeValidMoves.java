@@ -9,12 +9,37 @@ import it.polimi.ingsw.model.Token;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * SIMPLE COMPUTE VALID MOVES
+ *
+ * This method check for normal moves that a token can perform.
+ * All other variants of this works such as this one with some extra details.
+ * Those modification are specified in their JavaDOC.
+ * All that is not specified, works exactly like this one.
+ */
 public class SimpleComputeValidMoves implements MoveBehavior {
 
+
+    /**
+     * A token can move in all 8 Cells around himself with the following exceptions:
+     * he can not occupy a cell where is another token (regardless if it's his own or not);
+     * he can not move up on a height >1 of it's own;
+     * he can not move on a dome;
+     * he can not move out the battlefield.
+     * @param selectedToken the token a player want to move.
+     * @param otherToken the player-in-turn other token.
+     * @param enemyTokens a list of all enemy token.
+     * @param myGodCard the player-in-turn god card.
+     * @param enemyGodCards a list of all enemy god cards.
+     * @param battlefield the model's battlefield.
+     * @return a list of cell in which a player can move his token. It is null if he can not move that token
+     * @throws CellOutOfBattlefieldException if something goes wrong.
+     */
     @Override
     public List<Cell> computeValidMoves(Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield) throws CellOutOfBattlefieldException {
 
-        List<Cell> allMoves = null;
+        List<Cell> allMoves = new ArrayList<Cell>();
 
         int provX, provY;
 
@@ -30,17 +55,14 @@ public class SimpleComputeValidMoves implements MoveBehavior {
                 }
             }
         }
-
         for (Cell validCell: allMoves) {
-
-            allMoves.remove(battlefield.getCell(selectedToken.getTokenPosition()));
-            allMoves.remove(battlefield.getCell(otherToken.getTokenPosition()));
+            allMoves.remove(battlefield.getCell(selectedToken.getTokenPosition()));         // rimuovo la posizione in cui sono
+            allMoves.remove(battlefield.getCell(otherToken.getTokenPosition()));            // rimuovo la posizione del mio altro token
 
             for (Token enemyToken : enemyTokens) {
-                allMoves.remove(battlefield.getCell(enemyToken.getTokenPosition()));
+                allMoves.remove(battlefield.getCell(enemyToken.getTokenPosition()));        // rimuovo la posizione dei token dei miei nemici
             }
         }
-
         return allMoves;
     }
 }
