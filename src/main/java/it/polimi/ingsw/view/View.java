@@ -85,7 +85,7 @@ public abstract class View extends Observable<PlayerAction> implements Observer<
 
         switch (serverResponse.getAction()) {
 
-            case ASK_FOR_SELECTION:
+            case START_NEW_TURN:
                 try{
                     //Cell cell = serverResponse.getModelCopy().getBattlefieldCopy().getCell(posX,posY);
                     Action action = Action.SELECT_TOKEN;
