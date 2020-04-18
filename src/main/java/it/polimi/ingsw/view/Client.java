@@ -47,7 +47,8 @@ public class Client extends Observable<ServerResponse> {
             }
         } catch(NoSuchElementException e){
             System.out.println("Connection closed from the client side");
-        } catch (WrongNumberPlayerException e) {
+        }
+        /*catch (WrongNumberPlayerException e) {
             e.printStackTrace();
         } catch (CellHeightException e) {
             e.printStackTrace();
@@ -55,10 +56,16 @@ public class Client extends Observable<ServerResponse> {
             e.printStackTrace();
         } catch (ReachHeightLimitException e) {
             e.printStackTrace();
-        } finally {
+        } */
+           finally {
             System.out.println("Closing sockets.");
             ss.close();
             socket.close();
         }
+    }
+
+
+    public void notify(ServerResponse serverResponse){
+
     }
 }
