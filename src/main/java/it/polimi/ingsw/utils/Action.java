@@ -25,7 +25,7 @@ public enum Action {
     ASK_FOR_BUILD("Where do you want to build? (x,y)"),                 //3
 
     GAME_OVER("GAME OVER"),
-    TOKEN_NOT_MOVABLE("You can not move this token, please select a movable one!"),
+    TOKEN_NOT_MOVABLE("You can not move this token, please select a movable one! (x,y)"),
     PLAYER_LOST("You have lost the game, your token will be wiped!");
 
     private String info;
