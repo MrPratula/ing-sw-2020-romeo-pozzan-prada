@@ -388,20 +388,28 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * It call the incrementHeight on the cell that a player has chosen to build.
      * After a build has been made, the turn is updated.
      * @param playerAction the message from the observer that contain all the information.
-     * @throws CellHeightException if something goes wrong.
-     * @throws ReachHeightLimitException if something goes wrong.
-     * @throws WrongNumberPlayerException if something goes wrong.
-     * @throws ImpossibleTurnException if something goes wrong.
      */
-    public void performBuild (PlayerAction playerAction) throws CellHeightException, ReachHeightLimitException, WrongNumberPlayerException, ImpossibleTurnException {
+    public void performBuild (PlayerAction playerAction) throws WrongNumberPlayerException, ImpossibleTurnException, CellHeightException, ReachHeightLimitException {
 
+        Player playerActive = playerAction.getPlayer();
+        GodCard myGodCard = playerActive.getMyGodCard();
         Cell targetCell = playerAction.getCell();
-        battlefield.getCell(targetCell).incrementHeight();
+
+        switch (myGodCard) {
+            case ATLAS: {
+                
+            }
+            default:{
+                BuildContext thisBuild = new BuildContext(new SimpleBuild());
+                thisBuild.executePerformBuild(targetCell, getBattlefield());
+            }
+        }
+
+        //  After the build is done the turn is end and a new player has to begin his turn.
 
         this.updateTurn();
 
         String askForSelect = String.format("Player %s select the token you want to move (x,y)",this.turn.toString());
-
         ServerResponse serverResponse = new ServerResponse(Action.START_NEW_TURN, this.getCopy(), null, null, askForSelect);
     }
 
