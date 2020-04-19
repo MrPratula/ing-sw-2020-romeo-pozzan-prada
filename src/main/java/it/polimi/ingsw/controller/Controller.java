@@ -54,12 +54,15 @@ public class Controller implements Observer<PlayerAction> {
                         if (c.getPosX() == targetCell.getPosX() && c.getPosY() == targetCell.getPosY()){
                             model.performMove(playerAction);
                         }
+                        else {
+                            model.notifyWrongInput(playerAction);
+                        }
                     }
                     break;
                 }
 
                 case BUILD:{
-                    List<Cell> validBuilds = model.validBuilds(playerAction);
+                    List<Cell> validBuilds = model.askForValidBuilds(playerAction);
                     Cell targetCell = playerAction.getCell();
 
                     for (Cell c: validBuilds) {

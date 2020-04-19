@@ -1,9 +1,13 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.*;
-import it.polimi.ingsw.gameAction.ApolloComputeValidMoves;
-import it.polimi.ingsw.gameAction.ValidMoveContext;
-import it.polimi.ingsw.gameAction.SimpleComputeValidMoves;
+import it.polimi.ingsw.gameAction.build.BuildContext;
+import it.polimi.ingsw.gameAction.build.SimpleBuild;
+import it.polimi.ingsw.gameAction.move.ApolloMoves;
+import it.polimi.ingsw.gameAction.move.MoveContext;
+import it.polimi.ingsw.gameAction.move.SimpleMoves;
+import it.polimi.ingsw.gameAction.win.SimpleWin;
+import it.polimi.ingsw.gameAction.win.WinContext;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.Observable;
 import it.polimi.ingsw.utils.PlayerAction;
@@ -83,16 +87,20 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      */
     public void validMoves(PlayerAction playerAction) throws CellOutOfBattlefieldException, WrongNumberPlayerException, ImpossibleTurnException, CellHeightException, IOException, ReachHeightLimitException {
 
-        Player playerActive = playerAction.getPlayer();
-
-        List<Player> opponents = getOpponents(playerActive);
-        List<Token> enemyTokens = getTokens(opponents);
-
         int selectedTokenId = playerAction.getTokenMain();
         int otherTokenId = playerAction.getTokenOther();
 
         Token selectedToken = parseToken(selectedTokenId);
+        if (selectedToken == null || !selectedToken.getTokenColor().equals(turn)) {
+            this.notifyWrongInput(playerAction);
+            return;
+        }
         Token otherToken = parseToken(otherTokenId);
+
+        Player playerActive = playerAction.getPlayer();
+
+        List<Player> opponents = getOpponents(playerActive);
+        List<Token> enemyTokens = getTokens(opponents);
 
         GodCard myGodCard = playerActive.getMyGodCard();
         List<GodCard> enemyGodCards = getGodCards(opponents);
@@ -180,14 +188,14 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
         switch (myGodCard) {
             case APOLLO: {
-                ValidMoveContext thisMove = new ValidMoveContext(( new ApolloComputeValidMoves()));
+                MoveContext thisMove = new MoveContext(( new ApolloMoves()));
                 return thisMove.executeValidMoves(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, battlefield);
             }
             case ARTEMIS: {
 
             }
             default: {
-                ValidMoveContext thisMove = new ValidMoveContext(new SimpleComputeValidMoves());
+                MoveContext thisMove = new MoveContext(new SimpleMoves());
                 return thisMove.executeValidMoves(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, battlefield);
             }
         }
@@ -258,103 +266,121 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
 
     /**
-     * Here is where the move is effectively done.
+     * Here is where the move is parsed for ad-hoc method.
      * The check for the legal move is made by the controller.
      * After a player has moved his token, that token id checked for the win condition.
      * If true a message is sent to the client,
      * if not the game continue normally.
      * @param playerAction the message from the observer that contain all the information.
-     * @throws CellOutOfBattlefieldException if something goes wrong.
      */
     public void performMove (PlayerAction playerAction) throws CellOutOfBattlefieldException, ReachHeightLimitException, CellHeightException, IOException, ImpossibleTurnException, WrongNumberPlayerException {
 
+        Player playerActive = playerAction.getPlayer();
+        GodCard myGodCard = playerActive.getMyGodCard();
         Cell targetCell = playerAction.getCell();
-        Token movableToken = parseToken(playerAction.getTokenMain());
 
-        movableToken.setTokenPosition(targetCell);
+        int selectedTokenId = playerAction.getTokenMain();
+        int otherTokenId = playerAction.getTokenOther();
 
-        if (this.checkWin(movableToken)) {
+        Token selectedToken = parseToken(selectedTokenId);
+        if (selectedToken == null || !selectedToken.getTokenColor().equals(turn)) {
+            this.notifyWrongInput(playerAction);
+            return;
+        }
+        Token otherToken = parseToken(otherTokenId);
 
+        List<Player> opponents = getOpponents(playerActive);
+        List<Token> enemyTokens = getTokens(opponents);
+
+        List<GodCard> enemyGodCards = getGodCards(opponents);
+
+        switch (myGodCard) {
+            case APOLLO:{
+
+            }
+            case ARTEMIS:{
+
+            }
+            default:{
+                MoveContext thisMove = new MoveContext(new ApolloMoves());
+                thisMove.executeMove(selectedToken, otherToken, enemyTokens, targetCell, enemyGodCards, battlefield);
+            }
+        }
+
+        // check for a win move
+
+        if (this.checkWin(selectedToken, myGodCard, enemyGodCards)) {
             String winner = playerAction.getPlayer().getUsername();
             gameOver(winner);
+            return;
+        }
+
+        // If nobody has won then i aks for where to build
+
+        List<Cell> validBuilds = validBuilds(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, battlefield);
+
+        if (validBuilds == null) {
+            if (allPlayer.size() == 3) {
+                playerLost(playerAction.getPlayer());
+            }
+            else if(allPlayer.size() == 2) {
+                updateTurn();
+                String winner = getTurn().toString();
+                gameOver(winner);
+            }
         }
         else {
-            List<Cell> validBuilds = validBuilds(playerAction);
+            ServerResponse serverResponse = new ServerResponse(Action.ASK_FOR_BUILD, this.getCopy(), null, validBuilds, null);
+            notify(serverResponse);
+        }
+    }
 
-            if (validBuilds == null) {
-                if (allPlayer.size() == 3) {
-                    playerLost(playerAction.getPlayer());
-                }
-                else if(allPlayer.size() == 2) {
-                    updateTurn();
-                    String winner = getTurn().toString();
-                    gameOver(winner);
-                }
+
+    /**
+     * It parses the input for get the corret method based on the god card.
+     * A player CAN build around the token he moved.
+     * A token can NOT build out of the battlefield,
+     * where there is a token (himself too),
+     * where there is a dome.
+     * @return a List of Cell in which the token just moved can build.
+     */
+    public List<Cell> validBuilds (Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield) throws CellOutOfBattlefieldException {
+
+        switch (myGodCard) {
+            case ATLAS:{
+
             }
-            else {
-                ServerResponse serverResponse = new ServerResponse(Action.ASK_FOR_BUILD, this.getCopy(), null, validBuilds, null);
-                notify(serverResponse);
+            default:{
+                BuildContext thisBuild = new BuildContext(new SimpleBuild());
+                return thisBuild.executeValidBuilds(selectedToken, otherToken, enemyTokens, enemyGodCards, battlefield);
             }
         }
     }
 
 
     /**
-     * It check for the legal Cell in which a player can build.
-     * A player CAN build around the token he moved.
-     * A token can NOT build out of the battlefield,
-     * where there is a token (himself too),
-     * where there is a dome.
+     * This is called by the controller just to check if the real player has given a correct value.
+     * It works exactly like the validBuilds method.
      * @param playerAction the message from the observer that contain all the information.
-     * @return a list of Cell in which the player can build around the token he moved.
-     * @throws CellOutOfBattlefieldException if something goes wrong.
+     * @return a list of Cell in which a player can build.
      */
-    public List<Cell> validBuilds (PlayerAction playerAction) throws CellOutOfBattlefieldException {
+    public List<Cell> askForValidBuilds (PlayerAction playerAction) throws CellOutOfBattlefieldException {
 
-        int provX, provY;
+        Player playerActive = playerAction.getPlayer();
 
-        Player player = playerAction.getPlayer();
+        List<Player> opponents = getOpponents(playerActive);
+        List<Token> enemyTokens = getTokens(opponents);
 
-        Player oppo1 = playerAction.getOppo1();
+        int selectedTokenId = playerAction.getTokenMain();
+        int otherTokenId = playerAction.getTokenOther();
 
-        Token canBuildToken = parseToken(playerAction.getTokenMain());
+        Token selectedToken = parseToken(selectedTokenId);
+        Token otherToken = parseToken(otherTokenId);
 
-        List<Token> allTokens = new ArrayList<Token>();
-        List<Player> allPlayers = new ArrayList<Player>();
-        List<Cell> buildableCells = new ArrayList<>();
+        GodCard myGodCard = playerActive.getMyGodCard();
+        List<GodCard> enemyGodCards = getGodCards(opponents);
 
-        allPlayers.add(player);
-        allPlayers.add(oppo1);
-
-        if (allPlayer.size() == 3) {
-            Player oppo2 = playerAction.getOppo2();
-            allPlayers.add(oppo2);
-        }
-
-        for (Player p: allPlayers) {
-            allTokens.add(p.getToken1());
-            allTokens.add(p.getToken2());
-        }
-
-        for (int i=-1; i<2; i++){                                                   // ciclo di +-1 intorno alla posizione del token
-            provX = canBuildToken.getTokenPosition().getPosX()+i;                            // per poter ottenere le 8 caselle in cui
-            for (int j=-1; j<2; j++){                                               // posso costruire
-                provY = canBuildToken.getTokenPosition().getPosY()+j;
-
-                if ( (provX>=0 && provX <5) && (provY>=0 && provY<5) &&                       // la cella provv è dentro le dimensioni del battlefield
-                        (!battlefield.getCell(provX,provY).getIsDome()) ) {        // non deve essere una cupola
-
-                    for (Token t:allTokens) {
-                        if (provX != t.getTokenPosition().getPosX() &&                 // il token non può costruire dove c'è un altro token
-                                provY != t.getTokenPosition().getPosX()) {             // compreso sè stesso, quindi non può costruire sotto i piedi
-
-                            buildableCells.add(battlefield.getCell(provX, provY));
-                        }
-                    }
-                }
-            }
-        }
-        return buildableCells;
+        return validBuilds(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, getBattlefield());
     }
 
 
@@ -382,15 +408,25 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
     /**
      * A player win the game if he goes up from level 2 to level 3
-     * @param token the token to check if he verify the win condition
+     * @param movedToken the token to check if he verify the win condition
      * @return true if the token's owner win, false else.
      */
-    public boolean checkWin (Token token) {
+    public boolean checkWin (Token movedToken, GodCard myGodCard, List<GodCard> enemyGodCards) {
 
-        int oldHeight = token.getOldHeight();
-        int newHeight = token.getTokenPosition().getHeight();
+        boolean didIWin;
 
-        return oldHeight == 2 && newHeight == 3;
+        switch (myGodCard) {
+            case PAN: {
+
+            }
+            default: {
+
+                WinContext thisWin = new WinContext(new SimpleWin());
+                didIWin = thisWin.executeCheckWin(movedToken);
+
+            }
+        }
+        return didIWin;
     }
 
 
@@ -490,4 +526,63 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
         notify(serverResponse);
     }
+
+
+    /**
+     * It is called by the controller to notify the player-in-turn that he has insert a wrong or
+     * a non expected input.
+     * @param playerAction the message from the observer that contain all the information.
+     */
+    public void notifyWrongInput(PlayerAction playerAction) throws ImpossibleTurnException, IOException, CellHeightException, WrongNumberPlayerException, ReachHeightLimitException, CellOutOfBattlefieldException {
+
+        String whatAction;
+
+        switch (playerAction.getAction()) {
+            case SELECT_TOKEN: {
+                whatAction = "Please insert the position of a token you can move.";
+            }
+            case MOVE: {
+                whatAction = "Please insert a valid position where you can move your token.";
+            }
+            default: {
+                whatAction = Action.WRONG_INPUT.getInfo();
+            }
+        }
+
+        String errorMessage = String.format("%s your choice is not valid.\n%s",
+                playerAction.getPlayer().getUsername().toUpperCase(), whatAction);
+
+        ServerResponse serverResponse = new ServerResponse(Action.WRONG_INPUT, null, null, null, errorMessage);
+        notify(serverResponse);
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -10,23 +10,23 @@ public enum Action {
 
     /*    FROM CLIENT TO SERVER     */
 
-    SELECT_TOKEN("A player has selected a token"),                      //1
-    MOVE("A player has moved a token"),                           //2
-    BUILD("A player has made a build. Switch turn"),                    //3
+    SELECT_TOKEN("A player has selected a token"),
+    MOVE("A player has moved a token"),
+    BUILD("A player has made a build. Switch turn"),
 
 
     /*    FROM SERVER TO CLIENT     */
 
     NOT_YOUR_TURN("Wait your turn to perform your action!"),
 
-    START_NEW_TURN("Your turn is ended!"),  //maybe inutile, o almeno non qui
-    ASK_FOR_SELECTION(" Which token do you want to move? (x,y)"),       //1
-    ASK_FOR_MOVE("Where do you want to move your token? (x,y)"),        //2
-    ASK_FOR_BUILD("Where do you want to build? (x,y)"),                 //3
+    START_NEW_TURN("Your turn is ended!"),
+    ASK_FOR_MOVE("Where do you want to move your token? (x,y)"),
+    ASK_FOR_BUILD("Where do you want to build? (x,y)"),
 
     GAME_OVER("GAME OVER"),
+    PLAYER_LOST("You have lost the game, your token will be wiped!"),
     TOKEN_NOT_MOVABLE("You can not move this token, please select a movable one! (x,y)"),
-    PLAYER_LOST("You have lost the game, your token will be wiped!");
+    WRONG_INPUT("Please insert a valid choice!");
 
     private String info;
 

@@ -38,6 +38,10 @@ public class Token {
         return this.id;
     }
 
+    public TokenColor getTokenColor() {
+        return this.tokenColor;
+    }
+
 
     /*   SETTER   */
 
