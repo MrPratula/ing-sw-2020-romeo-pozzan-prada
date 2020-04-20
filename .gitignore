@@ -6,5 +6,5 @@
 !pom.xml
 !resourses/
 !uml/
-!src/
+!src/*
 !javadoc/
