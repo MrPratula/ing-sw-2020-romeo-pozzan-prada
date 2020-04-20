@@ -1,6 +1,6 @@
-#IGNORE EVERYTHING
+#ignore everything
 *
-#EXCEPT THIS
+#except this
 !.gitignore
 !README.md
 !pom.xml
