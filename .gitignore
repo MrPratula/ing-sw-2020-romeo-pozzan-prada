@@ -1,10 +1,16 @@
-#ignore everything
+  
+#IGNORE EVERYTHING
 *
-#except this
+
+#QUESTO PER LE CARTELLE E ** VUOL DIRE RICORSIVO
+!*/
+
+#EXCEPT THIS
+
 !.gitignore
 !README.md
 !pom.xml
 !resourses/
 !uml/
-!src/
+!src/**
 !javadoc/
