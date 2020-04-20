@@ -15,6 +15,12 @@ public class Battlefield implements Serializable {
 
     private List<Player> players = null;
 
+
+    //just to make the test
+    public void setPlayers(List<Player> players) {
+        this.players = players;
+    }
+
     /**
      * The constructor create a matrix N*N of Cell, where N is the battlefieldSize.
      */

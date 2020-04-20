@@ -73,8 +73,8 @@ public abstract class View extends Observable<PlayerAction> implements Observer<
      */
     public List<Player> computeOpponentPlayers (ServerResponse serverResponse){
 
-        int numberOfPlayers = serverResponse.getModelCopy().getNumberOfPlayers();
-        List<Player> players = serverResponse.getModelCopy().getBattlefield().getPlayers();
+        int numberOfPlayers = serverResponse.getModelCopy().getAllPlayers().size();
+        List<Player> players = serverResponse.getModelCopy().getAllPlayers();
         Player opp1 = null, opp2 = null;
         if(numberOfPlayers==2){
             opp2 = null;
@@ -134,7 +134,7 @@ public abstract class View extends Observable<PlayerAction> implements Observer<
                 Player opp2 = computeOpponentPlayers(serverResponse).get(1);
                 try{
                     Action action = Action.SELECT_TOKEN;
-                    PlayerAction playerAction = new PlayerAction(action,getPlayer(),opp1,opp2,selectedToken,otherToken,null);
+                    PlayerAction playerAction = new PlayerAction(action,getPlayer(),opp1,opp2,selectedToken.getId(),otherToken.getId(),null);
                     notifyRemoteController(playerAction);
                 } catch (NullPointerException e){
                     System.out.println(e.getMessage());
@@ -164,7 +164,7 @@ public abstract class View extends Observable<PlayerAction> implements Observer<
                     }
                     */
                     Action action = Action.MOVE;
-                    PlayerAction playerAction = new PlayerAction(action,getPlayer(),opp1,opp2,selectedToken,otherToken,cell);
+                    PlayerAction playerAction = new PlayerAction(action,getPlayer(),opp1,opp2,selectedToken.getId(),otherToken.getId(),cell);
                     notifyRemoteController(playerAction);////////////////////
 
                 } catch (NullPointerException e){
@@ -196,7 +196,7 @@ public abstract class View extends Observable<PlayerAction> implements Observer<
                     }
                     */
                     Action action = Action.BUILD;
-                    PlayerAction playerAction = new PlayerAction(action,getPlayer(),opp1,opp2,selectedToken,otherToken,cell);
+                    PlayerAction playerAction = new PlayerAction(action,getPlayer(),opp1,opp2,selectedToken.getId(),otherToken.getId(),cell);
                     notifyRemoteController(playerAction);////////////////////
 
                 } catch (NullPointerException e){

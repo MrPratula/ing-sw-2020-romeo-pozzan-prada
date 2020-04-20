@@ -25,7 +25,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
     private Battlefield battlefield;
     private TokenColor turn;
-    private List<Player> allPlayer;
+    private List<Player> allPlayers;
 
     public Model(Battlefield battlefield) {
         this.battlefield = battlefield;
@@ -34,7 +34,12 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     /*
     GETTER
     */
-    public Battlefield getBattlefieldCopy() {
+
+    public List<Player> getAllPlayers() {
+        return allPlayers;
+    }
+
+        public Battlefield getBattlefieldCopy() {
         return battlefield.getCopy();
     }
 
@@ -127,7 +132,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     public List<Player> getOpponents(Player playerActive) {
 
         List<Player> opponents = null;
-        for (Player p: allPlayer) {
+        for (Player p: allPlayers) {
             if (!playerActive.getUsername().equals(p.getUsername())) {
                 opponents.add(p);
             }
@@ -168,7 +173,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * @return the token who is associated with that token id. Null if there is no token with that id
      */
     public Token parseToken(int tokenId) {
-        for (Player player: allPlayer) {
+        for (Player player: allPlayers) {
             if (tokenId == player.getToken1().getId())
                 return player.getToken1();
             else if(tokenId == player.getToken2().getId())
@@ -241,10 +246,10 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     public ServerResponse checkLoseForMove(Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield, List<Player> opponents, Player playerActive) throws CellOutOfBattlefieldException, WrongNumberPlayerException, ImpossibleTurnException {
 
         if (otherToken == null) {                              // se il secondo token non esiste
-            if (allPlayer.size()==2) {                                             // se ci sono 2 player
+            if (allPlayers.size()==2) {                                             // se ci sono 2 player
                 return gameOver(opponents.get(0).getUsername());
             }
-            if (allPlayer.size() == 3) {                                             // se ci sono 3 player
+            if (allPlayers.size() == 3) {                                             // se ci sono 3 player
                 return playerLost(playerActive);
             }
         }
@@ -253,10 +258,10 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             validMoves2 = computeValidMoves(otherToken, null, enemyTokens, myGodCard, enemyGodCards, battlefield);
 
             if (validMoves2 == null) {                                         // se non lo posso muovere
-                if (allPlayer.size() == 2) {                                     // se ci sono 2 player
+                if (allPlayers.size() == 2) {                                     // se ci sono 2 player
                     return gameOver(opponents.get(0).getUsername());
                 }
-            if (allPlayer.size() == 3) {                                         // se ci sono 3 player
+            if (allPlayers.size() == 3) {                                         // se ci sono 3 player
                     return playerLost(playerActive);
                 }
             }
@@ -320,10 +325,10 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         List<Cell> validBuilds = validBuilds(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, battlefield);
 
         if (validBuilds == null) {
-            if (allPlayer.size() == 3) {
+            if (allPlayers.size() == 3) {
                 playerLost(playerAction.getPlayer());
             }
-            else if(allPlayer.size() == 2) {
+            else if(allPlayers.size() == 2) {
                 updateTurn();
                 String winner = getTurn().toString();
                 gameOver(winner);
@@ -470,7 +475,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
         player.getToken1().getTokenPosition().setFree();
         player.getToken2().getTokenPosition().setFree();
-        allPlayer.remove(player);
+        allPlayers.remove(player);
 
         // probabilmente dovrei anche deallocare cose e liberarne altre, ma confido nel garbage collector <3
 
@@ -497,14 +502,14 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             }
 
             case BLUE: {
-                if (allPlayer.size() == 2) {
+                if (allPlayers.size() == 2) {
                     this.turn = TokenColor.RED;
-                } else if (allPlayer.size() == 3) {
+                } else if (allPlayers.size() == 3) {
                     this.turn = TokenColor.YELLOW;
                 }
                 else {
                     throw new WrongNumberPlayerException(
-                            String.format("There are %d players and it is not allowed!", allPlayer.size()));
+                            String.format("There are %d players and it is not allowed!", allPlayers.size()));
                 }
                 break;
             }
