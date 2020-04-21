@@ -16,8 +16,6 @@
      basterà continuare con il metodo finora implementato.
   */
 
-    // In base alla decisione che verrà presa, questa classe sarà più o meno utile.
-
 
 
 
