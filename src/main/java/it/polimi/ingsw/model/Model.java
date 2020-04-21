@@ -356,6 +356,9 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             case ATLAS:{
 
             }
+            case DEMETER:{
+
+            }
             default:{
                 BuildContext thisBuild = new BuildContext(new SimpleBuild());
                 return thisBuild.executeValidBuilds(selectedToken, otherToken, enemyTokens, enemyGodCards, battlefield);
