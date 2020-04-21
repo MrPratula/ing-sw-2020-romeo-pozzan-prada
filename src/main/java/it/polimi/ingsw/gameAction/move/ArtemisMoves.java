@@ -1,7 +1,6 @@
 package it.polimi.ingsw.gameAction.move;
 
 import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
-import it.polimi.ingsw.gameAction.move.MoveBehavior;
 import it.polimi.ingsw.model.Battlefield;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.GodCard;
@@ -54,8 +53,10 @@ public class ArtemisMoves implements MoveBehavior {
     }
 
 
-
-
+    /**
+     * This is not needed because the move is the same as the simple move.
+     * Though I have to write this because of the interface, but this is never called (hopefully).
+     */
     @Override
     public void performMove(Token selectedToken, Token otherToken, List<Token> enemyTokens, Cell targetCell, List<GodCard> enemyGodCards, Battlefield battlefield) {
 

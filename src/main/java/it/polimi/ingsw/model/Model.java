@@ -4,8 +4,10 @@ import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.gameAction.build.BuildContext;
 import it.polimi.ingsw.gameAction.build.SimpleBuild;
 import it.polimi.ingsw.gameAction.move.ApolloMoves;
+import it.polimi.ingsw.gameAction.move.ArtemisMoves;
 import it.polimi.ingsw.gameAction.move.MoveContext;
 import it.polimi.ingsw.gameAction.move.SimpleMoves;
+import it.polimi.ingsw.gameAction.win.PanWin;
 import it.polimi.ingsw.gameAction.win.SimpleWin;
 import it.polimi.ingsw.gameAction.win.WinContext;
 import it.polimi.ingsw.utils.Action;
@@ -197,7 +199,8 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                 return thisMove.executeValidMoves(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, battlefield);
             }
             case ARTEMIS: {
-
+                MoveContext thisMove = new MoveContext(( new ArtemisMoves()));
+                return thisMove.executeValidMoves(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, battlefield);
             }
             default: {
                 MoveContext thisMove = new MoveContext(new SimpleMoves());
@@ -301,13 +304,11 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
         switch (myGodCard) {
             case APOLLO:{
-
-            }
-            case ARTEMIS:{
-
+                MoveContext thisMove = new MoveContext(new ApolloMoves());
+                thisMove.executeMove(selectedToken, otherToken, enemyTokens, targetCell, enemyGodCards, battlefield);
             }
             default:{
-                MoveContext thisMove = new MoveContext(new ApolloMoves());
+                MoveContext thisMove = new MoveContext(new SimpleMoves());
                 thisMove.executeMove(selectedToken, otherToken, enemyTokens, targetCell, enemyGodCards, battlefield);
             }
         }
@@ -430,13 +431,12 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
         switch (myGodCard) {
             case PAN: {
-
+                WinContext thisWin = new WinContext(new PanWin());
+                didIWin = thisWin.executeCheckWin(movedToken);
             }
             default: {
-
                 WinContext thisWin = new WinContext(new SimpleWin());
                 didIWin = thisWin.executeCheckWin(movedToken);
-
             }
         }
         return didIWin;

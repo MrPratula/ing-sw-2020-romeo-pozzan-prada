@@ -67,11 +67,23 @@ public class SimpleMoves implements MoveBehavior {
     }
 
 
-
+    /**
+     * It handle the move.
+     * Just take the target position and set it for the to-be-moved token.
+     * Need to set free the old position and set occupied the new position.
+     * @param selectedToken the token a player want to move.
+     * @param otherToken the player-in-turn other token.
+     * @param enemyTokens a list of all enemy token.
+     * @param targetCell the cell I want to move my token.
+     * @param enemyGodCards a list of all enemy god cards.
+     * @param battlefield the model's battlefield.
+     */
     @Override
     public void performMove(Token selectedToken, Token otherToken, List<Token> enemyTokens, Cell targetCell, List<GodCard> enemyGodCards, Battlefield battlefield) {
 
+        selectedToken.getTokenPosition().setFree();
         selectedToken.setTokenPosition(targetCell);
+        selectedToken.getTokenPosition().setOccupied();
 
     }
 }

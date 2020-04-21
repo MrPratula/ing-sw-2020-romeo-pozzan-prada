@@ -10,6 +10,11 @@ import it.polimi.ingsw.model.Token;
 
 import java.util.List;
 
+
+/**
+ * This is the interface for the build behavior.
+ * For more info about this interface read the Move's interface JavaDOC.
+ */
 public interface BuildBehavior {
 
     public List<Cell> computeValidBuilds(Token selectedToken, Token otherToken, List<Token> enemyTokens, List<GodCard> enemyGodCards, Battlefield battlefield) throws CellOutOfBattlefieldException;

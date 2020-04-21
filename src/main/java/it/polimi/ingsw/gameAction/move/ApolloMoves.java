@@ -1,7 +1,6 @@
 package it.polimi.ingsw.gameAction.move;
 
 import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
-import it.polimi.ingsw.gameAction.move.MoveBehavior;
 import it.polimi.ingsw.model.Battlefield;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.GodCard;
@@ -50,10 +49,28 @@ public class ApolloMoves implements MoveBehavior {
         return allMoves;
     }
 
+
+    /**
+     *  Here is handled the swap. It takes the to-be-moved token's position and the target-token position and swap it.
+     * @param () the same as the simple perform move.
+     */
     @Override
     public void performMove(Token selectedToken, Token otherToken, List<Token> enemyTokens, Cell targetCell, List<GodCard> enemyGodCards, Battlefield battlefield) {
 
+        Cell selectedTokenPosition = selectedToken.getTokenPosition();
+
+        if (targetCell.getThereIsPlayer()) {
+            Token swapToken;
+            for(Token t: enemyTokens) {
+                if (t.getTokenPosition().equals(selectedTokenPosition)){
+                    swapToken = t;
+                    swapToken.setTokenPosition(selectedTokenPosition);
+                    swapToken.getTokenPosition().setOccupied();
+                    break;
+                }
+            }
+        }
+        selectedToken.setTokenPosition(targetCell);
+        selectedToken.getTokenPosition().setOccupied();
     }
-
-
 }

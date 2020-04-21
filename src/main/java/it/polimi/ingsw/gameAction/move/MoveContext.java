@@ -8,6 +8,12 @@ import it.polimi.ingsw.model.Token;
 
 import java.util.List;
 
+
+/**
+ * Here is where the model can chose what kind of move has to be called.
+ * It will construct a MoveContext with a certain strategy and then call the correct method on this
+ * strategy-kind MoveContext. It will call the corresponding method on the class the model has specified.
+ */
 public class MoveContext {
 
    private MoveBehavior moveStrategy;

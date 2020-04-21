@@ -11,9 +11,23 @@ import it.polimi.ingsw.model.Token;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * A token can build in all 8 Cells around himself except
+ * the cell's that are a dome,
+ * the cell's where there is a player.
+ */
 public class SimpleBuild implements BuildBehavior{
 
-
+    /**
+     * Check the said-above conditions and create a list of valid cells.
+     * @param selectedToken the token a player want to move,
+     * @param otherToken the other player token.
+     * @param enemyTokens a list bof all enemy tokens.
+     * @param enemyGodCards a list of all enemy god cards.
+     * @param battlefield the model's battlefield.
+     * @return a list of cell in which a player can build.
+     */
     @Override
     public List<Cell> computeValidBuilds(Token selectedToken, Token otherToken, List<Token> enemyTokens, List<GodCard> enemyGodCards, Battlefield battlefield) throws CellOutOfBattlefieldException {
 
@@ -45,9 +59,14 @@ public class SimpleBuild implements BuildBehavior{
         return buildableCells;
     }
 
+
+    /**
+     * This just receive a Cell and call the incrementHeight method on that cell.
+     * @param targetCell the cell to be incremented.
+     * @param battlefield the model's battlefield.
+     */
     @Override
     public void performBuild(Cell targetCell, Battlefield battlefield) throws CellHeightException, ReachHeightLimitException {
         battlefield.getCell(targetCell).incrementHeight();
-
     }
 }

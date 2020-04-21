@@ -10,6 +10,11 @@ import it.polimi.ingsw.model.Token;
 
 import java.util.List;
 
+
+/**
+ * This is the context for the build behavior.
+ * For more info about a context read the MoveContext's JavaDOC.
+ */
 public class BuildContext {
 
     private BuildBehavior buildStrategy;
