@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.gameAction.build.BuildContext;
+import it.polimi.ingsw.gameAction.build.DemeterBuild;
 import it.polimi.ingsw.gameAction.build.SimpleBuild;
 import it.polimi.ingsw.gameAction.move.ApolloMoves;
 import it.polimi.ingsw.gameAction.move.ArtemisMoves;
@@ -357,7 +358,11 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
             }
             case DEMETER:{
-
+                /*  Demeter può costruire e poi costruire una seconda volta ma non nella stella cella. Questo significa
+                    che la prima build, di fatto, è una SimpleBuild.
+                 */
+                BuildContext thisBuild = new BuildContext(( new SimpleBuild()));
+                return thisBuild.executeValidBuilds(selectedToken, otherToken, enemyTokens, enemyGodCards, battlefield);
             }
             default:{
                 BuildContext thisBuild = new BuildContext(new SimpleBuild());
@@ -407,6 +412,9 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         switch (myGodCard) {
             case ATLAS: {
                 
+            }
+            case DEMETER:{
+
             }
             default:{
                 BuildContext thisBuild = new BuildContext(new SimpleBuild());
