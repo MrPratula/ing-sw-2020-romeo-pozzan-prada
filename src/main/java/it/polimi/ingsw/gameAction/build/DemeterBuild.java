@@ -1,3 +1,26 @@
+
+
+
+//                              IMPORTANTE IL COMMENTO CHE SEGUE
+
+
+/*  Per com'è fatto il programma ora, il giocatore inserire solo una cella in cui vuole costruire
+     non due, per cui per sfruttare il potere di demeter basterà chiedere al giocatore di inserire
+     una seconda volta un'altra cella in cui costruire. Nel fare ciò si deve controllare che le due
+     celle non siano uguali.
+     Una alternativa, che possiamo vedere insieme (ora non la implemento per evitare problemi con
+     git se state lavorando anche voi) può essere quella di, sapendo la god card del giocatore,
+     chiedergli le due celle in cui vuole costruire ( e metterle dentro una lista per esempio ). In
+     tal caso bisognerà rivedere i vari metodi.
+     Ovviamente per i giocatori che non hanno in nessun caso la faccoltà di costruire due volte
+     basterà continuare con il metodo finora implementato.
+  */
+
+    // In base alla decisione che verrà presa, questa classe sarà più o meno utile.
+
+
+
+
 package it.polimi.ingsw.gameAction.build;
 
 import it.polimi.ingsw.controller.CellHeightException;
@@ -19,38 +42,7 @@ public class DemeterBuild implements BuildBehavior {
 
     @Override
     public List<Cell> computeValidBuilds(Token selectedToken, Token otherToken, List<Token> enemyTokens, List<GodCard> enemyGodCards, Battlefield battlefield) throws CellOutOfBattlefieldException {
-
-        /*  PROMEMORIA
-            Questo sotto è lo stesso codice della SimpleBuild. Questo commento verrà cancellato una volta
-            scritto il codice giusto per demeter.
-         */
-
-        int provX, provY;
-        List<Cell> buildableCells = new ArrayList<Cell>();
-
-        enemyTokens.add(selectedToken);
-        if (otherToken!=null)
-            enemyTokens.add(otherToken);
-
-        for (int i=-1; i<2; i++){                                                   // ciclo di +-1 intorno alla posizione del token
-            provX = selectedToken.getTokenPosition().getPosX()+i;                            // per poter ottenere le 8 caselle in cui
-            for (int j=-1; j<2; j++){                                               // posso costruire
-                provY = selectedToken.getTokenPosition().getPosY()+j;
-
-                if ( (provX>=0 && provX <5) && (provY>=0 && provY<5) &&                       // la cella provv è dentro le dimensioni del battlefield
-                        (!battlefield.getCell(provX,provY).getIsDome()) ) {        // non deve essere una cupola
-
-                    for (Token t: enemyTokens) {
-                        if (provX != t.getTokenPosition().getPosX() &&                 // il token non può costruire dove c'è un altro token
-                                provY != t.getTokenPosition().getPosX()) {             // compreso sè stesso, quindi non può costruire sotto i piedi
-
-                            buildableCells.add(battlefield.getCell(provX, provY));
-                        }
-                    }
-                }
-            }
-        }
-        return buildableCells;
+        return null;
     }
 
     @Override
