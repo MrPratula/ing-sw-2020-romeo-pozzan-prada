@@ -103,11 +103,6 @@ public abstract class View extends Observable<PlayerAction> implements Observer<
     }
 
 
-
-// prova git fede
-
-
-
     public void notifyRemoteController(PlayerAction playerAction) throws CellOutOfBattlefieldException, ReachHeightLimitException, CellHeightException, IOException, ImpossibleTurnException, WrongNumberPlayerException {
         notify(playerAction);
     }
@@ -158,7 +153,7 @@ public abstract class View extends Observable<PlayerAction> implements Observer<
                 opp2 = computeOpponentPlayers(serverResponse).get(1);
                 try{
                     //cell is the position we want to move the token
-                    Cell cell = serverResponse.getModelCopy().getBattlefieldCopy().getCell(posX,posY);
+                    Cell cell = serverResponse.getModelCopy().getBattlefield().getCell(posX,posY);
                    /* if( !serverResponse.getValidBuilds().contains(cell) ){  //non so se funziona la contains, al massimo facciamo il check con le pos
                         System.out.println("Error! You can't select this cell, try again! ");
                     }
@@ -190,7 +185,7 @@ public abstract class View extends Observable<PlayerAction> implements Observer<
                 opp2 = computeOpponentPlayers(serverResponse).get(1);
                 try{
                     //cell is the cell we want to increment
-                    Cell cell = serverResponse.getModelCopy().getBattlefieldCopy().getCell(posX,posY);
+                    Cell cell = serverResponse.getModelCopy().getBattlefield().getCell(posX,posY);
                    /* if( !serverResponse.getValidBuilds().contains(cell) ){  //non so se funziona la contains, al massimo facciamo il check con le pos
                         System.out.println("Error! You can't select this cell, try again! ");
                     }

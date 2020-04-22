@@ -68,13 +68,15 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
     /**
      * It returns a partial copy of the model.
-     * It contains the battlefield ready to be printed
+     * It contains the battlefield ready to be printed, the turn and the players
      *
      * @return modelCopy
      */
-    public Model getCopy() {
+    public ModelUtils getCopy() {
         Battlefield battlefieldCopy = battlefield.getCopy();
-        Model modelCopy = new Model(battlefieldCopy);
+        ModelUtils modelCopy = new ModelUtils(battlefieldCopy);  //added players and turn
+        modelCopy.setAllPlayers((this.getAllPlayers()));
+        modelCopy.setTurn(this.getTurn());
         return modelCopy;
     }
 
@@ -343,7 +345,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
 
     /**
-     * It parses the input for get the corret method based on the god card.
+     * It parses the input for get the correct method based on the god card.
      * A player CAN build around the token he moved.
      * A token can NOT build out of the battlefield,
      * where there is a token (himself too),

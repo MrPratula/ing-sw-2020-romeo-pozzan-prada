@@ -2,6 +2,7 @@ package it.polimi.ingsw.utils;
 
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Model;
+import it.polimi.ingsw.model.ModelUtils;
 
 import java.util.List;
 
@@ -14,14 +15,14 @@ import java.util.List;
 public class ServerResponse {
 
     private final Action action;
-    private final Model modelCopy;
+    private final ModelUtils modelCopy;
 
     private final List<Cell> validMoves;
     private final List<Cell> validBuilds;
 
     private String outMessage;
 
-    public ServerResponse(Action action, Model modelCopy, List<Cell> validMoves, List<Cell> validBuilds, String outMessage) {
+    public ServerResponse(Action action, ModelUtils modelCopy, List<Cell> validMoves, List<Cell> validBuilds, String outMessage) {
 
         this.action = action;
         this.modelCopy = modelCopy;
@@ -34,7 +35,7 @@ public class ServerResponse {
         return this.action;
     }
 
-    public Model getModelCopy() {
+    public ModelUtils getModelCopy() {
         return this.modelCopy;
     }
 
