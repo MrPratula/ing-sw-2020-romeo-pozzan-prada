@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.gameAction.build.BuildContext;
+import it.polimi.ingsw.gameAction.build.DemeterBuild;
 import it.polimi.ingsw.gameAction.build.SimpleBuild;
 import it.polimi.ingsw.gameAction.move.ApolloMoves;
 import it.polimi.ingsw.gameAction.move.ArtemisMoves;
@@ -359,7 +360,11 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
             }
             case DEMETER:{
-
+                /*  Demeter può costruire e poi costruire una seconda volta ma non nella stella cella. Questo significa
+                    che la prima build, di fatto, è una SimpleBuild.
+                 */
+                BuildContext thisBuild = new BuildContext(( new SimpleBuild()));
+                return thisBuild.executeValidBuilds(selectedToken, otherToken, enemyTokens, enemyGodCards, battlefield);
             }
             default:{
                 BuildContext thisBuild = new BuildContext(new SimpleBuild());
@@ -409,6 +414,22 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         switch (myGodCard) {
             case ATLAS: {
                 
+            }
+            case DEMETER:{
+                /*  Per com'è fatto il programma ora, il giocatore inserire solo una cella in cui vuole costruire
+                    non due, per cui per sfruttare il potere di demeter basterà chiedere al giocatore di inserire
+                    una seconda volta un'altra cella in cui costruire. Nel fare ciò si deve controllare che le due
+                    celle non siano uguali.
+                    Una alternativa, che possiamo vedere insieme (ora non la implemento per evitare problemi con
+                    git se state lavorando anche voi) può essere quella di, sapendo la god card del giocatore,
+                    chiedergli le due celle in cui vuole costruire ( e metterle dentro una lista per esempio ). In
+                    tal caso bisognerà rivedere i vari metodi.
+                    Ovviamente per i giocatori che non hanno in nessun caso la faccoltà di costruire due volte
+                    basterà continuare con il metodo finora implementato.
+                 */
+
+                BuildContext thisBuild = new BuildContext(new SimpleBuild());
+                thisBuild.executePerformBuild(targetCell, getBattlefield());
             }
             default:{
                 BuildContext thisBuild = new BuildContext(new SimpleBuild());
