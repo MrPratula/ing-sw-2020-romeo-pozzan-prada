@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.*;
+import it.polimi.ingsw.gameAction.build.AtlasBuild;
 import it.polimi.ingsw.gameAction.build.BuildContext;
 import it.polimi.ingsw.gameAction.build.DemeterBuild;
 import it.polimi.ingsw.gameAction.build.SimpleBuild;
@@ -9,6 +10,11 @@ import it.polimi.ingsw.gameAction.move.*;
 import it.polimi.ingsw.gameAction.win.PanWin;
 import it.polimi.ingsw.gameAction.win.SimpleWin;
 import it.polimi.ingsw.gameAction.win.WinContext;
+import it.polimi.ingsw.gameAction.move.ApolloMoves;
+import it.polimi.ingsw.gameAction.move.ArtemisMoves;
+import it.polimi.ingsw.gameAction.move.MoveContext;
+import it.polimi.ingsw.gameAction.move.SimpleMoves;
+import it.polimi.ingsw.gameAction.win.*;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.Observable;
 import it.polimi.ingsw.utils.PlayerAction;
@@ -311,7 +317,9 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             case APOLLO:{
                 MoveContext thisMove = new MoveContext(new ApolloMoves());
                 thisMove.executeMove(selectedToken, otherToken, enemyTokens, targetCell, enemyGodCards, battlefield);
+                break;
             }
+
             default:{
                 MoveContext thisMove = new MoveContext(new SimpleMoves());
                 thisMove.executeMove(selectedToken, otherToken, enemyTokens, targetCell, enemyGodCards, battlefield);
@@ -358,9 +366,6 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     public List<Cell> validBuilds (Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield) throws CellOutOfBattlefieldException {
 
         switch (myGodCard) {
-            case ATLAS:{
-
-            }
             case DEMETER:{
                 /*  Demeter può costruire e poi costruire una seconda volta ma non nella stella cella. Questo significa
                     che la prima build, di fatto, è una SimpleBuild.
@@ -411,15 +416,25 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * After a build has been made, the turn is updated.
      * @param playerAction the message from the observer that contain all the information.
      */
-    public void performBuild (PlayerAction playerAction) throws WrongNumberPlayerException, ImpossibleTurnException, CellHeightException, ReachHeightLimitException {
+    public void performBuild (PlayerAction playerAction) throws WrongNumberPlayerException, ImpossibleTurnException, CellHeightException, ReachHeightLimitException, CellOutOfBattlefieldException {
 
         Player playerActive = playerAction.getPlayer();
         GodCard myGodCard = playerActive.getMyGodCard();
         Cell targetCell = playerAction.getCell();
+        boolean wantToUsePower = playerAction.getDoWantUsePower();
 
         switch (myGodCard) {
             case ATLAS: {
-                
+                BuildContext thisBuild;
+                if (wantToUsePower){
+                    thisBuild = new BuildContext(new AtlasBuild());
+                }
+                else{
+                    thisBuild = new BuildContext(new SimpleBuild());
+                }
+                thisBuild.executePerformBuild(targetCell, getBattlefield());
+                break;
+
             }
             case DEMETER:{
                 /*  Per com'è fatto il programma ora, il giocatore inserire solo una cella in cui vuole costruire
@@ -436,10 +451,28 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
                 BuildContext thisBuild = new BuildContext(new SimpleBuild());
                 thisBuild.executePerformBuild(targetCell, getBattlefield());
+                break;
             }
             default:{
                 BuildContext thisBuild = new BuildContext(new SimpleBuild());
                 thisBuild.executePerformBuild(targetCell, getBattlefield());
+            }
+        }
+        // After the build need to check if chronus win.
+
+        List<GodCard> allGodcards = getGodCards(allPlayers);
+
+        if (allGodcards.contains(GodCard.CHRONUS)){
+            WinContext thisWin = new WinContext(new ChronusWin());
+            if (thisWin.executeCheckWin(null, battlefield)) {
+                String winner = null;
+                for (Player p: allPlayers){
+                    if (p.getMyGodCard().equals(GodCard.CHRONUS)){
+                        winner = p.getUsername();
+                    }
+                }
+                assert winner != null;
+                gameOver(winner);
             }
         }
 
@@ -457,18 +490,25 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * @param movedToken the token to check if he verify the win condition
      * @return true if the token's owner win, false else.
      */
-    public boolean checkWin (Token movedToken, GodCard myGodCard, List<GodCard> enemyGodCards) {
+    public boolean checkWin (Token movedToken, GodCard myGodCard, List<GodCard> enemyGodCards) throws CellOutOfBattlefieldException {
 
         boolean didIWin;
 
         switch (myGodCard) {
             case PAN: {
                 WinContext thisWin = new WinContext(new PanWin());
-                didIWin = thisWin.executeCheckWin(movedToken);
+                didIWin = thisWin.executeCheckWin(movedToken, null);
+                break;
             }
             default: {
                 WinContext thisWin = new WinContext(new SimpleWin());
-                didIWin = thisWin.executeCheckWin(movedToken);
+                didIWin = thisWin.executeCheckWin(movedToken, null);
+            }
+        }
+        if (enemyGodCards.contains(GodCard.HERA)){
+            if (didIWin){
+                WinContext thisWin = new WinContext(new HeraWin());
+                didIWin = thisWin.executeCheckWin(movedToken, null);
             }
         }
         return didIWin;
@@ -479,9 +519,8 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * This method create a GAME OVER message because someone has won the game.
      * @param winner the player who win.
      * @return the correct ServerResponse.
-     * @throws CellOutOfBattlefieldException if something goes wrong.
      */
-    public ServerResponse gameOver (String winner) throws CellOutOfBattlefieldException {
+    public ServerResponse gameOver (String winner) {
         String victoryMessage = String.format("%s HAS WIN!", winner.toUpperCase());
         return new ServerResponse (Action.GAME_OVER, this.getCopy(), null, null, victoryMessage);
     }

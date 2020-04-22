@@ -1,5 +1,7 @@
 package it.polimi.ingsw.gameAction.win;
 
+import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
+import it.polimi.ingsw.model.Battlefield;
 import it.polimi.ingsw.model.Token;
 
 
@@ -9,6 +11,6 @@ import it.polimi.ingsw.model.Token;
  */
 public interface WinBehavior {
 
-    public boolean checkWin(Token movedToken);
+    public boolean checkWin(Token movedToken, Battlefield battlefield) throws CellOutOfBattlefieldException;
 
 }
