@@ -8,11 +8,8 @@ public enum GodCard {
     ATLAS("Your Worker may build a dome at any level including the ground"),
     DEMETER("Your Worker may build one additional time, but not on the same space."),
     HEPHAESTUS("Your Worker may build one additional block (not dome) on top of your first block"),
-    MINOTAUR("Your Worker move into an opponent Worker’s space, if their Worker can be forced one space straight backwards to an unoccupied space at any level."),
-    PAN("You also win if your Worker moves down two or more levels."),
-    PROMETHEUS("If your Worker does not move up, it may build both before and after moving."),
 
-    ZEUS("Your Worker may build a block under itself.");
+    ZEUS("Your Worker may build a block under itself."),
     MINOTAUR("Your Worker move into an opponent Worker’s space, if their Worker can be forced one space straight backwards to an unoccupied space at any level"),
     PAN("You also win if your Worker moves down two or more levels"),
     PROMETHEUS("If your Worker does not move up, it may build both before and after moving"),
@@ -20,8 +17,7 @@ public enum GodCard {
     CHRONUS("You also win when there are at least five Complete Towers on the board"),
     HERA("An opponent can not win by moving on to a perimeter space"),
     HESTIA("Your worker may build one additional time. The additional build can not be on a perimeter space"),
-    LIMUS("Opponents Workers can not build on spaces neighboring your workers, unless building a dome to create a Complete Tower"),
-    ZEUS("Your Worker may build under itself in its current space, forcing it up one level. You do not win by forcing yourself up to the third level");
+    LIMUS("Opponents Workers can not build on spaces neighboring your workers, unless building a dome to create a Complete Tower");
 
 
 
