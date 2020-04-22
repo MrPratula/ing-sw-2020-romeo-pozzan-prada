@@ -11,5 +11,5 @@
 !README.md
 !pom.xml
 !resourses/
-!deliveries/uml/
+!deliveries/uml/**
 !src/**
