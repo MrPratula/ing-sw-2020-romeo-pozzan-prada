@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gameAction.win;
 
+import it.polimi.ingsw.model.Battlefield;
 import it.polimi.ingsw.model.Token;
 
 
@@ -15,7 +16,7 @@ public class SimpleWin implements WinBehavior{
      * @return true if the old height was 2 and the new height is 3. False else.
      */
     @Override
-    public boolean checkWin(Token movedToken) {
+    public boolean checkWin(Token movedToken, Battlefield battlefield) {
         int oldHeight = movedToken.getOldHeight();
         int newHeight = movedToken.getTokenPosition().getHeight();
         return oldHeight == 2 && newHeight == 3;

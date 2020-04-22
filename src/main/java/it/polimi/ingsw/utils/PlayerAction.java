@@ -55,6 +55,10 @@ public class PlayerAction {
         return this.cell;
     }
 
+    public boolean getDoWantUsePower() {
+        return doWantUsePower;
+    }
+
     public void processAction(){
 
     }
