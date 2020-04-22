@@ -11,16 +11,13 @@ import java.util.List;
 
 
 /**
- * ARTEMIS
- *
- * Your Worker may move one additional time, but not back to its initial space
+ * ARTEMIS: Your Worker may move one additional time, but not back to its initial space
  */
 public class ArtemisMoves implements MoveBehavior {
 
 
     /**
-     * Just scan between -2 and +2 around the token position
-     * instead of -1 and +1.
+     * Just scan between -2 and +2 around the token position instead of -1 and +1.
      * Other cell restriction such as height limitation or cell occupied still applies.
      */
     @Override

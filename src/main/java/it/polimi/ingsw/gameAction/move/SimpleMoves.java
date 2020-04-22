@@ -86,4 +86,8 @@ public class SimpleMoves implements MoveBehavior {
         selectedToken.getTokenPosition().setOccupied();
 
     }
+
 }
+
+
+

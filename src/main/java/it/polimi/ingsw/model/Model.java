@@ -4,10 +4,8 @@ import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.gameAction.build.BuildContext;
 import it.polimi.ingsw.gameAction.build.DemeterBuild;
 import it.polimi.ingsw.gameAction.build.SimpleBuild;
-import it.polimi.ingsw.gameAction.move.ApolloMoves;
-import it.polimi.ingsw.gameAction.move.ArtemisMoves;
-import it.polimi.ingsw.gameAction.move.MoveContext;
-import it.polimi.ingsw.gameAction.move.SimpleMoves;
+import it.polimi.ingsw.gameAction.build.ZeusBuild;
+import it.polimi.ingsw.gameAction.move.*;
 import it.polimi.ingsw.gameAction.win.PanWin;
 import it.polimi.ingsw.gameAction.win.SimpleWin;
 import it.polimi.ingsw.gameAction.win.WinContext;
@@ -205,6 +203,10 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                 MoveContext thisMove = new MoveContext(( new ArtemisMoves()));
                 return thisMove.executeValidMoves(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, battlefield);
             }
+            case MINOTAUR: {
+                MoveContext thisMove = new MoveContext(( new MinotaurMoves()));
+                return thisMove.executeValidMoves(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, battlefield);
+            }
             default: {
                 MoveContext thisMove = new MoveContext(new SimpleMoves());
                 return thisMove.executeValidMoves(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, battlefield);
@@ -364,6 +366,10 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                     che la prima build, di fatto, è una SimpleBuild.
                  */
                 BuildContext thisBuild = new BuildContext(( new SimpleBuild()));
+                return thisBuild.executeValidBuilds(selectedToken, otherToken, enemyTokens, enemyGodCards, battlefield);
+            }
+            case ZEUS:{
+                BuildContext thisBuild = new BuildContext(new ZeusBuild());
                 return thisBuild.executeValidBuilds(selectedToken, otherToken, enemyTokens, enemyGodCards, battlefield);
             }
             default:{

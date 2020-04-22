@@ -11,9 +11,7 @@ import java.util.List;
 
 
 /**
- * APOLLO
- *
- * Your Worker may move into an opponent Worker’s space by forcing their Worker to the space yours just vacated.
+ * APOLLO : Your Worker may move into an opponent Worker’s space by forcing their Worker to the space yours just vacated.
  */
 public class ApolloMoves implements MoveBehavior {
 
