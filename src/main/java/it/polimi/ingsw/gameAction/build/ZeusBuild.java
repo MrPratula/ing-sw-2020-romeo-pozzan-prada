@@ -18,7 +18,7 @@ public class ZeusBuild implements BuildBehavior {
      * @return a list of cell in which a player can build, including the one of the actual selected token.
      */
     @Override
-    public List<Cell> computeValidBuilds(Token selectedToken, Token otherToken, List<Token> enemyTokens, List<GodCard> enemyGodCards, Battlefield battlefield) throws CellOutOfBattlefieldException {
+    public List<Cell> computeValidBuilds(Token selectedToken, Token otherToken, List<Token> enemyTokens, List<GodCard> enemyGodCards, Battlefield battlefield, List<Player> allPlayers) throws CellOutOfBattlefieldException {
         List<Cell> validBuilds = new ArrayList<>();
 
             int provX, provY;

@@ -1,11 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.*;
-import it.polimi.ingsw.gameAction.build.AtlasBuild;
-import it.polimi.ingsw.gameAction.build.BuildContext;
-import it.polimi.ingsw.gameAction.build.DemeterBuild;
-import it.polimi.ingsw.gameAction.build.SimpleBuild;
-import it.polimi.ingsw.gameAction.build.ZeusBuild;
+import it.polimi.ingsw.gameAction.build.*;
 import it.polimi.ingsw.gameAction.move.*;
 import it.polimi.ingsw.gameAction.win.PanWin;
 import it.polimi.ingsw.gameAction.win.SimpleWin;
@@ -365,77 +361,40 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      */
     public List<Cell> validBuilds (Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield) throws CellOutOfBattlefieldException {
 
+        List<Cell> validBuildsProvv = new ArrayList<>();
+
         switch (myGodCard) {
             case DEMETER:{
                 /*  Demeter può costruire e poi costruire una seconda volta ma non nella stella cella. Questo significa
                     che la prima build, di fatto, è una SimpleBuild.
                  */
                 BuildContext thisBuild = new BuildContext(( new SimpleBuild()));
-                List<Cell> validBuildsProvv = thisBuild.executeValidBuilds(selectedToken, otherToken, enemyTokens, enemyGodCards, battlefield);
-                return checkForLimus(selectedToken, validBuildsProvv, allPlayers, enemyGodCards, battlefield);
+                validBuildsProvv = thisBuild.executeValidBuilds(selectedToken, otherToken, enemyTokens, enemyGodCards, battlefield, null);
             }
             case ZEUS:{
                 BuildContext thisBuild = new BuildContext(new ZeusBuild());
-                List<Cell> validBuildsProvv = thisBuild.executeValidBuilds(selectedToken, otherToken, enemyTokens, enemyGodCards, battlefield);
-                return checkForLimus(selectedToken, validBuildsProvv, allPlayers, enemyGodCards, battlefield);
+                validBuildsProvv = thisBuild.executeValidBuilds(selectedToken, otherToken, enemyTokens, enemyGodCards, battlefield, null);
             }
             default:{
                 BuildContext thisBuild = new BuildContext(new SimpleBuild());
-                List<Cell> validBuildsProvv = thisBuild.executeValidBuilds(selectedToken, otherToken, enemyTokens, enemyGodCards, battlefield);
-                return checkForLimus(selectedToken, validBuildsProvv, allPlayers, enemyGodCards, battlefield);
+                validBuildsProvv = thisBuild.executeValidBuilds(selectedToken, otherToken, enemyTokens, enemyGodCards, battlefield, null);
             }
         }
-    }
 
-
-    /**
-     * This function is called right after the calculation of the valid builds.
-     * Therefore here we receive the valid builds, and for the power of Limus,
-     * he is in the game, it removes from the valid builds of other players
-     * the cells near Limus' tokens, except if he want to build a dome.
-     * @param selectedToken : the token selected that has to build
-     * @param validBuildsProvv : provvisory valid builds
-     * @param allPlayers : all the players in the game
-     * @param enemyGodCards : all the godcards of the opponent players
-     * @param battlefield: the board game
-     * @return the real valid builds
-     */
-    private List<Cell> checkForLimus(Token selectedToken, List<Cell> validBuildsProvv, List<Player> allPlayers, List<GodCard> enemyGodCards, Battlefield battlefield) throws CellOutOfBattlefieldException {
-
-        //HERE CHANGES FOR LIMUS
         if (enemyGodCards.contains(GodCard.LIMUS)){
-            for (Player p : allPlayers) {
-                if(p.getMyGodCard().equals((GodCard.LIMUS))){                                           // se in gioco c'è limus
-                    List<Cell> limusTokensPosition = new ArrayList<>();                                 //metto le posizioni dei token di limus
-                    limusTokensPosition.add(p.getToken1().getTokenPosition());
-                    limusTokensPosition.add(p.getToken1().getTokenPosition());
-                    int provX, provY, i, j;
-
-                    for(Cell c : limusTokensPosition){
-                            for(i=-1; i<2; i++){
-                                provX = c.getPosX()+i;
-                                for(j=-1; j<2; j++){
-                                    provY = c.getPosY()+j;
-                                    if(battlefield.getCell(provX,provY).getHeight()!=3){     //puo costruire un dome tranquillamente
-
-                                        if(validBuildsProvv.contains(battlefield.getCell(provX, provY))){
-                                            validBuildsProvv.remove(battlefield.getCell(provX, provY));
-                                        }
-                                    }
-
-
-                                }
-                            }
-                        //else    puo costruire un dome tranquillamente
-                    }
-
-
+            BuildContext thisBuild = new BuildContext(new LimusBuild());
+            List<Cell> toRemove = thisBuild.executeValidBuilds(selectedToken, otherToken, enemyTokens, enemyGodCards, battlefield, allPlayers);
+            for(Cell c: toRemove){                                  //lavora diversamente: toglie quelle vicine a LIMUS
+                if(validBuildsProvv.contains(c)){
+                    validBuildsProvv.remove(c);
                 }
             }
         }
 
         return validBuildsProvv;
     }
+
+
 
 
     /**
