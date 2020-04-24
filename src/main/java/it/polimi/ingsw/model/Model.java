@@ -385,8 +385,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
         switch (myGodCard) {
             case DEMETER:{
-
-                BuildContext thisBuild = new BuildContext(( new SimpleBuild()));
+                BuildContext thisBuild = new BuildContext(( new DemeterBuild()));
                 validBuilds = thisBuild.executeValidBuilds(selectedToken, otherToken, enemyTokens, enemyGodCards, battlefield, null);
                 break;
             }
@@ -451,6 +450,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         Player playerActive = playerAction.getPlayer();
         GodCard myGodCard = playerActive.getMyGodCard();
         Cell targetCell = playerAction.getFirstCell();
+        Cell second_cell = playerAction.getSecondtCell();
         boolean wantToUsePower = playerAction.getDoWantUsePower();
 
         switch (myGodCard) {
@@ -462,18 +462,24 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                 else{
                     thisBuild = new BuildContext(new SimpleBuild());
                 }
-                thisBuild.executePerformBuild(targetCell, getBattlefield());
+                thisBuild.executePerformBuild(targetCell, null, getBattlefield());
                 break;
 
             }
             case DEMETER:{
-                BuildContext thisBuild = new BuildContext(new SimpleBuild());
-                thisBuild.executePerformBuild(targetCell, getBattlefield());
+                BuildContext thisBuild;
+                if(wantToUsePower){
+                    thisBuild = new BuildContext(new DemeterBuild());
+                }
+                else{
+                    thisBuild = new BuildContext(new SimpleBuild());
+                }
+                thisBuild.executePerformBuild(targetCell, second_cell, getBattlefield());
                 break;
             }
             default:{
                 BuildContext thisBuild = new BuildContext(new SimpleBuild());
-                thisBuild.executePerformBuild(targetCell, getBattlefield());
+                thisBuild.executePerformBuild(targetCell, null, getBattlefield());
             }
         }
         // After the build need to check if chronus win.

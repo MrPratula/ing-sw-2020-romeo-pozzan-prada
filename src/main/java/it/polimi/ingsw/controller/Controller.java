@@ -1,10 +1,7 @@
 package it.polimi.ingsw.controller;
 
 ;
-import it.polimi.ingsw.model.Cell;
-import it.polimi.ingsw.model.Model;
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.Token;
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.utils.PlayerAction;
 import it.polimi.ingsw.utils.Observer;
 
@@ -67,7 +64,21 @@ public class Controller implements Observer<PlayerAction> {
 
                     for (Cell c: validBuilds) {
                         if (c.getPosX() == targetCell.getPosX() && c.getPosY() == targetCell.getPosY()){
-                            model.performBuild(playerAction);
+                            /* Se la godcard è demeter e vuole usare il potere, deve controllare che le due celle
+                                abbiamo almeno una posizione (x o y) diversa. */
+                            if (playerAction.getPlayer().getMyGodCard() == GodCard.DEMETER && playerAction.getDoWantUsePower()) {
+                                Cell second_cell = playerAction.getSecondtCell();
+                                if ((targetCell.getPosX() != second_cell.getPosX()) || (targetCell.getPosY() != second_cell.getPosY())) {
+                                    model.performBuild(playerAction);
+                                } else {
+                                    model.notifyWrongInput(playerAction);
+                                }
+                            } else {
+                                model.performBuild(playerAction);
+                            }
+                        }
+                        else{
+                            model.notifyWrongInput(playerAction);
                         }
                     }
                     break;
