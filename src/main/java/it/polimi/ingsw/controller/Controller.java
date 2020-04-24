@@ -1,10 +1,7 @@
 package it.polimi.ingsw.controller;
 
 ;
-import it.polimi.ingsw.model.Cell;
-import it.polimi.ingsw.model.Model;
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.Token;
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.utils.PlayerAction;
 import it.polimi.ingsw.utils.Observer;
 
@@ -39,6 +36,21 @@ public class Controller implements Observer<PlayerAction> {
         if( model.isPlayerTurn(playerAction.getPlayer()) ){
 
             switch(playerAction.getAction()){
+
+                case PROMETHEUS_POWER:{
+                    ///////////////////////////////
+                            //simple build - prometheus move, simple build
+
+                            List<Cell> validBuilds = model.askForValidBuilds(playerAction);
+                            Cell targetCell = playerAction.getCell();
+
+                            for (Cell c: validBuilds) {
+                                if (c.getPosX() == targetCell.getPosX() && c.getPosY() == targetCell.getPosY()){
+                                    model.performBuild(playerAction);
+                                }
+                            }
+                            break;
+                }
 
                 case SELECT_TOKEN: {
                     model.validMoves(playerAction);
