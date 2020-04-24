@@ -42,7 +42,7 @@ public class Controller implements Observer<PlayerAction> {
                             //simple build - prometheus move, simple build
 
                             List<Cell> validBuilds = model.askForValidBuilds(playerAction);
-                            Cell targetCell = playerAction.getCell();
+                            Cell targetCell = playerAction.getFirstCell();
 
                             for (Cell c: validBuilds) {
                                 if (c.getPosX() == targetCell.getPosX() && c.getPosY() == targetCell.getPosY()){
