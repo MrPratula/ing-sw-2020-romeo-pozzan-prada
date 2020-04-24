@@ -45,16 +45,10 @@ public class Controller implements Observer<PlayerAction> {
 
                     for (Cell c: validBuilds) {
                         if (c.getPosX() == targetCell.getPosX() && c.getPosY() == targetCell.getPosY()) {
-                            /* Se la godcard è demeter e vuole usare il potere, deve controllare che le due celle
-                                abbiamo almeno una posizione (x o y) diversa. */
-                            if (playerAction.getPlayer().getMyGodCard() == GodCard.DEMETER && playerAction.getDoWantUsePower()) {
-                                Cell second_cell = playerAction.getSecondtCell();
-                                if ((targetCell.getPosX() != second_cell.getPosX()) || (targetCell.getPosY() != second_cell.getPosY())) {
-                                    model.performBuild(playerAction);
-                                } else {
-                                    model.notifyWrongInput(playerAction);
-                                }
-                            }
+                            model.performBuild(playerAction);
+                        }
+                        else{
+                            model.notifyWrongInput(playerAction);
                         }
                     }
 
