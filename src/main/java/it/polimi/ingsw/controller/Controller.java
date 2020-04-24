@@ -48,7 +48,7 @@ public class Controller implements Observer<PlayerAction> {
                 case MOVE:{
 
                     List<Cell> validMoves = model.askValidMoves(playerAction);
-                    Cell targetCell = playerAction.getCell();
+                    Cell targetCell = playerAction.getFirstCell();
 
                     for (Cell c: validMoves) {
                         if (c.getPosX() == targetCell.getPosX() && c.getPosY() == targetCell.getPosY()){
@@ -63,7 +63,7 @@ public class Controller implements Observer<PlayerAction> {
 
                 case BUILD:{
                     List<Cell> validBuilds = model.askForValidBuilds(playerAction);
-                    Cell targetCell = playerAction.getCell();
+                    Cell targetCell = playerAction.getFirstCell();
 
                     for (Cell c: validBuilds) {
                         if (c.getPosX() == targetCell.getPosX() && c.getPosY() == targetCell.getPosY()){
