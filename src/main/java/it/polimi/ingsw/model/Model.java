@@ -389,6 +389,11 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                 validBuilds = thisBuild.executeValidBuilds(selectedToken, otherToken, enemyTokens, enemyGodCards, battlefield, null);
                 break;
             }
+            case HEPHAESTUS:{
+                BuildContext thisBuild = new BuildContext(( new HephaestusBuild()));
+                validBuilds = thisBuild.executeValidBuilds(selectedToken, otherToken, enemyTokens, enemyGodCards, battlefield, null);
+                break;
+            }
             case ZEUS:{
                 BuildContext thisBuild = new BuildContext(new ZeusBuild());
                 validBuilds = thisBuild.executeValidBuilds(selectedToken, otherToken, enemyTokens, enemyGodCards, battlefield, null);
@@ -464,12 +469,22 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                 }
                 thisBuild.executePerformBuild(targetCell, null, getBattlefield());
                 break;
-
             }
             case DEMETER:{
                 BuildContext thisBuild;
                 if(wantToUsePower){
                     thisBuild = new BuildContext(new DemeterBuild());
+                }
+                else{
+                    thisBuild = new BuildContext(new SimpleBuild());
+                }
+                thisBuild.executePerformBuild(targetCell, second_cell, getBattlefield());
+                break;
+            }
+            case HEPHAESTUS:{
+                BuildContext thisBuild;
+                if(wantToUsePower){
+                    thisBuild = new BuildContext(new HephaestusBuild());
                 }
                 else{
                     thisBuild = new BuildContext(new SimpleBuild());
