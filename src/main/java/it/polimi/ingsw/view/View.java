@@ -112,6 +112,56 @@ public abstract class View extends Observable<PlayerAction> implements Observer<
 
         switch (serverResponse.getAction()) {
 
+
+            case ASK_FOR_PROMETHEUS_POWER:
+                //prints the battlefield
+                serverResponse.getModelCopy().getBattlefield().printCLI();
+                //prints the message for the user
+                System.out.print(serverResponse.getAction().getInfo());
+                //compute the user input, IN THIS CASE IT'S JUST yes/no
+                Scanner in = new Scanner(System.in);
+                String input = in.nextLine();
+                boolean aux = false;
+                if(input.equals("yes")){
+                    aux = true;
+                    try{
+                        Action action = Action.PROMETHEUS_POWER;
+                        PlayerAction playerAction = new PlayerAction(action,getPlayer(),null,null,0,0,null, aux);
+                        notifyRemoteController(playerAction);////////////////////
+                    } catch (NullPointerException e){
+                        System.out.println(e.getMessage());
+                    } catch (CellOutOfBattlefieldException e) {
+                        e.printStackTrace();//////////////////auto
+                    }
+                }
+                else if(input.equals("no")){
+                    //prints the message for the user
+                    System.out.println("Where do you want to move your token? (x,y)");
+                            //System.out.print(serverResponse.getAction().getInfo());    errato
+                    //compute the user input
+                    int posX = Integer.parseInt(getUserInput()[0]);
+                    int posY = Integer.parseInt(getUserInput()[1]);
+                    //calculates which token has been selected
+                    Token selectedToken = computeTokens(serverResponse, posX, posY).get(0);
+                    Token otherToken = computeTokens(serverResponse, posX, posY).get(1);
+                    //compute opponent players
+                    Player opp1 = computeOpponentPlayers(serverResponse).get(0);
+                    Player opp2 = computeOpponentPlayers(serverResponse).get(1);
+                    try{
+                        Action action = Action.SELECT_TOKEN;
+                        PlayerAction playerAction = new PlayerAction(action,getPlayer(),opp1,opp2,selectedToken.getId(),otherToken.getId(),null, false);
+                        notifyRemoteController(playerAction);
+                    } catch (NullPointerException e){
+                        System.out.println(e.getMessage());
+                    } catch (CellOutOfBattlefieldException e) {
+                        e.printStackTrace();//////////////////auto
+                    }
+                }
+                else{
+                    throw new IllegalArgumentException (); //dubbia gestione del wrong input
+                }
+                break;
+
             case START_NEW_TURN:                       //casi mergeati, l'user deve fare la stessa azione, quindi li ho accumunati
             case TOKEN_NOT_MOVABLE:
                 //prints the battlefield

@@ -37,6 +37,21 @@ public class Controller implements Observer<PlayerAction> {
 
             switch(playerAction.getAction()){
 
+                case PROMETHEUS_POWER:{
+                    ///////////////////////////////
+                            //simple build - prometheus move, simple build
+
+                            List<Cell> validBuilds = model.askForValidBuilds(playerAction);
+                            Cell targetCell = playerAction.getCell();
+
+                            for (Cell c: validBuilds) {
+                                if (c.getPosX() == targetCell.getPosX() && c.getPosY() == targetCell.getPosY()){
+                                    model.performBuild(playerAction);
+                                }
+                            }
+                            break;
+                }
+
                 case SELECT_TOKEN: {
                     model.validMoves(playerAction);
                     break;

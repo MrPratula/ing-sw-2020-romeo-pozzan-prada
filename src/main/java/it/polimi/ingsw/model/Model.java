@@ -217,6 +217,11 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                 validMoves = thisMove.executeValidMoves(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, battlefield, null);
                 break;
             }
+            case PROMETHEUS:{  //in this case the user does not want to use the godpower  ==> uneuseful, it will be a default case
+                MoveContext thisMove = new MoveContext(( new SimpleMoves()));
+                validMoves = thisMove.executeValidMoves(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, battlefield, null);
+                break;
+            }
             default: {
                 MoveContext thisMove = new MoveContext(new SimpleMoves());
                 validMoves = thisMove.executeValidMoves(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, battlefield, null);
@@ -513,6 +518,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                 thisBuild.executePerformBuild(targetCell, null, getBattlefield());
             }
         }
+
         // After the build need to check if chronus win.
 
         List<GodCard> allGodcards = getGodCards(allPlayers);
@@ -529,6 +535,13 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                 assert winner != null;
                 gameOver(winner);
             }
+        }
+
+        // prometheus check
+        if(playerAction.getPlayer().getMyGodCard().equals((GodCard.PROMETHEUS))  && playerAction.getDoWantUsePower()){          //qui prometeo ha fatto solo la prima build, come dice il boolean
+            String askForSelectPrometheus = String.format("Remember: now you can't move-up! Please %s, select the token you want to move (x,y)",this.turn.toString());      //quindi da qui potrà partire la prometheusMove e poi simple build come da routine
+            ServerResponse serverResponse = new ServerResponse(Action.START_NEW_TURN, this.getCopy(), null, null, askForSelectPrometheus);
+            // HERE PROMETHEUS TURN DOESN'T END, SO WE DON'T APPLY THE UPDATE TURN
         }
 
         //  After the build is done the turn is end and a new player has to begin his turn.
