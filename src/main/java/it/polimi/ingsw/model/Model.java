@@ -26,7 +26,7 @@ import java.util.*;
  */
 public class Model extends Observable<ServerResponse> implements Cloneable {
 
-    private Battlefield battlefield;
+    private final Battlefield battlefield;
     private TokenColor turn;
     private List<Player> allPlayers;
     private boolean didAthenaMovedUp;
@@ -41,10 +41,6 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
     public List<Player> getAllPlayers() {
         return allPlayers;
-    }
-
-        public Battlefield getBattlefieldCopy() {
-        return battlefield.getCopy();
     }
 
     public Battlefield getBattlefield() {
@@ -140,7 +136,9 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         List<Player> opponents = null;
         for (Player p: allPlayers) {
             if (!playerActive.getUsername().equals(p.getUsername())) {
-                opponents.add(p);
+                try{
+                    opponents.add(p);
+                } catch (NullPointerException ignored){}
             }
         }
         return opponents;
@@ -154,8 +152,10 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     public List<Token> getTokens(List<Player> players) {
         List<Token> tokens = null;
         for (Player p: players) {
-            tokens.add(p.getToken1());
-            tokens.add(p.getToken2());
+            try {
+                tokens.add(p.getToken1());
+                tokens.add(p.getToken2());
+            } catch (NullPointerException ignored){}
         }
         return tokens;
     }
@@ -168,7 +168,9 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     public List<GodCard> getGodCards(List<Player> players) {
         List<GodCard> godCards = null;
         for (Player p: players) {
-            godCards.add(p.getMyGodCard());
+            try {
+                godCards.add(p.getMyGodCard());
+            } catch (NullPointerException ignored){}
         }
         return godCards;
     }
@@ -654,9 +656,11 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         switch (playerAction.getAction()) {
             case SELECT_TOKEN: {
                 whatAction = "Please insert the position of a token you can move.";
+                break;
             }
             case MOVE: {
                 whatAction = "Please insert a valid position where you can move your token.";
+                break;
             }
             default: {
                 whatAction = Action.WRONG_INPUT.getInfo();
