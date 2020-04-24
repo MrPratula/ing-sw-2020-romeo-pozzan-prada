@@ -14,16 +14,18 @@ public class PlayerAction {
     private final int tokenOther;
     private boolean doWantUsePower;
 
-    private final Cell cell;
+    private final Cell first_cell;
+    private final Cell second_cell;
 
-    public PlayerAction(Action action, Player player, Player oppo1, Player oppo2, int tokenMain, int tokenOther, Cell cell, boolean doWantUsePower){
+    public PlayerAction(Action action, Player player, Player oppo1, Player oppo2, int tokenMain, int tokenOther, Cell first_cell, Cell second_cell , boolean doWantUsePower){
         this.action = action;
         this.player = player;
         this.oppo1 = oppo1;
         this.oppo2 = oppo2;
         this.tokenMain = tokenMain;
         this.tokenOther = tokenOther;
-        this.cell = cell;
+        this.first_cell = first_cell;
+        this.second_cell = second_cell;
         this.doWantUsePower = doWantUsePower;
     }
 
@@ -51,8 +53,12 @@ public class PlayerAction {
         return this.tokenOther;
     }
 
-    public Cell getCell() {
-        return this.cell;
+    public Cell getFirstCell() {
+        return this.first_cell;
+    }
+
+    public Cell getSecondtCell() {
+        return this.second_cell;
     }
 
     public boolean getDoWantUsePower() {

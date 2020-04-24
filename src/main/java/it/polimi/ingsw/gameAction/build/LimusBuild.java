@@ -49,6 +49,6 @@ public class LimusBuild implements BuildBehavior {
     }
 
     @Override
-    public void performBuild(Cell targetCell, Battlefield battlefield) throws CellHeightException, ReachHeightLimitException {
+    public void performBuild(Cell targetCell, Cell second_cell, Battlefield battlefield) throws CellHeightException, ReachHeightLimitException {
     }
 }

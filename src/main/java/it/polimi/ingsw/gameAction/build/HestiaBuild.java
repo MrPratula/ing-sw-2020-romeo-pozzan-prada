@@ -8,8 +8,7 @@ import it.polimi.ingsw.model.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DemeterBuild implements BuildBehavior {
-
+public class HestiaBuild implements BuildBehavior {
     @Override
     public List<Cell> computeValidBuilds(Token selectedToken, Token otherToken, List<Token> enemyTokens, List<GodCard> enemyGodCards, Battlefield battlefield, List<Player> allPlayers) throws CellOutOfBattlefieldException {
         int provX, provY;
@@ -42,7 +41,7 @@ public class DemeterBuild implements BuildBehavior {
 
     @Override
     public void performBuild(Cell targetCell, Cell second_cell, Battlefield battlefield) throws CellHeightException, ReachHeightLimitException {
-            battlefield.getCell(targetCell).incrementHeight();
-            battlefield.getCell(second_cell).incrementHeight();
+        battlefield.getCell(targetCell).incrementHeight();
+        battlefield.getCell(second_cell).incrementHeight();
     }
 }

@@ -24,7 +24,7 @@ public class BuildContext {
         return buildStrategy.computeValidBuilds(selectedToken, otherToken, enemyTokens, enemyGodCards, battlefield, allPlayers);
     }
 
-    public void executePerformBuild(Cell targetCell, Battlefield battlefield) throws CellHeightException, ReachHeightLimitException {
-        buildStrategy.performBuild(targetCell, battlefield);
+    public void executePerformBuild(Cell targetCell, Cell second_cell, Battlefield battlefield) throws CellHeightException, ReachHeightLimitException {
+        buildStrategy.performBuild(targetCell, second_cell, battlefield);
     }
 }
