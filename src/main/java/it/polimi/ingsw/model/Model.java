@@ -307,7 +307,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
         Player playerActive = playerAction.getPlayer();
         GodCard myGodCard = playerActive.getMyGodCard();
-        Cell targetCell = playerAction.getCell();
+        Cell targetCell = playerAction.getFirstCell();
 
         int selectedTokenId = playerAction.getTokenMain();
         int otherTokenId = playerAction.getTokenOther();
@@ -385,9 +385,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
         switch (myGodCard) {
             case DEMETER:{
-                /*  Demeter può costruire e poi costruire una seconda volta ma non nella stella cella. Questo significa
-                    che la prima build, di fatto, è una SimpleBuild.
-                 */
+
                 BuildContext thisBuild = new BuildContext(( new SimpleBuild()));
                 validBuilds = thisBuild.executeValidBuilds(selectedToken, otherToken, enemyTokens, enemyGodCards, battlefield, null);
                 break;
@@ -452,7 +450,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
         Player playerActive = playerAction.getPlayer();
         GodCard myGodCard = playerActive.getMyGodCard();
-        Cell targetCell = playerAction.getCell();
+        Cell targetCell = playerAction.getFirstCell();
         boolean wantToUsePower = playerAction.getDoWantUsePower();
 
         switch (myGodCard) {
@@ -469,18 +467,6 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
             }
             case DEMETER:{
-                /*  Per com'è fatto il programma ora, il giocatore inserire solo una cella in cui vuole costruire
-                    non due, per cui per sfruttare il potere di demeter basterà chiedere al giocatore di inserire
-                    una seconda volta un'altra cella in cui costruire. Nel fare ciò si deve controllare che le due
-                    celle non siano uguali.
-                    Una alternativa, che possiamo vedere insieme (ora non la implemento per evitare problemi con
-                    git se state lavorando anche voi) può essere quella di, sapendo la god card del giocatore,
-                    chiedergli le due celle in cui vuole costruire ( e metterle dentro una lista per esempio ). In
-                    tal caso bisognerà rivedere i vari metodi.
-                    Ovviamente per i giocatori che non hanno in nessun caso la faccoltà di costruire due volte
-                    basterà continuare con il metodo finora implementato.
-                 */
-
                 BuildContext thisBuild = new BuildContext(new SimpleBuild());
                 thisBuild.executePerformBuild(targetCell, getBattlefield());
                 break;
