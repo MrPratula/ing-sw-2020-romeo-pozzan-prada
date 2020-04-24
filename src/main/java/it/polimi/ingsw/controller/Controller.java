@@ -40,16 +40,41 @@ public class Controller implements Observer<PlayerAction> {
                 case PROMETHEUS_POWER:{
                     ///////////////////////////////
                             //simple build - prometheus move, simple build
+                    List<Cell> validBuilds = model.askForValidBuilds(playerAction);
+                    Cell targetCell = playerAction.getFirstCell();
 
-                            List<Cell> validBuilds = model.askForValidBuilds(playerAction);
-                            Cell targetCell = playerAction.getCell();
-
-                            for (Cell c: validBuilds) {
-                                if (c.getPosX() == targetCell.getPosX() && c.getPosY() == targetCell.getPosY()){
+                    for (Cell c: validBuilds) {
+                        if (c.getPosX() == targetCell.getPosX() && c.getPosY() == targetCell.getPosY()){
+                            /* Se la godcard è demeter e vuole usare il potere, deve controllare che le due celle
+                                abbiamo almeno una posizione (x o y) diversa. */
+                            if (playerAction.getPlayer().getMyGodCard() == GodCard.DEMETER && playerAction.getDoWantUsePower()) {
+                                Cell second_cell = playerAction.getSecondtCell();
+                                if ((targetCell.getPosX() != second_cell.getPosX()) || (targetCell.getPosY() != second_cell.getPosY())) {
                                     model.performBuild(playerAction);
+                                } else {
+                                    model.notifyWrongInput(playerAction);
                                 }
                             }
-                            break;
+                            /* Se la godcard è Hestia e vuole usare il potere, la seconda cella in cui voglio costruire non deve
+                                essere una cella perimetrale. */
+                            else if((playerAction.getPlayer().getMyGodCard() == GodCard.HESTIA) && playerAction.getDoWantUsePower()){
+                                Cell second_cell = playerAction.getSecondtCell();
+                                if((second_cell.getPosY() != 4) && (second_cell.getPosX() != 4)){
+                                    model.performBuild(playerAction);
+                                }
+                                else{
+                                    model.notifyWrongInput(playerAction);
+                                }
+                            }
+                            else {
+                                model.performBuild(playerAction);
+                            }
+                        }
+                        else{
+                            model.notifyWrongInput(playerAction);
+                        }
+                    }
+                    break;
                 }
 
                 case SELECT_TOKEN: {

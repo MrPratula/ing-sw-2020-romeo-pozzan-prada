@@ -126,7 +126,7 @@ public abstract class View extends Observable<PlayerAction> implements Observer<
                     aux = true;
                     try{
                         Action action = Action.PROMETHEUS_POWER;
-                        PlayerAction playerAction = new PlayerAction(action,getPlayer(),null,null,0,0,null, aux);
+                        PlayerAction playerAction = new PlayerAction(action,getPlayer(),null,null,0,0,null,null, aux);
                         notifyRemoteController(playerAction);////////////////////
                     } catch (NullPointerException e){
                         System.out.println(e.getMessage());
@@ -149,7 +149,7 @@ public abstract class View extends Observable<PlayerAction> implements Observer<
                     Player opp2 = computeOpponentPlayers(serverResponse).get(1);
                     try{
                         Action action = Action.SELECT_TOKEN;
-                        PlayerAction playerAction = new PlayerAction(action,getPlayer(),opp1,opp2,selectedToken.getId(),otherToken.getId(),null, false);
+                        PlayerAction playerAction = new PlayerAction(action,getPlayer(),opp1,opp2,selectedToken.getId(),otherToken.getId(),null,null, false);
                         notifyRemoteController(playerAction);
                     } catch (NullPointerException e){
                         System.out.println(e.getMessage());
