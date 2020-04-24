@@ -32,7 +32,7 @@ public class AtlasBuild implements BuildBehavior{
      * @param battlefield the model's battlefield.
      */
     @Override
-    public void performBuild(Cell targetCell, Battlefield battlefield) {
+    public void performBuild(Cell targetCell, Cell second_cell, Battlefield battlefield) {
         battlefield.getCell(targetCell).setIsDome();
     }
 }

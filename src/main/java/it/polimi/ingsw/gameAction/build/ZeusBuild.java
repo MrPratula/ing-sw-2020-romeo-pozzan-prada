@@ -55,7 +55,7 @@ public class ZeusBuild implements BuildBehavior {
      * @param battlefield the model's battlefield.
      */
     @Override
-    public void performBuild(Cell targetCell, Battlefield battlefield) throws CellHeightException, ReachHeightLimitException {
+    public void performBuild(Cell targetCell, Cell second_cell, Battlefield battlefield) throws CellHeightException, ReachHeightLimitException {
         battlefield.getCell(targetCell).incrementHeight();
     }
 }

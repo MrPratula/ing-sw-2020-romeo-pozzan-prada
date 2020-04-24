@@ -73,7 +73,19 @@ public class Controller implements Observer<PlayerAction> {
                                 } else {
                                     model.notifyWrongInput(playerAction);
                                 }
-                            } else {
+                            }
+                            /* Se la godcard è Hestia e vuole usare il potere, la seconda cella in cui voglio costruire non deve
+                                essere una cella perimetrale. */
+                            else if((playerAction.getPlayer().getMyGodCard() == GodCard.HESTIA) && playerAction.getDoWantUsePower()){
+                                Cell second_cell = playerAction.getSecondtCell();
+                                if((second_cell.getPosY() != 4) && (second_cell.getPosX() != 4)){
+                                    model.performBuild(playerAction);
+                                }
+                                else{
+                                    model.notifyWrongInput(playerAction);
+                                }
+                            }
+                            else {
                                 model.performBuild(playerAction);
                             }
                         }
