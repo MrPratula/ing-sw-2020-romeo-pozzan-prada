@@ -60,6 +60,11 @@ public class Controller implements Observer<PlayerAction> {
                             else if((playerAction.getPlayer().getMyGodCard() == GodCard.HESTIA) && playerAction.getDoWantUsePower()){
                                 Cell second_cell = playerAction.getSecondtCell();
                                 if((second_cell.getPosY() != 4) && (second_cell.getPosX() != 4)){
+                            List<Cell> validBuilds = model.askForValidBuilds(playerAction);
+                            Cell targetCell = playerAction.getFirstCell();
+
+                            for (Cell c: validBuilds) {
+                                if (c.getPosX() == targetCell.getPosX() && c.getPosY() == targetCell.getPosY()){
                                     model.performBuild(playerAction);
                                 }
                                 else{
