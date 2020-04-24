@@ -57,7 +57,7 @@ public class PlayerAction {
         return this.first_cell;
     }
 
-    public Cell getSecondtCell() {
+    public Cell getSecondCell() {
         return this.second_cell;
     }
 

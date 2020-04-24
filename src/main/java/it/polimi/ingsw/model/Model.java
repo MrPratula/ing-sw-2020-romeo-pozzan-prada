@@ -465,7 +465,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         Player playerActive = playerAction.getPlayer();
         GodCard myGodCard = playerActive.getMyGodCard();
         Cell targetCell = playerAction.getFirstCell();
-        Cell second_cell = playerAction.getSecondtCell();
+        Cell second_cell = playerAction.getSecondCell();
         boolean wantToUsePower = playerAction.getDoWantUsePower();
 
         switch (myGodCard) {
