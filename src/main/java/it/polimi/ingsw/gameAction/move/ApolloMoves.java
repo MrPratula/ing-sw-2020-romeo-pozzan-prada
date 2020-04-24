@@ -21,7 +21,7 @@ public class ApolloMoves implements MoveBehavior {
      * The swap is handled by the performMove.
      */
     @Override
-    public List<Cell> computeValidMoves(Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield) throws CellOutOfBattlefieldException {
+    public List<Cell> computeValidMoves(Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield, List<Cell> moveToCheck) throws CellOutOfBattlefieldException {
 
         List<Cell> allMoves = new ArrayList<Cell>();
 
@@ -53,7 +53,7 @@ public class ApolloMoves implements MoveBehavior {
      * @param () the same as the simple perform move.
      */
     @Override
-    public void performMove(Token selectedToken, Token otherToken, List<Token> enemyTokens, Cell targetCell, List<GodCard> enemyGodCards, Battlefield battlefield) {
+    public void performMove(Token selectedToken, Token otherToken, List<Token> enemyTokens, Cell targetCell, List<GodCard> enemyGodCards, Battlefield battlefield, boolean didAthenaMovedUp) {
 
         Cell selectedTokenPosition = selectedToken.getTokenPosition();
 

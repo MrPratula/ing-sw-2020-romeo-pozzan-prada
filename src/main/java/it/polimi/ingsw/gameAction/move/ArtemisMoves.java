@@ -21,7 +21,7 @@ public class ArtemisMoves implements MoveBehavior {
      * Other cell restriction such as height limitation or cell occupied still applies.
      */
     @Override
-    public List<Cell> computeValidMoves(Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield) throws CellOutOfBattlefieldException {
+    public List<Cell> computeValidMoves(Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield, List<Cell> moveToCheck) throws CellOutOfBattlefieldException {
 
         List<Cell> allMoves = new ArrayList<Cell>();
         int provX, provY;
@@ -55,7 +55,7 @@ public class ArtemisMoves implements MoveBehavior {
      * Though I have to write this because of the interface, but this is never called (hopefully).
      */
     @Override
-    public void performMove(Token selectedToken, Token otherToken, List<Token> enemyTokens, Cell targetCell, List<GodCard> enemyGodCards, Battlefield battlefield) {
+    public void performMove(Token selectedToken, Token otherToken, List<Token> enemyTokens, Cell targetCell, List<GodCard> enemyGodCards, Battlefield battlefield, boolean didAthenaMovedUp) {
 
     }
 }

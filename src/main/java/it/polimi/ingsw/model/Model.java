@@ -29,6 +29,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     private Battlefield battlefield;
     private TokenColor turn;
     private List<Player> allPlayers;
+    private boolean didAthenaMovedUp;
 
     public Model(Battlefield battlefield) {
         this.battlefield = battlefield;
@@ -196,24 +197,36 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      */
     public List<Cell> computeValidMoves(Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield) throws CellOutOfBattlefieldException {
 
+        List<Cell> validMoves;
+
         switch (myGodCard) {
             case APOLLO: {
                 MoveContext thisMove = new MoveContext(( new ApolloMoves()));
-                return thisMove.executeValidMoves(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, battlefield);
+                validMoves = thisMove.executeValidMoves(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, battlefield, null);
+                break;
             }
             case ARTEMIS: {
                 MoveContext thisMove = new MoveContext(( new ArtemisMoves()));
-                return thisMove.executeValidMoves(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, battlefield);
+                validMoves = thisMove.executeValidMoves(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, battlefield, null);
+                break;
             }
             case MINOTAUR: {
                 MoveContext thisMove = new MoveContext(( new MinotaurMoves()));
-                return thisMove.executeValidMoves(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, battlefield);
+                validMoves = thisMove.executeValidMoves(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, battlefield, null);
+                break;
             }
             default: {
                 MoveContext thisMove = new MoveContext(new SimpleMoves());
-                return thisMove.executeValidMoves(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, battlefield);
+                validMoves = thisMove.executeValidMoves(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, battlefield, null);
             }
         }
+
+        if (enemyGodCards.contains(GodCard.ATHENA) && didAthenaMovedUp) {
+            MoveContext thisMove = new MoveContext(new AthenaMoves());
+            validMoves = thisMove.executeValidMoves(selectedToken, null, null, null, null, null, validMoves);
+        }
+
+        return validMoves;
     }
 
 
@@ -312,13 +325,18 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         switch (myGodCard) {
             case APOLLO:{
                 MoveContext thisMove = new MoveContext(new ApolloMoves());
-                thisMove.executeMove(selectedToken, otherToken, enemyTokens, targetCell, enemyGodCards, battlefield);
+                thisMove.executeMove(selectedToken, otherToken, enemyTokens, targetCell, enemyGodCards, battlefield, didAthenaMovedUp);
+                break;
+            }
+            case ATHENA:{
+                MoveContext thisMove = new MoveContext(new AthenaMoves());
+                thisMove.executeMove(selectedToken, otherToken, enemyTokens, targetCell, enemyGodCards, battlefield, didAthenaMovedUp);
                 break;
             }
 
             default:{
                 MoveContext thisMove = new MoveContext(new SimpleMoves());
-                thisMove.executeMove(selectedToken, otherToken, enemyTokens, targetCell, enemyGodCards, battlefield);
+                thisMove.executeMove(selectedToken, otherToken, enemyTokens, targetCell, enemyGodCards, battlefield, didAthenaMovedUp);
             }
         }
 
