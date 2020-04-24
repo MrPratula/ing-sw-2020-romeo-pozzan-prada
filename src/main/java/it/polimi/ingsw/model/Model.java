@@ -361,7 +361,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      */
     public List<Cell> validBuilds (Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield) throws CellOutOfBattlefieldException {
 
-        List<Cell> validBuildsProvv = new ArrayList<>();
+        List<Cell> validBuilds;
 
         switch (myGodCard) {
             case DEMETER:{
@@ -369,15 +369,17 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                     che la prima build, di fatto, è una SimpleBuild.
                  */
                 BuildContext thisBuild = new BuildContext(( new SimpleBuild()));
-                validBuildsProvv = thisBuild.executeValidBuilds(selectedToken, otherToken, enemyTokens, enemyGodCards, battlefield, null);
+                validBuilds = thisBuild.executeValidBuilds(selectedToken, otherToken, enemyTokens, enemyGodCards, battlefield, null);
+                break;
             }
             case ZEUS:{
                 BuildContext thisBuild = new BuildContext(new ZeusBuild());
-                validBuildsProvv = thisBuild.executeValidBuilds(selectedToken, otherToken, enemyTokens, enemyGodCards, battlefield, null);
+                validBuilds = thisBuild.executeValidBuilds(selectedToken, otherToken, enemyTokens, enemyGodCards, battlefield, null);
+                break;
             }
             default:{
                 BuildContext thisBuild = new BuildContext(new SimpleBuild());
-                validBuildsProvv = thisBuild.executeValidBuilds(selectedToken, otherToken, enemyTokens, enemyGodCards, battlefield, null);
+                validBuilds = thisBuild.executeValidBuilds(selectedToken, otherToken, enemyTokens, enemyGodCards, battlefield, null);
             }
         }
 
@@ -385,13 +387,11 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             BuildContext thisBuild = new BuildContext(new LimusBuild());
             List<Cell> toRemove = thisBuild.executeValidBuilds(selectedToken, otherToken, enemyTokens, enemyGodCards, battlefield, allPlayers);
             for(Cell c: toRemove){                                  //lavora diversamente: toglie quelle vicine a LIMUS
-                if(validBuildsProvv.contains(c)){
-                    validBuildsProvv.remove(c);
-                }
+                validBuilds.remove(c);
             }
         }
 
-        return validBuildsProvv;
+        return validBuilds;
     }
 
 
