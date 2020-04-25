@@ -11,7 +11,7 @@ package it.polimi.ingsw.model;
 public class Token {
 
     private int id;
-    private TokenColor tokenColor;
+    private final TokenColor tokenColor;
     private Cell tokenPosition;
     private int oldHeight;
 

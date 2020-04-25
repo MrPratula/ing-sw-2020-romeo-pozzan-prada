@@ -79,7 +79,7 @@ public class SimpleMoveTest {
         Assert.assertTrue(validMoves.contains(battlefield.getCell(1,0)));
         Assert.assertTrue(validMoves.contains(battlefield.getCell(1,1)));
     }
-    
+
 
     /**
      * This test a token with some domes around him.
