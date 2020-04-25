@@ -11,7 +11,9 @@ import java.util.List;
 
 
 /**
- * APOLLO : Your Worker may move into an opponent Worker’s space by forcing their Worker to the space yours just vacated.
+ * APOLLO
+ *
+ * Your Worker may move into an opponent Worker’s space by forcing their Worker to the space yours just vacated.
  */
 public class ApolloMoves implements MoveBehavior {
 
@@ -39,12 +41,19 @@ public class ApolloMoves implements MoveBehavior {
                 }
             }
         }
-        for (Cell validCell: allMoves) {
 
-            allMoves.remove(battlefield.getCell(selectedToken.getTokenPosition()));     // rimuovo le posizioni dei miei token
-            allMoves.remove(battlefield.getCell(otherToken.getTokenPosition()));        // e no quelle dei miei avversari
+        List<Cell> allMovesToReturn = new ArrayList<>(allMoves);
+
+        for (Cell validCell: allMoves) {
+            try{
+                allMovesToReturn.remove(battlefield.getCell(selectedToken.getTokenPosition()));     // rimuovo le posizioni dei miei token
+            } catch (NullPointerException ignore){}
+            try{
+                allMovesToReturn.remove(battlefield.getCell(otherToken.getTokenPosition()));        // e no quelle dei miei avversari
+            } catch (NullPointerException ignore){}
+
         }
-        return allMoves;
+        return allMovesToReturn;
     }
 
 

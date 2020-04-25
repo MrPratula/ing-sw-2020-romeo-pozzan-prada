@@ -1,37 +1,69 @@
 package it.polimi.ingsw.gameAction.build;
 
+import it.polimi.ingsw.controller.CellHeightException;
 import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
+import it.polimi.ingsw.controller.ReachHeightLimitException;
 import it.polimi.ingsw.model.Battlefield;
 import it.polimi.ingsw.model.Cell;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
+
+/**
+ * ATLAS
+ *
+ * Your Worker may build a dome at any level including the ground.
+ * Note that a build with a dome on a level that is not 3 is not a Complete Tower.
+ * This is to clarify the interaction with CHRONUS power.
+ */
 public class AtlasTest {
 
     Cell targetCell = null;
     Battlefield battlefield = null;
 
-    @BeforeEach
-    public void setUp() throws CellOutOfBattlefieldException {
-        battlefield = new Battlefield();
-        Cell targetCell = battlefield.getCell(2,3);
 
+    /**
+     * Create a new battlefield and get a target cell to test.
+     */
+    @BeforeEach void setUp() throws CellOutOfBattlefieldException {
+        battlefield = new Battlefield();
+        targetCell = battlefield.getCell(2,3);
     }
 
 
-    @Test
-    public void atlasPerformBuild () {
+    /**
+     * A cell with height 1 must have the same height but has to be a dome.
+     */
+    @Test void atlasPerformBuild1 () throws CellHeightException, ReachHeightLimitException, CellOutOfBattlefieldException {
 
         targetCell.setHeight(1);
+        assertFalse(targetCell.getIsDome());
+
+        BuildContext thisBuild = new BuildContext(new AtlasBuild());
+        thisBuild.executePerformBuild(targetCell, null, battlefield);
+
         assertTrue(targetCell.getIsDome());
-
-
-
+        assertEquals(1, targetCell.getHeight());
     }
 
 
+    /**
+     * If I try to build on a dome nothing change.
+     * It should be the controller that make this not possible.
+     */
+    @Test void atlasPerformBuildDome () throws CellHeightException, ReachHeightLimitException {
 
+        targetCell.setHeight(3);
+        targetCell.setIsDome();
+
+        BuildContext thisBuild = new BuildContext(new AtlasBuild());
+        thisBuild.executePerformBuild(targetCell, null, battlefield);
+
+        assertTrue(targetCell.getIsDome());
+        assertEquals(3, targetCell.getHeight());
+
+    }
 
 }
