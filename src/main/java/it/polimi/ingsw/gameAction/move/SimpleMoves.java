@@ -55,14 +55,20 @@ public class SimpleMoves implements MoveBehavior {
                 }
             }
         }
-        for (Cell validCell: allMoves) {
-            allMoves.remove(battlefield.getCell(selectedToken.getTokenPosition()));         // rimuovo la posizione in cui sono
-            allMoves.remove(battlefield.getCell(otherToken.getTokenPosition()));            // rimuovo la posizione del mio altro token
 
-            for (Token enemyToken : enemyTokens) {
+        try{
+            allMoves.remove(battlefield.getCell(selectedToken.getTokenPosition()));         // rimuovo la posizione in cui sono
+        }catch(NullPointerException ignore){}
+        try{
+            allMoves.remove(battlefield.getCell(otherToken.getTokenPosition()));            // rimuovo la posizione del mio altro token
+        }catch(NullPointerException ignore){}
+
+        for (Token enemyToken : enemyTokens) {
+            try{
                 allMoves.remove(battlefield.getCell(enemyToken.getTokenPosition()));        // rimuovo la posizione dei token dei miei nemici
-            }
+            }catch (NullPointerException ignore) {}
         }
+
         return allMoves;
     }
 

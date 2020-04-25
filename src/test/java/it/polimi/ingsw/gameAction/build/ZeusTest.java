@@ -52,7 +52,7 @@ public class ZeusTest {
         BuildContext thisBuild = new BuildContext(new ZeusBuild());
         thisBuild.executePerformBuild(targetCell,null,battlefield);
 
-        assertTrue(targetCell.getHeight()==targetCellOldHeight+1);
+        assertEquals(targetCell.getHeight(), targetCellOldHeight + 1);
     }
 
 
@@ -77,7 +77,7 @@ public class ZeusTest {
         BuildContext thisBuild = new BuildContext(new ZeusBuild());
         thisBuild.executePerformBuild(targetCell,null,battlefield);
 
-        assertTrue(targetCell.getHeight()==2);
+        assertEquals(2, targetCell.getHeight());
 
         assertEquals(targetCell,token.getTokenPosition());
     }

@@ -77,11 +77,8 @@ public class Battlefield implements Serializable {
         final Battlefield battlefieldClone = new Battlefield();
 
         for(int x=0; x<battlefieldSize; x++) {
-            for (int y=0; y<battlefieldSize; y++){
-                battlefieldClone.battlefield[x][y]= battlefield[x][y];
-            }
+            System.arraycopy(battlefield[x], 0, battlefieldClone.battlefield[x], 0, battlefieldSize);
         }
-
         return battlefieldClone;
     }
 
