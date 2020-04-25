@@ -1,6 +1,3 @@
-/*
-
-
 package it.polimi.ingsw.gameAction.build;
 
 import it.polimi.ingsw.controller.CellHeightException;
@@ -13,14 +10,10 @@ import it.polimi.ingsw.model.TokenColor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 
-//    public List<Cell> computeValidBuilds(Token selectedToken, Token otherToken, List<Token> enemyTokens, List<GodCard> enemyGodCards, Battlefield battlefield, List<Player> allPlayers) throws CellOutOfBattlefieldException
-//    public PlayerAction(Action action, Player player, Player oppo1, Player oppo2, int tokenMain, int tokenOther, Cell first_cell, Cell second_cell , boolean doWantUsePower)
+
 
 public class ZeusTest {
 
@@ -28,36 +21,68 @@ public class ZeusTest {
     Cell targetCell = null;
     int targetCellOldHeight;
     Token token = null;
-    ZeusBuild zeusBuild = null;
-    List<Cell> validBuilds = null;
 
+
+    /**
+     * Create a new battlefield, get a target cell to test.
+     */
     @BeforeEach
     public void init() throws CellOutOfBattlefieldException {
-        List<Cell> validBuilds = new ArrayList<>();
         battlefield = new Battlefield();
         targetCell = battlefield.getCell(2,3);
-        targetCell.setHeight(1);
-        targetCellOldHeight = targetCell.getHeight();
         targetCell.setFree();
-        targetCell.setThereIsPlayer();
-        token = new Token(TokenColor.BLUE);
-        token.setTokenPosition(targetCell);}
+    }
 
+
+    /**
+     * The height of the target cell has to be the old height+1
+     * and the target cell can be equal to the token position
+     * @throws CellHeightException
+     * @throws ReachHeightLimitException
+     * @throws CellOutOfBattlefieldException
+     */
     @Test
     public void ZeusPerformBuild() throws CellHeightException, ReachHeightLimitException, CellOutOfBattlefieldException {
 
+        targetCell.setHeight(1);
+        targetCellOldHeight = targetCell.getHeight();
+
         assertEquals(targetCellOldHeight,1);
 
-        validBuilds = zeusBuild.computeValidBuilds(token,null,null,null,battlefield,null);
-        zeusBuild.performBuild(targetCell,null,battlefield);
+        BuildContext thisBuild = new BuildContext(new ZeusBuild());
+        thisBuild.executePerformBuild(targetCell,null,battlefield);
 
-        //targetCell.incrementHeight();
-        //assertTrue(targetCell.getHeight()==2);
+        assertTrue(targetCell.getHeight()==targetCellOldHeight+1);
+    }
 
-        assertEquals(targetCell.getHeight(),2);
+
+    /**
+     * Here we test that Zeus can build even under itself, so we instanciate a token;
+     * @throws CellHeightException
+     * @throws ReachHeightLimitException
+     * @throws CellOutOfBattlefieldException
+     */
+    @Test
+    public void ZeusPerformBuildSamePosition() throws CellHeightException, ReachHeightLimitException, CellOutOfBattlefieldException {
+
+        token = new Token(TokenColor.BLUE);
+        token.setTokenPosition(targetCell);
+        targetCell.setThereIsPlayer();
+
+        targetCell.setHeight(1);
+        targetCellOldHeight = targetCell.getHeight();
+
+        assertEquals(targetCellOldHeight,1);
+
+        BuildContext thisBuild = new BuildContext(new ZeusBuild());
+        thisBuild.executePerformBuild(targetCell,null,battlefield);
+
+        assertTrue(targetCell.getHeight()==2);
+
         assertEquals(targetCell,token.getTokenPosition());
     }
+
+
 }
 
 
-*/
