@@ -37,7 +37,7 @@ public class MinotaurMoves implements MoveBehavior{
 
 
                     //MINOTAUR CHANGES HERE
-                    if(battlefield.getCell(provX,provY).getThereIsPlayer() && !otherToken.getTokenPosition().equals(battlefield.getCell(provX,provY)) ){           //se c'è un giocatore in questa cella E NON é IL MIO othertoken
+                    if(battlefield.getCell(provX,provY).getThereIsPlayer() && !(otherToken.getTokenPosition().getPosX()==provX && otherToken.getTokenPosition().getPosY()==provY) ){           //se c'è un giocatore in questa cella E NON é IL MIO othertoken
 
                         Cell nextOne = battlefield.getCell(provX+i,provY+j);                                                //cella in cui pusherò il token nemico, ricalcolata nella performMove
                         if(nextOne.getThereIsPlayer() || nextOne.getIsDome() || nextOne.getPosX()>4 || nextOne.getPosY()>4){            //se c'è un giocatore nella prossima, //or è dome, //or è fuori dalla battlefield
