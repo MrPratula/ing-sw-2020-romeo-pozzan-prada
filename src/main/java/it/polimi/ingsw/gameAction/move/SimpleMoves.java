@@ -88,6 +88,8 @@ public class SimpleMoves implements MoveBehavior {
     public void performMove(Token selectedToken, Token otherToken, List<Token> enemyTokens, Cell targetCell, List<GodCard> enemyGodCards, Battlefield battlefield, boolean didAthenaMovedUp) {
 
         selectedToken.getTokenPosition().setFree();
+        selectedToken.setOldHeight(selectedToken.getTokenPosition().getHeight());
+
         selectedToken.setTokenPosition(targetCell);
         selectedToken.getTokenPosition().setOccupied();
 
