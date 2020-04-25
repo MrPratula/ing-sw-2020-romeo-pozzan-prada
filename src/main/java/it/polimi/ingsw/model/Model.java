@@ -709,6 +709,10 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         ServerResponse serverResponse = new ServerResponse(Action.WRONG_INPUT, null, null, null, errorMessage);
         notify(serverResponse);
     }
+
+    public boolean differentCell(Cell firstCell, Cell secondCell){
+        return !(firstCell.getPosX()==secondCell.getPosX() && firstCell.getPosY()==secondCell.getPosY());
+    }
 }
 
 

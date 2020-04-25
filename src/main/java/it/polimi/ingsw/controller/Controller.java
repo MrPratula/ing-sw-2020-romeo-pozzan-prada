@@ -79,6 +79,13 @@ public class Controller implements Observer<PlayerAction> {
                     List<Cell> validBuilds = model.askForValidBuilds(playerAction);
                     Cell targetCell = playerAction.getFirstCell();
 
+
+                    if (model.differentCell(targetCell, playerAction.getSecondCell()) &&  (playerAction.getPlayer().getMyGodCard().equals(GodCard.DEMETER))){
+                        model.performBuild(playerAction);
+                    }else{
+                        model.notifyWrongInput(playerAction);
+                    }
+
                     for (Cell c: validBuilds) {
                         if (c.getPosX() == targetCell.getPosX() && c.getPosY() == targetCell.getPosY()){
                             /* Se la godcard è demeter e vuole usare il potere, deve controllare che le due celle
