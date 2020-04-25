@@ -79,30 +79,17 @@ public class Controller implements Observer<PlayerAction> {
                     List<Cell> validBuilds = model.askForValidBuilds(playerAction);
                     Cell targetCell = playerAction.getFirstCell();
 
-
-                    if (model.differentCell(targetCell, playerAction.getSecondCell()) &&  (playerAction.getPlayer().getMyGodCard().equals(GodCard.DEMETER))){
-                        model.performBuild(playerAction);
-                    }else{
-                        model.notifyWrongInput(playerAction);
-                    }
-
                     for (Cell c: validBuilds) {
                         if (c.getPosX() == targetCell.getPosX() && c.getPosY() == targetCell.getPosY()){
-                            /* Se la godcard è demeter e vuole usare il potere, deve controllare che le due celle
-                                abbiamo almeno una posizione (x o y) diversa. */
-                            if (playerAction.getPlayer().getMyGodCard() == GodCard.DEMETER && playerAction.getDoWantUsePower()) {
-                                Cell second_cell = playerAction.getSecondCell();
-                                if ((targetCell.getPosX() != second_cell.getPosX()) || (targetCell.getPosY() != second_cell.getPosY())) {
+                            if(playerAction.getPlayer().getMyGodCard().equals(GodCard.DEMETER)){
+                                if (model.differentCell(targetCell, playerAction.getSecondCell())){
                                     model.performBuild(playerAction);
-                                } else {
+                                }else {
                                     model.notifyWrongInput(playerAction);
                                 }
                             }
-                            /* Se la godcard è Hestia e vuole usare il potere, la seconda cella in cui voglio costruire non deve
-                                essere una cella perimetrale. */
-                            else if((playerAction.getPlayer().getMyGodCard() == GodCard.HESTIA) && playerAction.getDoWantUsePower()){
-                                Cell second_cell = playerAction.getSecondCell();
-                                if((second_cell.getPosY() != 4) && (second_cell.getPosX() != 4)){
+                            if(playerAction.getPlayer().getMyGodCard().equals((GodCard.HESTIA))){
+                                if(model.notperimetercell(playerAction.getSecondCell())){
                                     model.performBuild(playerAction);
                                 }
                                 else{

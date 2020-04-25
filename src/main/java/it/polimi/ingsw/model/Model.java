@@ -390,7 +390,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
         switch (myGodCard) {
             case DEMETER:{
-                BuildContext thisBuild = new BuildContext(( new DemeterBuild()));
+                BuildContext thisBuild = new BuildContext(( new SimpleBuild()));
                 validBuilds = thisBuild.executeValidBuilds(selectedToken, otherToken, enemyTokens, enemyGodCards, battlefield, null);
                 break;
             }
@@ -482,12 +482,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             }
             case DEMETER:{
                 BuildContext thisBuild;
-                if(wantToUsePower){
-                    thisBuild = new BuildContext(new DemeterBuild());
-                }
-                else{
-                    thisBuild = new BuildContext(new SimpleBuild());
-                }
+                thisBuild = new BuildContext(new DemeterBuild());
                 thisBuild.executePerformBuild(targetCell, second_cell, getBattlefield());
                 break;
             }
@@ -504,13 +499,8 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             }
             case HESTIA:{
                 BuildContext thisBuild;
-                if(wantToUsePower){
-                    thisBuild = new BuildContext(new HestiaBuild());
-                }
-                else{
-                    thisBuild = new BuildContext(new SimpleBuild());
-                }
-                thisBuild.executePerformBuild(targetCell, second_cell, getBattlefield());
+                thisBuild = new BuildContext(new HestiaBuild());
+                thisBuild.executePerformBuild(targetCell,second_cell,getBattlefield());
                 break;
             }
             default:{
@@ -712,6 +702,10 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
     public boolean differentCell(Cell firstCell, Cell secondCell){
         return !(firstCell.getPosX()==secondCell.getPosX() && firstCell.getPosY()==secondCell.getPosY());
+    }
+
+    public boolean notperimetercell(Cell targetcell){
+        return (targetcell.getPosX()!=4 && targetcell.getPosY()!=4);
     }
 }
 
