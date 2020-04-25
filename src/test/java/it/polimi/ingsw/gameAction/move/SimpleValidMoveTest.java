@@ -138,4 +138,33 @@ public class SimpleValidMoveTest {
         Assert.assertFalse(validMoves.contains(battlefield.getCell(2,2)));
         Assert.assertFalse(validMoves.contains(battlefield.getCell(1,2)));
     }
+
+
+    /**
+     * Test for cell too height and dome.
+     */
+    @Test void validMovesHeight() throws CellOutOfBattlefieldException {
+
+        battlefield.getCell(1,1).setHeight(1);
+        battlefield.getCell(1,2).setHeight(2);
+        battlefield.getCell(2,2).setHeight(3);
+        battlefield.getCell(2,1).setHeight(1);
+        battlefield.getCell(3,2).setHeight(3);
+        battlefield.getCell(3,2).setIsDome();
+        battlefield.getCell(3,1).setIsDome();
+
+        selectedToken.setTokenPosition(battlefield.getCell(2,1));
+
+        List<Cell> validMoves;
+
+        MoveContext thisMove = new MoveContext(new SimpleMoves());
+        validMoves = thisMove.executeValidMoves(selectedToken, otherToken, enemyTokens, null, null, battlefield, null);
+
+        Assert.assertEquals(5, validMoves.size());
+        Assert.assertTrue(validMoves.contains(battlefield.getCell(1,2)));
+        Assert.assertTrue(validMoves.contains(battlefield.getCell(1,1)));
+        Assert.assertTrue(validMoves.contains(battlefield.getCell(1,0)));
+        Assert.assertTrue(validMoves.contains(battlefield.getCell(2,0)));
+        Assert.assertTrue(validMoves.contains(battlefield.getCell(3,0)));
+    }
 }
