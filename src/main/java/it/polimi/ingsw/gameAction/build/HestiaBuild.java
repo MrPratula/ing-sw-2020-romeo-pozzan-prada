@@ -42,6 +42,8 @@ public class HestiaBuild implements BuildBehavior {
     @Override
     public void performBuild(Cell targetCell, Cell second_cell, Battlefield battlefield) throws CellHeightException, ReachHeightLimitException {
         battlefield.getCell(targetCell).incrementHeight();
-        battlefield.getCell(second_cell).incrementHeight();
+        if(second_cell!=null){
+            battlefield.getCell(second_cell).incrementHeight();
+        }
     }
 }

@@ -30,7 +30,6 @@ public class CellTest {
      */
     @Test
     public void normalIncrementHeightTest() throws Exception {
-
         setUp();
         cell.setHeight(2);
         cell.incrementHeight();
