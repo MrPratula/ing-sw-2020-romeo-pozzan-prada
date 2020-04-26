@@ -1,10 +1,7 @@
 package it.polimi.ingsw.gameAction.move;
 
 import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
-import it.polimi.ingsw.model.Battlefield;
-import it.polimi.ingsw.model.Cell;
-import it.polimi.ingsw.model.GodCard;
-import it.polimi.ingsw.model.Token;
+import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,26 +55,35 @@ public class ApolloMoves implements MoveBehavior {
 
 
     /**
-     *  Here is handled the swap. It takes the to-be-moved token's position and the target-token position and swap it.
+     *  Here is handled the swap. It takes the to-be-moved token's position and the target-token position and swap them.
      * @param () the same as the simple perform move.
      */
     @Override
     public void performMove(Token selectedToken, Token otherToken, List<Token> enemyTokens, Cell targetCell, List<GodCard> enemyGodCards, Battlefield battlefield, boolean didAthenaMovedUp) {
 
         Cell selectedTokenPosition = selectedToken.getTokenPosition();
+        Token swapToken = null;
+
 
         if (targetCell.getThereIsPlayer()) {
-            Token swapToken;
+
             for(Token t: enemyTokens) {
-                if (t.getTokenPosition().equals(selectedTokenPosition)){
+                if (t.getTokenPosition().equals(targetCell)){
                     swapToken = t;
-                    swapToken.setTokenPosition(selectedTokenPosition);
-                    swapToken.getTokenPosition().setOccupied();
                     break;
                 }
             }
         }
-        selectedToken.setTokenPosition(targetCell);
+        Cell provPosition = selectedTokenPosition;
+
+        assert swapToken != null;
+        selectedToken.setTokenPosition(swapToken.getTokenPosition());
+        selectedToken.setOldHeight(selectedTokenPosition.getHeight());
+
+        swapToken.setOldHeight(swapToken.getTokenPosition().getHeight());
+        swapToken.setTokenPosition(provPosition);
+
         selectedToken.getTokenPosition().setOccupied();
+        swapToken.getTokenPosition().setOccupied();
     }
 }

@@ -95,4 +95,12 @@ public class CellTest {
         } catch (CellHeightException ignore){}
         assertTrue(true);
     }
+
+    @Test
+    public void equalsCellTest() {
+        setUp();
+        Cell cell2 = new Cell (2,4);
+
+        assertTrue(cell.equals(cell2));
+    }
 }

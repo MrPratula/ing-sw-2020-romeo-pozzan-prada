@@ -14,8 +14,8 @@ import java.io.Serializable;
 
 public class Cell implements Serializable {
 
-    private int posX;
-    private int posY;
+    private final int posX;
+    private final int posY;
     private boolean thereIsPlayer;
 
     private int height;
@@ -92,6 +92,17 @@ public class Cell implements Serializable {
      */
     public void setIsDome() {
         this.isDome = true;
+    }
+
+
+    /**
+     * Check if a cell is equal to a targetCell.
+     * Equal means that they have the same x and y coords.
+     * @param targetCell the cell to check.
+     * @return true if they have the same x and y coords.
+     */
+    public boolean equals(Cell targetCell) {
+        return this.posX==targetCell.getPosX() && this.posY==targetCell.getPosY();
     }
 
     /**
