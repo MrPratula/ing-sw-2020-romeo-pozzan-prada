@@ -13,12 +13,15 @@ public class Battlefield implements Serializable {
     private static final int battlefieldSize = 5;
     private Cell[][] battlefield;
 
-    private List<Player> players = null;
+    private List<Player> players; // = null;
 
 
     //just to make the test
     public void setPlayers(List<Player> players) {
         this.players = players;
+    }
+    public List<Player> getPlayers() {
+        return players;
     }
 
     /**

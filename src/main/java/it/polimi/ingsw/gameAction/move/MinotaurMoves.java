@@ -41,7 +41,7 @@ public class MinotaurMoves implements MoveBehavior{
 
                         Cell nextOne = battlefield.getCell(provX+i,provY+j);                                                                                               //cella in cui pusherò il token nemico, ricalcolata nella performMove
                         if(nextOne.getThereIsPlayer() || nextOne.getIsDome() || nextOne.getPosX()>4 || nextOne.getPosY()>4 || nextOne.getPosX()<0 || nextOne.getPosY()<0){            //se c'è un giocatore nella prossima, //or è dome, //or è fuori dalla battlefield
-                            ; //insicuro sull'uscita dal loop                                                                      //non posso pushare, non aggiungo alle valid moevs
+                            break; //insicuro sull'uscita dal loop                                                                      //non posso pushare, non aggiungo alle valid moevs
                         }
                         else{                                                                           //invece se posso pushare
                             allMoves.add(battlefield.getCell(provX, provY));                            //AGGIUNGO ALLA VALID MOVES LA CELLA DEL TOKEN NEMICO
@@ -82,7 +82,7 @@ public class MinotaurMoves implements MoveBehavior{
         if (targetCell.getThereIsPlayer()) {
 
             for(Token t: enemyTokens) {
-                if (t.getTokenPosition().equals(targetCell)){
+                if (t.getTokenPosition().getPosX()==targetCell.getPosX() && t.getTokenPosition().getPosY()==targetCell.getPosY() ){
                     int deltaX = targetCell.getPosX() - selectedToken.getTokenPosition().getPosX();
                     int deltaY = targetCell.getPosY() - selectedToken.getTokenPosition().getPosY();
                     t.setTokenPosition(battlefield.getCell(targetCell.getPosX()+deltaX,targetCell.getPosY()+deltaY));

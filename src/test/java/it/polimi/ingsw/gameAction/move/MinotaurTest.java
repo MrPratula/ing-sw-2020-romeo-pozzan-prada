@@ -18,6 +18,7 @@ public class MinotaurTest {
     Token myToken = null, otherToken = null;
     Battlefield battlefield = null;
     List<Token> enemyTokens = null;
+    List<Player> allPlayers = null;
 
 
     @BeforeEach
@@ -27,7 +28,7 @@ public class MinotaurTest {
 
         startingCell = battlefield.getCell(2,2);
         myToken = new Token(TokenColor.BLUE);   //my token
-        myToken.setTokenPosition(startingCell);
+        myToken.setTokenPosition(battlefield.getCell(2,2));
         battlefield.getCell(2,2).setOccupied();
 
         enemyTokens = new ArrayList<>();
@@ -98,7 +99,7 @@ public class MinotaurTest {
         targetCell = battlefield.getCell(2,3);
         targetCell.setFree();
 
-        MoveContext thisMove = new MoveContext(new ApolloMoves());
+        MoveContext thisMove = new MoveContext(new MinotaurMoves());
         thisMove.executeValidMoves(myToken, null, null , GodCard.MINOTAUR, null, battlefield, null);
 
         Assert.assertFalse(targetCell.getThereIsPlayer());
@@ -110,10 +111,11 @@ public class MinotaurTest {
     // The following tests go throught all the possible action that a minotaur can push //
 
     /**
-     * Here i test an impossible move: pushing my other token;
+     * Here i test an impossible move: pushing my other token.
+     * The valid moves in this case shouldn't contain the target cell.
      */
     @Test
-    public void minotaurPerformImpossiblePush() throws CellOutOfBattlefieldException {
+    public void minotaurValidMovesNotPushMyOtherToken() throws CellOutOfBattlefieldException {
 
         Cell freeCell = battlefield.getCell(0,2);
         freeCell.setFree();
@@ -123,8 +125,10 @@ public class MinotaurTest {
         otherToken = new Token(TokenColor.BLUE);
         otherToken.setTokenPosition(targetCell);
 
-        MoveContext thisMove = new MoveContext(new ApolloMoves());
-        thisMove.executeValidMoves(myToken, otherToken, null , GodCard.MINOTAUR, null, battlefield, null);
+        MoveContext thisMove = new MoveContext(new MinotaurMoves());
+        List<Cell> validMoves = thisMove.executeValidMoves(myToken, otherToken, null , GodCard.MINOTAUR, null, battlefield, null);
+
+        Assert.assertFalse(validMoves.contains(targetCell));
 
         assertTrue(targetCell.getThereIsPlayer());   //rimane li
         assertEquals(otherToken.getTokenPosition(),targetCell);
@@ -134,20 +138,54 @@ public class MinotaurTest {
 
 
     /**
+     * Here i test an impossible move: pushing a token while the cell behind him is a dome.
+     * The valid moves in this case shouldn't contain the target cell.
+     */
+    @Test
+    public void minotaurValidMovesDomeBehind() throws CellOutOfBattlefieldException {
+
+        Cell freeCell = battlefield.getCell(0,2);
+        freeCell.setFree();
+        freeCell.setIsDome();
+
+        targetCell = battlefield.getCell(1,2);
+        targetCell.setOccupied();
+
+        otherToken = new Token(TokenColor.YELLOW);
+        otherToken.setTokenPosition(targetCell);
+        enemyTokens.add(otherToken);
+
+        MoveContext thisMove = new MoveContext(new MinotaurMoves());
+        List<Cell> validMoves = thisMove.executeValidMoves(myToken, null, enemyTokens , GodCard.MINOTAUR, null, battlefield, null);
+
+        Assert.assertFalse(validMoves.contains(targetCell));
+
+        assertTrue(targetCell.getThereIsPlayer());   //rimane li
+        assertFalse(freeCell.getThereIsPlayer());    //rimane vuota
+        assertTrue(freeCell.getIsDome());            //rimane dome
+        assertEquals(otherToken.getTokenPosition().getPosX(),1);
+        assertEquals(otherToken.getTokenPosition().getPosY(),2);
+        assertEquals(myToken.getTokenPosition().getPosX(),2);
+        assertEquals(myToken.getTokenPosition().getPosY(),2);
+        assertTrue(startingCell.getThereIsPlayer());
+    }
+
+
+    /**
      * Here i test if the minotaur can perform a move using its special
      * power; in particular a move whose targetCell is an occupied by an
      * enemy token, which i have to push VERTICALLY to the next cell
      */
- /*   @Test
+    @Test
     public void minotaurPerformMovePushingVertically() throws CellOutOfBattlefieldException {
 
         targetCell = battlefield.getCell(2,1);
-        targetCell.setOccupied();
+        battlefield.getCell(2,1).setOccupied();
         otherToken = new Token(TokenColor.RED);
-        otherToken.setTokenPosition(targetCell);
+        otherToken.setTokenPosition(battlefield.getCell(2,1));
         enemyTokens.add(otherToken);
 
-        MoveContext thisMove = new MoveContext(new ApolloMoves());
+        MoveContext thisMove = new MoveContext(new MinotaurMoves());
         thisMove.executeValidMoves(myToken, null, enemyTokens , GodCard.MINOTAUR, null, battlefield, null);
         thisMove.executeMove(myToken,null,enemyTokens,targetCell,null,battlefield,false);
 
@@ -158,7 +196,7 @@ public class MinotaurTest {
         Assert.assertEquals(myToken.getTokenPosition().getPosY(),1);
         Assert.assertTrue(myToken.getTokenPosition().getThereIsPlayer());
     }
-*/
+
 
     /**
      * Here i test if the minotaur can perform a move using its special
@@ -169,14 +207,21 @@ public class MinotaurTest {
     public void minotaurPerformMovePushingHorizontally() throws CellOutOfBattlefieldException {
 
         targetCell = battlefield.getCell(3,2);
-        battlefield.getCell(2,2).setOccupied();
+        targetCell.setOccupied();
         otherToken = new Token(TokenColor.RED);
         otherToken.setTokenPosition(targetCell);
         enemyTokens.add(otherToken);
 
-        MoveContext thisMove = new MoveContext(new ApolloMoves());
-        thisMove.executeValidMoves(myToken, null, enemyTokens , GodCard.MINOTAUR, null, battlefield, null);
+        MoveContext thisMove = new MoveContext(new MinotaurMoves());
+        thisMove.executeMove(myToken,null,enemyTokens,targetCell,null,battlefield,false);
 
+        Assert.assertFalse(battlefield.getCell(2,2).getThereIsPlayer());
+        Assert.assertEquals(otherToken.getTokenPosition().getPosX(),4);
+        Assert.assertEquals(otherToken.getTokenPosition().getPosY(),2);
+        Assert.assertTrue(battlefield.getCell(4,2).getThereIsPlayer());
+        Assert.assertEquals(myToken.getTokenPosition().getPosX(),3);
+        Assert.assertEquals(myToken.getTokenPosition().getPosY(),2);
+        Assert.assertTrue(myToken.getTokenPosition().getThereIsPlayer());
     }
 
 
@@ -189,14 +234,22 @@ public class MinotaurTest {
     public void minotaurPerformMovePushingDiagonally() throws CellOutOfBattlefieldException {
 
         targetCell = battlefield.getCell(1,1);
-        battlefield.getCell(2,2).setOccupied();
+        targetCell.setOccupied();
         otherToken = new Token(TokenColor.YELLOW);
         otherToken.setTokenPosition(targetCell);
         enemyTokens.add(otherToken);
 
-        MoveContext thisMove = new MoveContext(new ApolloMoves());
+        MoveContext thisMove = new MoveContext(new MinotaurMoves());
         thisMove.executeValidMoves(myToken, null, enemyTokens , GodCard.MINOTAUR, null, battlefield, null);
+        thisMove.executeMove(myToken,null,enemyTokens,targetCell,null,battlefield,false);
 
+        Assert.assertTrue(battlefield.getCell(0,0).getThereIsPlayer());
+        Assert.assertEquals(otherToken.getTokenPosition().getPosX(),0);
+        Assert.assertEquals(otherToken.getTokenPosition().getPosY(),0);
+        Assert.assertTrue(battlefield.getCell(1,1).getThereIsPlayer());
+        Assert.assertEquals(myToken.getTokenPosition().getPosX(),1);
+        Assert.assertEquals(myToken.getTokenPosition().getPosY(),1);
+        Assert.assertFalse(battlefield.getCell(2,2).getThereIsPlayer());
     }
 
 
