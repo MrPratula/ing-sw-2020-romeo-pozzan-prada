@@ -1,11 +1,9 @@
 package it.polimi.ingsw.gameAction.move;
 
 import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
-import it.polimi.ingsw.model.Battlefield;
-import it.polimi.ingsw.model.Cell;
-import it.polimi.ingsw.model.GodCard;
-import it.polimi.ingsw.model.Token;
+import it.polimi.ingsw.model.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,7 +15,7 @@ public class AthenaMoves implements MoveBehavior{
 
 
     /**
-     * This is called if ATHENA exist from her opponents.
+     * This is called if ATHENA exist, by her opponents.
      * It receive a list of valid moves and remove from that all the moves that make the token go up.
      * @param selectedToken token to check his height.
      * @param otherToken null
@@ -32,12 +30,15 @@ public class AthenaMoves implements MoveBehavior{
     @Override
     public List<Cell> computeValidMoves(Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield, List<Cell> movesToCheck) throws CellOutOfBattlefieldException {
 
+        List<Cell> movesToReturn = new ArrayList<>(movesToCheck);
+
+
         for (Cell cell: movesToCheck) {
             if (selectedToken.getTokenPosition().getHeight() < cell.getHeight()) {
-                movesToCheck.remove(cell);
+                movesToReturn.remove(cell);
             }
         }
-        return movesToCheck;
+        return movesToReturn;
     }
 
 
@@ -51,11 +52,10 @@ public class AthenaMoves implements MoveBehavior{
      * @param targetCell the cell to move.
      * @param enemyGodCards null.
      * @param battlefield null.
-     * @param didAthenaMovedUp the boolean to set value based on the token height change.
      * @throws CellOutOfBattlefieldException if something goes wrong.
      */
     @Override
-    public void performMove(Token selectedToken, Token otherToken, List<Token> enemyTokens, Cell targetCell, List<GodCard> enemyGodCards, Battlefield battlefield, boolean didAthenaMovedUp) throws CellOutOfBattlefieldException {
+    public void performMove(Token selectedToken, Token otherToken, List<Token> enemyTokens, Cell targetCell, List<GodCard> enemyGodCards, Battlefield battlefield) throws CellOutOfBattlefieldException {
 
         int oldHeight, newHeight;
 
@@ -65,9 +65,6 @@ public class AthenaMoves implements MoveBehavior{
         newHeight = selectedToken.getTokenPosition().getHeight();
         selectedToken.getTokenPosition().setOccupied();
 
-        if (oldHeight-newHeight <0){
-            didAthenaMovedUp = true;
-        }
-        else didAthenaMovedUp = false;
+        Model.athenaMovedUp(oldHeight - newHeight < 0);
     }
 }

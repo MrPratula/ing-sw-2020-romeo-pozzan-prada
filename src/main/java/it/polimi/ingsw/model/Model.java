@@ -26,10 +26,10 @@ import java.util.*;
  */
 public class Model extends Observable<ServerResponse> implements Cloneable {
 
+    private static boolean didAthenaMovedUp;
     private final Battlefield battlefield;
     private TokenColor turn;
     private List<Player> allPlayers;
-    private boolean didAthenaMovedUp;
 
     public Model(Battlefield battlefield) {
         this.battlefield = battlefield;
@@ -49,6 +49,15 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
     public TokenColor getTurn() {
         return turn;
+    }
+
+    public static void athenaMovedUp(Boolean trueOrFalse) {
+        didAthenaMovedUp = trueOrFalse;
+    }
+
+    // Only needed for test in AthenaMovesTest.
+    public static boolean isDidAthenaMovedUp() {
+        return didAthenaMovedUp;
     }
 
 
@@ -332,18 +341,18 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         switch (myGodCard) {
             case APOLLO:{
                 MoveContext thisMove = new MoveContext(new ApolloMoves());
-                thisMove.executeMove(selectedToken, otherToken, enemyTokens, targetCell, enemyGodCards, battlefield, didAthenaMovedUp);
+                thisMove.executeMove(selectedToken, otherToken, enemyTokens, targetCell, enemyGodCards, battlefield);
                 break;
             }
             case ATHENA:{
                 MoveContext thisMove = new MoveContext(new AthenaMoves());
-                thisMove.executeMove(selectedToken, otherToken, enemyTokens, targetCell, enemyGodCards, battlefield, didAthenaMovedUp);
+                thisMove.executeMove(selectedToken, otherToken, enemyTokens, targetCell, enemyGodCards, battlefield);
                 break;
             }
 
             default:{
                 MoveContext thisMove = new MoveContext(new SimpleMoves());
-                thisMove.executeMove(selectedToken, otherToken, enemyTokens, targetCell, enemyGodCards, battlefield, didAthenaMovedUp);
+                thisMove.executeMove(selectedToken, otherToken, enemyTokens, targetCell, enemyGodCards, battlefield);
             }
         }
 

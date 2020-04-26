@@ -187,7 +187,7 @@ public class MinotaurTest {
 
         MoveContext thisMove = new MoveContext(new MinotaurMoves());
         thisMove.executeValidMoves(myToken, null, enemyTokens , GodCard.MINOTAUR, null, battlefield, null);
-        thisMove.executeMove(myToken,null,enemyTokens,targetCell,null,battlefield,false);
+        thisMove.executeMove(myToken,null,enemyTokens,targetCell,null,battlefield);
 
         Assert.assertEquals(otherToken.getTokenPosition().getPosX(),2);
         Assert.assertEquals(otherToken.getTokenPosition().getPosY(),0);
@@ -213,7 +213,7 @@ public class MinotaurTest {
         enemyTokens.add(otherToken);
 
         MoveContext thisMove = new MoveContext(new MinotaurMoves());
-        thisMove.executeMove(myToken,null,enemyTokens,targetCell,null,battlefield,false);
+        thisMove.executeMove(myToken,null,enemyTokens,targetCell,null,battlefield);
 
         Assert.assertFalse(battlefield.getCell(2,2).getThereIsPlayer());
         Assert.assertEquals(otherToken.getTokenPosition().getPosX(),4);
@@ -241,7 +241,7 @@ public class MinotaurTest {
 
         MoveContext thisMove = new MoveContext(new MinotaurMoves());
         thisMove.executeValidMoves(myToken, null, enemyTokens , GodCard.MINOTAUR, null, battlefield, null);
-        thisMove.executeMove(myToken,null,enemyTokens,targetCell,null,battlefield,false);
+        thisMove.executeMove(myToken,null,enemyTokens,targetCell,null,battlefield);
 
         Assert.assertTrue(battlefield.getCell(0,0).getThereIsPlayer());
         Assert.assertEquals(otherToken.getTokenPosition().getPosX(),0);

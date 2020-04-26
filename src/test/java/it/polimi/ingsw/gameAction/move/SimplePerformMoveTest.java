@@ -69,7 +69,7 @@ public class SimplePerformMoveTest {
         targetCell=battlefield.getCell(2,0);
 
         MoveContext thisMove = new MoveContext(new SimpleMoves());
-        thisMove.executeMove(selectedToken, null, null, targetCell, null, battlefield, false);
+        thisMove.executeMove(selectedToken, null, null, targetCell, null, battlefield);
 
         Assert.assertFalse(battlefield.getCell(2,1).getThereIsPlayer());
         Assert.assertTrue(battlefield.getCell(2,0).getThereIsPlayer());
@@ -90,7 +90,7 @@ public class SimplePerformMoveTest {
         targetCell=battlefield.getCell(1,1);
 
         MoveContext thisMove = new MoveContext(new SimpleMoves());
-        thisMove.executeMove(selectedToken, null, null, targetCell, null, battlefield, false);
+        thisMove.executeMove(selectedToken, null, null, targetCell, null, battlefield);
 
         Assert.assertFalse(battlefield.getCell(2,1).getThereIsPlayer());
         Assert.assertTrue(battlefield.getCell(1,1).getThereIsPlayer());
@@ -111,7 +111,7 @@ public class SimplePerformMoveTest {
         targetCell=battlefield.getCell(2,1);
 
         MoveContext thisMove = new MoveContext(new SimpleMoves());
-        thisMove.executeMove(selectedToken, null, null, targetCell, null, battlefield, false);
+        thisMove.executeMove(selectedToken, null, null, targetCell, null, battlefield);
 
         Assert.assertFalse(battlefield.getCell(2,2).getThereIsPlayer());
         Assert.assertTrue(battlefield.getCell(2,1).getThereIsPlayer());

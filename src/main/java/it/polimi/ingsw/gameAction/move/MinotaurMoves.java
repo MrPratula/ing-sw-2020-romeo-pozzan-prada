@@ -77,7 +77,7 @@ public class MinotaurMoves implements MoveBehavior{
      * @param () the same as the simple perform move.
      */
     @Override
-    public void performMove(Token selectedToken, Token otherToken, List<Token> enemyTokens, Cell targetCell, List<GodCard> enemyGodCards, Battlefield battlefield, boolean didAthenaMovedUp) throws CellOutOfBattlefieldException {
+    public void performMove(Token selectedToken, Token otherToken, List<Token> enemyTokens, Cell targetCell, List<GodCard> enemyGodCards, Battlefield battlefield) throws CellOutOfBattlefieldException {
 
         if (targetCell.getThereIsPlayer()) {
 

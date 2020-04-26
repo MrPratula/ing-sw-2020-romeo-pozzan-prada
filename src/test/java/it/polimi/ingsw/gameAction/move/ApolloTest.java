@@ -77,7 +77,7 @@ public class ApolloTest {
         Cell targetCell = battlefield.getCell(2,2);
 
         MoveContext thisMove = new MoveContext(new ApolloMoves());
-        thisMove.executeMove(selectedToken, null, enemyTokens, targetCell, null, battlefield, false);
+        thisMove.executeMove(selectedToken, null, enemyTokens, targetCell, null, battlefield);
 
         Assert.assertTrue(selectedToken.getTokenPosition().equals(battlefield.getCell(2, 2)));
         Assert.assertTrue(enemyTokens.get(0).getTokenPosition().equals(battlefield.getCell(1, 1)));

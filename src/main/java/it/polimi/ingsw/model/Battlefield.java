@@ -11,9 +11,10 @@ import java.util.*;
 public class Battlefield implements Serializable {
 
     private static final int battlefieldSize = 5;
-    private Cell[][] battlefield;
+    private final Cell[][] battlefield;
+    private boolean didAthenaMovedUp;
 
-    private List<Player> players; // = null;
+    private List<Player> players;
 
 
     //just to make the test
@@ -47,21 +48,9 @@ public class Battlefield implements Serializable {
      * @return the Cell with specified coords.
      */
     public Cell getCell(int posX, int posY) throws CellOutOfBattlefieldException {
-/*
-        if (0 >= posX && posX < battlefieldSize) {
-            if (0 >= posY && posY < battlefieldSize) {
-                return battlefield[posX][posY];
-            }
-        }
-        else {
-            throw new CellOutOfBattlefieldException(
-                    String.format("the cell at position (%d,%d) is out the battlefield", posX, posY));
-        }
-        return null;            // non capisco perchè questo deve stare qui...
-        */
         return battlefield[posX][posY];
-
     }
+
 
     /**
      * It is used when I have a Cell (usually of the Token) and I want to locate

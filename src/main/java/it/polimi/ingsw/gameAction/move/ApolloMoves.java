@@ -59,7 +59,7 @@ public class ApolloMoves implements MoveBehavior {
      * @param () the same as the simple perform move.
      */
     @Override
-    public void performMove(Token selectedToken, Token otherToken, List<Token> enemyTokens, Cell targetCell, List<GodCard> enemyGodCards, Battlefield battlefield, boolean didAthenaMovedUp) {
+    public void performMove(Token selectedToken, Token otherToken, List<Token> enemyTokens, Cell targetCell, List<GodCard> enemyGodCards, Battlefield battlefield) {
 
         Cell selectedTokenPosition = selectedToken.getTokenPosition();
         Token swapToken = null;

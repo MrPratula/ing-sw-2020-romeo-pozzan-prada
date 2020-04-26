@@ -26,8 +26,8 @@ public class MoveContext {
        return moveStrategy.computeValidMoves(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, battlefield, moveToCheck);
    }
 
-   public void executeMove (Token selectedToken, Token otherToken, List<Token> enemyTokens, Cell targetCell, List<GodCard> enemyGodCards, Battlefield battlefield, boolean didAthenaMovedUp) throws CellOutOfBattlefieldException {
-       moveStrategy.performMove(selectedToken, otherToken, enemyTokens, targetCell, enemyGodCards, battlefield, didAthenaMovedUp);
+   public void executeMove (Token selectedToken, Token otherToken, List<Token> enemyTokens, Cell targetCell, List<GodCard> enemyGodCards, Battlefield battlefield) throws CellOutOfBattlefieldException {
+       moveStrategy.performMove(selectedToken, otherToken, enemyTokens, targetCell, enemyGodCards, battlefield);
    }
 
 }

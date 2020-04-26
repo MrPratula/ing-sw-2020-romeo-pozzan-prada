@@ -110,7 +110,7 @@ public class ArtemisMoves implements MoveBehavior {
      * Though I have to write this because of the interface, but this is never called (hopefully).
      */
     @Override
-    public void performMove(Token selectedToken, Token otherToken, List<Token> enemyTokens, Cell targetCell, List<GodCard> enemyGodCards, Battlefield battlefield, boolean didAthenaMovedUp) {
+    public void performMove(Token selectedToken, Token otherToken, List<Token> enemyTokens, Cell targetCell, List<GodCard> enemyGodCards, Battlefield battlefield) {
 
     }
 }
