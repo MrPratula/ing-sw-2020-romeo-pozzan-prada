@@ -8,6 +8,9 @@ public class Utility {
     /**
      * This just set up a battlefield with some various builds
      * for testing.
+     * The battlefield created like this is the one you can see in the
+     * battlefieldTest.jpg
+     * The token you can see in the image are not placed in the battlefield yet.
      * @return the battlefield.
      */
     public static Battlefield setUpForTest() throws CellOutOfBattlefieldException {

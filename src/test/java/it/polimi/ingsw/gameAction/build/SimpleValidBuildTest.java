@@ -13,12 +13,22 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * A token can build in all 8 Cells around himself except
+ * the cell's that are a dome,
+ * the cell's where there is a player.
+ */
 public class SimpleValidBuildTest {
 
     Battlefield battlefield;
     List<Token> enemyTokens;
     Token selectedToken;
 
+
+    /**
+     * This set up a standard battlefieldTest
+     */
     @BeforeEach void setUp() throws CellOutOfBattlefieldException {
 
         battlefield = Utility.setUpForTest();
@@ -29,6 +39,9 @@ public class SimpleValidBuildTest {
     }
 
 
+    /**
+     * This test the valid builds with almost each kind of limitation.
+     */
     @Test void validBuildsTest() throws CellOutOfBattlefieldException {
 
         selectedToken.setTokenPosition(battlefield.getCell(2,2));

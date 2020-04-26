@@ -505,7 +505,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             }
             default:{
                 BuildContext thisBuild = new BuildContext(new SimpleBuild());
-                thisBuild.executePerformBuild(targetCell, null, getBattlefield());
+                thisBuild.executePerformBuild(targetCell, null, battlefield);
             }
         }
 
