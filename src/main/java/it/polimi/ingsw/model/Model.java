@@ -704,9 +704,13 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         return !(firstCell.getPosX()==secondCell.getPosX() && firstCell.getPosY()==secondCell.getPosY());
     }
 
+
+    // è sbagliata! il check va fatto anche su posx!=0 e anche per posY
     public boolean notperimetercell(Cell targetcell){
         return (targetcell.getPosX()!=4 && targetcell.getPosY()!=4);
     }
+
+
 }
 
 

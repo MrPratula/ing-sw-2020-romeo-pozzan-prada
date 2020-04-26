@@ -86,8 +86,4 @@ public class ApolloTest {
         Assert.assertEquals(0,selectedToken.getOldHeight());
         Assert.assertEquals(1,enemyTokens.get(0).getOldHeight());
     }
-
-
-
-
 }
