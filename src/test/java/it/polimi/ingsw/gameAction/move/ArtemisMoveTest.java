@@ -43,7 +43,7 @@ public class ArtemisMoveTest {
 
     /**
      * Test with an empty battlefield if all the cell except the initial one are legal moves.
-     * The token is in the center of the battlefield.
+     * The token is in the center of the battlefield. 
      */
     @Test void twentyFiveValidMoves() throws CellOutOfBattlefieldException {
 
