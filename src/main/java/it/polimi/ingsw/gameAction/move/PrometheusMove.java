@@ -40,13 +40,21 @@ public class PrometheusMove implements MoveBehavior {
                 }
             }
         }
-        for (Cell validCell: allMoves) {
-            allMoves.remove(battlefield.getCell(selectedToken.getTokenPosition()));         // rimuovo la posizione in cui sono
-            allMoves.remove(battlefield.getCell(otherToken.getTokenPosition()));            // rimuovo la posizione del mio altro token
 
-            for (Token enemyToken : enemyTokens) {
-                allMoves.remove(battlefield.getCell(enemyToken.getTokenPosition()));        // rimuovo la posizione dei token dei miei nemici
-            }
+        List<Cell> allMovesToReturn = new ArrayList<>(allMoves);
+
+        for (Cell validCell: allMoves) {
+            try{
+                allMovesToReturn.remove(battlefield.getCell(selectedToken.getTokenPosition()));     // rimuovo le posizioni dei miei token
+            } catch (NullPointerException ignore){}
+            try{
+                allMovesToReturn.remove(battlefield.getCell(otherToken.getTokenPosition()));
+            } catch (NullPointerException ignore){}
+            try{
+                for (Token enemyToken : enemyTokens) {
+                    allMovesToReturn.remove(battlefield.getCell(enemyToken.getTokenPosition()));        // rimuovo la posizione dei token dei miei nemici
+                }
+            } catch (NullPointerException ignore){}
         }
         return allMoves;
     }

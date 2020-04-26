@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
  * Note that a build with a dome on a level that is not 3 is not a Complete Tower.
  * This is to clarify the interaction with CHRONUS power.
  */
-public class AtlasTest {
+public class AtlasBuildTest {
 
     Cell targetCell = null;
     Battlefield battlefield = null;

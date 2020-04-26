@@ -37,12 +37,12 @@ public class BattlefieldTest {
         t3.setTokenPosition(battlefield.getCell(0,4));
         t33.setTokenPosition(battlefield.getCell(0,3));
 
-        battlefield.getCell(1,1).setThereIsPlayer();
-        battlefield.getCell(0,1).setThereIsPlayer();
-        battlefield.getCell(3,2).setThereIsPlayer();
-        battlefield.getCell(4,2).setThereIsPlayer();
-        battlefield.getCell(0,4).setThereIsPlayer();
-        battlefield.getCell(0,3).setThereIsPlayer();
+        battlefield.getCell(1,1).setOccupied();
+        battlefield.getCell(0,1).setOccupied();
+        battlefield.getCell(3,2).setOccupied();
+        battlefield.getCell(4,2).setOccupied();
+        battlefield.getCell(0,4).setOccupied();
+        battlefield.getCell(0,3).setOccupied();
 
         //battlefield.getCell(1,4).setIsDome();
 

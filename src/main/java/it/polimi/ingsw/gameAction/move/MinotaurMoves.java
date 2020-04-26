@@ -55,16 +55,18 @@ public class MinotaurMoves implements MoveBehavior{
             }
         }
 
+        List<Cell> allMovesToReturn = new ArrayList<>(allMoves);
+
         for (Cell validCell: allMoves) {
             try{
-                allMoves.remove(battlefield.getCell(selectedToken.getTokenPosition()));     // rimuovo le posizioni dei miei token
+                allMovesToReturn.remove(battlefield.getCell(selectedToken.getTokenPosition()));     // rimuovo le posizioni dei miei token
             } catch (NullPointerException ignore){}
             try{
-                allMoves.remove(battlefield.getCell(otherToken.getTokenPosition()));        // e no quelle dei miei avversari
+                allMovesToReturn.remove(battlefield.getCell(otherToken.getTokenPosition()));
             } catch (NullPointerException ignore){}
         }
 
-        return allMoves;
+        return allMovesToReturn;
     }
 
 
@@ -86,7 +88,7 @@ public class MinotaurMoves implements MoveBehavior{
                     int deltaX = targetCell.getPosX() - selectedToken.getTokenPosition().getPosX();
                     int deltaY = targetCell.getPosY() - selectedToken.getTokenPosition().getPosY();
                     t.setTokenPosition(battlefield.getCell(targetCell.getPosX()+deltaX,targetCell.getPosY()+deltaY));
-                    t.getTokenPosition().setThereIsPlayer();
+                    t.getTokenPosition().setOccupied();
                     break;
                 }
             }

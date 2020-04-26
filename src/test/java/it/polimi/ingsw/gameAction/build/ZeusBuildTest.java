@@ -10,12 +10,14 @@ import it.polimi.ingsw.model.TokenColor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 
 
 
-public class ZeusTest {
+public class ZeusBuildTest {
 
     Battlefield battlefield = null;
     Cell targetCell = null;
@@ -35,11 +37,26 @@ public class ZeusTest {
 
 
     /**
+     * This valid builds should even contain the cell under my token,
+     * because zeus can build under himself
+     */
+    @Test
+    public void ZeusValidMoves() throws CellOutOfBattlefieldException {
+
+        token = new Token(TokenColor.YELLOW);
+        token.setTokenPosition(targetCell);
+        targetCell.setOccupied();
+
+        BuildContext thisBuild = new BuildContext(new ZeusBuild());
+        List<Cell> validBuilds = thisBuild.executeValidBuilds(token, null, null, null, battlefield, null);
+
+        assertTrue(validBuilds.contains(targetCell));
+    }
+
+
+    /**
      * The height of the target cell has to be the old height+1
      * and the target cell can be equal to the token position
-     * @throws CellHeightException
-     * @throws ReachHeightLimitException
-     * @throws CellOutOfBattlefieldException
      */
     @Test
     public void ZeusPerformBuild() throws CellHeightException, ReachHeightLimitException, CellOutOfBattlefieldException {
@@ -58,16 +75,13 @@ public class ZeusTest {
 
     /**
      * Here we test that Zeus can build even under itself, so we instanciate a token;
-     * @throws CellHeightException
-     * @throws ReachHeightLimitException
-     * @throws CellOutOfBattlefieldException
      */
     @Test
     public void ZeusPerformBuildSamePosition() throws CellHeightException, ReachHeightLimitException, CellOutOfBattlefieldException {
 
         token = new Token(TokenColor.BLUE);
         token.setTokenPosition(targetCell);
-        targetCell.setThereIsPlayer();
+        targetCell.setOccupied();
 
         targetCell.setHeight(1);
         targetCellOldHeight = targetCell.getHeight();

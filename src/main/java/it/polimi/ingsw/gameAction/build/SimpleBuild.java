@@ -48,12 +48,11 @@ public class SimpleBuild implements BuildBehavior{
             }
         }
 
-        // Then all cell where is a token are removed
+        // Then all the cells where is present a token will be removed
 
         buildableCells.remove(selectedToken.getTokenPosition());
 
-        if (otherToken!=null)
-            buildableCells.remove(otherToken.getTokenPosition());
+        if (otherToken!=null) buildableCells.remove(otherToken.getTokenPosition());
 
         for (Token t: enemyTokens) {
             buildableCells.remove(t.getTokenPosition());

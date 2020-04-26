@@ -63,7 +63,7 @@ public class SimplePerformMoveTest {
     @Test void from0to0() throws CellOutOfBattlefieldException {
 
         selectedToken.setTokenPosition(battlefield.getCell(2,1));
-        battlefield.getCell(2,1).setThereIsPlayer();
+        battlefield.getCell(2,1).setOccupied();
         selectedToken.setOldHeight(0);
 
         targetCell=battlefield.getCell(2,0);
@@ -84,7 +84,7 @@ public class SimplePerformMoveTest {
     @Test void from0to1() throws CellOutOfBattlefieldException {
 
         selectedToken.setTokenPosition(battlefield.getCell(2,1));
-        battlefield.getCell(2,1).setThereIsPlayer();
+        battlefield.getCell(2,1).setOccupied();
         selectedToken.setOldHeight(0);
 
         targetCell=battlefield.getCell(1,1);
@@ -105,7 +105,7 @@ public class SimplePerformMoveTest {
     @Test void from3to0() throws CellOutOfBattlefieldException {
 
         selectedToken.setTokenPosition(battlefield.getCell(2,2));
-        battlefield.getCell(2,2).setThereIsPlayer();
+        battlefield.getCell(2,2).setOccupied();
         selectedToken.setOldHeight(2);
 
         targetCell=battlefield.getCell(2,1);

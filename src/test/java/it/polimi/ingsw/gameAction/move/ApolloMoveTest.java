@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *
  * Your Worker may move into an opponent Worker’s space by forcing their Worker to the space yours just vacated.
  */
-public class ApolloTest {
+public class ApolloMoveTest {
 
     Battlefield battlefield;
     Token selectedToken;
@@ -68,10 +68,10 @@ public class ApolloTest {
     @Test void apolloPerformMove() throws CellOutOfBattlefieldException {
 
         selectedToken.setTokenPosition(battlefield.getCell(1,1));
-        battlefield.getCell(1,1).setThereIsPlayer();
+        battlefield.getCell(1,1).setOccupied();
 
         enemyTokens.get(0).setTokenPosition(battlefield.getCell(2,2));
-        battlefield.getCell(2,2).setThereIsPlayer();
+        battlefield.getCell(2,2).setOccupied();
         battlefield.getCell(2,2).setHeight(1);
 
         Cell targetCell = battlefield.getCell(2,2);

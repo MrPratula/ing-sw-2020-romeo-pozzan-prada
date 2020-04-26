@@ -60,13 +60,7 @@ public class Cell implements Serializable {
         return this.isDome;
     }
 
-    /*
-     * SETTER
-     */
-
-    public void setThereIsPlayer() {
-        this.thereIsPlayer = true;
-    }
+    /*   SETTER     */
 
     public void setHeight(int newHeight) {
         this.height=newHeight;
