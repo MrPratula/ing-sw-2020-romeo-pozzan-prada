@@ -15,6 +15,7 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -51,7 +52,7 @@ public class ApolloTest {
         enemyTokens.get(0).setTokenPosition(battlefield.getCell(2,3));
         battlefield.getCell(2,3).setOccupied();
 
-        List<Cell> validMoves = new ArrayList<>();
+        List<Cell> validMoves;
         MoveContext thisMove = new MoveContext(new ApolloMoves());
         validMoves = thisMove.executeValidMoves(selectedToken, null, enemyTokens, null, null, battlefield, null);
 
@@ -61,8 +62,28 @@ public class ApolloTest {
     }
 
 
+    /**
+     * Test a token swap with an enemy token on a different height level.
+     */
+    @Test void apolloPerformMove() throws CellOutOfBattlefieldException {
 
+        selectedToken.setTokenPosition(battlefield.getCell(1,1));
+        battlefield.getCell(1,1).setThereIsPlayer();
 
+        enemyTokens.get(0).setTokenPosition(battlefield.getCell(2,2));
+        battlefield.getCell(2,2).setThereIsPlayer();
+        battlefield.getCell(2,2).setHeight(1);
 
+        Cell targetCell = battlefield.getCell(2,2);
 
+        MoveContext thisMove = new MoveContext(new ApolloMoves());
+        thisMove.executeMove(selectedToken, null, enemyTokens, targetCell, null, battlefield, false);
+
+        Assert.assertTrue(selectedToken.getTokenPosition().equals(battlefield.getCell(2, 2)));
+        Assert.assertTrue(enemyTokens.get(0).getTokenPosition().equals(battlefield.getCell(1, 1)));
+        Assert.assertTrue(battlefield.getCell(1,1).getThereIsPlayer());
+        Assert.assertTrue(battlefield.getCell(2,2).getThereIsPlayer());
+        Assert.assertEquals(0,selectedToken.getOldHeight());
+        Assert.assertEquals(1,enemyTokens.get(0).getOldHeight());
+    }
 }

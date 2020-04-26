@@ -41,18 +41,24 @@ public class SimpleBuild implements BuildBehavior{
                 provY = selectedToken.getTokenPosition().getPosY()+j;
 
                 if ( (provX>=0 && provX <5) && (provY>=0 && provY<5) &&                       // la cella provv è dentro le dimensioni del battlefield
-                        (!battlefield.getCell(provX,provY).getIsDome()) ) {        // non deve essere una cupola
+                    (!battlefield.getCell(provX,provY).getIsDome()) ) {                         // non deve essere una cupola
 
-                    for (Token t: enemyTokens) {
-                        if (provX != t.getTokenPosition().getPosX() &&                 // il token non può costruire dove c'è un altro token
-                                provY != t.getTokenPosition().getPosX()) {             // compreso sè stesso, quindi non può costruire sotto i piedi
-
-                            buildableCells.add(battlefield.getCell(provX, provY));
-                        }
-                    }
+                        buildableCells.add(battlefield.getCell(provX, provY));
                 }
             }
         }
+
+        // Then all cell where is a token are removed
+
+        buildableCells.remove(selectedToken.getTokenPosition());
+
+        if (otherToken!=null)
+            buildableCells.remove(otherToken.getTokenPosition());
+
+        for (Token t: enemyTokens) {
+            buildableCells.remove(t.getTokenPosition());
+        }
+
         return buildableCells;
     }
 
