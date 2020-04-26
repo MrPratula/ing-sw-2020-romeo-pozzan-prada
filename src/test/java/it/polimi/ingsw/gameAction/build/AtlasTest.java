@@ -63,7 +63,6 @@ public class AtlasTest {
 
         assertTrue(targetCell.getIsDome());
         assertEquals(3, targetCell.getHeight());
-
     }
 
 }

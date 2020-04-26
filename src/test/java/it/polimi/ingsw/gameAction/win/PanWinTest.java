@@ -23,7 +23,7 @@ public class PanWinTest {
 
 
     /**
-     * Set up the defauld test battlefield for make some tests.
+     * Set up the default test battlefield for make some tests.
      */
     @BeforeEach void setUp() throws CellOutOfBattlefieldException {
 
