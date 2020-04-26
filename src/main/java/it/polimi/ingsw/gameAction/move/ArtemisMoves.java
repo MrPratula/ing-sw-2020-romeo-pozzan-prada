@@ -24,29 +24,84 @@ public class ArtemisMoves implements MoveBehavior {
     public List<Cell> computeValidMoves(Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield, List<Cell> moveToCheck) throws CellOutOfBattlefieldException {
 
         List<Cell> allMoves = new ArrayList<Cell>();
+
         int provX, provY;
 
-        for (int i=-2; i<3; i++) {                                                   // ciclo di +-1 intorno alla posizione del token
-            provX = selectedToken.getTokenPosition().getPosX() + i;                            // per poter ottenere le 8 caselle in cui
-            for (int j = -2; j < 3; j++) {                                               // posso muovere
+        // Cicle around my token position to get the 8 cell in which i can move
+        for (int i=-1; i<2; i++) {
+            provX = selectedToken.getTokenPosition().getPosX() + i;
+            for (int j = -1; j < 2; j++) {
                 provY = selectedToken.getTokenPosition().getPosY() + j;
-                if ((provX >= 0 && provX < 5) && (provY >= 0 && provY < 5) &&                     // la cella provv è dentro le dimensioni del battlefield
-                        (battlefield.getCell(provX, provY).getHeight() -              // l'altezza della cella provv -
-                                selectedToken.getTokenPosition().getHeight() <= 1) &&            // l'altezza del token <= 1
-                        (!battlefield.getCell(provX, provY).getIsDome())) {         // non deve essere una cupola
-                    allMoves.add(battlefield.getCell(provX, provY));
+
+                // Then it is added to the list if it is inside the battlefield
+                if ((provX >= 0 && provX < 5) && (provY >= 0 && provY < 5)){
+                    // if the different height is legal
+                    if ((battlefield.getCell(provX, provY).getHeight() - selectedToken.getTokenPosition().getHeight() <= 1)){
+                        // if it is not a dome
+                        if (!battlefield.getCell(provX, provY).getIsDome())
+                            allMoves.add(battlefield.getCell(provX, provY));
+                    }
                 }
             }
         }
-        for (Cell validCell: allMoves) {
-            allMoves.remove(battlefield.getCell(selectedToken.getTokenPosition()));         // rimuovo la posizione in cui sono
-            allMoves.remove(battlefield.getCell(otherToken.getTokenPosition()));            // rimuovo la posizione del mio altro token
+        // Remove my token position.
+        allMoves.remove(battlefield.getCell(selectedToken.getTokenPosition()));
 
+        // Remove my other token position.
+        try{
+            allMoves.remove(battlefield.getCell(otherToken.getTokenPosition()));
+        }catch(NullPointerException ignore){}
+
+        // Remove enemies token positions.
+        for (Token enemyToken : enemyTokens) {
+            try{
+                allMoves.remove(battlefield.getCell(enemyToken.getTokenPosition()));
+            }catch (NullPointerException ignore) {}
+        }
+
+        // Now I have normal validMoves. For each of them I can move again
+
+        List<Cell> allMovesArtemis = new ArrayList<>(allMoves);
+
+        // Scan for each cell of valid moves
+        for (Cell cell: allMoves) {
+            // Cicle around each cell of valid moves to get all the potential 25 valid moves
+            for (int i=-1; i<2; i++) {
+                provX = cell.getPosX() + i;
+                for (int j = -1; j < 2; j++) {
+                    provY = cell.getPosY() + j;
+
+                    // The cell is added if it is inside the battlefield
+                    if ((provX >= 0 && provX < 5) && (provY >= 0 && provY < 5)) {
+                        // if the height difference is legal
+                        if ((battlefield.getCell(provX, provY).getHeight() - cell.getHeight() <= 1)) {
+                            // if it is not a dome
+                            if (!battlefield.getCell(provX, provY).getIsDome()) {
+                                // if it is not already in the list
+                                if (!allMovesArtemis.contains(battlefield.getCell(provX,provY)))
+                                    allMovesArtemis.add(battlefield.getCell(provX, provY));
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Remove my token position.
+            allMovesArtemis.remove(battlefield.getCell(selectedToken.getTokenPosition()));
+
+            // Remove my other token position.
+            try{
+                allMovesArtemis.remove(battlefield.getCell(otherToken.getTokenPosition()));
+            }catch(NullPointerException ignore){}
+
+            // Remove enemies token positions.
             for (Token enemyToken : enemyTokens) {
-                allMoves.remove(battlefield.getCell(enemyToken.getTokenPosition()));        // rimuovo la posizione dei token dei miei nemici
+                try{
+                    allMovesArtemis.remove(battlefield.getCell(enemyToken.getTokenPosition()));
+                }catch (NullPointerException ignore) {}
             }
         }
-        return allMoves;
+        return allMovesArtemis;
     }
 
 

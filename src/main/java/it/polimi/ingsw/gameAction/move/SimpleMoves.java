@@ -43,29 +43,35 @@ public class SimpleMoves implements MoveBehavior {
 
         int provX, provY;
 
-        for (int i=-1; i<2; i++) {                                                   // ciclo di +-1 intorno alla posizione del token
-            provX = selectedToken.getTokenPosition().getPosX() + i;                            // per poter ottenere le 8 caselle in cui
-            for (int j = -1; j < 2; j++) {                                               // posso muovere
+        // Cicle around my token position to get the 8 cell in which i can move
+        for (int i=-1; i<2; i++) {
+            provX = selectedToken.getTokenPosition().getPosX() + i;
+            for (int j = -1; j < 2; j++) {
                 provY = selectedToken.getTokenPosition().getPosY() + j;
-                if ((provX >= 0 && provX < 5) && (provY >= 0 && provY < 5) &&                     // la cella provv è dentro le dimensioni del battlefield
-                        (battlefield.getCell(provX, provY).getHeight() -              // l'altezza della cella provv -
-                                selectedToken.getTokenPosition().getHeight() <= 1) &&            // l'altezza del token <= 1
-                        (!battlefield.getCell(provX, provY).getIsDome())) {         // non deve essere una cupola
-                    allMoves.add(battlefield.getCell(provX, provY));
+
+                // Then it is added to the list if it is inside the battlefield
+                if ((provX >= 0 && provX < 5) && (provY >= 0 && provY < 5)){
+                    // if the different height is legal
+                    if ((battlefield.getCell(provX, provY).getHeight() -selectedToken.getTokenPosition().getHeight() <= 1)){
+                        // if it is not a dome
+                        if (!battlefield.getCell(provX, provY).getIsDome())
+                            allMoves.add(battlefield.getCell(provX, provY));
+                    }
                 }
             }
         }
+        // Remove my token position.
+        allMoves.remove(battlefield.getCell(selectedToken.getTokenPosition()));
 
+        // Remove my other token position.
         try{
-            allMoves.remove(battlefield.getCell(selectedToken.getTokenPosition()));         // rimuovo la posizione in cui sono
-        }catch(NullPointerException ignore){}
-        try{
-            allMoves.remove(battlefield.getCell(otherToken.getTokenPosition()));            // rimuovo la posizione del mio altro token
+            allMoves.remove(battlefield.getCell(otherToken.getTokenPosition()));
         }catch(NullPointerException ignore){}
 
+        // Remove enemies token positions.
         for (Token enemyToken : enemyTokens) {
             try{
-                allMoves.remove(battlefield.getCell(enemyToken.getTokenPosition()));        // rimuovo la posizione dei token dei miei nemici
+                allMoves.remove(battlefield.getCell(enemyToken.getTokenPosition()));
             }catch (NullPointerException ignore) {}
         }
 

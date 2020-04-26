@@ -427,8 +427,6 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     }
 
 
-
-
     /**
      * This is called by the controller just to check if the real player has given a correct value.
      * It works exactly like the validBuilds method.
