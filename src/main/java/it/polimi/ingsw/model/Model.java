@@ -534,16 +534,16 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             }
         }
 
-        // prometheus check
+        // Prometheus check: here he chose to use his godpower, so now he doesn't have to finish his turn, but he has to perform a simple move and a simple build
         if(playerAction.getPlayer().getMyGodCard().equals((GodCard.PROMETHEUS))  && playerAction.getDoWantUsePower()){          //qui prometeo ha fatto solo la prima build, come dice il boolean
-            String askForSelectPrometheus = String.format("Remember: now you can't move-up! Please %s, select the token you want to move (x,y)",this.turn.toString());      //quindi da qui potrà partire la prometheusMove e poi simple build come da routine
-            ServerResponse serverResponse = new ServerResponse(Action.START_NEW_TURN, this.getCopy(), null, null, askForSelectPrometheus);
-            // HERE PROMETHEUS TURN DOESN'T END, SO WE DON'T APPLY THE UPDATE TURN
+            String askForSelectPrometheus = String.format("Remember: now you can't move-up! Please %s, select where you want to move your selected token(%s) (x,y)",this.turn.toString(), playerAction.getTokenMain());      //quindi da qui potrà partire la prometheusMove e poi simple build come da routine
+            ServerResponse serverResponse = new ServerResponse(Action.ASK_FOR_MOVE, this.getCopy(), null, null, askForSelectPrometheus);
+            // HERE PROMETHEUS TURN DOESN'T END, SO WE DON'T APPLY THE UPDATE TURN! quindi metto in else la condizione di update turn, in modo che alla vera build finale di prometeo la fa la update turn
         }
 
-        //  After the build is done the turn is end and a new player has to begin his turn.
+        //  After the build has been done, the turn is ended and a new player has to begin his turn. (only if he is not Prometheus)
 
-        this.updateTurn();
+        else this.updateTurn();
 
         String askForSelect = String.format("Player %s select the token you want to move (x,y)",this.turn.toString());
         ServerResponse serverResponse = new ServerResponse(Action.START_NEW_TURN, this.getCopy(), null, null, askForSelect);

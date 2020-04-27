@@ -46,6 +46,7 @@ public class Controller implements Observer<PlayerAction> {
                     for (Cell c: validBuilds) {
                         if (c.getPosX() == targetCell.getPosX() && c.getPosY() == targetCell.getPosY()) {
                             model.performBuild(playerAction);
+                            //here prometheus finished his first move
                         }
                         else{
                             model.notifyWrongInput(playerAction);

@@ -77,7 +77,6 @@ public abstract class View extends Observable<PlayerAction> implements Observer<
         List<Player> players = serverResponse.getModelCopy().getAllPlayers();
         Player opp1 = null, opp2 = null;
         if(numberOfPlayers==2){
-            opp2 = null;
             if(players.get(0).equals(getPlayer()))  opp1 = players.get(1);
             else opp1 = players.get(0);
         }
@@ -121,12 +120,21 @@ public abstract class View extends Observable<PlayerAction> implements Observer<
                 //compute the user input, IN THIS CASE IT'S JUST yes/no
                 Scanner in = new Scanner(System.in);
                 String input = in.nextLine();
-                boolean aux = false;
+
                 if(input.equals("yes")){
-                    aux = true;
+                    System.out.println("Which token do you want to build with? (x,y)");
+                    //compute the user input
+                    int posX = Integer.parseInt(getUserInput()[0]);
+                    int posY = Integer.parseInt(getUserInput()[1]);
+                    //calculates which token has been selected
+                    Token selectedToken = computeTokens(serverResponse, posX, posY).get(0);
+                    Token otherToken = computeTokens(serverResponse, posX, posY).get(1);
+                    //compute opponent players
+                    Player opp1 = computeOpponentPlayers(serverResponse).get(0);
+                    Player opp2 = computeOpponentPlayers(serverResponse).get(1);
                     try{
                         Action action = Action.PROMETHEUS_POWER;
-                        PlayerAction playerAction = new PlayerAction(action,getPlayer(),null,null,0,0,null,null, aux);
+                        PlayerAction playerAction = new PlayerAction(action,getPlayer(),opp1,opp2,selectedToken.getId(),otherToken.getId(),null,null, true);
                         notifyRemoteController(playerAction);////////////////////
                     } catch (NullPointerException e){
                         System.out.println(e.getMessage());
@@ -178,8 +186,10 @@ public abstract class View extends Observable<PlayerAction> implements Observer<
                 Player opp1 = computeOpponentPlayers(serverResponse).get(0);
                 Player opp2 = computeOpponentPlayers(serverResponse).get(1);
                 try{
+                    //cell is the cell we want to increment
+                    Cell cell = serverResponse.getModelCopy().getBattlefield().getCell(posX,posY);
                     Action action = Action.SELECT_TOKEN;
-                    PlayerAction playerAction = new PlayerAction(action,getPlayer(),opp1,opp2,selectedToken.getId(),otherToken.getId(),null, null,false);
+                    PlayerAction playerAction = new PlayerAction(action,getPlayer(),opp1,opp2,selectedToken.getId(),otherToken.getId(),cell, null,false);
                     notifyRemoteController(playerAction);
                 } catch (NullPointerException e){
                     System.out.println(e.getMessage());
@@ -236,10 +246,6 @@ public abstract class View extends Observable<PlayerAction> implements Observer<
                 try{
                     //cell is the cell we want to increment
                     Cell cell = serverResponse.getModelCopy().getBattlefield().getCell(posX,posY);
-                   /* if( !serverResponse.getValidBuilds().contains(cell) ){  //non so se funziona la contains, al massimo facciamo il check con le pos
-                        System.out.println("Error! You can't select this cell, try again! ");
-                    }
-                    */
                     Action action = Action.BUILD;
                     PlayerAction playerAction = new PlayerAction(action,getPlayer(),opp1,opp2,selectedToken.getId(),otherToken.getId(),cell, null,false);
                     notifyRemoteController(playerAction);////////////////////
