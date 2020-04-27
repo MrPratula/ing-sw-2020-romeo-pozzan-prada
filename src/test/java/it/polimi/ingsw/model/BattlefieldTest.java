@@ -30,27 +30,31 @@ public class BattlefieldTest {
         t3 = new Token(TokenColor.YELLOW);
         t33 = new Token(TokenColor.YELLOW);
 
-        t1.setTokenPosition(battlefield.getCell(1,1));
+        t1.setTokenPosition(battlefield.getCell(1,0));
         t11.setTokenPosition(battlefield.getCell(0,1));
         t2.setTokenPosition(battlefield.getCell(3,2));
-        t22.setTokenPosition(battlefield.getCell(4,2));
-        t3.setTokenPosition(battlefield.getCell(0,4));
+        t22.setTokenPosition(battlefield.getCell(4,1));
+        t3.setTokenPosition(battlefield.getCell(2,4));
         t33.setTokenPosition(battlefield.getCell(0,3));
 
-        battlefield.getCell(1,1).setOccupied();
+        battlefield.getCell(1,0).setOccupied();
         battlefield.getCell(0,1).setOccupied();
         battlefield.getCell(3,2).setOccupied();
-        battlefield.getCell(4,2).setOccupied();
-        battlefield.getCell(0,4).setOccupied();
+        battlefield.getCell(4,1).setOccupied();
+        battlefield.getCell(2,4).setOccupied();
         battlefield.getCell(0,3).setOccupied();
 
         //battlefield.getCell(1,4).setIsDome();
 
-        battlefield.getCell(1,1).setHeight(1);
+        battlefield.getCell(1,0).setHeight(1);
         battlefield.getCell(2,2).setHeight(2);
         battlefield.getCell(3,3).setHeight(3);
         battlefield.getCell(4,4).setHeight(3);
         battlefield.getCell(4,4).incrementHeight();
+        battlefield.getCell(0,1).setHeight(2);
+        battlefield.getCell(3,4).setHeight(1);
+        battlefield.getCell(2,1).setIsDome();
+        battlefield.getCell(2,4).setIsDome();
 
         p1.setToken1(t1);
         p1.setToken2(t11);
