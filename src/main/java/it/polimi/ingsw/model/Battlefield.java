@@ -80,10 +80,11 @@ public class Battlefield implements Serializable {
     /**
      * This method is called by the client in asyncReadFromSocket
      * and print in stdout the battlefield when a player modifies the battlefield.
-     * It print a grey matrix with white numbers.
-     * The numbers are the cell height.
-     * The color of the background of a cell is where a token is.
-     * If the height is X it is a dome.
+     * It prints a grey matrix with white numbers:
+     *  -the numbers represents the cell height.
+     *  -the color of the background of a cell represents the position of the tokens
+     *    of the same colors.
+     *  -if the height is X, it means that there is a dome.
      */
     public void printCLI() {
 
@@ -112,8 +113,10 @@ public class Battlefield implements Serializable {
                     System.out.print(" ");
                 } else {
                     for (Player p : players) {
-                        if (p.getToken1().getTokenPosition().getPosX() == x &&
-                                p.getToken1().getTokenPosition().getPosY() == y) {
+                        if ( (p.getToken1().getTokenPosition().getPosX() == x &&
+                              p.getToken1().getTokenPosition().getPosY() == y)  ||
+                             (p.getToken2().getTokenPosition().getPosX() == x &&
+                              p.getToken2().getTokenPosition().getPosY() == y)  ) {
                             System.out.print("\033[047m");          //on a white board
                             System.out.print("\033[030m");          //white written
                             TokenColor t = p.getTokenColor();
@@ -145,6 +148,96 @@ public class Battlefield implements Serializable {
         System.out.print("\033[030m");             //white written
         System.out.print("\033[049m");           //on a black board
         System.out.print("   0  1  2  3  4\n");
+
+        //test for background colors
+    /*    for(int m=40; m<49;m++) {
+            System.out.print("\033[");
+            System.out.print(m);
+            System.out.print("m");
+            System.out.println();
+        }
+    */
+    }
+
+    /**
+     * The same as normal printCLI(), but he prints on
+     * a green backgrounds all the cells in the ValidMoves param
+     * @param validMoves: cells that have to be printed on a green background
+     */
+    public void printValidMovesCLI(List<Cell> validMoves, Token selectedToken){
+
+        System.out.print("\n");
+
+        for (int y = 4; y > -1; y--) {
+            // first of all, let's print the index of the battlefield
+            System.out.print("\033[030m");          //white written
+            System.out.print(y + " ");
+            for (int x = 0; x < battlefieldSize; x++) {
+
+                if (validMoves.contains(battlefield[x][y])) {
+
+                    System.out.print("\033[047m");          //on a white board
+                    System.out.print("\033[030m");          //white written
+
+                    System.out.print("\033[042m");               //on a board of VALIDMOVES color
+                    System.out.print(" ");
+                    System.out.print(battlefield[x][y].getHeight());
+                    System.out.print(" ");
+
+                    System.out.print("\033[047m");          //on a white board
+
+                } else {
+                    // then we check if exists a token of any player in this position
+                    if (!battlefield[x][y].getThereIsPlayer()) {
+                        System.out.print("\033[030m");          //black written
+                        System.out.print("\033[047m");          //on white board
+                        System.out.print("\033[047m");          //on a white board
+                        System.out.print(" ");
+                        if (battlefield[x][y].getHeight() < 3) {                     // if height is <=3 i print it
+                            System.out.print(battlefield[x][y].getHeight());
+                        } else {                                                      // else
+                            if (!battlefield[x][y].getIsDome()) {
+                                System.out.print(battlefield[x][y].getHeight());
+                            } else {
+                                System.out.print("X");
+                            }
+                        }
+                        System.out.print(" ");
+                    } else {
+                        for (Player p : players) {
+                            if ( (p.getToken1().getTokenPosition().getPosX() == x  &&
+                                  p.getToken1().getTokenPosition().getPosY() == y)  ||
+                                 (p.getToken2().getTokenPosition().getPosX() == x  &&
+                                  p.getToken2().getTokenPosition().getPosY() == y)     ) {
+                                    System.out.print("\033[047m");          //on a white board
+                                    System.out.print("\033[030m");          //white written
+                                    TokenColor t = p.getTokenColor();
+                                    System.out.print(t.getEscape());        //on a board of the player color
+                                    System.out.print(" ");
+                                    System.out.print(battlefield[x][y].getHeight());
+                                    System.out.print(" ");
+                                    System.out.print("\033[047m");          //on a white board
+                            }
+                        }
+                    }
+                }
+            }
+            System.out.print("\033[039m");             //white written
+            System.out.print("\033[049m");           //on a black board
+            System.out.print("\n");
+        }
+        System.out.print("\033[030m");             //white written
+        System.out.print("\033[049m");           //on a black board
+        System.out.print("   0  1  2  3  4\n");
+
+        //test for background colors
+    /*    for(int m=40; m<49;m++) {
+            System.out.print("\033[");
+            System.out.print(m);
+            System.out.print("m");
+            System.out.println();
+        }
+    */
     }
 
 

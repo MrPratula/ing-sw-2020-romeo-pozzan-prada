@@ -1,4 +1,5 @@
 package it.polimi.ingsw.model;
+import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,7 +33,7 @@ public class BattlefieldTest {
 
         t1.setTokenPosition(battlefield.getCell(1,0));
         t11.setTokenPosition(battlefield.getCell(0,1));
-        t2.setTokenPosition(battlefield.getCell(3,2));
+        t2.setTokenPosition(battlefield.getCell(3,2));   //the one that moves
         t22.setTokenPosition(battlefield.getCell(4,1));
         t3.setTokenPosition(battlefield.getCell(2,4));
         t33.setTokenPosition(battlefield.getCell(0,3));
@@ -50,6 +51,7 @@ public class BattlefieldTest {
         battlefield.getCell(2,2).setHeight(2);
         battlefield.getCell(3,3).setHeight(3);
         battlefield.getCell(4,4).setHeight(3);
+        battlefield.getCell(4,2).setHeight(1);
         battlefield.getCell(4,4).incrementHeight();
         battlefield.getCell(0,1).setHeight(2);
         battlefield.getCell(3,4).setHeight(1);
@@ -79,6 +81,19 @@ public class BattlefieldTest {
     @Test
     public void PrintCLITest(){
         battlefield.printCLI();
+    }
+
+    @Test
+    public void PrintCLITestWithValidMoves() throws CellOutOfBattlefieldException {
+
+        List<Cell> validMoves = new ArrayList<>(); //saranno passatecome parametro
+        validMoves.add(battlefield.getCell(3,1));
+        validMoves.add(battlefield.getCell(2,1));
+        validMoves.add(battlefield.getCell(2,3));
+        validMoves.add(battlefield.getCell(4,3));
+        validMoves.add(battlefield.getCell(4,2));
+
+        battlefield.printValidMovesCLI(validMoves,t2);
     }
 
 }
