@@ -22,8 +22,6 @@ public class RemoteController implements Observer<PlayerAction> {
 
     public void run() {
 
-
-
     }
 
 

@@ -37,6 +37,10 @@ public class Controller implements Observer<PlayerAction> {
 
             switch(playerAction.getAction()){
 
+                case TOKEN_SET_UP:
+                    //gestire, fai semplicemente cambiare turno
+
+
                 case PROMETHEUS_POWER:{
                     ///////////////////////////////
                             //simple build - prometheus move, simple build
@@ -52,7 +56,6 @@ public class Controller implements Observer<PlayerAction> {
                             model.notifyWrongInput(playerAction);
                         }
                     }
-
                 }
 
                 case SELECT_TOKEN: {
@@ -64,7 +67,6 @@ public class Controller implements Observer<PlayerAction> {
 
                     List<Cell> validMoves = model.askValidMoves(playerAction);
                     Cell targetCell = playerAction.getFirstCell();
-
                     for (Cell c: validMoves) {
                         if (c.getPosX() == targetCell.getPosX() && c.getPosY() == targetCell.getPosY()){
                             model.performMove(playerAction);

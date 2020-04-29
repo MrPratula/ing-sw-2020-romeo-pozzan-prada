@@ -143,6 +143,9 @@ public class Server  {
         playingConnection2.put(c1, c2);
         playingConnection2.put(c2, c1);
         waitingConnection2.clear();
+
+        player1.update(new ServerResponse(Action.SET_UP,null,null,null,null));
+        player2.update(new ServerResponse(Action.NOT_YOUR_TURN,null,null,null,null));
     }
 
 
@@ -175,6 +178,12 @@ public class Server  {
         playingConnection3.put(c3, new HashMap<Connection,Connection>());
         playingConnection3.get(c3).put(c1,c2);
         waitingConnection3.clear();
+
+
+        player1.update(new ServerResponse(Action.SET_UP, model.getCopy(),null,null,"Tokencolor.RED"));
+        player2.update(new ServerResponse(Action.NOT_YOUR_TURN,null,null,null,null));
+        player3.update(new ServerResponse(Action.NOT_YOUR_TURN,null,null,null,null));
+
     }
 
 /*      SEGUITO QUESTO:

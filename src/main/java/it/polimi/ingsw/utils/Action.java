@@ -10,10 +10,11 @@ public enum Action {
 
     /*    FROM CLIENT TO SERVER     */
 
+    TOKEN_SET_UP("A player selected the set-up position for the token"),
     PROMETHEUS_POWER("Prometheus wants to use his God power!"),
     SELECT_TOKEN("A player has selected a token"),
-    MOVE("A player has moved a token"),
-    BUILD("A player has made a build. Switch turn"),
+    MOVE("A player moved a token"),
+    BUILD("A player made a build. Switch turn"),
 
 
     /*    FROM SERVER TO CLIENT     */
@@ -26,12 +27,13 @@ public enum Action {
     ASK_FOR_BUILD("Where do you want to build? (x,y)"),
 
     GAME_OVER("GAME OVER"),
-    PLAYER_LOST("You have lost the game, your tokens will be wiped!"),
+    PLAYER_LOST("You lost the game, your tokens will be wiped!"),
     TOKEN_NOT_MOVABLE("You can not move this token, please select a movable one! (x,y)"),
     WRONG_INPUT("Please insert a valid choice!"),
 
-    WELCOME("Welcome to Santorini! What is your name?"),
-    HOW_MANY_PLAYERS("How many players do you want to play with?");
+    SET_UP("Select the position you want to place your first token (x,y)");
+    //WELCOME("Welcome to Santorini! What is your name?"),
+    //HOW_MANY_PLAYERS("How many players do you want to play with?");
 
 
     private String info;

@@ -50,6 +50,10 @@ public class Client extends Observable<ServerResponse> {
             socketOut.println(numberOfPlayers);      //MANDA AL SOCKET L'INT
             socketOut.flush();                       //FLUSH
 
+
+            while(true){
+                view.run();
+            }
             /*
                 //ATTESA RICEZIONE DAL SOCKET SU SOCKETIN  DI NUOVE ROBA E riinizia loop
                 socketLine = socketIn.nextLine();      //RICEVE DAL SOCKET QUALCOSA

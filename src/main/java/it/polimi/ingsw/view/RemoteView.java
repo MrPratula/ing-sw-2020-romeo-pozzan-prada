@@ -11,10 +11,10 @@ import java.util.NoSuchElementException;
 
 public class RemoteView extends Observable<PlayerAction> implements Observer<ServerResponse> {
 
-    Socket socket;
-    Player player;
-    OutputStream outputStream;
-    InputStream inputStream;
+    private Socket socket;
+    private Player player;
+    private OutputStream outputStream;
+    private InputStream inputStream;
 
 
     /**

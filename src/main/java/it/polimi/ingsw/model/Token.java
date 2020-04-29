@@ -53,7 +53,9 @@ public class Token {
         this.oldHeight = oldHeight;
     }
 
-
+    public void setId(int id){
+        this.id = id;
+    }
 }
 
 

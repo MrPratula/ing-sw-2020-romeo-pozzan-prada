@@ -106,7 +106,9 @@ public abstract class View extends Observable<PlayerAction> implements Observer<
         notify(playerAction);
     }
 
-
+    /**
+     * QUI LA VIEW DEVE FARE COSE, PROBABILMENTE SOLO CHIAMARE UPDATE
+     */
     public void run(){
 
     }
@@ -126,8 +128,36 @@ public abstract class View extends Observable<PlayerAction> implements Observer<
     @Override
     public void update(ServerResponse serverResponse) throws ImpossibleTurnException, IOException, CellHeightException, WrongNumberPlayerException, ReachHeightLimitException, CellOutOfBattlefieldException {
 
+        PlayerAction playerAction;
+        int posX, posY;
+
         switch (serverResponse.getAction()) {
 
+            case SET_UP:
+                //prints the battlefield
+                serverResponse.getModelCopy().getBattlefield().printCLI();
+                //prints the message for the user
+                System.out.print(serverResponse.getAction().getInfo());
+                //compute the user input
+                posX = Integer.parseInt(getUserInput()[0]);
+                posY = Integer.parseInt(getUserInput()[1]);
+                TokenColor tc;
+                switch(serverResponse.getOutMessage()){
+                    case "TokenColor.RED": tc = TokenColor.RED;
+                    case "TokenColor.BLUE": tc = TokenColor.BLUE;
+                    default: tc = TokenColor.YELLOW;
+                }
+                Token token = new Token(tc);
+                token.setId(1);///////////////////modificare
+                token.setTokenPosition(serverResponse.getModelCopy().getBattlefield().getCell(posX,posY));
+                try{
+                    playerAction = new PlayerAction(Action.TOKEN_SET_UP,getPlayer(),null,null,token.getId(),0,null,null, false);
+                    notifyRemoteController(playerAction);////////////////////
+                } catch (NullPointerException e){
+                    System.out.println(e.getMessage());
+                } catch (CellOutOfBattlefieldException e) {
+                    e.printStackTrace();//////////////////auto
+                }
 
             case ASK_FOR_PROMETHEUS_POWER:
                 //prints the battlefield
@@ -141,8 +171,8 @@ public abstract class View extends Observable<PlayerAction> implements Observer<
                 if(input.equals("yes")){
                     System.out.println("Which token do you want to build with? (x,y)");
                     //compute the user input
-                    int posX = Integer.parseInt(getUserInput()[0]);
-                    int posY = Integer.parseInt(getUserInput()[1]);
+                    posX = Integer.parseInt(getUserInput()[0]);
+                    posY = Integer.parseInt(getUserInput()[1]);
                     //calculates which token has been selected
                     Token selectedToken = computeTokens(serverResponse, posX, posY).get(0);
                     Token otherToken = computeTokens(serverResponse, posX, posY).get(1);
@@ -150,8 +180,7 @@ public abstract class View extends Observable<PlayerAction> implements Observer<
                     Player opp1 = computeOpponentPlayers(serverResponse).get(0);
                     Player opp2 = computeOpponentPlayers(serverResponse).get(1);
                     try{
-                        Action action = Action.PROMETHEUS_POWER;
-                        PlayerAction playerAction = new PlayerAction(action,getPlayer(),opp1,opp2,selectedToken.getId(),otherToken.getId(),null,null, true);
+                        playerAction = new PlayerAction(Action.PROMETHEUS_POWER,getPlayer(),opp1,opp2,selectedToken.getId(),otherToken.getId(),null,null, true);
                         notifyRemoteController(playerAction);////////////////////
                     } catch (NullPointerException e){
                         System.out.println(e.getMessage());
@@ -164,8 +193,8 @@ public abstract class View extends Observable<PlayerAction> implements Observer<
                     System.out.println("Where do you want to move your token? (x,y)");
                             //System.out.print(serverResponse.getAction().getInfo());    errato
                     //compute the user input
-                    int posX = Integer.parseInt(getUserInput()[0]);
-                    int posY = Integer.parseInt(getUserInput()[1]);
+                    posX = Integer.parseInt(getUserInput()[0]);
+                    posY = Integer.parseInt(getUserInput()[1]);
                     //calculates which token has been selected
                     Token selectedToken = computeTokens(serverResponse, posX, posY).get(0);
                     Token otherToken = computeTokens(serverResponse, posX, posY).get(1);
@@ -173,8 +202,7 @@ public abstract class View extends Observable<PlayerAction> implements Observer<
                     Player opp1 = computeOpponentPlayers(serverResponse).get(0);
                     Player opp2 = computeOpponentPlayers(serverResponse).get(1);
                     try{
-                        Action action = Action.SELECT_TOKEN;
-                        PlayerAction playerAction = new PlayerAction(action,getPlayer(),opp1,opp2,selectedToken.getId(),otherToken.getId(),null,null, false);
+                        playerAction = new PlayerAction(Action.SELECT_TOKEN,getPlayer(),opp1,opp2,selectedToken.getId(),otherToken.getId(),null,null, false);
                         notifyRemoteController(playerAction);
                     } catch (NullPointerException e){
                         System.out.println(e.getMessage());
@@ -194,8 +222,8 @@ public abstract class View extends Observable<PlayerAction> implements Observer<
                 //prints the message for the user
                 System.out.print(serverResponse.getAction().getInfo());
                 //compute the user input
-                int posX = Integer.parseInt(getUserInput()[0]);
-                int posY = Integer.parseInt(getUserInput()[1]);
+                posX = Integer.parseInt(getUserInput()[0]);
+                posY = Integer.parseInt(getUserInput()[1]);
                 //calculates which token has been selected
                 Token selectedToken = computeTokens(serverResponse, posX, posY).get(0);
                 Token otherToken = computeTokens(serverResponse, posX, posY).get(1);
@@ -205,8 +233,7 @@ public abstract class View extends Observable<PlayerAction> implements Observer<
                 try{
                     //cell is the cell we want to increment
                     Cell cell = serverResponse.getModelCopy().getBattlefield().getCell(posX,posY);
-                    Action action = Action.SELECT_TOKEN;
-                    PlayerAction playerAction = new PlayerAction(action,getPlayer(),opp1,opp2,selectedToken.getId(),otherToken.getId(),cell, null,false);
+                    playerAction = new PlayerAction(Action.SELECT_TOKEN,getPlayer(),opp1,opp2,selectedToken.getId(),otherToken.getId(),cell, null,false);
                     notifyRemoteController(playerAction);
                 } catch (NullPointerException e){
                     System.out.println(e.getMessage());
@@ -235,8 +262,7 @@ public abstract class View extends Observable<PlayerAction> implements Observer<
                         System.out.println("Error! You can't select this cell, try again! ");
                     }
                     */
-                    Action action = Action.MOVE;
-                    PlayerAction playerAction = new PlayerAction(action,getPlayer(),opp1,opp2,selectedToken.getId(),otherToken.getId(),null, null,false);
+                    playerAction = new PlayerAction(Action.MOVE,getPlayer(),opp1,opp2,selectedToken.getId(),otherToken.getId(),null, null,false);
                     notifyRemoteController(playerAction);////////////////////
 
                 } catch (NullPointerException e){
@@ -263,8 +289,7 @@ public abstract class View extends Observable<PlayerAction> implements Observer<
                 try{
                     //cell is the cell we want to increment
                     Cell cell = serverResponse.getModelCopy().getBattlefield().getCell(posX,posY);
-                    Action action = Action.BUILD;
-                    PlayerAction playerAction = new PlayerAction(action,getPlayer(),opp1,opp2,selectedToken.getId(),otherToken.getId(),cell, null,false);
+                    playerAction = new PlayerAction(Action.BUILD,getPlayer(),opp1,opp2,selectedToken.getId(),otherToken.getId(),cell, null,false);
                     notifyRemoteController(playerAction);////////////////////
 
                 } catch (NullPointerException e){
