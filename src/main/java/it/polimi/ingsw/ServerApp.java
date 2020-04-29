@@ -21,6 +21,5 @@ public class ServerApp
         } catch(IOException e){
             System.err.println("Impossible to start the server!\n" + e.getMessage());
         }
-
     }
 }

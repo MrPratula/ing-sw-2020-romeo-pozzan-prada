@@ -24,6 +24,7 @@ public class AthenaMovesTest {
     List<Token> enemyTokens;
     GodCard myGodCard;
     List<GodCard> enemyGodCards;
+    Cell targetCell;
 
 
     /**
@@ -95,5 +96,65 @@ public class AthenaMovesTest {
         Assert.assertEquals(2, validMoves.size());
         Assert.assertTrue(validMoves.contains(battlefield.getCell(3,1)));
         Assert.assertTrue(validMoves.contains(battlefield.getCell(3,3)));
+    }
+
+
+    /**
+     * Test if athena moves up and the value in the model is correctly changed.
+     */
+    @Test void performMoveMovingUpTest() throws CellOutOfBattlefieldException {
+
+        battlefield = Utility.setUpForTest();
+        selectedToken.setTokenPosition(battlefield.getCell(2,2));
+        targetCell = battlefield.getCell(1,3);
+        battlefield.getCell(1,3).setOccupied();
+
+        MoveContext thisMove = new MoveContext(new AthenaMoves());
+        thisMove.executeMove(selectedToken, otherToken, enemyTokens, targetCell, enemyGodCards, battlefield);
+
+        Assert.assertTrue(Model.isDidAthenaMovedUp());
+        Assert.assertTrue(battlefield.getCell(1,3).getThereIsPlayer());
+        Assert.assertFalse(battlefield.getCell(2,2).getThereIsPlayer());
+        Assert.assertTrue(selectedToken.getTokenPosition().equals(battlefield.getCell(1,3)));
+    }
+
+
+    /**
+     * Test if athena moves down and the value in the model is correctly changed.
+     */
+    @Test void performMoveMovingDownTest() throws CellOutOfBattlefieldException {
+
+        battlefield = Utility.setUpForTest();
+        selectedToken.setTokenPosition(battlefield.getCell(2,2));
+        targetCell = battlefield.getCell(3,1);
+        battlefield.getCell(3,1).setOccupied();
+
+        MoveContext thisMove = new MoveContext(new AthenaMoves());
+        thisMove.executeMove(selectedToken, otherToken, enemyTokens, targetCell, enemyGodCards, battlefield);
+
+        Assert.assertFalse(Model.isDidAthenaMovedUp());
+        Assert.assertTrue(battlefield.getCell(3,1).getThereIsPlayer());
+        Assert.assertFalse(battlefield.getCell(2,2).getThereIsPlayer());
+        Assert.assertTrue(selectedToken.getTokenPosition().equals(battlefield.getCell(3,1)));
+    }
+
+
+    /**
+     * Test if athena moves on the same level and the value in the model is correctly changed.
+     */
+    @Test void performMoveMovingSameHeightTest() throws CellOutOfBattlefieldException {
+
+        battlefield = Utility.setUpForTest();
+        selectedToken.setTokenPosition(battlefield.getCell(2,2));
+        targetCell = battlefield.getCell(1,2);
+        battlefield.getCell(1,2).setOccupied();
+
+        MoveContext thisMove = new MoveContext(new AthenaMoves());
+        thisMove.executeMove(selectedToken, otherToken, enemyTokens, targetCell, enemyGodCards, battlefield);
+
+        Assert.assertFalse(Model.isDidAthenaMovedUp());
+        Assert.assertTrue(battlefield.getCell(1,2).getThereIsPlayer());
+        Assert.assertFalse(battlefield.getCell(2,2).getThereIsPlayer());
+        Assert.assertTrue(selectedToken.getTokenPosition().equals(battlefield.getCell(1,2)));
     }
 }
