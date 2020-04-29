@@ -28,7 +28,10 @@ public enum Action {
     GAME_OVER("GAME OVER"),
     PLAYER_LOST("You have lost the game, your tokens will be wiped!"),
     TOKEN_NOT_MOVABLE("You can not move this token, please select a movable one! (x,y)"),
-    WRONG_INPUT("Please insert a valid choice!");
+    WRONG_INPUT("Please insert a valid choice!"),
+
+    WELCOME("Welcome to Santorini! What is your name?"),
+    HOW_MANY_PLAYERS("How many players do you want to play with?");
 
 
     private String info;

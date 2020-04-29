@@ -1,63 +1,107 @@
 package it.polimi.ingsw.view;
 
 
-import it.polimi.ingsw.controller.*;
-import it.polimi.ingsw.utils.Observable;
+import it.polimi.ingsw.controller.RemoteController;
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.PlayerAction;
+import it.polimi.ingsw.utils.ServerResponse;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.NoSuchElementException;
+import java.util.List;
+import java.util.Scanner;
 
-public class Server extends Observable<PlayerAction> {
+public class Server  {
 
-    public void run() throws IOException, ClassNotFoundException {
 
-        ServerSocket ss = new ServerSocket(7777);
-        System.out.println("ServerSocket awaiting connections...");
-        // blocking call, this will wait until a connection is attempted on this port.
-        Socket socket = ss.accept();
+    private static Server singleServer = null;
+    private final ServerSocket serverSocket;
+    private static final int PORT = 12345;
 
-        // get the input stream from the connected socket
-        InputStream inputStream = socket.getInputStream();
-        // create a DataInputStream so we can read data from it.
-        ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+    List<Player> allPlayers;
+    int numberOfPlayers;
 
-       PlayerAction playerAction;
 
-        try{
-            while (true) {
+    /**
+     * Singleton constructor. Return the one that exist.
+     * If it do not exist it create a new one.
+     * @return an instance of server.
+     */
+    public static Server getInstance() throws IOException {
+
+        if (singleServer == null)
+            singleServer = new Server();
+
+        return singleServer;
+    }
+
+
+    /**
+     * Private constructor that is called by the getInstance.
+     */
+    private Server() throws IOException {
+        this.serverSocket = new ServerSocket(PORT);
+    }
+
+
+
+
+
+    public void run() {
+
+        System.out.println("Server has started up on port: " + PORT);
+
+        while (true) {
+            try {
+                // Here the server get the socket.
+                Socket socket = serverSocket.accept();
+
+                RemoteController remoteController = new RemoteController(socket);
+
+                // Create input stream and output stream
+                InputStream inputStream = socket.getInputStream();
+                OutputStream outputStream = socket.getOutputStream();
+
+                // Create object for input and output
+                ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+                ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+
+                // Ask for name of first player
+                ServerResponse serverResponse = new ServerResponse(Action.WELCOME, null, null, null, null);
+                objectOutputStream.writeObject(serverResponse);
+
+                // Receive first player and add him to the list
+                PlayerAction playerAction = (PlayerAction) objectInputStream.readObject();
+                allPlayers.add(playerAction.getPlayer());
+
+                // Ask for how many players
+                String message = String.format("Hi %s!",allPlayers.get(0).getUsername().toUpperCase());
+                serverResponse = new ServerResponse(Action.HOW_MANY_PLAYERS, null, null, null, message);
+                objectOutputStream.writeObject(serverResponse);
+
+                // Receive how many players. This number is set in tokenMain field
                 playerAction = (PlayerAction) objectInputStream.readObject();
-                notify(playerAction);
+                numberOfPlayers = playerAction.getTokenMain();
+
+
+
+
+
+
+            } catch (IOException | ClassNotFoundException e){
+                System.err.println("Connection error!");
             }
-        } catch(NoSuchElementException e){
-            System.out.println("Connection closed from the client side");
-        } /*catch(CellOutOfBattlefieldException e){
-            System.out.println("Connection closed from the client side");
-        } catch (WrongNumberPlayerException e) {
-            e.printStackTrace();
-        } catch (CellHeightException e) {
-            e.printStackTrace();
-        } catch (ImpossibleTurnException e) {
-            e.printStackTrace();
-        } catch (ReachHeightLimitException e) {
-            e.printStackTrace();
-        } */
-          finally {
-            System.out.println("Closing sockets.");
-            ss.close();
-            socket.close();
         }
+
+
+
     }
 
 
 
-    public void notify(PlayerAction playerAction){
 
-    }
 
 
 
