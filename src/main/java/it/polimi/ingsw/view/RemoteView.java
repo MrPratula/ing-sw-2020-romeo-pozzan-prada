@@ -1,62 +1,67 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.controller.*;
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.utils.Observable;
 import it.polimi.ingsw.utils.Observer;
+import it.polimi.ingsw.utils.PlayerAction;
 import it.polimi.ingsw.utils.ServerResponse;
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.Socket;
+import java.util.NoSuchElementException;
 
 
-/**
- * The remote view is unique and has the purpose to receive a
- * Server response object via an update, then send this object
- * via socket to the client.
- * This one will take care what to do with it.
- */
-public class RemoteView implements Observer<ServerResponse> {
+public class RemoteView extends Observable<PlayerAction> implements Observer<ServerResponse> {
 
-    ObjectOutputStream objectOutputStream;
+    Socket socket;
+    Player player;
+    OutputStream outputStream;
+    InputStream inputStream;
+
 
     /**
-     * When i create a remote view it is connected via socket to a client.
-     * It will save the object output stream in order to send object via socket.
-     * @throws IOException if something goes wrong.
+     * Create a Remote view and instance the input and output stream.
+     * @param socket connection to create the stream.
+     * @param player the player corresponding this remote view.
      */
-    public RemoteView() throws IOException {
-        this.objectOutputStream = run();
+    public RemoteView(Socket socket, Player player) throws IOException {
+        this.socket = socket;
+        this.player = player;
+        this.outputStream = socket.getOutputStream();
+        this.inputStream = socket.getInputStream();
     }
 
 
     /**
-     * The run method is called in the constructor to set up a Socket connection and
-     * return the way to send object.
-     * @return the object output stream to send object via socket.
-     * @throws IOException if something goes wrong.
+     * Here the RV receive a PlayerAction and send it to the controller.
+     * This happen while there is an active client.
      */
-    public ObjectOutputStream run() throws IOException {
-
-        Socket socket = new Socket("localhost", 12345);
-        System.out.println("Connected!");
-
-        // get the output stream from the socket.
-        OutputStream outputStream = socket.getOutputStream();
-        // create an object output stream from the output stream so we can send an object through it
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-        return objectOutputStream;
+    public void run() throws IOException, ClassNotFoundException, CellOutOfBattlefieldException, ReachHeightLimitException, CellHeightException, ImpossibleTurnException, WrongNumberPlayerException {
+        while (true) {
+            try {
+                ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+                PlayerAction playerAction = (PlayerAction)objectInputStream.readObject();
+                notify(playerAction);
+            } catch(NoSuchElementException e){
+                System.out.println("Connection closed from the client side");
+            } finally {
+                inputStream.close();
+                outputStream.close();
+                socket.close();
+            }
+        }
     }
 
 
     /**
-     * This is the update of the observer ServerResponse
-     * The remote view observe the model and when it changes it send here the ServerResponse.
-     * Here the object is received and sent to the client via object output stream.
-     * @param serverResponse the ServerResponse received by the model.
-     * @throws IOException if something goes wrong.
+     * When the model terminate his process, it notify the remoteView with a ServerResponse.
+     * It is sent via Socket to the Client.
+     * @param serverResponse the object to send to the client.
      */
     @Override
     public void update(ServerResponse serverResponse) throws IOException {
-        objectOutputStream.writeObject(serverResponse);
+         ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+         objectOutputStream.writeObject(serverResponse);
     }
 }

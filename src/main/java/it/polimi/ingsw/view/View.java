@@ -106,6 +106,7 @@ public abstract class View extends Observable<PlayerAction> implements Observer<
         notify(playerAction);
     }
 
+
     @Override
     public void update(ServerResponse serverResponse) throws ImpossibleTurnException, IOException, CellHeightException, WrongNumberPlayerException, ReachHeightLimitException, CellOutOfBattlefieldException {
 

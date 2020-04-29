@@ -13,8 +13,6 @@ public class RemoteController implements Observer<PlayerAction> {
     ObjectOutputStream objectOutputStream;
 
 
-
-
     public RemoteController(Socket socket) throws IOException {
         this.socket = socket;
         this.outputStream = socket.getOutputStream();
@@ -22,17 +20,9 @@ public class RemoteController implements Observer<PlayerAction> {
     }
 
 
-
     @Override
     public void update(PlayerAction playerAction) throws IOException {
-
-
-
-
-
-
-
-
-
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+        objectOutputStream.writeObject(playerAction);
     }
 }
