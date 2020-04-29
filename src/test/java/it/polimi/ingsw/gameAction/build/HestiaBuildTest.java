@@ -11,8 +11,9 @@ import org.junit.jupiter.api.Test;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 
-class DemeterBuildTest {
+import static org.junit.jupiter.api.Assertions.*;
 
+class HestiaBuildTest {
     Battlefield battlefield = null;
     Cell first_cell = null;
     Cell second_cell = null;
@@ -31,7 +32,7 @@ class DemeterBuildTest {
      * The high of the first_cell and second_cell have to increase by one.
      */
     @Test
-    void DemeterperfomeBuild() throws CellHeightException, ReachHeightLimitException {
+    void HestiaperfomeBuild() throws CellHeightException, ReachHeightLimitException {
         first_cell.setHeight(1);
         second_cell.setHeight(2);
         high_first_cell = first_cell.getHeight();
@@ -40,7 +41,7 @@ class DemeterBuildTest {
         assertEquals(high_first_cell, 1);
         assertEquals(high_second_cell,2);
 
-        BuildContext thisBuild = new BuildContext(new DemeterBuild());
+        BuildContext thisBuild = new BuildContext(new HestiaBuild());
         thisBuild.executePerformBuild(first_cell, second_cell, battlefield);
 
         assertTrue(first_cell.getHeight()==high_first_cell+1);
@@ -51,7 +52,7 @@ class DemeterBuildTest {
      * If you increase a cell with high "3", it has to have a dome and the same high ("3").
      */
     @Test
-    void DemeterperformeBuildDome() throws CellHeightException, ReachHeightLimitException {
+    void HestiaformeBuildDome() throws CellHeightException, ReachHeightLimitException {
         first_cell.setHeight(3);
         second_cell.setHeight(2);
         high_first_cell = first_cell.getHeight();
@@ -67,4 +68,5 @@ class DemeterBuildTest {
         assertTrue(first_cell.getIsDome());
         assertTrue(second_cell.getHeight()==high_second_cell+1);
     }
+
 }

@@ -398,18 +398,14 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         List<Cell> validBuilds;
 
         switch (myGodCard) {
-            case DEMETER:{
+            case DEMETER:
+            case HESTIA: {
                 BuildContext thisBuild = new BuildContext(( new SimpleBuild()));
                 validBuilds = thisBuild.executeValidBuilds(selectedToken, otherToken, enemyTokens, enemyGodCards, battlefield, null);
                 break;
             }
             case HEPHAESTUS:{
                 BuildContext thisBuild = new BuildContext(( new HephaestusBuild()));
-                validBuilds = thisBuild.executeValidBuilds(selectedToken, otherToken, enemyTokens, enemyGodCards, battlefield, null);
-                break;
-            }
-            case HESTIA:{
-                BuildContext thisBuild = new BuildContext(( new HestiaBuild()));
                 validBuilds = thisBuild.executeValidBuilds(selectedToken, otherToken, enemyTokens, enemyGodCards, battlefield, null);
                 break;
             }
@@ -706,14 +702,18 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         notify(serverResponse);
     }
 
+    /**
+     * The two cell has to have different coordinates.
+     */
     public boolean differentCell(Cell firstCell, Cell secondCell){
         return !(firstCell.getPosX()==secondCell.getPosX() && firstCell.getPosY()==secondCell.getPosY());
     }
 
-
-    // è sbagliata! il check va fatto anche su posx!=0 e anche per posY
+    /**
+     * The targetcell can't be a perimeterl cell.
+     */
     public boolean notperimetercell(Cell targetcell){
-        return (targetcell.getPosX()!=4 && targetcell.getPosY()!=4);
+        return ((targetcell.getPosX()!=4 && targetcell.getPosY()!=4) && (targetcell.getPosX()!=0 && targetcell.getPosY()!=0));
     }
 
 

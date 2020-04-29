@@ -11,6 +11,7 @@ import java.util.List;
 public class HephaestusBuild implements BuildBehavior {
     @Override
     public List<Cell> computeValidBuilds(Token selectedToken, Token otherToken, List<Token> enemyTokens, List<GodCard> enemyGodCards, Battlefield battlefield, List<Player> allPlayers) throws CellOutOfBattlefieldException {
+
         int provX, provY;
         List<Cell> buildableCells = new ArrayList<Cell>();
 
@@ -24,18 +25,23 @@ public class HephaestusBuild implements BuildBehavior {
                 provY = selectedToken.getTokenPosition().getPosY()+j;
 
                 if ( (provX>=0 && provX <5) && (provY>=0 && provY<5) &&                       // la cella provv è dentro le dimensioni del battlefield
-                        (battlefield.getCell(provX,provY).getHeight()<2) ) {        // per poter costruire due volte nella stessa cella ( non cupola ) la cella deve essere di altezza minore di 2.
+                        (battlefield.getCell(provX,provY).getHeight()<2 && !battlefield.getCell(provX,provY).getIsDome()) ) {                         // non deve essere una cupola
 
-                    for (Token t: enemyTokens) {
-                        if (provX != t.getTokenPosition().getPosX() &&                 // il token non può costruire dove c'è un altro token
-                                provY != t.getTokenPosition().getPosX()) {             // compreso sè stesso, quindi non può costruire sotto i piedi
-
-                            buildableCells.add(battlefield.getCell(provX, provY));
-                        }
-                    }
+                    buildableCells.add(battlefield.getCell(provX, provY));
                 }
             }
         }
+
+        // Then all the cells where is present a token will be removed
+
+        buildableCells.remove(selectedToken.getTokenPosition());
+
+        if (otherToken!=null) buildableCells.remove(otherToken.getTokenPosition());
+
+        for (Token t: enemyTokens) {
+            buildableCells.remove(t.getTokenPosition());
+        }
+
         return buildableCells;
     }
 
