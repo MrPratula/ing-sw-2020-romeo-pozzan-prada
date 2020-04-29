@@ -427,7 +427,6 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                 validBuilds.remove(c);
             }
         }
-
         return validBuilds;
     }
 
