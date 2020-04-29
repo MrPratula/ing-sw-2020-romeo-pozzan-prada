@@ -19,18 +19,7 @@ public class Connection extends Observable<String> implements Runnable{
     private Scanner in;
     private PrintWriter out;
     private Server server;
-    private String name;
     private boolean active = true;
-
-
-
-
-
-
-    public void send(String message){
-        out.println(message);
-        out.flush();
-    }
 
     public Connection(Socket socket, Server server){
         this.socket = socket;
@@ -42,14 +31,25 @@ public class Connection extends Observable<String> implements Runnable{
     }
 
 
+    public void send(String message){
+        out.println(message);
+        out.flush();
+    }
+
+
     @Override
     public void run() {
         try{
             in = new Scanner(socket.getInputStream());
             out = new PrintWriter(socket.getOutputStream());
             send("Welcome! What's your name?");
-            name = in.nextLine();
-            server.lobby(this, name);
+            String name = in.nextLine();
+
+            send("How many players do you want to play with?");
+            int numberOfPlayers = in.nextInt();
+
+            server.lobby(this, name, numberOfPlayers);
+
             while(isActive()){
                 String read = in.nextLine();
                 notify(read);
@@ -65,7 +65,7 @@ public class Connection extends Observable<String> implements Runnable{
     private void close(){
         closeConnection();
         System.out.println("Deregistering client...");
-        server.deregisterConnection(this);
+        //momentaneo server.deregisterConnection(this);
         System.out.println("Done!");
     }
 
@@ -78,19 +78,6 @@ public class Connection extends Observable<String> implements Runnable{
         }
         active = false;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

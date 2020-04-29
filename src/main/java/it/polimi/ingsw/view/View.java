@@ -107,6 +107,22 @@ public abstract class View extends Observable<PlayerAction> implements Observer<
     }
 
 
+    public void run(){
+
+    }
+
+
+    /**
+     * This method moves the mechanic of the game: it receives the
+     * response from the server, and creates the respective action of the player.
+     * @param serverResponse: response from the server containing al the necessary informations
+     * @throws ImpossibleTurnException
+     * @throws IOException
+     * @throws CellHeightException
+     * @throws WrongNumberPlayerException
+     * @throws ReachHeightLimitException
+     * @throws CellOutOfBattlefieldException
+     */
     @Override
     public void update(ServerResponse serverResponse) throws ImpossibleTurnException, IOException, CellHeightException, WrongNumberPlayerException, ReachHeightLimitException, CellOutOfBattlefieldException {
 
@@ -354,7 +370,7 @@ public abstract class View extends Observable<PlayerAction> implements Observer<
      * a green backgrounds all the cells in the ValidMoves param
      * @param validMoves: cells that have to be printed on a green background
      */
-    public void printValidMovesCLI(Battlefield battlefield, List<Player> allPlayers, List<Cell> validMoves, Token selectedToken) throws CellOutOfBattlefieldException {
+    public void printValidMovesCLI(Battlefield battlefield, List<Player> allPlayers, List<Cell> validMoves, Token selectedToken/*volevo evidenziarlo nella stampa, ma viene osceno, al max lo tolgo e via*/) throws CellOutOfBattlefieldException {
 
         System.out.print("\n");
 

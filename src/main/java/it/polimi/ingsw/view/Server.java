@@ -21,18 +21,21 @@ import java.util.concurrent.Executors;
 
 public class Server  {
 
-
     private static Server singleServer = null;
     private final ServerSocket serverSocket;
     private static final int PORT = 12345;
 
-    List<Player> allPlayers;
-    int numberOfPlayers;
+    List<Player> allPlayers = new ArrayList<>();
+    //int numberOfPlayers;
 
     private List<Connection> connections = new ArrayList<Connection>();
     private ExecutorService executor = Executors.newFixedThreadPool(128);
-    private Map<Connection, Connection> playingConnection = new HashMap<>();
-    private Map<String, Connection> waitingConnection = new HashMap<>();
+
+    private Map<Connection, Connection> playingConnection2 = new HashMap<>();
+    private Map<Connection, Map<Connection,Connection>> playingConnection3 = new HashMap<>();  // or inside: Connection,Map<Connection,Connection>
+    private Map<String,Connection> waitingConnection2 = new HashMap<>();
+    private Map<String,Connection> waitingConnection3 = new HashMap<>();
+
 
 
     /**
@@ -56,8 +59,11 @@ public class Server  {
         this.serverSocket = new ServerSocket(PORT);
     }
 
-
+    /**
+     * The servers starts and waits for clients joining the game
+     */
     public void run() {
+
         System.out.println("Server listening on port: " + PORT);
         while(true){
             try {
@@ -76,7 +82,7 @@ public class Server  {
         connections.add(c);
     }
 
-
+/* momentaneo
     public synchronized void deregisterConnection(Connection c){
         connections.remove(c);
         Connection opponent = playingConnection.get(c);
@@ -84,43 +90,103 @@ public class Server  {
             opponent.closeConnection();
             playingConnection.remove(c);
             playingConnection.remove(opponent);
+        }
+    }
+*/
+    /**
+     * Lobby of the game, where the players join each other.
+     * Here we group the players based how many players they
+     * want to play with, 2/3, and the first group to reach
+     * the necessary number, starts the game.
+     * @param c: the connection just added to the lobby.
+     * @param name: name of the player just added
+     * @throws IOException
+     */
+    public synchronized void lobby(Connection c, String name, int numberOfPlayers) throws IOException {
 
+        if(numberOfPlayers==2){
+            waitingConnection2.put(name, c);
+            if(waitingConnection2.size()==2) {
+                startGame2Players(waitingConnection2);
+            }
+        }
+
+        else if(numberOfPlayers==3){
+            waitingConnection3.put(name,c);
+            if(waitingConnection3.size()==3) {
+                startGame3Players(waitingConnection3);
+            }
+        }
+        else {
+            throw new IllegalArgumentException("Impossible number!");  //cambiare maybe
         }
     }
 
+    /**
+     * Initialises and creates all the necessary modules and structures for a game with 2 players.
+     * @param waitingConnection2: map containing the players which have to play
+     * @throws IOException
+     */
+    private void startGame2Players(Map<String,Connection> waitingConnection2) throws IOException {
 
-
-
-
-
-    public synchronized void lobby(Connection c, String name) throws IOException {
-
-        waitingConnection.put(name, c);
-
-        if(waitingConnection.size() == 2){
-            List<String> keys = new ArrayList<>(waitingConnection.keySet());
-            Connection c1 = waitingConnection.get(keys.get(0));
-            Connection c2 = waitingConnection.get(keys.get(1));
-            RemoteView player1 = new RemoteView(c1, new Player(keys.get(0), TokenColor.RED));
-            RemoteView player2 = new RemoteView(c2, new Player(keys.get(1), TokenColor.BLUE));
-            Model model = new Model(new Battlefield());
-            Controller controller = new Controller(model);
-            model.addObserver(player1);
-            model.addObserver(player2);
-            player1.addObserver(controller);
-            player2.addObserver(controller);
-            playingConnection.put(c1, c2);
-            playingConnection.put(c2, c1);
-            waitingConnection.clear();
-        }
-
+        List<String> keys = new ArrayList<>(waitingConnection2.keySet());
+        Connection c1 = waitingConnection2.get(keys.get(0));
+        Connection c2 = waitingConnection2.get(keys.get(1));
+        RemoteView player1 = new RemoteView(c1, new Player(keys.get(0), TokenColor.RED));
+        RemoteView player2 = new RemoteView(c2, new Player(keys.get(1), TokenColor.BLUE));
+        Model model = new Model(new Battlefield());
+        Controller controller = new Controller(model);
+        model.addObserver(player1);
+        model.addObserver(player2);
+        player1.addObserver(controller);
+        player2.addObserver(controller);
+        playingConnection2.put(c1, c2);
+        playingConnection2.put(c2, c1);
+        waitingConnection2.clear();
     }
 
 
+    /**
+     * Initialises and creates all the necessary modules and structures for a game with 3 players.
+     * @param waitingConnection3: map containing the players which have to play
+     * @throws IOException
+     */
+    private void startGame3Players(final Map<String,Connection> waitingConnection3) throws IOException {
 
+        List<String> keys = new ArrayList<>(waitingConnection3.keySet());
+        final Connection c1 = waitingConnection3.get(keys.get(0));
+        final Connection c2 = waitingConnection3.get(keys.get(1));
+        final Connection c3 = waitingConnection3.get(keys.get(2));
+        RemoteView player1 = new RemoteView(c1, new Player(keys.get(0), TokenColor.RED));
+        RemoteView player2 = new RemoteView(c2, new Player(keys.get(1), TokenColor.BLUE));
+        RemoteView player3 = new RemoteView(c3, new Player(keys.get(2), TokenColor.YELLOW));
+        Model model = new Model(new Battlefield());
+        Controller controller = new Controller(model);
+        model.addObserver(player1);
+        model.addObserver(player2);
+        model.addObserver(player3);
+        player1.addObserver(controller);
+        player2.addObserver(controller);
+        player3.addObserver(controller);
+        playingConnection3.put(c1, new HashMap<Connection,Connection>());
+        playingConnection3.get(c1).put(c2,c3);
+        playingConnection3.put(c2, new HashMap<Connection,Connection>());
+        playingConnection3.get(c2).put(c1,c3);
+        playingConnection3.put(c3, new HashMap<Connection,Connection>());
+        playingConnection3.get(c3).put(c1,c2);
+        waitingConnection3.clear();
+    }
 
+/*      SEGUITO QUESTO:
 
+public static void main(String args[]) {
 
+    HashMap<String, HashMap<String, Object>> map = new HashMap<String, HashMap<String,Object>>();
+    map.put("key", new HashMap<String, Object>());
+    map.get("key").put("key2", "val2");
+
+    System.out.println(map.get("key").get("key2"));
+}*/
 
 
 
@@ -141,9 +207,6 @@ public class Server  {
 
         // Here the server get the socket.
         Socket socket = serverSocket.accept();
-
-
-
 
 
         // Create input stream and output stream
@@ -171,23 +234,10 @@ public class Server  {
         playerAction = (PlayerAction) objectInputStream.readObject();
         numberOfPlayers = playerAction.getTokenMain();
 
-
-
-
         while (true) {
-
-
         }
-
-
-
     }
 */
-
-
-
-
-
 
 
 }
