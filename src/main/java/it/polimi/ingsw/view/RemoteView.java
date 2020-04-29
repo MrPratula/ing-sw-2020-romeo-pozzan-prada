@@ -2,10 +2,7 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.utils.Observable;
-import it.polimi.ingsw.utils.Observer;
-import it.polimi.ingsw.utils.PlayerAction;
-import it.polimi.ingsw.utils.ServerResponse;
+import it.polimi.ingsw.utils.*;
 
 import java.io.*;
 import java.net.Socket;
@@ -22,10 +19,10 @@ public class RemoteView extends Observable<PlayerAction> implements Observer<Ser
 
     /**
      * Create a Remote view and instance the input and output stream.
-     * @param socket connection to create the stream.
+     * @param connection connection to create the stream.
      * @param player the player corresponding this remote view.
      */
-    public RemoteView(Socket socket, Player player) throws IOException {
+    public RemoteView(Connection connection, Player player) throws IOException {
         this.socket = socket;
         this.player = player;
         this.outputStream = socket.getOutputStream();

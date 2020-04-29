@@ -20,6 +20,13 @@ public class RemoteController implements Observer<PlayerAction> {
     }
 
 
+    public void run() {
+
+
+
+    }
+
+
     @Override
     public void update(PlayerAction playerAction) throws IOException {
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);

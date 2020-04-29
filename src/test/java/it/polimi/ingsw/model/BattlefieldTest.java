@@ -18,9 +18,9 @@ public class BattlefieldTest {
 
         battlefield = new Battlefield();
 
-        p1 = new Player("Alpha",TokenColor.RED,battlefield);
-        p2 = new Player("Beta",TokenColor.BLUE,battlefield);
-        p3 = new Player("Charlie",TokenColor.YELLOW,battlefield);
+        p1 = new Player("Alpha",TokenColor.RED);
+        p2 = new Player("Beta",TokenColor.BLUE);
+        p3 = new Player("Charlie",TokenColor.YELLOW);
 
         t1 = new Token(TokenColor.RED);
         t11 = new Token(TokenColor.RED);
@@ -86,7 +86,7 @@ public class BattlefieldTest {
     @Test
     public void PrintCLITestWithValidMoves() throws CellOutOfBattlefieldException {
 
-        List<Cell> validMoves = new ArrayList<>(); //saranno passatecome parametro
+        List<Cell> validMoves = new ArrayList<>(); //saranno passate come parametro
         validMoves.add(battlefield.getCell(3,1));
         validMoves.add(battlefield.getCell(2,1));
         validMoves.add(battlefield.getCell(2,3));

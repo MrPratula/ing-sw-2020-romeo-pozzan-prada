@@ -57,44 +57,6 @@ public class SimpleValidMoveTest {
     }
 
 
-    /**
-     * This test a token with nobody around him.
-     */
-    @Test void validMovesOnlyTokenPRINTCLI() throws CellOutOfBattlefieldException {
-        battlefield = new Battlefield();
-
-        Player p1 = new Player("Alpha",TokenColor.RED,battlefield);
-        Player p2 = new Player("Beta",TokenColor.BLUE,battlefield);
-        Player p3 = new Player("Charlie",TokenColor.YELLOW,battlefield);
-
-        Token t1 = new Token(TokenColor.RED);
-        Token t11 = new Token(TokenColor.RED);
-
-        Token t2 = new Token(TokenColor.BLUE);
-        Token t22 = new Token(TokenColor.BLUE);
-
-        Token t3 = new Token(TokenColor.YELLOW);
-        Token t33 = new Token(TokenColor.YELLOW);
-
-        selectedToken.setTokenPosition(battlefield.getCell(3,3));
-        selectedToken.getTokenPosition().setOccupied();
-
-        List<Cell> validMoves;
-
-        MoveContext thisMove = new MoveContext(new SimpleMoves());
-        validMoves = thisMove.executeValidMoves(selectedToken, otherToken, enemyTokens, null, null, battlefield, null);
-
-        Assert.assertEquals(8, validMoves.size());
-        Assert.assertTrue(validMoves.contains(battlefield.getCell(2,2)));
-        Assert.assertTrue(validMoves.contains(battlefield.getCell(2,3)));
-        Assert.assertTrue(validMoves.contains(battlefield.getCell(2,4)));
-        Assert.assertTrue(validMoves.contains(battlefield.getCell(3,2)));
-        Assert.assertTrue(validMoves.contains(battlefield.getCell(3,4)));
-        Assert.assertTrue(validMoves.contains(battlefield.getCell(4,2)));
-        Assert.assertTrue(validMoves.contains(battlefield.getCell(4,3)));
-        Assert.assertTrue(validMoves.contains(battlefield.getCell(4,4)));
-        Assert.assertFalse(validMoves.contains(battlefield.getCell(3,3)));
-    }
 
 
 

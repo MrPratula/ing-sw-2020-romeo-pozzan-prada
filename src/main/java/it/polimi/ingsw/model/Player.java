@@ -12,8 +12,8 @@ import java.util.List;
  */
 public class Player {
 
-    private String username;
-    private TokenColor tokenColor;
+    private final String username;
+    private final TokenColor tokenColor;
     private Token token1, token2;
     private GodCard myGodCard;
     private List<GodCard> opponentGodCards;
@@ -25,16 +25,13 @@ public class Player {
      *
      * @param username    the name of the player. It should be unique
      * @param color       the color that identify the player and his tokens
-     * @param battlefield the shared data to construct the view and notify the controller
      */
-
-    public Player(String username, TokenColor color, Battlefield battlefield) {
+    public Player(String username, TokenColor color) {
 
         this.username = username;
         this.tokenColor = color;
         this.token1 = new Token(color);
         this.token2 = new Token(color);
-        this.battlefield = battlefield;
 
     }
 
