@@ -11,6 +11,7 @@ public enum Action {
     /*    FROM CLIENT TO SERVER     */
 
     TOKEN_SET_UP("A player selected the set-up position for the token"),
+
     PROMETHEUS_POWER("Prometheus wants to use his God power!"),
     SELECT_TOKEN("A player has selected a token"),
     MOVE("A player moved a token"),

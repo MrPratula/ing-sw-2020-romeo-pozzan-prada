@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view;
 
 
+import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.controller.RemoteController;
 import it.polimi.ingsw.model.*;
@@ -82,14 +83,31 @@ public class Server  {
         connections.add(c);
     }
 
-/* momentaneo
-    public synchronized void deregisterConnection(Connection c){
-        connections.remove(c);
-        Connection opponent = playingConnection.get(c);
-        if(opponent != null){
-            opponent.closeConnection();
-            playingConnection.remove(c);
-            playingConnection.remove(opponent);
+/*
+    public synchronized void deregisterConnection(Connection c) throws IOException {
+        connections.remove(c);                                     //rimuove dalla lista delle connessioni
+        if(playingConnection2.containsKey(c)) {                    //sta stava anche giocando
+            Connection opponent = playingConnection2.get(c);       //trovo il nemico
+            if (opponent != null) {
+                opponent.closeConnection();
+                playingConnection2.remove(c);
+                playingConnection2.remove(opponent);
+            }
+        }
+        else if(playingConnection3.containsKey(c)){
+
+
+            Map<Connection,Connection> opponents = playingConnection3.get(c);   //le due connessioni contro cui stava giocando
+            if(opponents.size()==2)  playingConnection3.remove(c);              //continunano a giocare in due, forse dovrei mettere null
+            if(opponents.size()<2){
+                for(Map.Entry<Connection,Connection> entry : opponents.entrySet()){
+                    if(entry.getKey()!=null) entry.
+                    playingConnection3.remove(opponents);
+                    playingConnection3.remove(opponent);
+                }
+
+
+            }
         }
     }
 */
