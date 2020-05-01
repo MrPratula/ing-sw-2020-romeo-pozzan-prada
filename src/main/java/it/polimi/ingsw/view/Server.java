@@ -83,7 +83,6 @@ public class Server  {
         connections.add(c);
     }
 
-/*
     public synchronized void deregisterConnection(Connection c) throws IOException {
         connections.remove(c);                                     //rimuove dalla lista delle connessioni
         if(playingConnection2.containsKey(c)) {                    //sta stava anche giocando
@@ -95,7 +94,9 @@ public class Server  {
             }
         }
         else if(playingConnection3.containsKey(c)){
+   /*da fare
 
+            Map<Connection,Connection> newMap = new HashMap<>();   //le due connessioni contro cui stava giocando
 
             Map<Connection,Connection> opponents = playingConnection3.get(c);   //le due connessioni contro cui stava giocando
             if(opponents.size()==2)  playingConnection3.remove(c);              //continunano a giocare in due, forse dovrei mettere null
@@ -105,12 +106,26 @@ public class Server  {
                     playingConnection3.remove(opponents);
                     playingConnection3.remove(opponent);
                 }
+     */
+                //cosi funziona ma non possiamo
 
+            /* List<String> aux = new ArrayList<>();
+                HashMap<String, String> newMap = new HashMap<>();
+                for( Map.Entry<String, HashMap<String,String>> entry : map.entrySet() ) {
+                    String key = entry.getKey();
+                    if (!key.equals(s)) {
+                        aux.add(key);
+                    }
+                }
+                newMap.put(aux.get(0), aux.get(1));
+                newMap.put(aux.get(1), aux.get(0));
+                return newMap;
+            */
 
             }
-        }
+   //     }
+
     }
-*/
     /**
      * Lobby of the game, where the players join each other.
      * Here we group the players based how many players they
@@ -162,6 +177,7 @@ public class Server  {
         playingConnection2.put(c2, c1);
         waitingConnection2.clear();
 
+        //forse
         player1.update(new ServerResponse(Action.SET_UP,null,null,null,null));
         player2.update(new ServerResponse(Action.NOT_YOUR_TURN,null,null,null,null));
     }
