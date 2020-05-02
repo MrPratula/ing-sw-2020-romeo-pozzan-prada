@@ -80,18 +80,12 @@ public abstract class View extends Observable<PlayerAction> implements Observer<
             if(players.get(0).equals(getPlayer()))  opp1 = players.get(1);
             else opp1 = players.get(0);
         }
-        if(numberOfPlayers==3){                          ///si potrebbe fare meglio
-            if(players.get(0).equals(getPlayer())){
-                opp1 = players.get(1);
-                opp2 = players.get(2);
-            }
-            else if(players.get(1).equals(getPlayer())){
-                opp1 = players.get(0);
-                opp2 = players.get(2);
-            }
-            else if(players.get(2).equals(getPlayer())){
-                opp1 = players.get(1);
-                opp2 = players.get(2);
+        if(numberOfPlayers==3){                             ///si potrebbe fare meglio
+            for(int i=0; i<3; i++){
+                if(players.get(i).equals(getPlayer())){
+                    opp1 = players.get(1);
+                    opp2 = players.get(2);
+                }
             }
         }
 
