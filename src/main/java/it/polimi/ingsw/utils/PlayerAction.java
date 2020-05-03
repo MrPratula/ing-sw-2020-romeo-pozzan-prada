@@ -2,7 +2,6 @@ package it.polimi.ingsw.utils;
 
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.Token;
 
 public class PlayerAction {
 
@@ -12,12 +11,13 @@ public class PlayerAction {
     private final Player oppo2;
     private final int tokenMain;
     private final int tokenOther;
-    private boolean doWantUsePower;
+    private final boolean doWantUsePower;
+    private final String args;
 
     private final Cell first_cell;
     private final Cell second_cell;
 
-    public PlayerAction(Action action, Player player, Player oppo1, Player oppo2, int tokenMain, int tokenOther, Cell first_cell, Cell second_cell , boolean doWantUsePower){
+    public PlayerAction(Action action, Player player, Player oppo1, Player oppo2, int tokenMain, int tokenOther, Cell first_cell, Cell second_cell , boolean doWantUsePower, String args){
         this.action = action;
         this.player = player;
         this.oppo1 = oppo1;
@@ -27,6 +27,7 @@ public class PlayerAction {
         this.first_cell = first_cell;
         this.second_cell = second_cell;
         this.doWantUsePower = doWantUsePower;
+        this.args = args;
     }
 
     public Action getAction(){
@@ -63,6 +64,10 @@ public class PlayerAction {
 
     public boolean getDoWantUsePower() {
         return doWantUsePower;
+    }
+
+    public String getArgs() {
+        return this.args;
     }
 
     public void processAction(){

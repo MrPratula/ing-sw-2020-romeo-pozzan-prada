@@ -20,7 +20,7 @@ public class ServerResponse {
     private final List<Cell> validMoves;
     private final List<Cell> validBuilds;
 
-    private String outMessage;
+    private final String outMessage;
 
     public ServerResponse(Action action, ModelUtils modelCopy, List<Cell> validMoves, List<Cell> validBuilds, String outMessage) {
 

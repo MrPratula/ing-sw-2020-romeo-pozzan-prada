@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view;
+package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.model.*;
@@ -145,7 +145,7 @@ public abstract class View extends Observable<PlayerAction> implements Observer<
                 token.setId(1);///////////////////modificare
                 token.setTokenPosition(serverResponse.getModelCopy().getBattlefield().getCell(posX,posY));
                 try{
-                    playerAction = new PlayerAction(Action.TOKEN_SET_UP,getPlayer(),null,null,token.getId(),0,null,null, false);
+                    playerAction = new PlayerAction(Action.TOKEN_SET_UP,getPlayer(),null,null,token.getId(),0,null,null, false, null);
                     notifyRemoteController(playerAction);////////////////////
                 } catch (NullPointerException e){
                     System.out.println(e.getMessage());
@@ -174,7 +174,7 @@ public abstract class View extends Observable<PlayerAction> implements Observer<
                     Player opp1 = computeOpponentPlayers(serverResponse).get(0);
                     Player opp2 = computeOpponentPlayers(serverResponse).get(1);
                     try{
-                        playerAction = new PlayerAction(Action.PROMETHEUS_POWER,getPlayer(),opp1,opp2,selectedToken.getId(),otherToken.getId(),null,null, true);
+                        playerAction = new PlayerAction(Action.PROMETHEUS_POWER,getPlayer(),opp1,opp2,selectedToken.getId(),otherToken.getId(),null,null, true, null);
                         notifyRemoteController(playerAction);////////////////////
                     } catch (NullPointerException e){
                         System.out.println(e.getMessage());
@@ -196,7 +196,7 @@ public abstract class View extends Observable<PlayerAction> implements Observer<
                     Player opp1 = computeOpponentPlayers(serverResponse).get(0);
                     Player opp2 = computeOpponentPlayers(serverResponse).get(1);
                     try{
-                        playerAction = new PlayerAction(Action.SELECT_TOKEN,getPlayer(),opp1,opp2,selectedToken.getId(),otherToken.getId(),null,null, false);
+                        playerAction = new PlayerAction(Action.SELECT_TOKEN,getPlayer(),opp1,opp2,selectedToken.getId(),otherToken.getId(),null,null, false, null);
                         notifyRemoteController(playerAction);
                     } catch (NullPointerException e){
                         System.out.println(e.getMessage());
@@ -227,7 +227,7 @@ public abstract class View extends Observable<PlayerAction> implements Observer<
                 try{
                     //cell is the cell we want to increment
                     Cell cell = serverResponse.getModelCopy().getBattlefield().getCell(posX,posY);
-                    playerAction = new PlayerAction(Action.SELECT_TOKEN,getPlayer(),opp1,opp2,selectedToken.getId(),otherToken.getId(),cell, null,false);
+                    playerAction = new PlayerAction(Action.SELECT_TOKEN,getPlayer(),opp1,opp2,selectedToken.getId(),otherToken.getId(),cell, null,false, null);
                     notifyRemoteController(playerAction);
                 } catch (NullPointerException e){
                     System.out.println(e.getMessage());
@@ -256,7 +256,7 @@ public abstract class View extends Observable<PlayerAction> implements Observer<
                         System.out.println("Error! You can't select this cell, try again! ");
                     }
                     */
-                    playerAction = new PlayerAction(Action.MOVE,getPlayer(),opp1,opp2,selectedToken.getId(),otherToken.getId(),null, null,false);
+                    playerAction = new PlayerAction(Action.MOVE,getPlayer(),opp1,opp2,selectedToken.getId(),otherToken.getId(),null, null,false, null);
                     notifyRemoteController(playerAction);////////////////////
 
                 } catch (NullPointerException e){
@@ -283,7 +283,7 @@ public abstract class View extends Observable<PlayerAction> implements Observer<
                 try{
                     //cell is the cell we want to increment
                     Cell cell = serverResponse.getModelCopy().getBattlefield().getCell(posX,posY);
-                    playerAction = new PlayerAction(Action.BUILD,getPlayer(),opp1,opp2,selectedToken.getId(),otherToken.getId(),cell, null,false);
+                    playerAction = new PlayerAction(Action.BUILD,getPlayer(),opp1,opp2,selectedToken.getId(),otherToken.getId(),cell, null,false, null);
                     notifyRemoteController(playerAction);////////////////////
 
                 } catch (NullPointerException e){

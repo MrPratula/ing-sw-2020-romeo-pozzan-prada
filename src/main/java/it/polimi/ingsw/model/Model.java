@@ -29,10 +29,10 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     private static boolean didAthenaMovedUp;
     private final Battlefield battlefield;
     private TokenColor turn;
-    private List<Player> allPlayers;
+    private List<Player> allPlayers = new ArrayList<>();
 
-    public Model(Battlefield battlefield) {
-        this.battlefield = battlefield;
+    public Model() {
+        this.battlefield = new Battlefield();
     }
 
     /*
@@ -59,6 +59,12 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     public static boolean isDidAthenaMovedUp() {
         return didAthenaMovedUp;
     }
+
+    public void addPlayer(Player player) {
+        allPlayers.add(player);
+    }
+
+
 
 
     /**

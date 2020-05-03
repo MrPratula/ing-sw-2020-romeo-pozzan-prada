@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view;
+package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.utils.Observable;
 import it.polimi.ingsw.utils.ServerResponse;

@@ -1,7 +1,7 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
-import it.polimi.ingsw.view.Client;
+import it.polimi.ingsw.client.Client;
 
 import java.io.IOException;
 

@@ -32,9 +32,11 @@ public enum Action {
     TOKEN_NOT_MOVABLE("You can not move this token, please select a movable one! (x,y)"),
     WRONG_INPUT("Please insert a valid choice!"),
 
-    SET_UP("Select the position you want to place your first token (x,y)");
-    //WELCOME("Welcome to Santorini! What is your name?"),
-    //HOW_MANY_PLAYERS("How many players do you want to play with?");
+    SET_UP("Select the position you want to place your first token (x,y)"),
+    WELCOME("Welcome to Santorini! What is your name?"),
+    HOW_MANY_PLAYERS("How many players do you want to play with?"),
+
+    CONNECTION_CLOSE("Connection closed from SERVER side!");
 
 
     private String info;

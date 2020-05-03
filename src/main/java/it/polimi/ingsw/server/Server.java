@@ -1,0 +1,186 @@
+package it.polimi.ingsw.server;
+
+
+import it.polimi.ingsw.controller.Controller;
+import it.polimi.ingsw.model.Model;
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.TokenColor;
+import it.polimi.ingsw.utils.Connection;
+
+import java.io.*;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class Server  {
+
+    // This is for the Singleton pattern
+    private static Server singleServer = null;
+
+    private int numberOfPlayers;
+    private static final int PORT = 12345;
+    private ServerSocket serverSocket;
+
+    private ExecutorService executor = Executors.newFixedThreadPool(128);
+
+    // All the connection that are linked
+    private List<Connection> connections = new ArrayList<Connection>();
+
+    // All the connection active for a game session
+    private Map<String, Connection> playingConnection = new HashMap<>();
+
+    // All the connection in queue for a game
+    private Map<String, Connection> waitingConnection = new HashMap<>();
+
+
+    /**
+     * Singleton constructor.
+     * If it do not exist it create a new one.
+     * @return an instance of server.
+     */
+    public static Server getInstance() throws IOException {
+        if (singleServer == null)
+            singleServer = new Server();
+        return singleServer;
+    }
+
+
+    /**
+     * Private constructor that is called by the getInstance.
+     */
+    private Server() throws IOException {
+        this.serverSocket = new ServerSocket(PORT);
+    }
+
+
+    /**
+     * The servers starts and waits for clients to connect.
+     * When a client join a server it is registered (save connection)
+     * and it's connection is started in a asynchronous thread.
+     */
+    public void run() {
+
+        System.out.println("Server listening on port: " + PORT);
+
+        while(true){
+            try {
+
+                // Accept a client who requires for this port
+                Socket socket = serverSocket.accept();
+                // Crate a Connection for that specific client
+                Connection connection = new Connection(socket, this);
+                // Save this connection to the connections list
+                registerConnection(connection);
+                // Let's start the Connection run() method in an asynchronous thread
+                executor.submit(connection);
+
+            } catch (IOException e){
+                System.err.println("Connection error!");
+            }
+        }
+    }
+
+
+    /**
+     * Add a connection (which is unique for each client) to the connections list.
+     * @param connection the connection to add.
+     */
+    private synchronized void registerConnection(Connection connection){
+        connections.add(connection);
+    }
+
+
+    /**
+     * It removes a Connection from the server.
+     * The connection is removed from the list and removed from playingConnection.
+     * @param connection the connection to remove.
+     */
+    public synchronized void deregisterConnection(Connection connection) throws IOException {
+        connections.remove(connection);
+        playingConnection.get(connection.getName()).closeConnection();
+        playingConnection.remove(connection.getName());
+    }
+
+
+    /**
+     * The lobby receive a connection and a name.
+     * Those are put in waitingConnection.
+     * When there are 2 or 3 players in the waiting connection
+     * the game is set up and start.
+     */
+    public synchronized void lobby(Connection connection, String name) throws IOException {
+
+        waitingConnection.put(name, connection);
+
+        // The number of players need to be handled somewhere else
+        if (waitingConnection.size() == numberOfPlayers){
+
+            // Get the name of the players and create their personal connections
+            List<String> names = new ArrayList<>(waitingConnection.keySet());
+            Connection c1 = waitingConnection.get(names.get(0));
+            Connection c2 = waitingConnection.get(names.get(1));
+
+            // Instance object for 3 players
+            Connection c3 = null;
+            Player player3 = null;
+            RemoteView remoteView3 = null;
+
+            // Create the players with a name and a color
+            Player player1 = new Player(c1.getName(), TokenColor.RED);
+            Player player2 = new Player(c2.getName(), TokenColor.BLUE);
+
+            // Create the remote view with a connection and a player
+            RemoteView remoteView1 = new RemoteView(c1, player1);
+            RemoteView remoteView2 = new RemoteView(c2, player2);
+
+            // Create the model and the controller for the current game
+            Model model = new Model();
+            Controller controller = new Controller(model);
+
+            // Add all the player to the list of all player in the model
+            model.addPlayer(player1);
+            model.addPlayer(player2);
+
+            // Link observer between model -> remoteView
+            model.addObserver(remoteView1);
+            model.addObserver(remoteView2);
+
+            // Link observer between remoteView(messageReceiver) -> Controller
+            remoteView1.addObserver(controller);
+            remoteView2.addObserver(controller);
+
+            // Put player in playing connection list
+            playingConnection.put(player1.getUsername(), c1);
+            playingConnection.put(player2.getUsername(), c2);
+
+            // Set up all of this for a 3rd eventual player
+            if (numberOfPlayers == 3) {
+                c3 = waitingConnection.get(names.get(2));
+                player3 = new Player(c3.getName(), TokenColor.YELLOW);
+                remoteView3 = new RemoteView(c3, player3);
+                model.addPlayer(player3);
+                model.addObserver(remoteView3);
+                remoteView3.addObserver(controller);
+                playingConnection.put(player3.getUsername(), c3);
+            }
+
+            // Clear the waiting connection
+            waitingConnection.clear();
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
