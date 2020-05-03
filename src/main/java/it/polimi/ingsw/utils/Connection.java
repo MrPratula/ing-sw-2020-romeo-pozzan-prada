@@ -129,6 +129,8 @@ public class Connection extends Observable<PlayerAction> implements Runnable{
                 objectInputStream = new ObjectInputStream(inputStream);
 
                 PlayerAction playerAction = (PlayerAction) objectInputStream.readObject();
+
+                // notify the RemoteView(messageReceiver)
                 notify(playerAction);
             }
 

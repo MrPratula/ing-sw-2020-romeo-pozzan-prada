@@ -10,6 +10,8 @@ public enum Action {
 
     /*    FROM CLIENT TO SERVER     */
 
+    NUMBER_OF_PLAYERS("The first player communicate how much players there are"),
+
     TOKEN_SET_UP("A player selected the set-up position for the token"),
 
     PROMETHEUS_POWER("Prometheus wants to use his God power!"),
@@ -23,7 +25,7 @@ public enum Action {
     NOT_YOUR_TURN("Wait your turn to perform your action!"),
 
     START_NEW_TURN("Your turn is ended!"),
-    ASK_FOR_PROMETHEUS_POWER("Do you want to use the GodPower? [yes][no]"),
+    ASK_FOR_PROMETHEUS_POWER("Do you want to use your GodPower? [yes][no]"),
     ASK_FOR_MOVE("Where do you want to move your token? (x,y)"),
     ASK_FOR_BUILD("Where do you want to build? (x,y)"),
 
@@ -34,9 +36,10 @@ public enum Action {
 
     SET_UP("Select the position you want to place your first token (x,y)"),
     WELCOME("Welcome to Santorini! What is your name?"),
-    HOW_MANY_PLAYERS("How many players do you want to play with?"),
+    HOW_MANY_PLAYERS("Do you want to make a 2 players game or a 3 players game? [2][3]"),
 
-    CONNECTION_CLOSE("Connection closed from SERVER side!");
+    CONNECTION_CLOSE("Connection closed from SERVER side!"),
+    NUMBER_RECEIVED("Waiting for the players to begin...");
 
 
     private String info;

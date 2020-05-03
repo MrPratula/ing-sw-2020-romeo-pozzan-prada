@@ -43,7 +43,15 @@ public class RemoteView extends Observable<PlayerAction> implements Observer<Ser
      * @param playerAction the action to send.
      */
     public void sendAction(PlayerAction playerAction) throws ImpossibleTurnException, IOException, CellHeightException, WrongNumberPlayerException, ReachHeightLimitException, CellOutOfBattlefieldException {
-        notify(playerAction);
+
+        // The first player who connect is requested to give the number of players
+        if (playerAction.getAction().equals(Action.NUMBER_OF_PLAYERS)){
+            Server.setNumberOfPlayers(playerAction.getTokenMain());
+            connection.asyncSend(new ServerResponse(Action.NUMBER_RECEIVED, null, null, null, null));
+        }
+        // In any other cases the RemoteView send the action to the controller
+        else
+            notify(playerAction);
     }
 
 

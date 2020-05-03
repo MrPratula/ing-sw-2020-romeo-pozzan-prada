@@ -5,7 +5,10 @@ import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.model.Model;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.TokenColor;
+import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.Connection;
+import it.polimi.ingsw.utils.PlayerAction;
+import it.polimi.ingsw.utils.ServerResponse;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -21,8 +24,9 @@ public class Server  {
 
     // This is for the Singleton pattern
     private static Server singleServer = null;
+    private static int numberOfPlayers;
 
-    private int numberOfPlayers;
+    private boolean firstTime;
     private static final int PORT = 12345;
     private ServerSocket serverSocket;
 
@@ -55,6 +59,15 @@ public class Server  {
      */
     private Server() throws IOException {
         this.serverSocket = new ServerSocket(PORT);
+    }
+
+
+    /**
+     * Set up the number of players.
+     * It is received from the first remoteView.
+     */
+    public static void setNumberOfPlayers(int number) {
+        numberOfPlayers = number;
     }
 
 
@@ -113,16 +126,45 @@ public class Server  {
      * When there are 2 or 3 players in the waiting connection
      * the game is set up and start.
      */
-    public synchronized void lobby(Connection connection, String name) throws IOException {
+    public synchronized void lobby(Connection connection, String name) throws IOException, InterruptedException {
 
         waitingConnection.put(name, connection);
+
+        List<String> names = null;
+        Connection c1 = null;
+        Player player1 = null;
+        RemoteView remoteView1 = null;
+
+
+        // Player 1 is always instantiated
+        // Only the first one is asked for how many players
+        // and till he answer the question nobody else can do this
+        if (firstTime) {
+
+            firstTime = false;
+            numberOfPlayers = 0;
+
+            names = new ArrayList<>(waitingConnection.keySet());
+
+            c1 = waitingConnection.get(names.get(0));
+            player1 = new Player(c1.getName(), TokenColor.RED);
+            remoteView1 = new RemoteView(c1, player1);
+
+            c1.asyncSend(new ServerResponse(Action.HOW_MANY_PLAYERS, null, null, null, null));
+
+            // Till the player 1 respond, the method is locked and nobody else can use this
+            // to prevent the if check in the next if statement
+            while (numberOfPlayers == 0){
+                wait();
+            }
+            notifyAll();
+        }
 
         // The number of players need to be handled somewhere else
         if (waitingConnection.size() == numberOfPlayers){
 
             // Get the name of the players and create their personal connections
-            List<String> names = new ArrayList<>(waitingConnection.keySet());
-            Connection c1 = waitingConnection.get(names.get(0));
+            names = new ArrayList<>(waitingConnection.keySet());
             Connection c2 = waitingConnection.get(names.get(1));
 
             // Instance object for 3 players
@@ -131,11 +173,9 @@ public class Server  {
             RemoteView remoteView3 = null;
 
             // Create the players with a name and a color
-            Player player1 = new Player(c1.getName(), TokenColor.RED);
             Player player2 = new Player(c2.getName(), TokenColor.BLUE);
 
             // Create the remote view with a connection and a player
-            RemoteView remoteView1 = new RemoteView(c1, player1);
             RemoteView remoteView2 = new RemoteView(c2, player2);
 
             // Create the model and the controller for the current game
@@ -151,6 +191,7 @@ public class Server  {
             model.addObserver(remoteView2);
 
             // Link observer between remoteView(messageReceiver) -> Controller
+            assert remoteView1 != null;
             remoteView1.addObserver(controller);
             remoteView2.addObserver(controller);
 
