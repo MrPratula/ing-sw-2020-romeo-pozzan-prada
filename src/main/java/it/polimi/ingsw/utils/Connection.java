@@ -126,6 +126,7 @@ public class Connection extends Observable<PlayerAction> implements Runnable{
 
             // Start listening every request from the client
             while(isActive()){
+
                 objectInputStream = new ObjectInputStream(inputStream);
 
                 PlayerAction playerAction = (PlayerAction) objectInputStream.readObject();
@@ -134,7 +135,7 @@ public class Connection extends Observable<PlayerAction> implements Runnable{
                 notify(playerAction);
             }
 
-        } catch(IOException | CellOutOfBattlefieldException | ImpossibleTurnException | ReachHeightLimitException | CellHeightException | WrongNumberPlayerException | ClassNotFoundException e){
+        } catch(IOException | CellOutOfBattlefieldException | ImpossibleTurnException | ReachHeightLimitException | CellHeightException | WrongNumberPlayerException | ClassNotFoundException | InterruptedException e){
             System.err.println(e.getMessage());
         } finally {
             try {

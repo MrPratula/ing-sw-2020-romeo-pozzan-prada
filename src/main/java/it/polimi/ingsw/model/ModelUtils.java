@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 
@@ -7,7 +8,7 @@ import java.util.List;
  * Class used to pass some utils from the Model, such as the battlefield,
  * turn, and a list of the Players in game
  */
-public class ModelUtils {
+public class ModelUtils implements Serializable {
 
     private Battlefield battlefield;
     private TokenColor turn;

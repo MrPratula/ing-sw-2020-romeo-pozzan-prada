@@ -14,7 +14,7 @@ public class RemoteView extends Observable<PlayerAction> implements Observer<Ser
 
 
     /**
-     * Create a Remote view with player and connection.
+     * Creates a Remote view with player and connection.
      * @param connection connection to receive and send objects.
      * @param player the player corresponding this remote view.
      */
@@ -26,8 +26,8 @@ public class RemoteView extends Observable<PlayerAction> implements Observer<Ser
 
 
     /**
-     * The model notify the remote view with a ServerResponse.
-     * It is received here and it is sent asynchronous via the connection to the client.
+     * The model notifies the remote view with a ServerResponse.
+     * It is received here and it is sent asynchronously via the connection to the client.
      * @param serverResponse the object to send to the client.
      */
     @Override
@@ -37,7 +37,7 @@ public class RemoteView extends Observable<PlayerAction> implements Observer<Ser
 
 
     /**
-     * It notify the controller with a playerAction.
+     * It notifies the controller with a playerAction.
      * The messageReceiver class receive the message and send it via the remote view
      * to the controller.
      * @param playerAction the action to send.

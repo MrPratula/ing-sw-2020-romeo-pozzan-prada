@@ -121,10 +121,10 @@ public class Server  {
 
 
     /**
-     * The lobby receive a connection and a name.
+     * The lobby receives a connection and a name.
      * Those are put in waitingConnection.
-     * When there are 2 or 3 players in the waiting connection
-     * the game is set up and start.
+     * When there are 2 or 3 players in the waiting connection,
+     * the game is set up and it starts.
      */
     public synchronized void lobby(Connection connection, String name) throws IOException, InterruptedException {
 
