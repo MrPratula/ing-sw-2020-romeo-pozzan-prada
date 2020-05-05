@@ -10,7 +10,7 @@ public enum Action {
 
     /*    FROM CLIENT TO SERVER     */
 
-    NUMBER_OF_PLAYERS("The first player communicate how much players there are"),
+    NUMBER_OF_PLAYERS("The first player communicated how many players there are"),
 
     TOKEN_SET_UP("A player selected the set-up position for the token"),
 
@@ -37,6 +37,7 @@ public enum Action {
     SET_UP("Select the position you want to place your first token (x,y)"),
     WELCOME("Welcome to Santorini! What is your name?"),
     HOW_MANY_PLAYERS("Do you want to make a 2 players game or a 3 players game? [2][3]"),
+    SELECT_YOUR_GODCARD("Which one of these GodCards do you want to use in this game?"),
 
     CONNECTION_CLOSE("Connection closed from SERVER side!"),
     NUMBER_RECEIVED("Waiting for the players to begin...");

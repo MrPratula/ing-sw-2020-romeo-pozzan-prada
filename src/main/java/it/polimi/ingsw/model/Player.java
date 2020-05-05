@@ -32,7 +32,6 @@ public class Player {
         this.tokenColor = color;
         this.token1 = new Token(color);
         this.token2 = new Token(color);
-
     }
 
     /*  GETTER  */
@@ -63,7 +62,9 @@ public class Player {
         this.token2 = token2;
     }
 
-
+    public void setMyGodCard(GodCard godCard){
+        this.myGodCard = godCard;
+    }
 
 
     /**

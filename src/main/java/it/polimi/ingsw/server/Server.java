@@ -2,6 +2,7 @@ package it.polimi.ingsw.server;
 
 
 import it.polimi.ingsw.controller.Controller;
+import it.polimi.ingsw.model.GodCard;
 import it.polimi.ingsw.model.Model;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.TokenColor;
@@ -12,10 +13,7 @@ import it.polimi.ingsw.utils.ServerResponse;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -120,6 +118,40 @@ public class Server  {
         playingConnection.remove(connection.getName());
     }
 
+    /**
+     * Generates 3 different index to get 2 or 3 different godcards
+     * @return
+     */
+    public List<GodCard> generateNDifferentGodCards(){
+
+        GodCard[] allGods = GodCard.values();
+        List<GodCard> godCardsInGame = new ArrayList<>();
+        boolean equalsIndex = true;
+
+        int indexGod1 = new Random().nextInt(15);      //1-14
+        godCardsInGame.add(allGods[indexGod1]);
+
+        int indexGod2 = new Random().nextInt(15);      //1-14
+        while(equalsIndex){
+            if(indexGod1==indexGod2){
+                indexGod2 = new Random().nextInt(15);
+            } else equalsIndex = false;
+        }
+        godCardsInGame.add(allGods[indexGod2]);
+
+        equalsIndex = true;
+        if(numberOfPlayers==3) {
+            int indexGod3 = new Random().nextInt(15);      //1-14
+            while (equalsIndex) {
+                if (indexGod2 == indexGod3 || indexGod1 == indexGod3) {
+                    indexGod3 = (new Random()).nextInt(15);
+                } else equalsIndex = false;
+            }
+            godCardsInGame.add(allGods[indexGod3]);
+        }
+
+        return godCardsInGame;
+    }
 
     /**
      * The lobby receives a connection and a name.
@@ -130,6 +162,8 @@ public class Server  {
     public synchronized void lobby(Connection connection, String name) throws IOException, InterruptedException {
 
         waitingConnection.put(name, connection);
+
+        String name1 = name;   //used to ask first god, MA SOLO PERCHE NON SO COME PRENDERE
 
         // Player 1 is always instantiated
         // Only the first one is asked for how many players
@@ -216,9 +250,14 @@ public class Server  {
             // Clear the waiting connection
             waitingConnection.clear();
 
-            // Create a list of god cards with lenght = number of players with random gods
-            // than each player chose one of that
 
+
+            // Creates a list of god cards with  lenght = numberOfPlayers  with random gods
+            List<GodCard> godCardsInGame = generateNDifferentGodCards();
+
+            // Asks the first player which godcards does he want to use
+            String outMessage = godCardsInGame.toString();
+            //c1.asyncSend(new ServerResponse(Action.HOW_MANY_PLAYERS, null, null, null, outMessage));
 
 
         }
