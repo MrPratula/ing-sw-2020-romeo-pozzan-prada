@@ -25,7 +25,7 @@ public class Server  {
     private static Server singleServer = null;
     private static int numberOfPlayers;
 
-    private boolean firstTime;
+    private boolean firstTime = true;
     private static final int PORT = 12345;
     private ServerSocket serverSocket;
 
@@ -40,6 +40,8 @@ public class Server  {
     // All the connection in queue for a game
     private Map<String, Connection> waitingConnection = new HashMap<>();
 
+    private Model model;
+    private Controller controller;
 
     /**
      * Singleton constructor.
@@ -129,12 +131,6 @@ public class Server  {
 
         waitingConnection.put(name, connection);
 
-        List<String> names = null;
-        Connection c1 = null;
-        Player player1 = null;
-        RemoteView remoteView1 = null;
-
-
         // Player 1 is always instantiated
         // Only the first one is asked for how many players
         // and till he answer the question nobody else can do this
@@ -143,15 +139,32 @@ public class Server  {
             firstTime = false;
             numberOfPlayers = 0;
 
-            names = new ArrayList<>(waitingConnection.keySet());
+            List<String> keys = new ArrayList<>(waitingConnection.keySet());
+            Connection c1 = waitingConnection.get(keys.get(0));
 
-            c1 = waitingConnection.get(names.get(0));
-            player1 = new Player(c1.getName(), TokenColor.RED);
-            remoteView1 = new RemoteView(c1, player1);
+            Player player1 = new Player(c1.getName(), TokenColor.RED);
+            RemoteView remoteView1 = new RemoteView(c1, player1);
 
+            // Create the model and the controller for the current game
+            model = new Model();
+            controller = new Controller(model);
+
+            // Add all the player to the list of all player in the model
+            model.addPlayer(player1);
+
+            // Link observer between model -> remoteView
+            model.addObserver(remoteView1);
+
+            // Link observer between remoteView(messageReceiver) -> Controller
+            remoteView1.addObserver(controller);
+
+            // Put player in playing connection list
+            playingConnection.put(player1.getUsername(), c1);
+
+            // Ask for how many players there will be in the game (2 or 3)
             c1.asyncSend(new ServerResponse(Action.HOW_MANY_PLAYERS, null, null, null, null));
 
-            // Till the player 1 respond, the method is locked and nobody else can use this
+            // Till the player 1 answer, the method is locked and nobody else can use this
             // to prevent the if check in the next if statement
             while (numberOfPlayers == 0){
                 wait();
@@ -159,17 +172,17 @@ public class Server  {
             notifyAll();
         }
 
-        // The number of players need to be handled somewhere else
+        // When the players are 2 or 3, based on the first player choice
         if (waitingConnection.size() == numberOfPlayers){
 
             // Get the name of the players and create their personal connections
-            names = new ArrayList<>(waitingConnection.keySet());
-            Connection c2 = waitingConnection.get(names.get(1));
+            List<String> keys = new ArrayList<>(waitingConnection.keySet());
+            Connection c2 = waitingConnection.get(keys.get(1));
 
             // Instance object for 3 players
-            Connection c3 = null;
-            Player player3 = null;
-            RemoteView remoteView3 = null;
+            Connection c3;
+            Player player3;
+            RemoteView remoteView3;
 
             // Create the players with a name and a color
             Player player2 = new Player(c2.getName(), TokenColor.BLUE);
@@ -177,30 +190,21 @@ public class Server  {
             // Create the remote view with a connection and a player
             RemoteView remoteView2 = new RemoteView(c2, player2);
 
-            // Create the model and the controller for the current game
-            Model model = new Model();
-            Controller controller = new Controller(model);
-
             // Add all the player to the list of all player in the model
-            model.addPlayer(player1);
-            model.addPlayer(player2);
 
+            model.addPlayer(player2);
             // Link observer between model -> remoteView
-            model.addObserver(remoteView1);
             model.addObserver(remoteView2);
 
             // Link observer between remoteView(messageReceiver) -> Controller
-            assert remoteView1 != null;
-            remoteView1.addObserver(controller);
             remoteView2.addObserver(controller);
 
             // Put player in playing connection list
-            playingConnection.put(player1.getUsername(), c1);
             playingConnection.put(player2.getUsername(), c2);
 
             // Set up all of this for a 3rd eventual player
             if (numberOfPlayers == 3) {
-                c3 = waitingConnection.get(names.get(2));
+                c3 = waitingConnection.get(keys.get(2));
                 player3 = new Player(c3.getName(), TokenColor.YELLOW);
                 remoteView3 = new RemoteView(c3, player3);
                 model.addPlayer(player3);
@@ -211,6 +215,12 @@ public class Server  {
 
             // Clear the waiting connection
             waitingConnection.clear();
+
+            // Create a list of god cards with lenght = number of players with random gods
+            // than each player chose one of that
+
+
+
         }
     }
 }
