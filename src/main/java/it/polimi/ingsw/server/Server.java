@@ -7,7 +7,6 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.TokenColor;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.Connection;
-import it.polimi.ingsw.utils.PlayerAction;
 import it.polimi.ingsw.utils.ServerResponse;
 
 import java.io.*;
