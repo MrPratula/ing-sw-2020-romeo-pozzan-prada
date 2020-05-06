@@ -56,7 +56,7 @@ public class Server  {
     /**
      * Private constructor that is called by the getInstance.
      */
-    private Server() throws IOException {
+    Server() throws IOException {
         this.serverSocket = new ServerSocket(PORT);
     }
 
@@ -120,32 +120,26 @@ public class Server  {
 
     /**
      * Generates 3 different index to get 2 or 3 different godcards
-     * @return
+     * @return 2 or 3 GodCards, the ones that will join this game
      */
     public List<GodCard> generateNDifferentGodCards(){
 
         GodCard[] allGods = GodCard.values();
         List<GodCard> godCardsInGame = new ArrayList<>();
-        boolean equalsIndex = true;
 
         int indexGod1 = new Random().nextInt(15);      //1-14
         godCardsInGame.add(allGods[indexGod1]);
 
         int indexGod2 = new Random().nextInt(15);      //1-14
-        while(equalsIndex){
-            if(indexGod1==indexGod2){
-                indexGod2 = new Random().nextInt(15);
-            } else equalsIndex = false;
+        while(indexGod1==indexGod2){
+            indexGod2 = new Random().nextInt(15);
         }
         godCardsInGame.add(allGods[indexGod2]);
 
-        equalsIndex = true;
         if(numberOfPlayers==3) {
             int indexGod3 = new Random().nextInt(15);      //1-14
-            while (equalsIndex) {
-                if (indexGod2 == indexGod3 || indexGod1 == indexGod3) {
+            while (indexGod2 == indexGod3 || indexGod1 == indexGod3) {
                     indexGod3 = (new Random()).nextInt(15);
-                } else equalsIndex = false;
             }
             godCardsInGame.add(allGods[indexGod3]);
         }
@@ -259,6 +253,9 @@ public class Server  {
             String outMessage = godCardsInGame.toString();
             //c1.asyncSend(new ServerResponse(Action.HOW_MANY_PLAYERS, null, null, null, outMessage));
 
+            //assegnarli
+
+            //settare le opponentsGodcards
 
         }
     }
