@@ -35,9 +35,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         this.battlefield = new Battlefield();
     }
 
-    /*
-    GETTER
-    */
+    /*    GETTER     */
 
     public List<Player> getAllPlayers() {
         return allPlayers;
@@ -60,6 +58,10 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         return didAthenaMovedUp;
     }
 
+    /**
+     * It adds a player to the list of all players
+     * @param player: Player that has to be added
+     */
     public void addPlayer(Player player) {
         allPlayers.add(player);
     }

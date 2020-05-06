@@ -56,7 +56,7 @@ public class Server  {
     /**
      * Private constructor that is called by the getInstance.
      */
-    private Server() throws IOException {
+    Server() throws IOException {
         this.serverSocket = new ServerSocket(PORT);
     }
 
@@ -122,7 +122,6 @@ public class Server  {
         playingConnection.get(connection.getName()).closeConnection();
         playingConnection.remove(connection.getName());
     }
-
 
 
     /**
@@ -224,7 +223,6 @@ public class Server  {
 
             // Clear the waiting connection
             waitingConnection.clear();
-
 
         }
     }
