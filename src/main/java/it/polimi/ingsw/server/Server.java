@@ -82,6 +82,8 @@ public class Server  {
         while(true){
             try {
 
+                System.out.println("aspetto che un tizio si colleghi");
+
                 // Accept a client who requires for this port
                 Socket socket = serverSocket.accept();
                 // Crate a Connection for that specific client
@@ -89,6 +91,9 @@ public class Server  {
                 // Save this connection to the connections list
                 registerConnection(connection);
                 // Let's start the Connection run() method in an asynchronous thread
+
+                System.out.println("faccio partire la connessione di quel tizio");
+
                 executor.submit(connection);
 
             } catch (IOException e){
@@ -118,40 +123,7 @@ public class Server  {
         playingConnection.remove(connection.getName());
     }
 
-    /**
-     * Generates 3 different index to get 2 or 3 different godcards
-     * @return
-     */
-    public List<GodCard> generateNDifferentGodCards(){
 
-        GodCard[] allGods = GodCard.values();
-        List<GodCard> godCardsInGame = new ArrayList<>();
-        boolean equalsIndex = true;
-
-        int indexGod1 = new Random().nextInt(15);      //1-14
-        godCardsInGame.add(allGods[indexGod1]);
-
-        int indexGod2 = new Random().nextInt(15);      //1-14
-        while(equalsIndex){
-            if(indexGod1==indexGod2){
-                indexGod2 = new Random().nextInt(15);
-            } else equalsIndex = false;
-        }
-        godCardsInGame.add(allGods[indexGod2]);
-
-        equalsIndex = true;
-        if(numberOfPlayers==3) {
-            int indexGod3 = new Random().nextInt(15);      //1-14
-            while (equalsIndex) {
-                if (indexGod2 == indexGod3 || indexGod1 == indexGod3) {
-                    indexGod3 = (new Random()).nextInt(15);
-                } else equalsIndex = false;
-            }
-            godCardsInGame.add(allGods[indexGod3]);
-        }
-
-        return godCardsInGame;
-    }
 
     /**
      * The lobby receives a connection and a name.
@@ -163,12 +135,13 @@ public class Server  {
 
         waitingConnection.put(name, connection);
 
-        String name1 = name;   //used to ask first god, MA SOLO PERCHE NON SO COME PRENDERE
-
+        System.out.println("sono dentro alla lobby");
         // Player 1 is always instantiated
         // Only the first one is asked for how many players
         // and till he answer the question nobody else can do this
         if (firstTime) {
+
+            System.out.println("sono dentro alla lobby if first time");
 
             firstTime = false;
             numberOfPlayers = 0;
@@ -245,19 +218,12 @@ public class Server  {
                 model.addObserver(remoteView3);
                 remoteView3.addObserver(controller);
                 playingConnection.put(player3.getUsername(), c3);
+
+
             }
 
             // Clear the waiting connection
             waitingConnection.clear();
-
-
-
-            // Creates a list of god cards with  lenght = numberOfPlayers  with random gods
-            List<GodCard> godCardsInGame = generateNDifferentGodCards();
-
-            // Asks the first player which godcards does he want to use
-            String outMessage = godCardsInGame.toString();
-            //c1.asyncSend(new ServerResponse(Action.HOW_MANY_PLAYERS, null, null, null, outMessage));
 
 
         }

@@ -1,17 +1,19 @@
 package it.polimi.ingsw.utils;
 
 
+import java.io.Serializable;
+
 /**
  * This enum is an element that each PlayerAction and ServerResponse must have.
  * It specify what kind of action has ben made or what kind or information the server needs in
  * order to let the game routine run properly.
  */
-public enum Action {
+public enum Action implements Serializable {
 
     /*    FROM CLIENT TO SERVER     */
 
     NUMBER_OF_PLAYERS("The first player communicated how many players there are"),
-
+    MY_NAME("Inside this message there is my name"),
     TOKEN_SET_UP("A player selected the set-up position for the token"),
 
     PROMETHEUS_POWER("Prometheus wants to use his God power!"),

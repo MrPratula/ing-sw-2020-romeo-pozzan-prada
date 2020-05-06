@@ -1,9 +1,9 @@
 package it.polimi.ingsw.utils;
 
 import it.polimi.ingsw.model.Cell;
-import it.polimi.ingsw.model.Model;
 import it.polimi.ingsw.model.ModelUtils;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -12,7 +12,7 @@ import java.util.List;
  * It has the purpose to communicate the change of the model and ask a player what he has to do
  * in order to let the game routine run properly.
  */
-public class ServerResponse {
+public class ServerResponse implements Serializable {
 
     private final Action action;
     private final ModelUtils modelCopy;

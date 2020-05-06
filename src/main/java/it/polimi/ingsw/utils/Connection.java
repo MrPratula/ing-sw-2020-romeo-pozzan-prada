@@ -1,6 +1,7 @@
 package it.polimi.ingsw.utils;
 
 import it.polimi.ingsw.controller.*;
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.server.Server;
 
 import java.io.*;
@@ -9,8 +10,8 @@ import java.net.Socket;
 public class Connection extends Observable<PlayerAction> implements Runnable{
 
     private Socket socket;
-    private InputStream inputStream;
-    private OutputStream outputStream;
+    private ObjectOutputStream objectOutputStream;
+    private ObjectInputStream objectInputStream;
     private Server server;
     private String name;
 
@@ -65,8 +66,9 @@ public class Connection extends Observable<PlayerAction> implements Runnable{
      * @param serverResponse the object to send.
      */
     public void send(ServerResponse serverResponse) throws IOException {
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+        objectOutputStream.reset();
         objectOutputStream.writeObject(serverResponse);
+        objectOutputStream.flush();
     }
 
 
@@ -109,25 +111,52 @@ public class Connection extends Observable<PlayerAction> implements Runnable{
     @Override
     public void run() {
         try{
-            // Get the input stream for PlayerAction and outputStream for ServerResponse
-            inputStream = socket.getInputStream();
-            outputStream = socket.getOutputStream();
 
-            // Ask what is your name
-            asyncSend(new ServerResponse(Action.WELCOME, null, null, null, null));
+            System.out.println("è partita la run della conncection");
 
-            // Receive and save the name
-            ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-            String name = ((PlayerAction)objectInputStream.readObject()).getArgs();
-            this.name = name;
+            // Save where to send and where to receive
+            objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+            objectInputStream = new ObjectInputStream(socket.getInputStream());
+
+            while (true) {
+
+                // Ask what is your name
+                asyncSend(new ServerResponse(Action.WELCOME, null, null, null, null));
+
+                System.out.println("aspetto che il client mi mandi il nome");
+
+                // Receive and save the name
+                Object object = objectInputStream.readObject();
+
+                // ALLA RIGA SOPRA SI SPACCA TUTTO APPENA RICEVO L'OGGETTO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+                System.out.println("ricevuto oggetto "+object);
+
+                PlayerAction playerAction = (PlayerAction)object;
+                System.out.println("cast a object");
+
+                String name = playerAction.getArgs();
+                System.out.println("salvato name");
+
+
+                this.name = name;
+                System.out.println("il player è "+this.name.toUpperCase());
+
+                if (name.equals("carletto"))
+                    break;
+            }
+
+
+
+
+
 
             // Add this connection associated to a player to the lobby
+
             server.lobby(this, name);
 
             // Start listening every request from the client
             while(isActive()){
-
-                objectInputStream = new ObjectInputStream(inputStream);
 
                 PlayerAction playerAction = (PlayerAction) objectInputStream.readObject();
 

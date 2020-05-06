@@ -9,12 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public abstract class View extends Observable<PlayerAction> implements Observer<ServerResponse>  {
+public class View extends Observable<PlayerAction> implements Observer<ServerResponse>  {
 
     private Player player;
 
-    public View(Player player) {
-        this.player = player;
+    public View() {
     }
 
     protected Player getPlayer(){
@@ -112,12 +111,6 @@ public abstract class View extends Observable<PlayerAction> implements Observer<
      * This method moves the mechanic of the game: it receives the
      * response from the server, and creates the respective action of the player.
      * @param serverResponse: response from the server containing al the necessary informations
-     * @throws ImpossibleTurnException
-     * @throws IOException
-     * @throws CellHeightException
-     * @throws WrongNumberPlayerException
-     * @throws ReachHeightLimitException
-     * @throws CellOutOfBattlefieldException
      */
     @Override
     public void update(ServerResponse serverResponse) throws ImpossibleTurnException, IOException, CellHeightException, WrongNumberPlayerException, ReachHeightLimitException, CellOutOfBattlefieldException {
@@ -126,6 +119,22 @@ public abstract class View extends Observable<PlayerAction> implements Observer<
         int posX, posY;
 
         switch (serverResponse.getAction()) {
+
+            case WELCOME:{
+                // Print hello what is your name?
+                System.out.println(serverResponse.getAction().toString());
+                Scanner scanner = new Scanner(System.in);
+                String name = scanner.nextLine();
+                playerAction = new PlayerAction(Action.MY_NAME,null,null,null,0,0,null,null, false, name);
+                notifyRemoteController(playerAction);
+            }
+
+
+
+
+
+
+
 
             case SET_UP:
                 //prints the battlefield
