@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import java.io.Serializable;
+
 /**
  * Each Player has 2 tokens.
  * They are created with no position and when it is assigned they always have a position.
@@ -8,7 +10,7 @@ package it.polimi.ingsw.model;
  * it can not move on a cell that is a dome,
  * it can not move on a cell that has a delta-height >= 2.
  */
-public class Token {
+public class Token implements Serializable {
 
     private int id;
     private final TokenColor tokenColor;

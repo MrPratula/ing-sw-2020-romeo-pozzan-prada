@@ -6,6 +6,7 @@ import it.polimi.ingsw.utils.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -95,7 +96,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
     }
 
 
-    public void notifyRemoteController(PlayerAction playerAction) throws CellOutOfBattlefieldException, ReachHeightLimitException, CellHeightException, IOException, ImpossibleTurnException, WrongNumberPlayerException {
+    public void notifyClient(PlayerAction playerAction) throws CellOutOfBattlefieldException, ReachHeightLimitException, CellHeightException, IOException, ImpossibleTurnException, WrongNumberPlayerException {
         notify(playerAction);
     }
 
@@ -120,13 +121,56 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
         switch (serverResponse.getAction()) {
 
-            case WELCOME:{
+
+            // The first time a player connects it is asked for his name
+            // This continue till the name is valid
+            case WELCOME:
+            case INVALID_NAME:{
                 // Print hello what is your name?
                 System.out.println(serverResponse.getAction().toString());
                 Scanner scanner = new Scanner(System.in);
                 String name = scanner.nextLine();
                 playerAction = new PlayerAction(Action.MY_NAME,null,null,null,0,0,null,null, false, name);
-                notifyRemoteController(playerAction);
+                notifyClient(playerAction);
+                break;
+            }
+
+
+            // Only the first player is asked for how many player he wants to play with
+            // This continue till a player insert 2 or 3. This value is stored in token main field of PlayerAction
+            // The Server check for nasty client too
+            case HOW_MANY_PLAYERS:
+            case WRONG_NUMBER_OF_PLAYER: {
+
+                System.out.println(serverResponse.getAction().toString());
+                int numberOfPlayers;
+
+                while (true) {
+                    Scanner scanner = new Scanner(System.in);
+
+                    // Check if the input is an int
+                    try {
+                        numberOfPlayers = scanner.nextInt();
+                    } catch (InputMismatchException exception) {
+                        numberOfPlayers = 0;
+                    }
+
+                    // Check if the input is 2 or 3
+                    if (numberOfPlayers == 2 || numberOfPlayers == 3)
+                        break;
+                    System.out.println("Please insert 2 players or 3 players...");
+                }
+
+                playerAction = new PlayerAction(Action.NUMBER_OF_PLAYERS,null,null,null, numberOfPlayers,0,null,null, false, null);
+                notifyClient(playerAction);
+                break;
+            }
+
+
+            // Just tell the client the server is not popped
+            case NUMBER_RECEIVED: {
+                System.out.println("Please wait for the player to begin...");
+                break;
             }
 
 
@@ -155,7 +199,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                 token.setTokenPosition(serverResponse.getModelCopy().getBattlefield().getCell(posX,posY));
                 try{
                     playerAction = new PlayerAction(Action.TOKEN_SET_UP,getPlayer(),null,null,token.getId(),0,null,null, false, null);
-                    notifyRemoteController(playerAction);////////////////////
+                    notifyClient(playerAction);////////////////////
                 } catch (NullPointerException e){
                     System.out.println(e.getMessage());
                 } catch (CellOutOfBattlefieldException e) {
@@ -184,7 +228,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                     Player opp2 = computeOpponentPlayers(serverResponse).get(1);
                     try{
                         playerAction = new PlayerAction(Action.PROMETHEUS_POWER,getPlayer(),opp1,opp2,selectedToken.getId(),otherToken.getId(),null,null, true, null);
-                        notifyRemoteController(playerAction);////////////////////
+                        notifyClient(playerAction);////////////////////
                     } catch (NullPointerException e){
                         System.out.println(e.getMessage());
                     } catch (CellOutOfBattlefieldException e) {
@@ -206,7 +250,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                     Player opp2 = computeOpponentPlayers(serverResponse).get(1);
                     try{
                         playerAction = new PlayerAction(Action.SELECT_TOKEN,getPlayer(),opp1,opp2,selectedToken.getId(),otherToken.getId(),null,null, false, null);
-                        notifyRemoteController(playerAction);
+                        notifyClient(playerAction);
                     } catch (NullPointerException e){
                         System.out.println(e.getMessage());
                     } catch (CellOutOfBattlefieldException e) {
@@ -237,7 +281,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                     //cell is the cell we want to increment
                     Cell cell = serverResponse.getModelCopy().getBattlefield().getCell(posX,posY);
                     playerAction = new PlayerAction(Action.SELECT_TOKEN,getPlayer(),opp1,opp2,selectedToken.getId(),otherToken.getId(),cell, null,false, null);
-                    notifyRemoteController(playerAction);
+                    notifyClient(playerAction);
                 } catch (NullPointerException e){
                     System.out.println(e.getMessage());
                 } catch (CellOutOfBattlefieldException e) {
@@ -266,7 +310,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                     }
                     */
                     playerAction = new PlayerAction(Action.MOVE,getPlayer(),opp1,opp2,selectedToken.getId(),otherToken.getId(),null, null,false, null);
-                    notifyRemoteController(playerAction);////////////////////
+                    notifyClient(playerAction);////////////////////
 
                 } catch (NullPointerException e){
                     System.out.println(e.getMessage());
@@ -293,7 +337,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                     //cell is the cell we want to increment
                     Cell cell = serverResponse.getModelCopy().getBattlefield().getCell(posX,posY);
                     playerAction = new PlayerAction(Action.BUILD,getPlayer(),opp1,opp2,selectedToken.getId(),otherToken.getId(),cell, null,false, null);
-                    notifyRemoteController(playerAction);////////////////////
+                    notifyClient(playerAction);////////////////////
 
                 } catch (NullPointerException e){
                     System.out.println(e.getMessage());

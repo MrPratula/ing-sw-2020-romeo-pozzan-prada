@@ -60,6 +60,14 @@ public class Server  {
         this.serverSocket = new ServerSocket(PORT);
     }
 
+    /**
+     * Return the name of all player in waiting room to avoid have players with same name
+     */
+    public List<String> getPlayersName() {
+        if (waitingConnection.isEmpty())
+            return null;
+        return new ArrayList<>(waitingConnection.keySet());
+    }
 
     /**
      * Set up the number of players.
@@ -132,15 +140,13 @@ public class Server  {
      */
     public synchronized void lobby(Connection connection, String name) throws IOException, InterruptedException {
 
+        System.out.println(name+ "is entered into the lobby");
         waitingConnection.put(name, connection);
 
-        System.out.println("sono dentro alla lobby");
         // Player 1 is always instantiated
         // Only the first one is asked for how many players
         // and till he answer the question nobody else can do this
         if (firstTime) {
-
-            System.out.println("sono dentro alla lobby if first time");
 
             firstTime = false;
             numberOfPlayers = 0;

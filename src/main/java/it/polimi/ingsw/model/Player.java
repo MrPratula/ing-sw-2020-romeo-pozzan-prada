@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 
@@ -10,7 +11,7 @@ import java.util.List;
  *  It interact with the network
  *  and notify the observer of the controller to let the game run.
  */
-public class Player {
+public class Player implements Serializable {
 
     private final String username;
     private final TokenColor tokenColor;

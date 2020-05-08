@@ -3,7 +3,9 @@ package it.polimi.ingsw.utils;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Player;
 
-public class PlayerAction {
+import java.io.Serializable;
+
+public class PlayerAction implements Serializable {
 
     private final Action action;
     private final Player player;

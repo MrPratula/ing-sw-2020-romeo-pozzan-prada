@@ -6,6 +6,8 @@ import it.polimi.ingsw.server.Server;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Connection extends Observable<PlayerAction> implements Runnable{
 
@@ -118,41 +120,39 @@ public class Connection extends Observable<PlayerAction> implements Runnable{
             objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
             objectInputStream = new ObjectInputStream(socket.getInputStream());
 
-            while (true) {
+            // Ask what is your name
+            asyncSend(new ServerResponse(Action.WELCOME, null, null, null, null));
 
-                // Ask what is your name
-                asyncSend(new ServerResponse(Action.WELCOME, null, null, null, null));
-
-                System.out.println("aspetto che il client mi mandi il nome");
+            //Continue to ask this till he insert a valid name
+            boolean needToLoop = true;
+            while (needToLoop) {
 
                 // Receive and save the name
-                Object object = objectInputStream.readObject();
-
-                // ALLA RIGA SOPRA SI SPACCA TUTTO APPENA RICEVO L'OGGETTO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-                System.out.println("ricevuto oggetto "+object);
-
-                PlayerAction playerAction = (PlayerAction)object;
-                System.out.println("cast a object");
-
+                PlayerAction playerAction = (PlayerAction) objectInputStream.readObject();
                 String name = playerAction.getArgs();
-                System.out.println("salvato name");
 
+                // Check for the same name into waiting connection
+                List<String> names = server.getPlayersName();
+                if (names != null) {
 
-                this.name = name;
-                System.out.println("il player è "+this.name.toUpperCase());
-
-                if (name.equals("carletto"))
-                    break;
+                    for (String n: names) {
+                        // Check for upper case to avoid having Lorenzo and lorenzo in the same game
+                        if (n.toUpperCase().equals(name.toUpperCase())){
+                            asyncSend(new ServerResponse(Action.INVALID_NAME, null, null, null, null));
+                        }
+                        else {
+                            this.name = name;
+                            needToLoop = false;
+                        }
+                    }
+                // This is for empty waiting connection
+                } else {
+                    this.name = name;
+                    needToLoop = false;
+                }
             }
 
-
-
-
-
-
             // Add this connection associated to a player to the lobby
-
             server.lobby(this, name);
 
             // Start listening every request from the client

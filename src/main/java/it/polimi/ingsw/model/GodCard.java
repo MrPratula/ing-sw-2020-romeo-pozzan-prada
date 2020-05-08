@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model;
 
-public enum GodCard {
+import java.io.Serializable;
+
+public enum GodCard implements Serializable {
 
     APOLLO("Your Worker may move into an opponent Worker’s space by forcing their Worker to the space yours just vacated"),
     ARTEMIS("Your Worker may move one additional time, but not back to its initial space"),

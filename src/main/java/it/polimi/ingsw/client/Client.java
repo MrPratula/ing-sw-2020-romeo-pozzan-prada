@@ -71,7 +71,7 @@ public class Client extends Observable<ServerResponse> implements Observer<Playe
                             throw new IllegalArgumentException();
                         }
                     }
-                } catch (Exception e) {
+                } catch (IOException | ImpossibleTurnException | ClassNotFoundException | CellHeightException | WrongNumberPlayerException | ReachHeightLimitException | CellOutOfBattlefieldException e) {
                     System.out.println("qualche tipo di errore strano mi fa chiudere il socket");
                     e.printStackTrace();
                     setActive(false);
@@ -126,7 +126,7 @@ public class Client extends Observable<ServerResponse> implements Observer<Playe
             Thread t0 = asyncReadFromSocket(objectInputStream);
             t0.join();
 
-        } catch (Exception e) {
+        } catch (InterruptedException e) {
             System.out.println("Connection closed from CLIENT side");
         } finally {
             objectInputStream.close();

@@ -33,8 +33,6 @@ public enum Action implements Serializable {
 
     GAME_OVER("GAME OVER"),
     PLAYER_LOST("You lost the game, your tokens will be wiped!"),
-    TOKEN_NOT_MOVABLE("You can not move this token, please select a movable one! (x,y)"),
-    WRONG_INPUT("Please insert a valid choice!"),
 
     SET_UP("Select the position you want to place your first token (x,y)"),
     WELCOME("Welcome to Santorini! What is your name?"),
@@ -42,7 +40,14 @@ public enum Action implements Serializable {
     SELECT_YOUR_GODCARD("Which one of these GodCards do you want to use in this game?"),
 
     CONNECTION_CLOSE("Connection closed from SERVER side!"),
-    NUMBER_RECEIVED("Waiting for the players to begin...");
+    NUMBER_RECEIVED("Waiting for the players to begin..."),
+
+    // ERROR MESSAGES
+    INVALID_NAME("This name is not available, please try with another one..."),
+    WRONG_NUMBER_OF_PLAYER("Please insert 2 players or 3 players..."),
+    WRONG_INPUT("Please insert a valid choice!"),
+    TOKEN_NOT_MOVABLE("You can not move this token, please select a movable one! (x,y)");
+
 
 
     private String info;

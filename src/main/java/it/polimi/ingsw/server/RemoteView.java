@@ -46,8 +46,20 @@ public class RemoteView extends Observable<PlayerAction> implements Observer<Ser
 
         // The first player who connect is requested to give the number of players
         if (playerAction.getAction().equals(Action.NUMBER_OF_PLAYERS)){
-            Server.setNumberOfPlayers(playerAction.getTokenMain());
-            connection.asyncSend(new ServerResponse(Action.NUMBER_RECEIVED, null, null, null, null));
+
+            // Double check for nasty client
+            if (playerAction.getTokenMain() == 2 || playerAction.getTokenMain() == 3) {
+                Server.setNumberOfPlayers(playerAction.getTokenMain());
+                connection.asyncSend(new ServerResponse(Action.NUMBER_RECEIVED, null, null, null, null));
+            }
+            else {
+                connection.asyncSend(new ServerResponse(Action.WRONG_NUMBER_OF_PLAYER, null, null, null, null));
+            }
+
+
+
+
+
         }
         // In any other cases the RemoteView send the action to the controller
         else
