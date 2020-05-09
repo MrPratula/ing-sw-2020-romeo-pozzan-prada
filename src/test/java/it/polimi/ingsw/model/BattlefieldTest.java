@@ -84,7 +84,7 @@ public class BattlefieldTest {
     }
 
     @Test
-    public void PrintCLITestWithValidMoves() throws CellOutOfBattlefieldException {
+    public void PrintCLITestWithValidMoves(/* List<Cell> validMoves */) throws CellOutOfBattlefieldException {
 
         List<Cell> validMoves = new ArrayList<>(); //saranno passate come parametro
         validMoves.add(battlefield.getCell(3,1));

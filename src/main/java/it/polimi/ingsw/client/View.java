@@ -125,12 +125,12 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
             // The first time a player connects it is asked for his name
             // This continue till the name is valid
             case WELCOME:
-            case INVALID_NAME:{
+            case INVALID_NAME: {
                 // Print hello what is your name?
                 System.out.println(serverResponse.getAction().toString());
                 Scanner scanner = new Scanner(System.in);
                 String name = scanner.nextLine();
-                playerAction = new PlayerAction(Action.MY_NAME,null,null,null,0,0,null,null, false, name);
+                playerAction = new PlayerAction(Action.MY_NAME, null, null, null, 0, 0, null, null, false, name);
                 notifyClient(playerAction);
                 break;
             }
@@ -161,7 +161,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                     System.out.println("Please insert 2 players or 3 players...");
                 }
 
-                playerAction = new PlayerAction(Action.NUMBER_OF_PLAYERS,null,null,null, numberOfPlayers,0,null,null, false, null);
+                playerAction = new PlayerAction(Action.NUMBER_OF_PLAYERS, null, null, null, numberOfPlayers, 0, null, null, false, null);
                 notifyClient(playerAction);
                 break;
             }
@@ -174,39 +174,37 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
             }
 
 
-
-
-
-
-
-
-            case SET_UP:
+            case SET_UP: {
                 //prints the battlefield
                 serverResponse.getModelCopy().getBattlefield().printCLI();
                 //prints the message for the user
                 System.out.print(serverResponse.getAction().getInfo());
                 //compute the user input
-                posX = Integer.parseInt(getUserInput()[0]);
-                posY = Integer.parseInt(getUserInput()[1]);
+                String[] inputs = getUserInput();
                 TokenColor tc;
-                switch(serverResponse.getOutMessage()){
-                    case "TokenColor.RED": tc = TokenColor.RED;
-                    case "TokenColor.BLUE": tc = TokenColor.BLUE;
-                    default: tc = TokenColor.YELLOW;
+                switch (serverResponse.getOutMessage()) {
+                    case "TokenColor.RED":
+                        tc = TokenColor.RED;
+                    case "TokenColor.BLUE":
+                        tc = TokenColor.BLUE;
+                    default:
+                        tc = TokenColor.YELLOW;
                 }
                 Token token = new Token(tc);
                 token.setId(1);///////////////////modificare
-                token.setTokenPosition(serverResponse.getModelCopy().getBattlefield().getCell(posX,posY));
-                try{
-                    playerAction = new PlayerAction(Action.TOKEN_SET_UP,getPlayer(),null,null,token.getId(),0,null,null, false, null);
+                token.setTokenPosition(serverResponse.getModelCopy().getBattlefield().getCell(Integer.parseInt(inputs[0]), Integer.parseInt(inputs[1])));
+                try {
+                    playerAction = new PlayerAction(Action.TOKEN_SET_UP, getPlayer(), null, null, token.getId(), 0, null, null, false, null);
                     notifyClient(playerAction);////////////////////
-                } catch (NullPointerException e){
+                } catch (NullPointerException e) {
                     System.out.println(e.getMessage());
                 } catch (CellOutOfBattlefieldException e) {
                     e.printStackTrace();//////////////////auto
                 }
+                break;
+            }
 
-            case ASK_FOR_PROMETHEUS_POWER:
+            case ASK_FOR_PROMETHEUS_POWER:{
                 //prints the battlefield
                 serverResponse.getModelCopy().getBattlefield().printCLI();
                 //prints the message for the user
@@ -215,157 +213,147 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                 Scanner in = new Scanner(System.in);
                 String input = in.nextLine();
 
-                if(input.equals("yes")){
+                if (input.equals("yes")) {
                     System.out.println("Which token do you want to build with? (x,y)");
                     //compute the user input
-                    posX = Integer.parseInt(getUserInput()[0]);
-                    posY = Integer.parseInt(getUserInput()[1]);
+                    String[] inputs = getUserInput();
                     //calculates which token has been selected
-                    Token selectedToken = computeTokens(serverResponse, posX, posY).get(0);
-                    Token otherToken = computeTokens(serverResponse, posX, posY).get(1);
+                    List<Token> tokens = computeTokens(serverResponse, Integer.parseInt(inputs[0]), Integer.parseInt(inputs[1]));
                     //compute opponent players
-                    Player opp1 = computeOpponentPlayers(serverResponse).get(0);
-                    Player opp2 = computeOpponentPlayers(serverResponse).get(1);
-                    try{
-                        playerAction = new PlayerAction(Action.PROMETHEUS_POWER,getPlayer(),opp1,opp2,selectedToken.getId(),otherToken.getId(),null,null, true, null);
+                    List<Player> opponentPlayers = computeOpponentPlayers(serverResponse);
+                    try {
+                        playerAction = new PlayerAction(Action.PROMETHEUS_POWER, getPlayer(), opponentPlayers.get(0), opponentPlayers.get(1), tokens.get(0).getId(), tokens.get(1).getId(), null, null, true, null);
                         notifyClient(playerAction);////////////////////
-                    } catch (NullPointerException e){
+                    } catch (NullPointerException e) {
                         System.out.println(e.getMessage());
                     } catch (CellOutOfBattlefieldException e) {
                         e.printStackTrace();//////////////////auto
                     }
-                }
-                else if(input.equals("no")){
+                } else if (input.equals("no")) {
                     //prints the message for the user
                     System.out.println("Where do you want to move your token? (x,y)");
-                            //System.out.print(serverResponse.getAction().getInfo());    errato
+                    //System.out.print(serverResponse.getAction().getInfo());    errato
                     //compute the user input
-                    posX = Integer.parseInt(getUserInput()[0]);
-                    posY = Integer.parseInt(getUserInput()[1]);
+                    String[] inputs = getUserInput();
                     //calculates which token has been selected
-                    Token selectedToken = computeTokens(serverResponse, posX, posY).get(0);
-                    Token otherToken = computeTokens(serverResponse, posX, posY).get(1);
+                    List<Token> tokens = computeTokens(serverResponse, Integer.parseInt(inputs[0]), Integer.parseInt(inputs[1]));
                     //compute opponent players
-                    Player opp1 = computeOpponentPlayers(serverResponse).get(0);
-                    Player opp2 = computeOpponentPlayers(serverResponse).get(1);
-                    try{
-                        playerAction = new PlayerAction(Action.SELECT_TOKEN,getPlayer(),opp1,opp2,selectedToken.getId(),otherToken.getId(),null,null, false, null);
+                    List<Player> opponentPlayers = computeOpponentPlayers(serverResponse);
+                    try {
+                        playerAction = new PlayerAction(Action.SELECT_TOKEN, getPlayer(), opponentPlayers.get(0), opponentPlayers.get(1), tokens.get(0).getId(), tokens.get(1).getId(), null, null, false, null);
                         notifyClient(playerAction);
-                    } catch (NullPointerException e){
+                    } catch (NullPointerException e) {
                         System.out.println(e.getMessage());
                     } catch (CellOutOfBattlefieldException e) {
                         e.printStackTrace();//////////////////auto
                     }
-                }
-                else{
-                    throw new IllegalArgumentException (); //dubbia gestione del wrong input
+                } else {
+                    throw new IllegalArgumentException(); //dubbia gestione del wrong input
                 }
                 break;
+            }
 
             case START_NEW_TURN:                       //casi mergeati, l'user deve fare la stessa azione, quindi li ho accumunati
-            case TOKEN_NOT_MOVABLE:
+            case TOKEN_NOT_MOVABLE: {
                 //prints the battlefield
                 serverResponse.getModelCopy().getBattlefield().printCLI();
                 //prints the message for the user
                 System.out.print(serverResponse.getAction().getInfo());
                 //compute the user input
-                posX = Integer.parseInt(getUserInput()[0]);
-                posY = Integer.parseInt(getUserInput()[1]);
+                String[] inputs = getUserInput();
                 //calculates which token has been selected
-                Token selectedToken = computeTokens(serverResponse, posX, posY).get(0);
-                Token otherToken = computeTokens(serverResponse, posX, posY).get(1);
+                List<Token> tokens = computeTokens(serverResponse, Integer.parseInt(inputs[0]), Integer.parseInt(inputs[1]));
                 //compute opponent players
-                Player opp1 = computeOpponentPlayers(serverResponse).get(0);
-                Player opp2 = computeOpponentPlayers(serverResponse).get(1);
-                try{
+                List<Player> opponentPlayers = computeOpponentPlayers(serverResponse);
+                try {
                     //cell is the cell we want to increment
-                    Cell cell = serverResponse.getModelCopy().getBattlefield().getCell(posX,posY);
-                    playerAction = new PlayerAction(Action.SELECT_TOKEN,getPlayer(),opp1,opp2,selectedToken.getId(),otherToken.getId(),cell, null,false, null);
+                    Cell cell = serverResponse.getModelCopy().getBattlefield().getCell(Integer.parseInt(inputs[0]), Integer.parseInt(inputs[1]));
+                    playerAction = new PlayerAction(Action.SELECT_TOKEN, getPlayer(), opponentPlayers.get(0), opponentPlayers.get(1), tokens.get(0).getId(), tokens.get(1).getId(), cell, null, false, null);
                     notifyClient(playerAction);
-                } catch (NullPointerException e){
+                } catch (NullPointerException e) {
                     System.out.println(e.getMessage());
                 } catch (CellOutOfBattlefieldException e) {
                     e.printStackTrace();//////////////////auto
                 }
                 break;
+            }
 
-            case ASK_FOR_MOVE:
+            case ASK_FOR_MOVE: {
                 //prints the battlefield
                 serverResponse.getModelCopy().getBattlefield().printCLI();
                 //prints the message for the user
                 System.out.print(serverResponse.getAction().getInfo());//compute the user input
-                posX = Integer.parseInt(getUserInput()[0]);
-                posY = Integer.parseInt(getUserInput()[1]);
+                String[] inputs = getUserInput();
                 //calculates which token has been selected
-                selectedToken = computeTokens(serverResponse, posX, posY).get(0);
-                otherToken = computeTokens(serverResponse, posX, posY).get(1);
+                List<Token> tokens = computeTokens(serverResponse, Integer.parseInt(inputs[0]), Integer.parseInt(inputs[1]));
                 //compute opponent players
-                opp1 = computeOpponentPlayers(serverResponse).get(0);
-                opp2 = computeOpponentPlayers(serverResponse).get(1);
-                try{
+                List<Player> opponentPlayers = computeOpponentPlayers(serverResponse);
+                try {
                     //cell is the position we want to move the token
-                    Cell cell = serverResponse.getModelCopy().getBattlefield().getCell(posX,posY);
+                    Cell cell = serverResponse.getModelCopy().getBattlefield().getCell(Integer.parseInt(inputs[0]), Integer.parseInt(inputs[1]));
                    /* if( !serverResponse.getValidBuilds().contains(cell) ){  //non so se funziona la contains, al massimo facciamo il check con le pos
                         System.out.println("Error! You can't select this cell, try again! ");
                     }
                     */
-                    playerAction = new PlayerAction(Action.MOVE,getPlayer(),opp1,opp2,selectedToken.getId(),otherToken.getId(),null, null,false, null);
+                    playerAction = new PlayerAction(Action.MOVE, getPlayer(), opponentPlayers.get(0), opponentPlayers.get(1), tokens.get(0).getId(), tokens.get(1).getId(), null, null, false, null);
                     notifyClient(playerAction);////////////////////
 
-                } catch (NullPointerException e){
+                } catch (NullPointerException e) {
                     System.out.println(e.getMessage());
                 } catch (CellOutOfBattlefieldException e) {
                     e.printStackTrace();//////////////////auto
                 }
                 break;
+            }
 
-            case ASK_FOR_BUILD:
+            case ASK_FOR_BUILD: {
                 //prints the battlefield
                 serverResponse.getModelCopy().getBattlefield().printCLI();
                 //prints the message for the user
                 System.out.print(serverResponse.getAction().getInfo());
                 //compute the user input
-                posX = Integer.parseInt(getUserInput()[0]);
-                posY = Integer.parseInt(getUserInput()[1]);
+                String[] inputs = getUserInput();
                 //calculates which token has been selected
-                selectedToken = computeTokens(serverResponse, posX, posY).get(0);
-                otherToken = computeTokens(serverResponse, posX, posY).get(1);
+                List<Token> tokens = computeTokens(serverResponse, Integer.parseInt(inputs[0]), Integer.parseInt(inputs[1]) );
                 //compute opponent players
-                opp1 = computeOpponentPlayers(serverResponse).get(0);
-                opp2 = computeOpponentPlayers(serverResponse).get(1);
-                try{
+                List<Player> opponentPlayers = computeOpponentPlayers(serverResponse);
+                try {
                     //cell is the cell we want to increment
-                    Cell cell = serverResponse.getModelCopy().getBattlefield().getCell(posX,posY);
-                    playerAction = new PlayerAction(Action.BUILD,getPlayer(),opp1,opp2,selectedToken.getId(),otherToken.getId(),cell, null,false, null);
+                    Cell cell = serverResponse.getModelCopy().getBattlefield().getCell(Integer.parseInt(inputs[0]), Integer.parseInt(inputs[1]));
+                    playerAction = new PlayerAction(Action.BUILD, getPlayer(), opponentPlayers.get(0), opponentPlayers.get(1), tokens.get(0).getId(), tokens.get(1).getId(), cell, null, false, null);
                     notifyClient(playerAction);////////////////////
 
-                } catch (NullPointerException e){
+                } catch (NullPointerException e) {
                     System.out.println(e.getMessage());
                 } catch (CellOutOfBattlefieldException e) {
                     e.printStackTrace();//////////////////auto
                 }
                 break;
+            }
 
-            case NOT_YOUR_TURN:
+            case NOT_YOUR_TURN: {
                 //prints the message for the user
                 System.out.print(serverResponse.getAction().getInfo());
 
                 //e poi??????????????????????????????????????
                 break;
+            }
 
-            case PLAYER_LOST:
+            case PLAYER_LOST: {
                 //prints the message for the user
                 System.out.print(serverResponse.getAction().getInfo());
 
                 //e poi??????????????????????????????????????
                 break;
+            }
 
-            case GAME_OVER:
+            case GAME_OVER: {
                 //prints the message for the user
                 System.out.print(serverResponse.getAction().getInfo());
 
                 //e poi??????????????????????????????????????
                 break;
+            }
 
         }
 

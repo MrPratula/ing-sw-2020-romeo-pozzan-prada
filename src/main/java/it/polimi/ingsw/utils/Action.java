@@ -10,6 +10,9 @@ import java.io.Serializable;
  */
 public enum Action implements Serializable {
 
+
+    /*************CLI**************/
+
     /*    FROM CLIENT TO SERVER     */
 
     NUMBER_OF_PLAYERS("The first player communicated how many players there are"),
@@ -46,7 +49,14 @@ public enum Action implements Serializable {
     INVALID_NAME("This name is not available, please try with another one..."),
     WRONG_NUMBER_OF_PLAYER("Please insert 2 players or 3 players..."),
     WRONG_INPUT("Please insert a valid choice!"),
-    TOKEN_NOT_MOVABLE("You can not move this token, please select a movable one! (x,y)");
+    TOKEN_NOT_MOVABLE("You can not move this token, please select a movable one! (x,y)"),
+
+
+    /*************GUI**************/
+
+    /*    FROM CLIENT TO SERVER     */
+
+    INITIALISED("User typed his username and number_of_players");
 
 
 
