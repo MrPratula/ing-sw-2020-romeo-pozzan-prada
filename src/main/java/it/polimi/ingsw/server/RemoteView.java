@@ -11,6 +11,7 @@ public class RemoteView extends Observable<PlayerAction> implements Observer<Ser
 
     private Player player;
     private Connection connection;
+    private Server server;
 
 
     /**
@@ -24,6 +25,12 @@ public class RemoteView extends Observable<PlayerAction> implements Observer<Ser
         connection.addObserver(new MessageReceiver());
     }
 
+    /**
+     *
+     */
+    public void setServer(Server server){
+        this.server = server;
+    }
 
     /**
      * The model notifies the remote view with a ServerResponse.
@@ -44,6 +51,7 @@ public class RemoteView extends Observable<PlayerAction> implements Observer<Ser
      */
     public void sendAction(PlayerAction playerAction) throws ImpossibleTurnException, IOException, CellHeightException, WrongNumberPlayerException, ReachHeightLimitException, CellOutOfBattlefieldException {
 
+
         // The first player who connect is requested to give the number of players
         if (playerAction.getAction().equals(Action.NUMBER_OF_PLAYERS)){
 
@@ -51,6 +59,8 @@ public class RemoteView extends Observable<PlayerAction> implements Observer<Ser
             if (playerAction.getTokenMain() == 2 || playerAction.getTokenMain() == 3) {
                 Server.setNumberOfPlayers(playerAction.getTokenMain());
                 connection.asyncSend(new ServerResponse(Action.NUMBER_RECEIVED, null, null, null, null));
+                server.wakeUp();
+                System.out.println("waking all up".toUpperCase());
             }
             else {
                 connection.asyncSend(new ServerResponse(Action.WRONG_NUMBER_OF_PLAYER, null, null, null, null));
@@ -61,7 +71,8 @@ public class RemoteView extends Observable<PlayerAction> implements Observer<Ser
 
 
         }
-        // In any other cases the RemoteView send the action to the controller
+
+            // In any other cases the RemoteView send the action to the controller
         else
             notify(playerAction);
     }

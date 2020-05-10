@@ -64,6 +64,9 @@ public class Client extends Observable<ServerResponse> implements Observer<Playe
 
                         Object serverResponse = objectInputStream.readObject();
 
+                        //<<<<<<<<<<<<<<<<<<<<<< si spacca qui quando legge l'oggetto
+
+
                         // If the object is a server response, it is sent to the view
                         if (serverResponse instanceof ServerResponse) {
                             notifyView((ServerResponse)serverResponse);

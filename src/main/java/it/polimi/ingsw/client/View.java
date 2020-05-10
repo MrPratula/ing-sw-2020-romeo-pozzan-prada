@@ -174,6 +174,13 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
             }
 
 
+            // Second and third player must wait till the first say how much player there will be in the game
+            case WAIT_PLEASE:{
+                System.out.println(serverResponse.getAction().toString());
+                break;
+            }
+
+
 
 
 

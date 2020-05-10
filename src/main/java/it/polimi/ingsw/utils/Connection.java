@@ -114,8 +114,6 @@ public class Connection extends Observable<PlayerAction> implements Runnable{
     public void run() {
         try{
 
-            System.out.println("è partita la run della conncection");
-
             // Save where to send and where to receive
             objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
             objectInputStream = new ObjectInputStream(socket.getInputStream());
@@ -153,7 +151,21 @@ public class Connection extends Observable<PlayerAction> implements Runnable{
             }
 
             // Add this connection associated to a player to the lobby
-            server.lobby(this, name);
+            System.out.println(name.toUpperCase()+" try to enter lobby");
+
+            final Connection thisConnection = this;
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        server.lobby(thisConnection, name);
+                    } catch (IOException | InterruptedException e) {
+                        System.err.println("Error in launch new thread into lobby");
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
 
             // Start listening every request from the client
             while(isActive()){
@@ -161,10 +173,11 @@ public class Connection extends Observable<PlayerAction> implements Runnable{
                 PlayerAction playerAction = (PlayerAction) objectInputStream.readObject();
 
                 // notify the RemoteView(messageReceiver)
+                System.out.println("received a "+playerAction.getAction());
                 notify(playerAction);
             }
 
-        } catch(IOException | CellOutOfBattlefieldException | ImpossibleTurnException | ReachHeightLimitException | CellHeightException | WrongNumberPlayerException | ClassNotFoundException | InterruptedException e){
+        } catch(IOException | CellOutOfBattlefieldException | ImpossibleTurnException | ReachHeightLimitException | CellHeightException | WrongNumberPlayerException | ClassNotFoundException e){
             System.err.println(e.getMessage());
         } finally {
             try {
@@ -174,6 +187,4 @@ public class Connection extends Observable<PlayerAction> implements Runnable{
             }
         }
     }
-
-
 }

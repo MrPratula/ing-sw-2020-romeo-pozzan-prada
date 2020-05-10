@@ -23,7 +23,7 @@ public class Server  {
     private static Server singleServer = null;
     private static int numberOfPlayers;
 
-    private boolean firstTime = true;
+    private boolean firstTime;
     private static final int PORT = 12345;
     private ServerSocket serverSocket;
 
@@ -86,6 +86,7 @@ public class Server  {
     public void run() {
 
         System.out.println("Server listening on port: " + PORT);
+        firstTime = true;
 
         while(true){
             try {
@@ -140,22 +141,25 @@ public class Server  {
      */
     public synchronized void lobby(Connection connection, String name) throws IOException, InterruptedException {
 
-        System.out.println(name+ "is entered into the lobby");
+        System.out.println(name.toUpperCase()+ "  is entered into the lobby");
+        System.out.println("number of players = "+numberOfPlayers);
+
         waitingConnection.put(name, connection);
 
         // Player 1 is always instantiated
         // Only the first one is asked for how many players
-        // and till he answer the question nobody else can do this
+        // Others player go in wait
         if (firstTime) {
 
             firstTime = false;
-            numberOfPlayers = 0;
+            numberOfPlayers = -1;
 
             List<String> keys = new ArrayList<>(waitingConnection.keySet());
             Connection c1 = waitingConnection.get(keys.get(0));
 
             Player player1 = new Player(c1.getName(), TokenColor.RED);
             RemoteView remoteView1 = new RemoteView(c1, player1);
+            remoteView1.setServer(this);
 
             // Create the model and the controller for the current game
             model = new Model();
@@ -176,16 +180,18 @@ public class Server  {
             // Ask for how many players there will be in the game (2 or 3)
             c1.asyncSend(new ServerResponse(Action.HOW_MANY_PLAYERS, null, null, null, null));
 
-            // Till the player 1 answer, the method is locked and nobody else can use this
-            // to prevent the if check in the next if statement
-            while (numberOfPlayers == 0){
+        } else {
+            while (numberOfPlayers < 0){
+                connection.asyncSend(new ServerResponse(Action.WAIT_PLEASE, null, null, null, null));
                 wait();
+                System.out.println("waking up "+name);
             }
-            notifyAll();
         }
 
         // When the players are 2 or 3, based on the first player choice
         if (waitingConnection.size() == numberOfPlayers){
+
+            System.out.println("entrato proprio qui finalmente !!!!!!");
 
             // Get the name of the players and create their personal connections
             List<String> keys = new ArrayList<>(waitingConnection.keySet());
@@ -223,15 +229,38 @@ public class Server  {
                 model.addObserver(remoteView3);
                 remoteView3.addObserver(controller);
                 playingConnection.put(player3.getUsername(), c3);
-
+                System.out.println("starting 3 players game");
 
             }
+            System.out.println("starting 2 players game");
+
 
             // Clear the waiting connection
             waitingConnection.clear();
+        }
+
+        System.out.println("\nlobby ended for "+name.toUpperCase());
+
+    }
+
+    public void wakeUp(){
+        try{
+            notifyAll();
+
+        } catch (IllegalMonitorStateException e) {
+            System.out.println("eccezione di merda");
+
+            //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< SI ROMPE QUI
 
         }
+        finally {
+            System.out.println("tutto ok, solo merda");
+        }
     }
+
+
+
+
 }
 
 

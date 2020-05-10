@@ -41,12 +41,16 @@ public enum Action implements Serializable {
 
     CONNECTION_CLOSE("Connection closed from SERVER side!"),
     NUMBER_RECEIVED("Waiting for the players to begin..."),
+    WAIT_PLEASE("Please wait..."),
 
     // ERROR MESSAGES
     INVALID_NAME("This name is not available, please try with another one..."),
     WRONG_NUMBER_OF_PLAYER("Please insert 2 players or 3 players..."),
     WRONG_INPUT("Please insert a valid choice!"),
-    TOKEN_NOT_MOVABLE("You can not move this token, please select a movable one! (x,y)");
+    TOKEN_NOT_MOVABLE("You can not move this token, please select a movable one! (x,y)"),
+
+    //TEST
+    IGNORE("nothing");
 
 
 
