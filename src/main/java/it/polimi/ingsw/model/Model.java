@@ -30,6 +30,12 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     private final Battlefield battlefield;
     private TokenColor turn;
     private List<Player> allPlayers = new ArrayList<>();
+    private List<GodCard> allGodCards = new ArrayList<>();
+
+
+
+
+
 
     public Model() {
         this.battlefield = new Battlefield();
@@ -47,6 +53,14 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
     public TokenColor getTurn() {
         return turn;
+    }
+
+    public void setTurn(TokenColor turn) {
+        this.turn = turn;
+    }
+
+    public void addGod(GodCard god) {
+        allGodCards.add(god);
     }
 
     public static void athenaMovedUp(Boolean trueOrFalse) {
@@ -365,7 +379,6 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         }
 
         // check for a win move
-
         if (this.checkWin(selectedToken, myGodCard, enemyGodCards)) {
             String winner = playerAction.getPlayer().getUsername();
             gameOver(winner);
@@ -373,7 +386,6 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         }
 
         // If nobody has won then i aks for where to build
-
         List<Cell> validBuilds = validBuilds(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, battlefield);
 
         if (validBuilds == null) {

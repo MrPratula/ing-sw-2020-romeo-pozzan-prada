@@ -2,12 +2,15 @@ package it.polimi.ingsw.server;
 
 
 import it.polimi.ingsw.controller.Controller;
+import it.polimi.ingsw.controller.ImpossibleTurnException;
+import it.polimi.ingsw.controller.WrongNumberPlayerException;
 import it.polimi.ingsw.model.GodCard;
 import it.polimi.ingsw.model.Model;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.TokenColor;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.Connection;
+import it.polimi.ingsw.utils.PlayerAction;
 import it.polimi.ingsw.utils.ServerResponse;
 
 import java.io.*;
@@ -142,9 +145,10 @@ public class Server  {
     public synchronized void lobby(Connection connection, String name) throws IOException, InterruptedException {
 
         System.out.println(name.toUpperCase()+ "  is entered into the lobby");
-        System.out.println("number of players = "+numberOfPlayers);
 
         waitingConnection.put(name, connection);
+
+        Thread firstPlayerThread = null;
 
         // Player 1 is always instantiated
         // Only the first one is asked for how many players
@@ -153,54 +157,32 @@ public class Server  {
 
             firstTime = false;
             numberOfPlayers = -1;
-
-            List<String> keys = new ArrayList<>(waitingConnection.keySet());
-            Connection c1 = waitingConnection.get(keys.get(0));
-
-            Player player1 = new Player(c1.getName(), TokenColor.RED);
-            RemoteView remoteView1 = new RemoteView(c1, player1);
-            remoteView1.setServer(this);
-
-            // Create the model and the controller for the current game
-            model = new Model();
-            controller = new Controller(model);
-
-            // Add all the player to the list of all player in the model
-            model.addPlayer(player1);
-
-            // Link observer between model -> remoteView
-            model.addObserver(remoteView1);
-
-            // Link observer between remoteView(messageReceiver) -> Controller
-            remoteView1.addObserver(controller);
-
-            // Put player in playing connection list
-            playingConnection.put(player1.getUsername(), c1);
-
-            // Ask for how many players there will be in the game (2 or 3)
-            c1.asyncSend(new ServerResponse(Action.HOW_MANY_PLAYERS, null, null, null, null));
+            setUpFirstPlayer();
 
         } else {
-            while (numberOfPlayers < 0){
-                connection.asyncSend(new ServerResponse(Action.WAIT_PLEASE, null, null, null, null));
-                wait();
-                System.out.println("waking up "+name);
-            }
+            connection.asyncSend(new ServerResponse(Action.WAIT_PLEASE, null, null, null, null));
         }
 
         // When the players are 2 or 3, based on the first player choice
         if (waitingConnection.size() == numberOfPlayers){
 
-            System.out.println("entrato proprio qui finalmente !!!!!!");
+            System.out.println("ENTRO PROPRIO QUI");
 
             // Get the name of the players and create their personal connections
             List<String> keys = new ArrayList<>(waitingConnection.keySet());
-            Connection c2 = waitingConnection.get(keys.get(1));
 
-            // Instance object for 3 players
+            Connection c2;
             Connection c3;
             Player player3;
             RemoteView remoteView3;
+
+            if (waitingConnection.size()==2) {
+                c2 = waitingConnection.get(keys.get(0));
+            }
+            else {
+                c2 = waitingConnection.get(keys.get(1));
+                c3 = waitingConnection.get(keys.get(0));
+            }
 
             // Create the players with a name and a color
             Player player2 = new Player(c2.getName(), TokenColor.BLUE);
@@ -222,46 +204,158 @@ public class Server  {
 
             // Set up all of this for a 3rd eventual player
             if (numberOfPlayers == 3) {
-                c3 = waitingConnection.get(keys.get(2));
+                c3 = waitingConnection.get(keys.get(0));
                 player3 = new Player(c3.getName(), TokenColor.YELLOW);
                 remoteView3 = new RemoteView(c3, player3);
                 model.addPlayer(player3);
                 model.addObserver(remoteView3);
                 remoteView3.addObserver(controller);
                 playingConnection.put(player3.getUsername(), c3);
-                System.out.println("starting 3 players game");
-
             }
-            System.out.println("starting 2 players game");
-
+            // Set up all the remaining stuff for the game to start
+            initGame();
 
             // Clear the waiting connection
             waitingConnection.clear();
         }
-
-        System.out.println("\nlobby ended for "+name.toUpperCase());
-
     }
 
-    public void wakeUp(){
-        try{
-            notifyAll();
 
-        } catch (IllegalMonitorStateException e) {
-            System.out.println("eccezione di merda");
+    /**
+     * The first player who join the lobby is asked for how much players he want to play.
+     * When he answer other players can join the lobby.
+     * Here are created the model, the controller and the remote view and all are linked up.
+     */
+    public void setUpFirstPlayer () throws IOException {
 
-            //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< SI ROMPE QUI
+        List<String> keys = new ArrayList<>(waitingConnection.keySet());
+        Connection c1 = waitingConnection.get(keys.get(0));
 
-        }
-        finally {
-            System.out.println("tutto ok, solo merda");
+        Player player1 = new Player(c1.getName(), TokenColor.RED);
+        RemoteView remoteView1 = new RemoteView(c1, player1);
+        remoteView1.setServer(this);
+
+        // Create the model and the controller for the current game
+        model = new Model();
+        controller = new Controller(model);
+
+        // Add all the player to the list of all player in the model
+        model.addPlayer(player1);
+
+        // Link observer between model -> remoteView
+        model.addObserver(remoteView1);
+
+        // Link observer between remoteView(messageReceiver) -> Controller
+        remoteView1.addObserver(controller);
+
+        // Put player in playing connection list
+        playingConnection.put(player1.getUsername(), c1);
+
+        // Ask for how many players there will be in the game (2 or 3)
+        c1.asyncSend(new ServerResponse(Action.HOW_MANY_PLAYERS, null, null, null, null));
+
+        // Receive a message from the first player
+        PlayerAction playerAction = c1.listenSocket();
+
+        // And loop it till the message is correct
+        boolean needToLoop = true;
+        while (needToLoop) {
+
+            if (playerAction.getAction().equals(Action.NUMBER_OF_PLAYERS)) {
+
+                // Double check for nasty client
+                // Set the number and brake the loop
+                if (playerAction.getTokenMain() == 2 || playerAction.getTokenMain() == 3) {
+                    setNumberOfPlayers(playerAction.getTokenMain());
+                    c1.asyncSend(new ServerResponse(Action.NUMBER_RECEIVED, null, null, null, null));
+                    needToLoop = false;
+
+                    // Cached a nasty client. It is not accepted
+                } else {
+                    c1.asyncSend(new ServerResponse(Action.WRONG_NUMBER_OF_PLAYER, null, null, null, null));
+                }
+            }
         }
     }
+
+
+    /**
+     * Set the turn on first player, than create a random list of 2 or 3 god cards
+     * and update the turn to the second player.
+     * Ask the second player what god he want to use and send a wait message to the 1st and 3rd players.
+     */
+    public void initGame() {
+
+        model.setTurn(TokenColor.RED);
+
+        List<GodCard> godsDeck = new ArrayList<>(Arrays.asList(GodCard.values()).subList(0, 14));
+
+        List<GodCard> godInGame = new ArrayList<>();
+
+        while (numberOfPlayers!=0) {
+            drawAGod(godsDeck, godInGame);
+            numberOfPlayers--;
+        }
+        for (GodCard god: godInGame) {
+            model.addGod(god);
+        }
+
+        try {
+            model.updateTurn();
+        } catch (ImpossibleTurnException | WrongNumberPlayerException e) {
+            e.printStackTrace();
+        }
+
+        List<String> keys = new ArrayList<>(waitingConnection.keySet());
+
+        StringBuilder text= new StringBuilder("There are the following Gods available:");
+        for (GodCard god: godInGame)
+            text.append("\n").append(god.name());
+
+        // Remember the hash map do not enqueue the value, but it is put on top
+        if (waitingConnection.size()==2) {
+            Connection c1 = waitingConnection.get(keys.get(1));
+            Connection c2 = waitingConnection.get(keys.get(0));
+            c1.asyncSend(new ServerResponse(Action.WAIT_OTHER_PLAYER_MOVE, null, null, null, null));
+            c2.asyncSend(new ServerResponse(Action.SELECT_YOUR_GOD_CARD, null, null, null, text.toString()));
+        }
+        else{
+            Connection c1 = waitingConnection.get(keys.get(2));
+            Connection c2 = waitingConnection.get(keys.get(1));
+            Connection c3 = waitingConnection.get(keys.get(0));
+            c1.asyncSend(new ServerResponse(Action.WAIT_OTHER_PLAYER_MOVE, null, null, null, null));
+            c2.asyncSend(new ServerResponse(Action.SELECT_YOUR_GOD_CARD, null, null, null, text.toString()));
+            c3.asyncSend(new ServerResponse(Action.WAIT_OTHER_PLAYER_MOVE, null, null, null, null));
+        }
+    }
+
+
+    /**
+     * It receive the deck and the subDeck.
+     * It draws a card from deck and add it to the subDeck.
+     * @param godsDeck the deck.
+     * @param godInGame the subDeck.
+     */
+    public void drawAGod (List<GodCard> godsDeck, List<GodCard>godInGame){
+
+        int pick = new Random().nextInt(godsDeck.size());
+        GodCard randomGod = godsDeck.get(pick);
+
+        godInGame.add(randomGod);
+        godsDeck.remove(randomGod);
+    }
+
 
 
 
 
 }
+
+
+
+
+
+
 
 
 

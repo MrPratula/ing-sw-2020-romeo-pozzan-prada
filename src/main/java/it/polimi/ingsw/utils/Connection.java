@@ -105,6 +105,18 @@ public class Connection extends Observable<PlayerAction> implements Runnable{
     }
 
 
+    public PlayerAction listenSocket() {
+        try {
+            return (PlayerAction) objectInputStream.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+
+
     /**
      * The override for the runnable interface.
      * It ask a client for his name, add him to the lobby
@@ -155,17 +167,13 @@ public class Connection extends Observable<PlayerAction> implements Runnable{
 
             final Connection thisConnection = this;
 
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        server.lobby(thisConnection, name);
-                    } catch (IOException | InterruptedException e) {
-                        System.err.println("Error in launch new thread into lobby");
-                        e.printStackTrace();
-                    }
-                }
-            }).start();
+            try {
+                server.lobby(thisConnection, name);
+            } catch (IOException | InterruptedException e) {
+                System.err.println("Error in launch new thread into lobby");
+                e.printStackTrace();
+            }
+
 
             // Start listening every request from the client
             while(isActive()){

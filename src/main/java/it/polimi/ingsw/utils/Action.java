@@ -40,11 +40,13 @@ public enum Action implements Serializable {
     SET_UP("Select the position you want to place your first token (x,y)"),
     WELCOME("Welcome to Santorini! What is your name?"),
     HOW_MANY_PLAYERS("Do you want to make a 2 players game or a 3 players game? [2][3]"),
-    SELECT_YOUR_GODCARD("Which one of these GodCards do you want to use in this game?"),
 
     CONNECTION_CLOSE("Connection closed from SERVER side!"),
     NUMBER_RECEIVED("Waiting for the players to begin..."),
     WAIT_PLEASE("Please wait..."),
+    WAIT_OTHER_PLAYER_MOVE("Someone else is performing their move. Please wait your turn..."),
+    SELECT_YOUR_GOD_CARD("Which one of these GodCards do you want to use in this game?"),
+
 
     // ERROR MESSAGES
     INVALID_NAME("This name is not available, please try with another one..."),
