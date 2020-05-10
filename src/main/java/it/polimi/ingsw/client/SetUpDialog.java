@@ -1,0 +1,92 @@
+package it.polimi.ingsw.client;
+
+import it.polimi.ingsw.utils.Action;
+import it.polimi.ingsw.utils.PlayerAction;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+
+
+public class SetUpDialog extends JDialog{
+
+
+    private static final long serialVersionUID = 1L;
+    private JPanel mainPanel;                       //1
+    private JLabel nicknameLabel;                   //2.0
+    private JTextField nicknameTextField;           //2.1
+    private JLabel numberOfPlayersLabel;            //3.0
+    private JComboBox<Integer> numberOfPlayersBox;  //3.1
+    private JButton confirmButton;                  //4.0
+    private View view;
+
+
+    // Player player, Player oppo1, Player oppo2, int tokenMain, int tokenOther, Cell first_cell, Cell second_cell , boolean doWantUsePower, String args){
+
+    private class ConfirmListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e){
+            //create a playerAction in which [int tokenMain = numberofplayers] and [String args = nickname]
+            PlayerAction playerAction = new PlayerAction(Action.INITIALISED,null,null,null,(Integer)numberOfPlayersBox.getSelectedItem(),0,null,null,false,nicknameTextField.getText());
+            //////////////TODO: send action to server
+            SetUpDialog.this.dispose(); //graphic standard
+        }
+    }
+
+
+    public SetUpDialog(JFrame mainFrame, SwingView swingView) {
+
+        super(mainFrame, "Player Login");
+        this.view = swingView;
+
+        //the main panel
+        mainPanel = new JPanel();
+        mainPanel.setSize(350,200);
+        mainPanel.setLayout(new BorderLayout(10, 10));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        //label for asking nickname
+        nicknameLabel = new JLabel("Nickname");
+        nicknameLabel.setBounds(10,20,80,25);
+        mainPanel.add(nicknameLabel);
+        //textfield for let the user type his nickname
+        nicknameTextField = new JTextField(20);
+        nicknameTextField.setBounds(10,20,80,25);
+        mainPanel.add(nicknameTextField);
+
+        //label for asking how many players does he want to play with
+        numberOfPlayersLabel = new JLabel("How many players do you want to play with? ");
+        numberOfPlayersLabel.setBounds(10,20,80,25);
+        mainPanel.add(numberOfPlayersLabel, BorderLayout.PAGE_START);
+        //textfield for let the user type the number
+        numberOfPlayersBox = new JComboBox<>();
+        numberOfPlayersBox.addItem(2);
+        numberOfPlayersBox.addItem(3);
+        mainPanel.add(numberOfPlayersBox);
+
+
+        //the button to confirm the selection
+        confirmButton = new JButton("Confirm");
+        confirmButton.setBounds(10,20,80,25);
+        confirmButton.addActionListener(new ConfirmListener());
+        mainPanel.add(confirmButton, BorderLayout.PAGE_END);
+        add(mainPanel);
+        pack();
+
+
+        setMinimumSize(new Dimension(300, 30));
+        setVisible(true);
+
+    }
+
+
+
+
+
+
+
+
+
+}
