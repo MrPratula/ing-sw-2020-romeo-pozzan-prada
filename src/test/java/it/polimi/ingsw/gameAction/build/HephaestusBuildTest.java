@@ -27,14 +27,6 @@ class HephaestusBuildTest {
 
     @BeforeEach
     void setUp() throws CellOutOfBattlefieldException {
-        // two different setup. The first one for the first method,
-        // the second one for the second method.
-
-        /*
-        battlefield = new Battlefield();
-        first_cell = battlefield.getCell(2,3);
-        first_cell.setFree();
-         */
 
         battlefield = Utility.setUpForTest();
         enemyTokens = new ArrayList<>();
@@ -46,7 +38,12 @@ class HephaestusBuildTest {
      * The high of first_cell has to increase by two.
      */
     @Test
-    void HephaestusperformeBuild() throws CellHeightException, ReachHeightLimitException {
+    void HephaestusperformeBuild() throws CellHeightException, ReachHeightLimitException, CellOutOfBattlefieldException {
+        //setup for this method
+        battlefield = new Battlefield();
+        first_cell = battlefield.getCell(2,3);
+        first_cell.setFree();
+
         first_cell.setHeight(1);
         high_first_cell = first_cell.getHeight();
 
