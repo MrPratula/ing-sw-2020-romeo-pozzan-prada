@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.utils.Connection;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -17,9 +19,7 @@ public class Player implements Serializable {
     private final TokenColor tokenColor;
     private Token token1, token2;
     private GodCard myGodCard;
-    private List<GodCard> opponentGodCards;
-
-    private Battlefield battlefield; //penso che sia quella che vede il player sulla sua view
+    private Connection connection;
 
     /**
      * A new player is created when it connect to the server
@@ -27,12 +27,13 @@ public class Player implements Serializable {
      * @param username    the name of the player. It should be unique
      * @param color       the color that identify the player and his tokens
      */
-    public Player(String username, TokenColor color) {
+    public Player(String username, TokenColor color, Connection connection) {
 
         this.username = username;
         this.tokenColor = color;
         this.token1 = new Token(color);
         this.token2 = new Token(color);
+        this.connection = connection;
     }
 
     /*  GETTER  */
@@ -52,6 +53,9 @@ public class Player implements Serializable {
         return this.myGodCard;
     }
 
+    public Connection getConnection() {
+        return this.connection;
+    }
 
     /*  SETTER  */
 

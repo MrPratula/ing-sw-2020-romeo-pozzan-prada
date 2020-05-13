@@ -1,6 +1,7 @@
 package it.polimi.ingsw.utils;
 
 import it.polimi.ingsw.model.Cell;
+import it.polimi.ingsw.model.GodCard;
 import it.polimi.ingsw.model.ModelUtils;
 
 import java.io.Serializable;
@@ -20,14 +21,16 @@ public class ServerResponse implements Serializable {
     private final List<Cell> validMoves;
     private final List<Cell> validBuilds;
 
+    private final List<GodCard> godCards;
     private final String outMessage;
 
-    public ServerResponse(Action action, ModelUtils modelCopy, List<Cell> validMoves, List<Cell> validBuilds, String outMessage) {
+    public ServerResponse(Action action, ModelUtils modelCopy, List<Cell> validMoves, List<Cell> validBuilds, List<GodCard> godCards, String outMessage) {
 
         this.action = action;
         this.modelCopy = modelCopy;
         this.validMoves = validMoves;
         this.validBuilds = validBuilds;
+        this.godCards = godCards;
         this.outMessage = outMessage;
     }
 
@@ -45,6 +48,10 @@ public class ServerResponse implements Serializable {
 
     public List<Cell> getValidBuilds() {
         return this.validBuilds;
+    }
+
+    public List<GodCard> getGodCards() {
+        return this.godCards;
     }
 
     public String getOutMessage() {

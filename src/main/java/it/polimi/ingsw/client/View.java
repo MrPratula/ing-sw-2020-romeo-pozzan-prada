@@ -168,6 +168,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
 
             // Just tell the client the server is not popped
+            // When the first player answer how much players there will be, waiting for the players to connect
             case NUMBER_RECEIVED: {
                 System.out.println("Please wait for the player to begin...");
                 break;
@@ -175,10 +176,57 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
 
             // Second and third player must wait till the first say how much player there will be in the game
+            // If someone try to connect before the first player answered, so the lobby is locked
             case WAIT_PLEASE:{
                 System.out.println(serverResponse.getAction().toString());
                 break;
             }
+
+
+            /*
+             * Each time a player has to wait that other player make a choice
+             * There are different messages if a player has to wait for another player move or build
+             * This is called when a player has to wait for another one to pick his god card
+             */
+            case WAIT_OTHER_PLAYER_MOVE:{
+                System.out.println("Another player is making his choice.\nPlease wait your turn...");
+                break;
+            }
+
+
+            case SELECT_YOUR_GOD_CARD: {
+                System.out.println("Please choose a God Card you want to use for this game.");
+
+                List<GodCard> godInGame = serverResponse.getGodCards();
+                boolean needToLoop = true;
+                String choice;
+
+                while (needToLoop) {
+                    System.out.println(serverResponse.getOutMessage());
+                    Scanner scanner = new Scanner(System.in);
+
+                    // Check if the input is a valid string
+                    try {
+                        choice = scanner.nextLine();
+                    } catch (InputMismatchException exception) {
+                        choice = "error";
+                    }
+
+                    // Check if the string is a valid god name
+                    for (GodCard god: godInGame) {
+                        if (choice.toUpperCase().equals(god.name().toUpperCase())){
+                            System.out.println("Ohhh good choice!");
+                            playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, null, null, null, 0, 0, null, null, false, choice.toUpperCase());
+                            notifyClient(playerAction);
+                            needToLoop = false;
+                        }
+                    }
+                }
+                break;
+            }
+
+
+
 
 
 

@@ -86,12 +86,56 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     /**
      * compare the current turn with a player's color.
      * if they match then it is that player's turn
-     *
      * @param player the player to ask for color
      * @return true if it is it's turn, false otherwise.
      */
     public boolean isPlayerTurn(Player player) {////////////dubbia
         return turn == player.getTokenColor();
+    }
+
+
+    /**
+     * @return the player-in-turn. Null if something goes wrong.
+     */
+    public Player getPlayerInTurn() {
+        for (Player p: allPlayers){
+            if (p.getTokenColor().equals(getTurn())){
+                return p;
+            }
+        }
+        return null;
+    }
+
+
+    /**
+     * @return the next player who has to play. Null if something goes wrong.
+     */
+    public Player getNextPlayer() {
+
+        int playerIndex;
+
+        switch (getTurn()){
+
+            case RED:{
+                playerIndex=1;
+                break;
+            }
+            case BLUE:{
+                if (allPlayers.size()==2)
+                    playerIndex=0;
+                else
+                    playerIndex=2;
+                break;
+            }
+            case YELLOW:{
+                playerIndex=0;
+                break;
+            }
+            default:{
+                return null;
+            }
+        }
+        return allPlayers.get(playerIndex);
     }
 
 
@@ -152,7 +196,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         if (validMoves == null) {
             serverResponse = checkLoseForMove(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, getBattlefield(), opponents, playerActive);
         } else {
-            serverResponse = new ServerResponse(Action.ASK_FOR_MOVE, this.getCopy(), validMoves, null, null);
+            serverResponse = new ServerResponse(Action.ASK_FOR_MOVE, this.getCopy(), validMoves, null,null, null);
         }
         notify(serverResponse);
     }
@@ -220,6 +264,103 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         }
         return null;
     }
+
+
+    /**
+     * It parse the player action to get the chose god from a player,
+     * then that got is set to that player and removed from the allGodCards list.
+     * After this if the list is empty it is started the routine for let players place their tokens
+     * and the allGodCards list is re-created.
+     * If not then it is asked to the next player what god he wants.
+     * @param playerAction the action to parse in order to get the name of the chosen god.
+     */
+    public void computeGodChoices(PlayerAction playerAction) throws WrongNumberPlayerException, ImpossibleTurnException, CellOutOfBattlefieldException, ReachHeightLimitException, CellHeightException, IOException {
+
+        Player player = null;
+        GodCard myGod = null;
+
+        for (Player p: allPlayers){
+            if (p.getTokenColor().equals(getTurn())){
+                player = p;
+                break;
+            }
+        }
+
+        for (GodCard god: allGodCards){
+            if (playerAction.getArgs().equals(god.name().toUpperCase())){
+                myGod = god;
+                break;
+            }
+        }
+
+        if (player != null && myGod != null){
+            player.setMyGodCard(myGod);
+            allGodCards.remove(myGod);
+            updateTurn();
+            ServerResponse waitResponse = new ServerResponse(Action.WAIT_OTHER_PLAYER_MOVE, null, null, null, null, null);
+
+            /*
+             * If the last player make his choice, than the allGodCards list is re-build
+             * and the next player is asked to place his tokens on the battlefield
+             * and the other player are notified to wait
+             */
+
+            if (allGodCards.isEmpty()){
+
+                ServerResponse firstTokenPlacement = new ServerResponse(Action.PLACE_YOUR_TOKEN, getCopy(), null, null, null, null);
+
+                // Write the text to notify all players who has which god card
+                StringBuilder text= new StringBuilder("Everyone has picked his God:");
+                for (Player p: allPlayers) {
+                    text.append("\n").append(p.getUsername().toUpperCase()).append(" ---> ").append(p.getMyGodCard().name().toUpperCase());
+                    text.append("\n").append(p.getMyGodCard().toString());
+                }
+                ServerResponse message = new ServerResponse(Action.PRINT_MESSAGE, null, null, null, null, text.toString());
+
+                for (Player p: allPlayers){
+
+                    allGodCards.add(p.getMyGodCard());
+
+                    // Tell all the message write above
+                    p.getConnection().asyncSend(message);
+
+                    if (p.getTokenColor().equals(getTurn())){
+                        p.getConnection().asyncSend(firstTokenPlacement);
+                    }
+                    else{
+                        p.getConnection().asyncSend(waitResponse);
+                    }
+                }
+            }
+
+            /*
+             * If there are other players who need to pick a god card
+             * the god card list is updated and sent to the next player,
+             * other players are notified to wait
+             */
+            else {
+
+                ServerResponse nextGodChoice = new ServerResponse(Action.CHOSE_GOD_CARD, getCopy(), null, null, allGodCards, null);
+
+                for (Player p: allPlayers){
+                    if (p.getTokenColor().equals(getTurn())){
+                        p.getConnection().asyncSend(nextGodChoice);
+                    }
+                    else{
+                        p.getConnection().asyncSend(waitResponse);
+                    }
+                }
+            }
+        }
+        else{
+            ServerResponse nextGodChoice = new ServerResponse(Action.CHOSE_GOD_CARD, getCopy(), null, null, allGodCards, null);
+            notify(nextGodChoice);
+        }
+    }
+
+
+
+
 
 
     /**
@@ -327,7 +468,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                 }
             }
         }
-        return new ServerResponse(Action.TOKEN_NOT_MOVABLE, this.getCopy(), null, null, null);
+        return new ServerResponse(Action.TOKEN_NOT_MOVABLE, this.getCopy(), null, null,null, null);
     }
 
 
@@ -399,7 +540,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             }
         }
         else {
-            ServerResponse serverResponse = new ServerResponse(Action.ASK_FOR_BUILD, this.getCopy(), null, validBuilds, null);
+            ServerResponse serverResponse = new ServerResponse(Action.ASK_FOR_BUILD, this.getCopy(), null, validBuilds, null,null);
             notify(serverResponse);
         }
     }
@@ -552,7 +693,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         // Prometheus check: here he chose to use his godpower, so now he doesn't have to finish his turn, but he has to perform a simple move and a simple build
         if(playerAction.getPlayer().getMyGodCard().equals((GodCard.PROMETHEUS))  && playerAction.getDoWantUsePower()){          //qui prometeo ha fatto solo la prima build, come dice il boolean
             String askForSelectPrometheus = String.format("Remember: now you can't move-up! Please %s, select where you want to move your selected token(%s) (x,y)",this.turn.toString(), playerAction.getTokenMain());      //quindi da qui potrà partire la prometheusMove e poi simple build come da routine
-            ServerResponse serverResponse = new ServerResponse(Action.ASK_FOR_MOVE, this.getCopy(), null, null, askForSelectPrometheus);
+            ServerResponse serverResponse = new ServerResponse(Action.ASK_FOR_MOVE, this.getCopy(), null, null,null, askForSelectPrometheus);
             // HERE PROMETHEUS TURN DOESN'T END, SO WE DON'T APPLY THE UPDATE TURN! quindi metto in else la condizione di update turn, in modo che alla vera build finale di prometeo la fa la update turn
         }
 
@@ -561,7 +702,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         else this.updateTurn();
 
         String askForSelect = String.format("Player %s select the token you want to move (x,y)",this.turn.toString());
-        ServerResponse serverResponse = new ServerResponse(Action.START_NEW_TURN, this.getCopy(), null, null, askForSelect);
+        ServerResponse serverResponse = new ServerResponse(Action.START_NEW_TURN, this.getCopy(), null, null,null, askForSelect);
     }
 
 
@@ -602,7 +743,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      */
     public ServerResponse gameOver (String winner) {
         String victoryMessage = String.format("%s HAS WIN!", winner.toUpperCase());
-        return new ServerResponse (Action.GAME_OVER, this.getCopy(), null, null, victoryMessage);
+        return new ServerResponse (Action.GAME_OVER, this.getCopy(), null,null, null, victoryMessage);
     }
 
 
@@ -614,7 +755,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     public ServerResponse playerLost (Player looser) throws WrongNumberPlayerException, ImpossibleTurnException {
         String lostMessage = String.format("%s HAS LOST! Better luck next time!", looser.getUsername().toUpperCase());
         removeFromTheGame(looser);
-        return new ServerResponse (Action.PLAYER_LOST, this.getCopy(), null, null, lostMessage);
+        return new ServerResponse (Action.PLAYER_LOST, this.getCopy(), null,null, null, lostMessage);
     }
 
 
@@ -686,7 +827,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
         String whoIsTurn = String.format("Now is player %s turn!", this.turn.toString());
 
-        ServerResponse serverResponse = new ServerResponse(Action.NOT_YOUR_TURN, null, null, null, whoIsTurn);
+        ServerResponse serverResponse = new ServerResponse(Action.NOT_YOUR_TURN, null, null,null, null, whoIsTurn);
 
         notify(serverResponse);
     }
@@ -718,7 +859,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         String errorMessage = String.format("%s your choice is not valid.\n%s",
                 playerAction.getPlayer().getUsername().toUpperCase(), whatAction);
 
-        ServerResponse serverResponse = new ServerResponse(Action.WRONG_INPUT, null, null, null, errorMessage);
+        ServerResponse serverResponse = new ServerResponse(Action.WRONG_INPUT, null, null, null,null, errorMessage);
         notify(serverResponse);
     }
 

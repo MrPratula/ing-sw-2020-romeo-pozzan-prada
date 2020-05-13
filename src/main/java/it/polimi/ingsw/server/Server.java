@@ -94,8 +94,6 @@ public class Server  {
         while(true){
             try {
 
-                System.out.println("aspetto che un tizio si colleghi");
-
                 // Accept a client who requires for this port
                 Socket socket = serverSocket.accept();
                 // Crate a Connection for that specific client
@@ -103,8 +101,6 @@ public class Server  {
                 // Save this connection to the connections list
                 registerConnection(connection);
                 // Let's start the Connection run() method in an asynchronous thread
-
-                System.out.println("faccio partire la connessione di quel tizio");
 
                 executor.submit(connection);
 
@@ -144,7 +140,7 @@ public class Server  {
      */
     public synchronized void lobby(Connection connection, String name) throws IOException, InterruptedException {
 
-        System.out.println(name.toUpperCase()+ "  is entered into the lobby");
+        System.out.println(name.toUpperCase()+ " is entered into the lobby");
 
         waitingConnection.put(name, connection);
 
@@ -160,13 +156,11 @@ public class Server  {
             setUpFirstPlayer();
 
         } else {
-            connection.asyncSend(new ServerResponse(Action.WAIT_PLEASE, null, null, null, null));
+            connection.asyncSend(new ServerResponse(Action.WAIT_PLEASE, null, null, null,null, null));
         }
 
         // When the players are 2 or 3, based on the first player choice
         if (waitingConnection.size() == numberOfPlayers){
-
-            System.out.println("ENTRO PROPRIO QUI");
 
             // Get the name of the players and create their personal connections
             List<String> keys = new ArrayList<>(waitingConnection.keySet());
@@ -176,16 +170,17 @@ public class Server  {
             Player player3;
             RemoteView remoteView3;
 
+            // Remember the hash map do not enqueue the value, but it is put on top
+            // That's the reason for strange values in keys.get(n)
             if (waitingConnection.size()==2) {
                 c2 = waitingConnection.get(keys.get(0));
             }
             else {
                 c2 = waitingConnection.get(keys.get(1));
-                c3 = waitingConnection.get(keys.get(0));
             }
 
             // Create the players with a name and a color
-            Player player2 = new Player(c2.getName(), TokenColor.BLUE);
+            Player player2 = new Player(c2.getName(), TokenColor.BLUE, c2);
 
             // Create the remote view with a connection and a player
             RemoteView remoteView2 = new RemoteView(c2, player2);
@@ -205,7 +200,7 @@ public class Server  {
             // Set up all of this for a 3rd eventual player
             if (numberOfPlayers == 3) {
                 c3 = waitingConnection.get(keys.get(0));
-                player3 = new Player(c3.getName(), TokenColor.YELLOW);
+                player3 = new Player(c3.getName(), TokenColor.YELLOW, c3);
                 remoteView3 = new RemoteView(c3, player3);
                 model.addPlayer(player3);
                 model.addObserver(remoteView3);
@@ -231,7 +226,7 @@ public class Server  {
         List<String> keys = new ArrayList<>(waitingConnection.keySet());
         Connection c1 = waitingConnection.get(keys.get(0));
 
-        Player player1 = new Player(c1.getName(), TokenColor.RED);
+        Player player1 = new Player(c1.getName(), TokenColor.RED, c1);
         RemoteView remoteView1 = new RemoteView(c1, player1);
         remoteView1.setServer(this);
 
@@ -252,7 +247,7 @@ public class Server  {
         playingConnection.put(player1.getUsername(), c1);
 
         // Ask for how many players there will be in the game (2 or 3)
-        c1.asyncSend(new ServerResponse(Action.HOW_MANY_PLAYERS, null, null, null, null));
+        c1.asyncSend(new ServerResponse(Action.HOW_MANY_PLAYERS, null, null, null, null ,null));
 
         // Receive a message from the first player
         PlayerAction playerAction = c1.listenSocket();
@@ -267,12 +262,12 @@ public class Server  {
                 // Set the number and brake the loop
                 if (playerAction.getTokenMain() == 2 || playerAction.getTokenMain() == 3) {
                     setNumberOfPlayers(playerAction.getTokenMain());
-                    c1.asyncSend(new ServerResponse(Action.NUMBER_RECEIVED, null, null, null, null));
+                    c1.asyncSend(new ServerResponse(Action.NUMBER_RECEIVED, null, null, null,null, null));
                     needToLoop = false;
 
                     // Cached a nasty client. It is not accepted
                 } else {
-                    c1.asyncSend(new ServerResponse(Action.WRONG_NUMBER_OF_PLAYER, null, null, null, null));
+                    c1.asyncSend(new ServerResponse(Action.WRONG_NUMBER_OF_PLAYER, null, null, null, null, null));
                 }
             }
         }
@@ -288,18 +283,21 @@ public class Server  {
 
         model.setTurn(TokenColor.RED);
 
+        // 2 decks. One with all the god cards, and one empty where to put the drew god cards
         List<GodCard> godsDeck = new ArrayList<>(Arrays.asList(GodCard.values()).subList(0, 14));
-
         List<GodCard> godInGame = new ArrayList<>();
 
+        // Draw n god cards and put them into the empty deck
         while (numberOfPlayers!=0) {
             drawAGod(godsDeck, godInGame);
             numberOfPlayers--;
         }
+        // And add them to the model
         for (GodCard god: godInGame) {
             model.addGod(god);
         }
 
+        // Update the turn to let the second player the first choice
         try {
             model.updateTurn();
         } catch (ImpossibleTurnException | WrongNumberPlayerException e) {
@@ -308,24 +306,28 @@ public class Server  {
 
         List<String> keys = new ArrayList<>(waitingConnection.keySet());
 
+        // Build a string with all the god card in game
         StringBuilder text= new StringBuilder("There are the following Gods available:");
-        for (GodCard god: godInGame)
-            text.append("\n").append(god.name());
+        for (GodCard god: godInGame) {
+            text.append("\n").append(god.name().toUpperCase());
+            text.append("\n").append(god.toString());
+        }
 
         // Remember the hash map do not enqueue the value, but it is put on top
+        // That's the reason for strange values in keys.get(n)
         if (waitingConnection.size()==2) {
             Connection c1 = waitingConnection.get(keys.get(1));
             Connection c2 = waitingConnection.get(keys.get(0));
-            c1.asyncSend(new ServerResponse(Action.WAIT_OTHER_PLAYER_MOVE, null, null, null, null));
-            c2.asyncSend(new ServerResponse(Action.SELECT_YOUR_GOD_CARD, null, null, null, text.toString()));
+            c1.asyncSend(new ServerResponse(Action.WAIT_OTHER_PLAYER_MOVE, null, null, null, null, null));
+            c2.asyncSend(new ServerResponse(Action.SELECT_YOUR_GOD_CARD, null, null, null, godInGame, text.toString()));
         }
         else{
             Connection c1 = waitingConnection.get(keys.get(2));
             Connection c2 = waitingConnection.get(keys.get(1));
             Connection c3 = waitingConnection.get(keys.get(0));
-            c1.asyncSend(new ServerResponse(Action.WAIT_OTHER_PLAYER_MOVE, null, null, null, null));
-            c2.asyncSend(new ServerResponse(Action.SELECT_YOUR_GOD_CARD, null, null, null, text.toString()));
-            c3.asyncSend(new ServerResponse(Action.WAIT_OTHER_PLAYER_MOVE, null, null, null, null));
+            c1.asyncSend(new ServerResponse(Action.WAIT_OTHER_PLAYER_MOVE, null, null, null, null, null));
+            c2.asyncSend(new ServerResponse(Action.SELECT_YOUR_GOD_CARD, null, null, null, godInGame, text.toString()));
+            c3.asyncSend(new ServerResponse(Action.WAIT_OTHER_PLAYER_MOVE, null, null, null, null, null));
         }
     }
 
@@ -344,11 +346,6 @@ public class Server  {
         godInGame.add(randomGod);
         godsDeck.remove(randomGod);
     }
-
-
-
-
-
 }
 
 

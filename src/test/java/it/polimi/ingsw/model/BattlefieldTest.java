@@ -18,9 +18,9 @@ public class BattlefieldTest {
 
         battlefield = new Battlefield();
 
-        p1 = new Player("Alpha",TokenColor.RED);
-        p2 = new Player("Beta",TokenColor.BLUE);
-        p3 = new Player("Charlie",TokenColor.YELLOW);
+        p1 = new Player("Alpha",TokenColor.RED, null);
+        p2 = new Player("Beta",TokenColor.BLUE, null);
+        p3 = new Player("Charlie",TokenColor.YELLOW, null);
 
         t1 = new Token(TokenColor.RED);
         t11 = new Token(TokenColor.RED);
