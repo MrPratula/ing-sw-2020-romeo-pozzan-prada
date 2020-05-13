@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 class HephaestusBuildTest {
     Battlefield battlefield;
@@ -38,7 +37,7 @@ class HephaestusBuildTest {
      * The high of first_cell has to increase by two.
      */
     @Test
-    void HephaestusperformeBuild() throws CellHeightException, ReachHeightLimitException, CellOutOfBattlefieldException {
+    void HephaestusPerformBuild() throws CellHeightException, ReachHeightLimitException, CellOutOfBattlefieldException {
         //setup for this method
         battlefield = new Battlefield();
         first_cell = battlefield.getCell(2,3);
@@ -52,7 +51,7 @@ class HephaestusBuildTest {
         BuildContext thisBuild = new BuildContext(new HephaestusBuild());
         thisBuild.executePerformBuild(first_cell, null, battlefield);
 
-        assertTrue(first_cell.getHeight()==high_first_cell+2);
+        assertEquals(first_cell.getHeight(), high_first_cell + 2);
     }
 
     /**

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.GUI;
+package it.polimi.ingsw.gui;
 
 import it.polimi.ingsw.model.Battlefield;
 
