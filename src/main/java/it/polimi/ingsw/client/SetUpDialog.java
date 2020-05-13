@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.gui.SwingView;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.PlayerAction;
 
@@ -36,10 +37,10 @@ public class SetUpDialog extends JDialog{
     }
 
 
-    public SetUpDialog(JFrame mainFrame, SwingView swingView) {
+    public SetUpDialog(JFrame mainFrame/*, SwingView swingView*/) {
 
         super(mainFrame, "Player Login");
-        this.view = swingView;
+       // this.view = swingView;
 
         //the main panel
         mainPanel = new JPanel();
