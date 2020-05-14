@@ -37,10 +37,10 @@ public class SetUpDialog extends JDialog{
     }
 
 
-    public SetUpDialog(JFrame mainFrame/*, SwingView swingView*/) {
+    public SetUpDialog(JFrame mainFrame, SwingView swingView) {
 
         super(mainFrame, "Player Login");
-       // this.view = swingView;
+        this.view = swingView;
 
         //the main panel
         mainPanel = new JPanel();
