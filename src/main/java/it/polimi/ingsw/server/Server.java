@@ -1,7 +1,6 @@
 package it.polimi.ingsw.server;
 
 
-import it.polimi.ingsw.client.SwingView;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.controller.ImpossibleTurnException;
 import it.polimi.ingsw.controller.WrongNumberPlayerException;
