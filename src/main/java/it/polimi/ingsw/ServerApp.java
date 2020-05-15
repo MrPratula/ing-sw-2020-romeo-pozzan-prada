@@ -1,5 +1,7 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.gui.GameFrame;
+import it.polimi.ingsw.gui.SwingView;
 import it.polimi.ingsw.server.Server;
 
 
@@ -13,6 +15,11 @@ import java.io.IOException;
 public class ServerApp
 {
     public static void main( String[] args ) {
+
+        // servono per far partire la gui ( nelle due cose che abbiamo fatto )
+        // ovviamente non è questo il loro posto, è solo per testare.
+        new GameFrame();
+        new SwingView();
 
         System.out.println("Hi I am the SERVER");
         Server server;

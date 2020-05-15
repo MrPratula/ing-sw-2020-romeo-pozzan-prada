@@ -34,19 +34,15 @@ public class SwingView extends View {
         mainFrame.setResizable(true);
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setSize(500, 500);
 
         mainPanel = new JPanel();
         mainPanel.setBackground(Color.BLACK);
-        mainPanel.setSize(500, 400);
 
         logoImage = new JLabel();
-        logoImage.setIcon(new ImageIcon("graphics\\Santorini.png"));  //non so se son cosi i path
-        logoImage.setBounds(0,0,500,400);
+        logoImage.setIcon(new ImageIcon("C:\\Users\\ricca\\IdeaProjects\\ing-sw-2020-romeo-pozzan-prada\\src\\main\\java\\it\\polimi\\ingsw\\gui\\graphics\\Santorini.png"));
 
         playButton = new JButton();
-        playButton.setSize(100, 100);
-        playButton.setIcon(new ImageIcon("\\graphics\\ButtonPlay.png"));
+        playButton.setIcon(new ImageIcon("C:\\Users\\ricca\\IdeaProjects\\ing-sw-2020-romeo-pozzan-prada\\src\\main\\java\\it\\polimi\\ingsw\\gui\\graphics\\ButtonPlay.png"));
         playButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
