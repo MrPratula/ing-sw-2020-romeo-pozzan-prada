@@ -32,7 +32,6 @@ public class SwingView extends View {
 
         mainFrame = new JFrame("Santorini");
         mainFrame.setResizable(true);
-        mainFrame.setLocationRelativeTo(null);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         mainPanel = new JPanel();
