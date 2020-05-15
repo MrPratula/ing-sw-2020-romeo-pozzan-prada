@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server;
 
 
+import it.polimi.ingsw.client.SwingView;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.controller.ImpossibleTurnException;
 import it.polimi.ingsw.controller.WrongNumberPlayerException;
@@ -87,6 +88,7 @@ public class Server  {
      * and it's connection is started in a asynchronous thread.
      */
     public void run() {
+
 
         System.out.println("Server listening on port: " + PORT);
         firstTime = true;
