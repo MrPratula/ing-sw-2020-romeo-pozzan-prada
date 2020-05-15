@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.gui.SwingView;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.PlayerAction;
 

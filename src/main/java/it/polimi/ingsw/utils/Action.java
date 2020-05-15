@@ -23,6 +23,7 @@ public enum Action implements Serializable {
     SELECT_TOKEN("A player has selected a token"),
     MOVE("A player moved a token"),
     BUILD("A player made a build. Switch turn"),
+    CHOSE_GOD_CARD ("A player has chose his god card"),
 
 
     /*    FROM SERVER TO CLIENT     */
@@ -46,6 +47,8 @@ public enum Action implements Serializable {
     WAIT_PLEASE("Please wait..."),
     WAIT_OTHER_PLAYER_MOVE("Someone else is performing their move. Please wait your turn..."),
     SELECT_YOUR_GOD_CARD("Which one of these GodCards do you want to use in this game?"),
+    PLACE_YOUR_TOKEN("Please choose a position for your token... (x,y)"),
+    PRINT_MESSAGE("Write here some text to be printed..."),
 
 
     // ERROR MESSAGES
@@ -54,8 +57,6 @@ public enum Action implements Serializable {
     WRONG_INPUT("Please insert a valid choice!"),
     TOKEN_NOT_MOVABLE("You can not move this token, please select a movable one! (x,y)"),
 
-    //TEST
-    IGNORE("nothing"),
 
     /*************GUI**************/
 

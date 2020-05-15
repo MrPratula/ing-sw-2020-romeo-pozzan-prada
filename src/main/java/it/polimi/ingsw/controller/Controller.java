@@ -37,6 +37,12 @@ public class Controller implements Observer<PlayerAction> {
 
             switch(playerAction.getAction()){
 
+
+                case CHOSE_GOD_CARD: {
+                    model.computeGodChoices(playerAction);
+                    break;
+                }
+
                 case TOKEN_SET_UP:
                     //gestire, fai semplicemente cambiare turno
 
@@ -56,6 +62,7 @@ public class Controller implements Observer<PlayerAction> {
                             model.notifyWrongInput(playerAction);
                         }
                     }
+                    break;
                 }
 
                 case SELECT_TOKEN: {

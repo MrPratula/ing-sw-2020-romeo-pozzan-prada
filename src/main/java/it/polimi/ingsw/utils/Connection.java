@@ -94,7 +94,7 @@ public class Connection extends Observable<PlayerAction> implements Runnable{
      */
     public synchronized void closeConnection(){
 
-        asyncSend(new ServerResponse(Action.CONNECTION_CLOSE, null, null, null, null));
+        asyncSend(new ServerResponse(Action.CONNECTION_CLOSE, null, null, null, null, null));
 
         try {
             socket.close();
@@ -131,7 +131,7 @@ public class Connection extends Observable<PlayerAction> implements Runnable{
             objectInputStream = new ObjectInputStream(socket.getInputStream());
 
             // Ask what is your name
-            asyncSend(new ServerResponse(Action.WELCOME, null, null, null, null));
+            asyncSend(new ServerResponse(Action.WELCOME, null, null, null,null, null));
 
             //Continue to ask this till he insert a valid name
             boolean needToLoop = true;
@@ -148,7 +148,7 @@ public class Connection extends Observable<PlayerAction> implements Runnable{
                     for (String n: names) {
                         // Check for upper case to avoid having Lorenzo and lorenzo in the same game
                         if (n.toUpperCase().equals(name.toUpperCase())){
-                            asyncSend(new ServerResponse(Action.INVALID_NAME, null, null, null, null));
+                            asyncSend(new ServerResponse(Action.INVALID_NAME, null, null, null,null, null));
                         }
                         else {
                             this.name = name;
