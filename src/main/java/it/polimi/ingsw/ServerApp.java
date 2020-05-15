@@ -1,9 +1,7 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.client.SwingView;
 import it.polimi.ingsw.server.Server;
 
-import javax.swing.*;
 import java.io.IOException;
 
 
