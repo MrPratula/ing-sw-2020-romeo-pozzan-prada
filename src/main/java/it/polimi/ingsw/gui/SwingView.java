@@ -21,14 +21,11 @@ public class SwingView extends View {
 
     private JButton playButton;      //3.1
 
-    public SwingView(){
-        run();
-    }
 
     //main: new swingView();
 
-    @Override
-    public void run(){
+    //@Override
+    public SwingView(){
 
         mainFrame = new JFrame("Santorini");
         mainFrame.setResizable(true);

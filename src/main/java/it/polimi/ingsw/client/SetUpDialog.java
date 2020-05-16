@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.gui.GameFrame;
+import it.polimi.ingsw.gui.LobbyFrame;
 import it.polimi.ingsw.gui.SwingView;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.PlayerAction;
@@ -28,8 +29,9 @@ public class SetUpDialog extends JDialog{
     private JPanel numberOfPlayerPanel;
 
 
-    // Player player, Player oppo1, Player oppo2, int tokenMain, int tokenOther, Cell first_cell, Cell second_cell , boolean doWantUsePower, String args){
-
+    /**
+     * Inner class that handle the first action
+     */
     private class ConfirmListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e){
@@ -40,8 +42,13 @@ public class SetUpDialog extends JDialog{
         }
     }
 
-
-    public SetUpDialog(JFrame mainFrame, SwingView swingView) {
+    /**
+     * Dialog windows that opens when a player click on PLAY
+     * and here he has to put his name and number(FIXME)
+     * @param mainFrame
+     * @param swingView
+     */
+    public SetUpDialog(final JFrame mainFrame, SwingView swingView) {
 
         super(mainFrame, "Player Login");
         this.view = swingView;
@@ -90,7 +97,7 @@ public class SetUpDialog extends JDialog{
         confirmButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new GameFrame();
+                new LobbyFrame(mainFrame);
             }
         });
         //setMinimumSize(new Dimension(300, 30));
