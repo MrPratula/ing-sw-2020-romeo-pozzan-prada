@@ -19,7 +19,7 @@ public class ServerApp
         // servono per far partire la gui ( nelle due cose che abbiamo fatto )
         // ovviamente non è questo il loro posto, è solo per testare.
         new GameFrame();
-        new SwingView();
+        //new SwingView();
 
         System.out.println("Hi I am the SERVER");
         Server server;

@@ -15,7 +15,7 @@ public class SetUpDialog extends JDialog{
 
 
     private static final long serialVersionUID = 1L;
-    private JPanel mainPanel;                       //1
+    //private JPanel mainPanel;                       //1
     private JLabel nicknameLabel;                   //2.0
     private JTextField nicknameTextField;           //2.1
     private JLabel numberOfPlayersLabel;            //3.0
@@ -86,7 +86,6 @@ public class SetUpDialog extends JDialog{
         add(confirmButton, BorderLayout.PAGE_END);
         pack();
 
-        //setMinimumSize(new Dimension(300, 30));
         setVisible(true);
 
         /*
