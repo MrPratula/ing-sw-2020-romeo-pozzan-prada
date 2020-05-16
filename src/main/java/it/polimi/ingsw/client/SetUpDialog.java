@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.gui.GameFrame;
 import it.polimi.ingsw.gui.SwingView;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.PlayerAction;
@@ -86,6 +87,12 @@ public class SetUpDialog extends JDialog{
         add(confirmButton, BorderLayout.PAGE_END);
         pack();
 
+        confirmButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new GameFrame();
+            }
+        });
         //setMinimumSize(new Dimension(300, 30));
         setVisible(true);
 
