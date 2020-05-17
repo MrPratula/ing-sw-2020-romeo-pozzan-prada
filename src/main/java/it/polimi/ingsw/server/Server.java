@@ -157,7 +157,7 @@ public class Server  {
             setUpFirstPlayer();
 
         } else {
-            connection.asyncSend(new ServerResponse(Action.WAIT_PLEASE, null, null, null,null, null));
+            connection.asyncSend(new ServerResponse(Action.WAIT_PLEASE, null, null, null,null, null, null));
         }
 
         // When the players are 2 or 3, based on the first player choice
@@ -248,7 +248,7 @@ public class Server  {
         playingConnection.put(player1.getUsername(), c1);
 
         // Ask for how many players there will be in the game (2 or 3)
-        c1.asyncSend(new ServerResponse(Action.HOW_MANY_PLAYERS, null, null, null, null ,null));
+        c1.asyncSend(new ServerResponse(Action.HOW_MANY_PLAYERS, null, null, null, null ,null, null));
 
         // Receive a message from the first player
         PlayerAction playerAction = c1.listenSocket();
@@ -263,12 +263,12 @@ public class Server  {
                 // Set the number and brake the loop
                 if (playerAction.getTokenMain() == 2 || playerAction.getTokenMain() == 3) {
                     setNumberOfPlayers(playerAction.getTokenMain());
-                    c1.asyncSend(new ServerResponse(Action.NUMBER_RECEIVED, null, null, null,null, null));
+                    c1.asyncSend(new ServerResponse(Action.NUMBER_RECEIVED, null, null, null,null, null, null));
                     needToLoop = false;
 
                     // Cached a nasty client. It is not accepted
                 } else {
-                    c1.asyncSend(new ServerResponse(Action.WRONG_NUMBER_OF_PLAYER, null, null, null, null, null));
+                    c1.asyncSend(new ServerResponse(Action.WRONG_NUMBER_OF_PLAYER, null, null, null, null, null, null));
                 }
             }
         }
@@ -283,6 +283,7 @@ public class Server  {
     public void initGame() {
 
         model.setTurn(TokenColor.RED);
+        model.setPlayingConnection(playingConnection);
 
         // 2 decks. One with all the god cards, and one empty where to put the drew god cards
         List<GodCard> godsDeck = new ArrayList<>(Arrays.asList(GodCard.values()).subList(0, 14));
@@ -319,16 +320,22 @@ public class Server  {
         if (waitingConnection.size()==2) {
             Connection c1 = waitingConnection.get(keys.get(1));
             Connection c2 = waitingConnection.get(keys.get(0));
-            c1.asyncSend(new ServerResponse(Action.WAIT_OTHER_PLAYER_MOVE, null, null, null, null, null));
-            c2.asyncSend(new ServerResponse(Action.SELECT_YOUR_GOD_CARD, null, null, null, godInGame, text.toString()));
+
+            List<Player> allPlayers = model.getAllPlayers();
+
+            c1.asyncSend(new ServerResponse(Action.WAIT_OTHER_PLAYER_MOVE, null, null, null, null, null, allPlayers.get(0)));
+            c2.asyncSend(new ServerResponse(Action.SELECT_YOUR_GOD_CARD, null, null, null, godInGame, text.toString(), allPlayers.get(1)));
         }
         else{
             Connection c1 = waitingConnection.get(keys.get(2));
             Connection c2 = waitingConnection.get(keys.get(1));
             Connection c3 = waitingConnection.get(keys.get(0));
-            c1.asyncSend(new ServerResponse(Action.WAIT_OTHER_PLAYER_MOVE, null, null, null, null, null));
-            c2.asyncSend(new ServerResponse(Action.SELECT_YOUR_GOD_CARD, null, null, null, godInGame, text.toString()));
-            c3.asyncSend(new ServerResponse(Action.WAIT_OTHER_PLAYER_MOVE, null, null, null, null, null));
+
+            List<Player> allPlayers = model.getAllPlayers();
+
+            c1.asyncSend(new ServerResponse(Action.WAIT_OTHER_PLAYER_MOVE, null, null, null, null, null,  allPlayers.get(0)));
+            c2.asyncSend(new ServerResponse(Action.SELECT_YOUR_GOD_CARD, null, null, null, godInGame, text.toString(),  allPlayers.get(1)));
+            c3.asyncSend(new ServerResponse(Action.WAIT_OTHER_PLAYER_MOVE, null, null, null, null, null,  allPlayers.get(2)));
         }
     }
 

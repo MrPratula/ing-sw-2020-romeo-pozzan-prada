@@ -3,7 +3,6 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.utils.Connection;
 
 import java.io.Serializable;
-import java.util.List;
 
 
 /**
@@ -19,7 +18,6 @@ public class Player implements Serializable {
     private final TokenColor tokenColor;
     private Token token1, token2;
     private GodCard myGodCard;
-    private Connection connection;
 
     /**
      * A new player is created when it connect to the server
@@ -33,7 +31,6 @@ public class Player implements Serializable {
         this.tokenColor = color;
         this.token1 = new Token(color);
         this.token2 = new Token(color);
-        this.connection = connection;
     }
 
     /*  GETTER  */
@@ -53,9 +50,6 @@ public class Player implements Serializable {
         return this.myGodCard;
     }
 
-    public Connection getConnection() {
-        return this.connection;
-    }
 
     /*  SETTER  */
 

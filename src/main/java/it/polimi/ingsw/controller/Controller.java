@@ -33,7 +33,7 @@ public class Controller implements Observer<PlayerAction> {
     @Override
     public void update(PlayerAction playerAction) throws CellOutOfBattlefieldException, CellHeightException, ReachHeightLimitException, WrongNumberPlayerException, ImpossibleTurnException, IOException {
 
-        if( model.isPlayerTurn(playerAction.getPlayer()) ){
+        if (model.isPlayerTurn(playerAction.getPlayer())){
 
             switch(playerAction.getAction()){
 
@@ -44,7 +44,6 @@ public class Controller implements Observer<PlayerAction> {
                 }
 
                 case TOKEN_SET_UP:
-                    //gestire, fai semplicemente cambiare turno
 
 
                 case PROMETHEUS_POWER:{
@@ -119,7 +118,8 @@ public class Controller implements Observer<PlayerAction> {
             }
         }
         else {
-           model.notifyNotYourTurn();
+            System.out.println("BAAAAAAAAAAAD");
+            model.notifyNotYourTurn();
         }
     }
 }

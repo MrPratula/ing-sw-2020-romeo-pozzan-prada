@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model;
 
 import java.io.Serializable;
-import java.util.Random;
 
 public enum GodCard implements Serializable {
 

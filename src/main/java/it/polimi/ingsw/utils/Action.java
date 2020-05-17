@@ -48,8 +48,8 @@ public enum Action implements Serializable {
     WAIT_OTHER_PLAYER_MOVE("Someone else is performing their move. Please wait your turn..."),
     SELECT_YOUR_GOD_CARD("Which one of these GodCards do you want to use in this game?"),
     PLACE_YOUR_TOKEN("Please choose a position for your token... (x,y)"),
-    PRINT_MESSAGE("Write here some text to be printed..."),
 
+    PRINT_MESSAGE("Write here some text to be printed..."),
 
     // ERROR MESSAGES
     INVALID_NAME("This name is not available, please try with another one..."),
@@ -81,5 +81,9 @@ public enum Action implements Serializable {
     @Override
     public String toString(){
         return info;
+    }
+
+    public String getName(){
+        return this.name();
     }
 }

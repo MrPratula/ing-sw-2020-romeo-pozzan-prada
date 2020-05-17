@@ -63,10 +63,6 @@ public class RemoteView extends Observable<PlayerAction> implements Observer<Ser
 
         @Override
         public void update(PlayerAction playerAction) throws CellOutOfBattlefieldException, CellHeightException, ReachHeightLimitException, WrongNumberPlayerException, ImpossibleTurnException, IOException {
-
-            System.out.println(String.format("Received a %s from %s",
-                    playerAction.getAction().toString(), connection.getName()));
-
             sendAction(playerAction);
         }
     }

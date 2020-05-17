@@ -11,10 +11,8 @@ import it.polimi.ingsw.gameAction.move.ArtemisMoves;
 import it.polimi.ingsw.gameAction.move.MoveContext;
 import it.polimi.ingsw.gameAction.move.SimpleMoves;
 import it.polimi.ingsw.gameAction.win.*;
-import it.polimi.ingsw.utils.Action;
+import it.polimi.ingsw.utils.*;
 import it.polimi.ingsw.utils.Observable;
-import it.polimi.ingsw.utils.PlayerAction;
-import it.polimi.ingsw.utils.ServerResponse;
 
 import java.io.IOException;
 import java.util.*;
@@ -31,7 +29,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     private TokenColor turn;
     private List<Player> allPlayers = new ArrayList<>();
     private List<GodCard> allGodCards = new ArrayList<>();
-
+    private Map<String, Connection> playingConnection = new HashMap<>();
 
 
 
@@ -80,6 +78,10 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         allPlayers.add(player);
     }
 
+    public void setPlayingConnection(Map<String, Connection> playingConnection) {
+        this.playingConnection = playingConnection;
+    }
+
 
 
 
@@ -89,7 +91,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * @param player the player to ask for color
      * @return true if it is it's turn, false otherwise.
      */
-    public boolean isPlayerTurn(Player player) {////////////dubbia
+    public boolean isPlayerTurn(Player player) {
         return turn == player.getTokenColor();
     }
 
@@ -196,7 +198,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         if (validMoves == null) {
             serverResponse = checkLoseForMove(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, getBattlefield(), opponents, playerActive);
         } else {
-            serverResponse = new ServerResponse(Action.ASK_FOR_MOVE, this.getCopy(), validMoves, null,null, null);
+            serverResponse = new ServerResponse(Action.ASK_FOR_MOVE, this.getCopy(), validMoves, null,null, null, null);
         }
         notify(serverResponse);
     }
@@ -293,21 +295,19 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             }
         }
 
+        // Check if the choice is correct. If so continue else send back the same request
         if (player != null && myGod != null){
             player.setMyGodCard(myGod);
             allGodCards.remove(myGod);
             updateTurn();
-            ServerResponse waitResponse = new ServerResponse(Action.WAIT_OTHER_PLAYER_MOVE, null, null, null, null, null);
 
             /*
              * If the last player make his choice, than the allGodCards list is re-build
              * and the next player is asked to place his tokens on the battlefield
              * and the other player are notified to wait
              */
-
             if (allGodCards.isEmpty()){
 
-                ServerResponse firstTokenPlacement = new ServerResponse(Action.PLACE_YOUR_TOKEN, getCopy(), null, null, null, null);
 
                 // Write the text to notify all players who has which god card
                 StringBuilder text= new StringBuilder("Everyone has picked his God:");
@@ -315,20 +315,21 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                     text.append("\n").append(p.getUsername().toUpperCase()).append(" ---> ").append(p.getMyGodCard().name().toUpperCase());
                     text.append("\n").append(p.getMyGodCard().toString());
                 }
-                ServerResponse message = new ServerResponse(Action.PRINT_MESSAGE, null, null, null, null, text.toString());
+
+                ServerResponse firstTokenPlacement = new ServerResponse(Action.PLACE_YOUR_TOKEN, getCopy(), null, null, null, text.toString(), null);
 
                 for (Player p: allPlayers){
 
                     allGodCards.add(p.getMyGodCard());
 
-                    // Tell all the message write above
-                    p.getConnection().asyncSend(message);
 
                     if (p.getTokenColor().equals(getTurn())){
-                        p.getConnection().asyncSend(firstTokenPlacement);
+                        playingConnection.get(p.getUsername()).asyncSend(firstTokenPlacement);
+
                     }
                     else{
-                        p.getConnection().asyncSend(waitResponse);
+                        ServerResponse waitResponse = new ServerResponse(Action.WAIT_OTHER_PLAYER_MOVE, null, null, null, null, text.toString(), null);
+                        playingConnection.get(p.getUsername()).asyncSend(waitResponse);
                     }
                 }
             }
@@ -339,21 +340,32 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
              * other players are notified to wait
              */
             else {
+                StringBuilder text= new StringBuilder("There are the following Gods available:");
+                for (GodCard god: allGodCards) {
+                    text.append("\n").append(god.name().toUpperCase());
+                    text.append("\n").append(god.toString());
+                }
 
-                ServerResponse nextGodChoice = new ServerResponse(Action.CHOSE_GOD_CARD, getCopy(), null, null, allGodCards, null);
+                ServerResponse nextGodChoice = new ServerResponse(Action.SELECT_YOUR_GOD_CARD, null, null, null, allGodCards, text.toString(), getPlayerInTurn());
 
                 for (Player p: allPlayers){
                     if (p.getTokenColor().equals(getTurn())){
-                        p.getConnection().asyncSend(nextGodChoice);
+                        playingConnection.get(p.getUsername()).asyncSend(nextGodChoice);
                     }
                     else{
-                        p.getConnection().asyncSend(waitResponse);
+                        ServerResponse waitResponse = new ServerResponse(Action.WAIT_OTHER_PLAYER_MOVE, null, null, null, null, null, null);
+                        playingConnection.get(p.getUsername()).asyncSend(waitResponse);
                     }
                 }
             }
         }
         else{
-            ServerResponse nextGodChoice = new ServerResponse(Action.CHOSE_GOD_CARD, getCopy(), null, null, allGodCards, null);
+            StringBuilder text= new StringBuilder("There are the following Gods available:");
+            for (GodCard god: allGodCards) {
+                text.append("\n").append(god.name().toUpperCase());
+                text.append("\n").append(god.toString());
+            }
+            ServerResponse nextGodChoice = new ServerResponse(Action.SELECT_YOUR_GOD_CARD, null, null, null, allGodCards, text.toString(), null);
             notify(nextGodChoice);
         }
     }
@@ -468,7 +480,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                 }
             }
         }
-        return new ServerResponse(Action.TOKEN_NOT_MOVABLE, this.getCopy(), null, null,null, null);
+        return new ServerResponse(Action.TOKEN_NOT_MOVABLE, this.getCopy(), null, null,null, null, null);
     }
 
 
@@ -540,7 +552,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             }
         }
         else {
-            ServerResponse serverResponse = new ServerResponse(Action.ASK_FOR_BUILD, this.getCopy(), null, validBuilds, null,null);
+            ServerResponse serverResponse = new ServerResponse(Action.ASK_FOR_BUILD, this.getCopy(), null, validBuilds, null,null, null);
             notify(serverResponse);
         }
     }
@@ -693,7 +705,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         // Prometheus check: here he chose to use his godpower, so now he doesn't have to finish his turn, but he has to perform a simple move and a simple build
         if(playerAction.getPlayer().getMyGodCard().equals((GodCard.PROMETHEUS))  && playerAction.getDoWantUsePower()){          //qui prometeo ha fatto solo la prima build, come dice il boolean
             String askForSelectPrometheus = String.format("Remember: now you can't move-up! Please %s, select where you want to move your selected token(%s) (x,y)",this.turn.toString(), playerAction.getTokenMain());      //quindi da qui potrà partire la prometheusMove e poi simple build come da routine
-            ServerResponse serverResponse = new ServerResponse(Action.ASK_FOR_MOVE, this.getCopy(), null, null,null, askForSelectPrometheus);
+            ServerResponse serverResponse = new ServerResponse(Action.ASK_FOR_MOVE, this.getCopy(), null, null,null, askForSelectPrometheus, null);
             // HERE PROMETHEUS TURN DOESN'T END, SO WE DON'T APPLY THE UPDATE TURN! quindi metto in else la condizione di update turn, in modo che alla vera build finale di prometeo la fa la update turn
         }
 
@@ -702,7 +714,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         else this.updateTurn();
 
         String askForSelect = String.format("Player %s select the token you want to move (x,y)",this.turn.toString());
-        ServerResponse serverResponse = new ServerResponse(Action.START_NEW_TURN, this.getCopy(), null, null,null, askForSelect);
+        ServerResponse serverResponse = new ServerResponse(Action.START_NEW_TURN, this.getCopy(), null, null,null, askForSelect, null);
     }
 
 
@@ -743,7 +755,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      */
     public ServerResponse gameOver (String winner) {
         String victoryMessage = String.format("%s HAS WIN!", winner.toUpperCase());
-        return new ServerResponse (Action.GAME_OVER, this.getCopy(), null,null, null, victoryMessage);
+        return new ServerResponse (Action.GAME_OVER, this.getCopy(), null,null, null, victoryMessage, null);
     }
 
 
@@ -755,7 +767,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     public ServerResponse playerLost (Player looser) throws WrongNumberPlayerException, ImpossibleTurnException {
         String lostMessage = String.format("%s HAS LOST! Better luck next time!", looser.getUsername().toUpperCase());
         removeFromTheGame(looser);
-        return new ServerResponse (Action.PLAYER_LOST, this.getCopy(), null,null, null, lostMessage);
+        return new ServerResponse (Action.PLAYER_LOST, this.getCopy(), null,null, null, lostMessage, null);
     }
 
 
@@ -827,7 +839,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
         String whoIsTurn = String.format("Now is player %s turn!", this.turn.toString());
 
-        ServerResponse serverResponse = new ServerResponse(Action.NOT_YOUR_TURN, null, null,null, null, whoIsTurn);
+        ServerResponse serverResponse = new ServerResponse(Action.NOT_YOUR_TURN, null, null,null, null, whoIsTurn, null);
 
         notify(serverResponse);
     }
@@ -859,7 +871,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         String errorMessage = String.format("%s your choice is not valid.\n%s",
                 playerAction.getPlayer().getUsername().toUpperCase(), whatAction);
 
-        ServerResponse serverResponse = new ServerResponse(Action.WRONG_INPUT, null, null, null,null, errorMessage);
+        ServerResponse serverResponse = new ServerResponse(Action.WRONG_INPUT, null, null, null,null, errorMessage, null);
         notify(serverResponse);
     }
 

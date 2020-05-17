@@ -189,12 +189,18 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
              * This is called when a player has to wait for another one to pick his god card
              */
             case WAIT_OTHER_PLAYER_MOVE:{
+                if (serverResponse.getOutMessage()!=null){
+                    System.out.println(serverResponse.getOutMessage());
+                }
                 System.out.println("Another player is making his choice.\nPlease wait your turn...");
                 break;
             }
 
 
             case SELECT_YOUR_GOD_CARD: {
+
+                this.player = serverResponse.getPlayer();
+
                 System.out.println("Please choose a God Card you want to use for this game.");
 
                 List<GodCard> godInGame = serverResponse.getGodCards();
@@ -216,7 +222,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                     for (GodCard god: godInGame) {
                         if (choice.toUpperCase().equals(god.name().toUpperCase())){
                             System.out.println("Ohhh good choice!");
-                            playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, null, null, null, 0, 0, null, null, false, choice.toUpperCase());
+                            playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, this.player, null, null, 0, 0, null, null, false, choice.toUpperCase());
                             notifyClient(playerAction);
                             needToLoop = false;
                         }
@@ -224,8 +230,6 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                 }
                 break;
             }
-
-
 
 
 

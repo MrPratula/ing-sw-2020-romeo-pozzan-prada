@@ -3,6 +3,7 @@ package it.polimi.ingsw.utils;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.GodCard;
 import it.polimi.ingsw.model.ModelUtils;
+import it.polimi.ingsw.model.Player;
 
 import java.io.Serializable;
 import java.util.List;
@@ -24,7 +25,9 @@ public class ServerResponse implements Serializable {
     private final List<GodCard> godCards;
     private final String outMessage;
 
-    public ServerResponse(Action action, ModelUtils modelCopy, List<Cell> validMoves, List<Cell> validBuilds, List<GodCard> godCards, String outMessage) {
+    private final Player player;
+
+    public ServerResponse(Action action, ModelUtils modelCopy, List<Cell> validMoves, List<Cell> validBuilds, List<GodCard> godCards, String outMessage, Player player) {
 
         this.action = action;
         this.modelCopy = modelCopy;
@@ -32,6 +35,7 @@ public class ServerResponse implements Serializable {
         this.validBuilds = validBuilds;
         this.godCards = godCards;
         this.outMessage = outMessage;
+        this.player = player;
     }
 
     public Action getAction() {
@@ -56,6 +60,10 @@ public class ServerResponse implements Serializable {
 
     public String getOutMessage() {
         return this.outMessage;
+    }
+
+    public Player getPlayer() {
+        return this.player;
     }
 
 }
