@@ -8,28 +8,30 @@ import java.util.*;
 
 public class BattlefieldTest {
 
-    Battlefield battlefield;
-    Player p1,p2,p3;
-    Token t1,t2,t3,t11,t22,t33;
-    List<Player> players;
+    Battlefield battlefield, emptyBattlefield;
+    Player p1,p2,p3, p4, p5;
+    Token t1,t2,t3,t11,t22,t33, t4;
+    List<Player> players, playersWithoutTokens;
 
     @Before
     public void setUp() throws Exception {
 
         battlefield = new Battlefield();
+        emptyBattlefield = new Battlefield();
 
         p1 = new Player("Alpha",TokenColor.RED, null);
         p2 = new Player("Beta",TokenColor.BLUE, null);
         p3 = new Player("Charlie",TokenColor.YELLOW, null);
+        p4 = new Player("IDonTHaveToken", TokenColor.YELLOW, null);
+        p5 = new Player("IDonTHaveTokenToo", TokenColor.BLUE, null);
 
         t1 = new Token(TokenColor.RED);
         t11 = new Token(TokenColor.RED);
-
         t2 = new Token(TokenColor.BLUE);
         t22 = new Token(TokenColor.BLUE);
-
         t3 = new Token(TokenColor.YELLOW);
         t33 = new Token(TokenColor.YELLOW);
+        t4 = new Token(TokenColor.YELLOW);
 
         t1.setTokenPosition(battlefield.getCell(1,0));
         t11.setTokenPosition(battlefield.getCell(0,1));
@@ -37,6 +39,7 @@ public class BattlefieldTest {
         t22.setTokenPosition(battlefield.getCell(4,1));
         t3.setTokenPosition(battlefield.getCell(2,4));
         t33.setTokenPosition(battlefield.getCell(0,3));
+        t4.setTokenPosition(null);
 
         battlefield.getCell(1,0).setOccupied();
         battlefield.getCell(0,1).setOccupied();
@@ -64,25 +67,46 @@ public class BattlefieldTest {
         p2.setToken2(t22);
         p3.setToken1(t3);
         p3.setToken2(t33);
+        p4.setToken1(t4);
 
-        players = new ArrayList<Player>();
+        players = new ArrayList<>();
         players.add(p1);
         players.add(p2);
         players.add(p3);
+        playersWithoutTokens = new ArrayList<>();
+        playersWithoutTokens.add(p4);
+        playersWithoutTokens.add(p5);
 
         battlefield.setPlayers(players);
+        emptyBattlefield.setPlayers(playersWithoutTokens);
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() throws Exception { }
 
-    }
-
+    /**
+     * Test that prints the CLI, i.e. the battlefield
+     * with some different heights and tokens
+     */
     @Test
     public void PrintCLITest(){
         battlefield.printCLI();
     }
 
+    /**
+     * Test that prints the CLI, i.e. an empty battlefield
+     * just created to start the game
+     */
+    @Test
+    public void PrintEmptyCLITest() {
+        emptyBattlefield.printCLI();
+    }
+
+
+    /**
+     * Test that prints the CLI, this time with the
+     * valid moves (GREEN CELLS) for the selected token
+     */
     @Test
     public void PrintCLITestWithValidMoves(/* List<Cell> validMoves */) throws CellOutOfBattlefieldException {
 

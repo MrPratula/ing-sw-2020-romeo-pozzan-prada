@@ -505,19 +505,31 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                     System.out.print(" ");
                 } else {
                     for (Player p : allPlayers) {
-                        if ( (p.getToken1().getTokenPosition().getPosX() == x &&
-                              p.getToken1().getTokenPosition().getPosY() == y)  ||
-                             (p.getToken2().getTokenPosition().getPosX() == x &&
-                              p.getToken2().getTokenPosition().getPosY() == y)  ) {
-                                System.out.print("\033[047m");          //on a white board
-                                System.out.print("\033[030m");          //white written
-                                TokenColor t = p.getTokenColor();
-                                System.out.print(t.getEscape());        //on a board of the player color
-                                System.out.print(" ");
-                                System.out.print(battlefield.getCell(x,y).getHeight());
-                                System.out.print(" ");
-                                System.out.print("\033[047m");          //on a white board
-                        }
+                        //if ( p.getToken1()!=null || p.getToken2()!=null ) {
+                            if ( p.getToken1().getTokenPosition().getPosX() == x &&
+                                 p.getToken1().getTokenPosition().getPosY() == y ) {
+                                    System.out.print("\033[047m");          //on a white board
+                                    System.out.print("\033[030m");          //white written
+                                    TokenColor t = p.getTokenColor();
+                                    System.out.print(t.getEscape());        //on a board of the player color
+                                    System.out.print(" ");
+                                    System.out.print(battlefield.getCell(x, y).getHeight());
+                                    System.out.print(" ");
+                                    System.out.print("\033[047m");          //on a white board
+                            } else{
+                                    if ( p.getToken2().getTokenPosition().getPosX() == x &&
+                                         p.getToken2().getTokenPosition().getPosY() == y ) {
+                                        System.out.print("\033[047m");          //on a white board
+                                        System.out.print("\033[030m");          //white written
+                                        TokenColor t = p.getTokenColor();
+                                        System.out.print(t.getEscape());        //on a board of the player color
+                                        System.out.print(" ");
+                                        System.out.print(battlefield.getCell(x, y).getHeight());
+                                        System.out.print(" ");
+                                        System.out.print("\033[047m");          //on a white board
+                                    }
+                            }
+                       //}
                     }
                 }
             }

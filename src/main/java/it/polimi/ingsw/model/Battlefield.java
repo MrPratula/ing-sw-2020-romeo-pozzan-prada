@@ -112,10 +112,9 @@ public class Battlefield implements Serializable {
                     System.out.print(" ");
                 } else {
                     for (Player p : players) {
-                        if ( (p.getToken1().getTokenPosition().getPosX() == x &&
-                              p.getToken1().getTokenPosition().getPosY() == y)  ||
-                             (p.getToken2().getTokenPosition().getPosX() == x &&
-                              p.getToken2().getTokenPosition().getPosY() == y)  ) {
+                        //if ( p.getToken1()!=null || p.getToken2()!=null ) {
+                        if ( p.getToken1().getTokenPosition().getPosX() == x &&
+                             p.getToken1().getTokenPosition().getPosY() == y ) {
                             System.out.print("\033[047m");          //on a white board
                             System.out.print("\033[030m");          //white written
                             TokenColor t = p.getTokenColor();
@@ -125,8 +124,8 @@ public class Battlefield implements Serializable {
                             System.out.print(" ");
                             System.out.print("\033[047m");          //on a white board
                         } else {
-                            if (p.getToken2().getTokenPosition().getPosX() == x &&
-                                    p.getToken2().getTokenPosition().getPosY() == y) {
+                            if ( p.getToken2().getTokenPosition().getPosX() == x &&
+                                 p.getToken2().getTokenPosition().getPosY() == y ) {
                                 System.out.print("\033[047m");          //on a white board
                                 System.out.print("\033[030m");          //white written
                                 TokenColor t = p.getTokenColor();
@@ -137,6 +136,7 @@ public class Battlefield implements Serializable {
                                 System.out.print("\033[047m");          //on a white board
                             }
                         }
+                    //}
                     }
                 }
             }
@@ -147,16 +147,8 @@ public class Battlefield implements Serializable {
         System.out.print("\033[030m");             //white written
         System.out.print("\033[049m");           //on a black board
         System.out.print("   0  1  2  3  4\n");
-
-        //test for background colors
-    /*    for(int m=40; m<49;m++) {
-            System.out.print("\033[");
-            System.out.print(m);
-            System.out.print("m");
-            System.out.println();
-        }
-    */
     }
+
 
     /**
      * The same as normal printCLI(), but he prints on
@@ -204,10 +196,8 @@ public class Battlefield implements Serializable {
                         System.out.print(" ");
                     } else {
                         for (Player p : players) {
-                            if ( (p.getToken1().getTokenPosition().getPosX() == x  &&
-                                  p.getToken1().getTokenPosition().getPosY() == y)  ||
-                                 (p.getToken2().getTokenPosition().getPosX() == x  &&
-                                  p.getToken2().getTokenPosition().getPosY() == y)     ) {
+                            if ( p.getToken1().getTokenPosition().getPosX() == x  &&
+                                 p.getToken1().getTokenPosition().getPosY() == y ) {
                                     System.out.print("\033[047m");          //on a white board
                                     System.out.print("\033[030m");          //white written
                                     TokenColor t = p.getTokenColor();
@@ -216,7 +206,20 @@ public class Battlefield implements Serializable {
                                     System.out.print(battlefield[x][y].getHeight());
                                     System.out.print(" ");
                                     System.out.print("\033[047m");          //on a white board
+                            } else{
+                                  if( p.getToken2().getTokenPosition().getPosX() == x  &&
+                                      p.getToken2().getTokenPosition().getPosY() == y ){
+                                      System.out.print("\033[047m");          //on a white board
+                                      System.out.print("\033[030m");          //white written
+                                      TokenColor t = p.getTokenColor();
+                                      System.out.print(t.getEscape());        //on a board of the player color
+                                      System.out.print(" ");
+                                      System.out.print(battlefield[x][y].getHeight());
+                                      System.out.print(" ");
+                                      System.out.print("\033[047m");          //on a white board
+                                  }
                             }
+
                         }
                     }
                 }
