@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
+import it.polimi.ingsw.controller.ReachHeightLimitException;
 
 import java.io.Serializable;
 import java.util.*;
@@ -85,7 +86,7 @@ public class Battlefield implements Serializable {
      *    of the same colors.
      *  -if the height is X, it means that there is a dome.
      */
-    public void printCLI() {
+    public void printCLI() throws ReachHeightLimitException {
 
         System.out.print("\n");
 
@@ -100,32 +101,31 @@ public class Battlefield implements Serializable {
                     System.out.print("\033[047m");          //on white board
                     System.out.print("\033[047m");          //on a white board
                     System.out.print(" ");
-                    if (battlefield[x][y].getHeight() < 3) {                     // if height is <=3 i print it
-                        System.out.print(battlefield[x][y].getHeight());
+                    if (battlefield[x][y].getIsDome()) {
+                        System.out.print("X");
                     } else {                                                      // else
-                        if (!battlefield[x][y].getIsDome()) {
+                        if (battlefield[x][y].getHeight()<=3) {
                             System.out.print(battlefield[x][y].getHeight());
-                        } else {
-                            System.out.print("X");
+                        }
+                        else{ throw new ReachHeightLimitException("Illegal height");
                         }
                     }
                     System.out.print(" ");
                 } else {
                     for (Player p : players) {
-                        //if ( p.getToken1()!=null || p.getToken2()!=null ) {
-                        if ( p.getToken1().getTokenPosition().getPosX() == x &&
-                             p.getToken1().getTokenPosition().getPosY() == y ) {
-                            System.out.print("\033[047m");          //on a white board
-                            System.out.print("\033[030m");          //white written
-                            TokenColor t = p.getTokenColor();
-                            System.out.print(t.getEscape());        //on a board of the player color
-                            System.out.print(" ");
-                            System.out.print(battlefield[x][y].getHeight());
-                            System.out.print(" ");
-                            System.out.print("\033[047m");          //on a white board
-                        } else {
-                            if ( p.getToken2().getTokenPosition().getPosX() == x &&
-                                 p.getToken2().getTokenPosition().getPosY() == y ) {
+                        if ( p.getToken1().getTokenPosition()!=null)  {
+                            if ( p.getToken1().getTokenPosition().equals(battlefield[x][y]) ) {
+                                System.out.print("\033[047m");          //on a white board
+                                System.out.print("\033[030m");          //white written
+                                TokenColor t = p.getTokenColor();
+                                System.out.print(t.getEscape());        //on a board of the player color
+                                System.out.print(" ");
+                                System.out.print(battlefield[x][y].getHeight());
+                                System.out.print(" ");
+                                System.out.print("\033[047m");          //on a white board
+                            }
+                        } if (p.getToken2().getTokenPosition() != null) {
+                            if ( p.getToken2().getTokenPosition().equals(battlefield[x][y]) ) {
                                 System.out.print("\033[047m");          //on a white board
                                 System.out.print("\033[030m");          //white written
                                 TokenColor t = p.getTokenColor();
@@ -136,7 +136,6 @@ public class Battlefield implements Serializable {
                                 System.out.print("\033[047m");          //on a white board
                             }
                         }
-                    //}
                     }
                 }
             }
@@ -155,7 +154,7 @@ public class Battlefield implements Serializable {
      * a green backgrounds all the cells in the ValidMoves param
      * @param validMoves: cells that have to be printed on a green background
      */
-    public void printValidMovesCLI(List<Cell> validMoves, Token selectedToken){
+    public void printValidMovesCLI(List<Cell> validMoves) throws ReachHeightLimitException {
 
         System.out.print("\n");
 
@@ -184,20 +183,20 @@ public class Battlefield implements Serializable {
                         System.out.print("\033[047m");          //on white board
                         System.out.print("\033[047m");          //on a white board
                         System.out.print(" ");
-                        if (battlefield[x][y].getHeight() < 3) {                     // if height is <=3 i print it
-                            System.out.print(battlefield[x][y].getHeight());
+                        if (battlefield[x][y].getIsDome()) {
+                            System.out.print("X");
                         } else {                                                      // else
-                            if (!battlefield[x][y].getIsDome()) {
+                            if (battlefield[x][y].getHeight()<=3) {
                                 System.out.print(battlefield[x][y].getHeight());
-                            } else {
-                                System.out.print("X");
+                            }
+                            else{ throw new ReachHeightLimitException("Illegal height");
                             }
                         }
                         System.out.print(" ");
                     } else {
                         for (Player p : players) {
-                            if ( p.getToken1().getTokenPosition().getPosX() == x  &&
-                                 p.getToken1().getTokenPosition().getPosY() == y ) {
+                            if ( p.getToken1().getTokenPosition()!=null ) {
+                                if (p.getToken1().getTokenPosition().equals(battlefield[x][y])) {
                                     System.out.print("\033[047m");          //on a white board
                                     System.out.print("\033[030m");          //white written
                                     TokenColor t = p.getTokenColor();
@@ -206,20 +205,20 @@ public class Battlefield implements Serializable {
                                     System.out.print(battlefield[x][y].getHeight());
                                     System.out.print(" ");
                                     System.out.print("\033[047m");          //on a white board
-                            } else{
-                                  if( p.getToken2().getTokenPosition().getPosX() == x  &&
-                                      p.getToken2().getTokenPosition().getPosY() == y ){
-                                      System.out.print("\033[047m");          //on a white board
-                                      System.out.print("\033[030m");          //white written
-                                      TokenColor t = p.getTokenColor();
-                                      System.out.print(t.getEscape());        //on a board of the player color
-                                      System.out.print(" ");
-                                      System.out.print(battlefield[x][y].getHeight());
-                                      System.out.print(" ");
-                                      System.out.print("\033[047m");          //on a white board
-                                  }
+                                }
                             }
-
+                            if(p.getToken2().getTokenPosition()!=null) {
+                                if (p.getToken2().getTokenPosition().equals(battlefield[x][y])) {
+                                    System.out.print("\033[047m");          //on a white board
+                                    System.out.print("\033[030m");          //white written
+                                    TokenColor t = p.getTokenColor();
+                                    System.out.print(t.getEscape());        //on a board of the player color
+                                    System.out.print(" ");
+                                    System.out.print(battlefield[x][y].getHeight());
+                                    System.out.print(" ");
+                                    System.out.print("\033[047m");          //on a white board
+                                }
+                            }
                         }
                     }
                 }
@@ -231,15 +230,6 @@ public class Battlefield implements Serializable {
         System.out.print("\033[030m");             //white written
         System.out.print("\033[049m");           //on a black board
         System.out.print("   0  1  2  3  4\n");
-
-        //test for background colors
-    /*    for(int m=40; m<49;m++) {
-            System.out.print("\033[");
-            System.out.print(m);
-            System.out.print("m");
-            System.out.println();
-        }
-    */
     }
 
 

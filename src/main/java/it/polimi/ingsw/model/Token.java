@@ -23,6 +23,7 @@ public class Token implements Serializable {
      */
     public Token(TokenColor color){
         this.tokenColor = color;
+        this.tokenPosition = null;
     }
 
 

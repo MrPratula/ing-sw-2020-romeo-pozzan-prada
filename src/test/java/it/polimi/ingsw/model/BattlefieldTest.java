@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
+import it.polimi.ingsw.controller.ReachHeightLimitException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,22 +9,19 @@ import java.util.*;
 
 public class BattlefieldTest {
 
-    Battlefield battlefield, emptyBattlefield;
-    Player p1,p2,p3, p4, p5;
-    Token t1,t2,t3,t11,t22,t33, t4;
-    List<Player> players, playersWithoutTokens;
+    Battlefield battlefield;
+    Player p1,p2,p3;
+    Token t1,t2,t3,t11,t22,t33;
+    List<Player> players;
 
     @Before
     public void setUp() throws Exception {
 
         battlefield = new Battlefield();
-        emptyBattlefield = new Battlefield();
 
         p1 = new Player("Alpha",TokenColor.RED, null);
         p2 = new Player("Beta",TokenColor.BLUE, null);
         p3 = new Player("Charlie",TokenColor.YELLOW, null);
-        p4 = new Player("IDonTHaveToken", TokenColor.YELLOW, null);
-        p5 = new Player("IDonTHaveTokenToo", TokenColor.BLUE, null);
 
         t1 = new Token(TokenColor.RED);
         t11 = new Token(TokenColor.RED);
@@ -31,7 +29,6 @@ public class BattlefieldTest {
         t22 = new Token(TokenColor.BLUE);
         t3 = new Token(TokenColor.YELLOW);
         t33 = new Token(TokenColor.YELLOW);
-        t4 = new Token(TokenColor.YELLOW);
 
         t1.setTokenPosition(battlefield.getCell(1,0));
         t11.setTokenPosition(battlefield.getCell(0,1));
@@ -39,7 +36,6 @@ public class BattlefieldTest {
         t22.setTokenPosition(battlefield.getCell(4,1));
         t3.setTokenPosition(battlefield.getCell(2,4));
         t33.setTokenPosition(battlefield.getCell(0,3));
-        t4.setTokenPosition(null);
 
         battlefield.getCell(1,0).setOccupied();
         battlefield.getCell(0,1).setOccupied();
@@ -54,12 +50,12 @@ public class BattlefieldTest {
         battlefield.getCell(2,2).setHeight(2);
         battlefield.getCell(3,3).setHeight(3);
         battlefield.getCell(4,4).setHeight(3);
-        battlefield.getCell(4,2).setHeight(1);
+        battlefield.getCell(0,4).setHeight(1);
         battlefield.getCell(4,4).incrementHeight();
         battlefield.getCell(0,1).setHeight(2);
         battlefield.getCell(3,4).setHeight(1);
         battlefield.getCell(2,1).setIsDome();
-        battlefield.getCell(2,4).setIsDome();
+        battlefield.getCell(2,0).setIsDome();
 
         p1.setToken1(t1);
         p1.setToken2(t11);
@@ -67,40 +63,28 @@ public class BattlefieldTest {
         p2.setToken2(t22);
         p3.setToken1(t3);
         p3.setToken2(t33);
-        p4.setToken1(t4);
 
         players = new ArrayList<>();
         players.add(p1);
         players.add(p2);
         players.add(p3);
-        playersWithoutTokens = new ArrayList<>();
-        playersWithoutTokens.add(p4);
-        playersWithoutTokens.add(p5);
 
         battlefield.setPlayers(players);
-        emptyBattlefield.setPlayers(playersWithoutTokens);
     }
 
     @After
     public void tearDown() throws Exception { }
+
 
     /**
      * Test that prints the CLI, i.e. the battlefield
      * with some different heights and tokens
      */
     @Test
-    public void PrintCLITest(){
+    public void PrintCLITest() throws ReachHeightLimitException {
         battlefield.printCLI();
     }
 
-    /**
-     * Test that prints the CLI, i.e. an empty battlefield
-     * just created to start the game
-     */
-    @Test
-    public void PrintEmptyCLITest() {
-        emptyBattlefield.printCLI();
-    }
 
 
     /**
@@ -108,7 +92,7 @@ public class BattlefieldTest {
      * valid moves (GREEN CELLS) for the selected token
      */
     @Test
-    public void PrintCLITestWithValidMoves(/* List<Cell> validMoves */) throws CellOutOfBattlefieldException {
+    public void PrintCLITestWithValidMoves(/* List<Cell> validMoves */) throws CellOutOfBattlefieldException, ReachHeightLimitException {
 
         List<Cell> validMoves = new ArrayList<>(); //saranno passate come parametro
         validMoves.add(battlefield.getCell(3,1));
@@ -117,7 +101,9 @@ public class BattlefieldTest {
         validMoves.add(battlefield.getCell(4,3));
         validMoves.add(battlefield.getCell(4,2));
 
-        battlefield.printValidMovesCLI(validMoves,t2);
+        battlefield.printValidMovesCLI(validMoves);
+        // we don't care passing the selected token,
+        // we just have to print the valid moves around him
     }
 
 }
