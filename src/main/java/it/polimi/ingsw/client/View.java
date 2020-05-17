@@ -189,9 +189,15 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
              * This is called when a player has to wait for another one to pick his god card
              */
             case WAIT_OTHER_PLAYER_MOVE:{
+
                 if (serverResponse.getOutMessage()!=null){
                     System.out.println(serverResponse.getOutMessage());
                 }
+
+                if (serverResponse.getModelCopy()!=null){
+                    serverResponse.getModelCopy().getBattlefield().printCLI();
+                }
+
                 System.out.println("Another player is making his choice.\nPlease wait your turn...");
                 break;
             }
@@ -228,6 +234,46 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                         }
                     }
                 }
+                break;
+            }
+
+
+            case PLACE_YOUR_TOKEN:{
+
+                if (serverResponse.getOutMessage()!=null){
+                    System.out.println(serverResponse.getOutMessage());
+                }
+
+                boolean needToLoop = true;
+                Scanner scanner = new Scanner(System.in);
+                String message;
+                String[] messageParsed;
+                Cell targetCell = null;
+
+                while (needToLoop) {
+
+                    System.out.println(serverResponse.getAction().toString());
+                    serverResponse.getModelCopy().getBattlefield().printCLI();
+
+                    try {
+                        message = scanner.nextLine();
+                        messageParsed = message.split(",");
+
+                        targetCell = serverResponse.getModelCopy().getBattlefield().getCell(Integer.parseInt(messageParsed[0]), Integer.parseInt(messageParsed[1]));
+
+                    } catch (Exception exception) {
+                        targetCell = null;
+                    }
+
+                    if (targetCell!= null) {
+                        needToLoop = false;
+                    }
+                }
+
+                playerAction = new PlayerAction(Action.TOKEN_PLACED, this.player, null, null, 0, 0, targetCell, null, false, null);
+                notifyClient(playerAction);
+
+
                 break;
             }
 

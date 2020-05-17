@@ -18,6 +18,7 @@ public enum Action implements Serializable {
     NUMBER_OF_PLAYERS("The first player communicated how many players there are"),
     MY_NAME("Inside this message there is my name"),
     TOKEN_SET_UP("A player selected the set-up position for the token"),
+    TOKEN_PLACED("A token has been placed"),
 
     PROMETHEUS_POWER("Prometheus wants to use his God power!"),
     SELECT_TOKEN("A player has selected a token"),
@@ -42,7 +43,6 @@ public enum Action implements Serializable {
     WELCOME("Welcome to Santorini! What is your name?"),
     HOW_MANY_PLAYERS("Do you want to make a 2 players game or a 3 players game? [2][3]"),
 
-    CONNECTION_CLOSE("Connection closed from SERVER side!"),
     NUMBER_RECEIVED("Waiting for the players to begin..."),
     WAIT_PLEASE("Please wait..."),
     WAIT_OTHER_PLAYER_MOVE("Someone else is performing their move. Please wait your turn..."),
@@ -56,6 +56,7 @@ public enum Action implements Serializable {
     WRONG_NUMBER_OF_PLAYER("Please insert 2 players or 3 players..."),
     WRONG_INPUT("Please insert a valid choice!"),
     TOKEN_NOT_MOVABLE("You can not move this token, please select a movable one! (x,y)"),
+    CONNECTION_CLOSE("Connection closed from SERVER side!"),
 
 
     /*************GUI**************/

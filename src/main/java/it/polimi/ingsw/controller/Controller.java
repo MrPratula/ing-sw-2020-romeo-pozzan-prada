@@ -43,8 +43,10 @@ public class Controller implements Observer<PlayerAction> {
                     break;
                 }
 
-                case TOKEN_SET_UP:
-
+                case TOKEN_PLACED:{
+                    model.placeToken(playerAction);
+                    break;
+                }
 
                 case PROMETHEUS_POWER:{
                     ///////////////////////////////

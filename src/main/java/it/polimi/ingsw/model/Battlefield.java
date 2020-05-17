@@ -16,7 +16,6 @@ public class Battlefield implements Serializable {
 
     private List<Player> players;
 
-
     //just to make the test
     public void setPlayers(List<Player> players) {
         this.players = players;

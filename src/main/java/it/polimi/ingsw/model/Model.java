@@ -11,6 +11,7 @@ import it.polimi.ingsw.gameAction.move.ArtemisMoves;
 import it.polimi.ingsw.gameAction.move.MoveContext;
 import it.polimi.ingsw.gameAction.move.SimpleMoves;
 import it.polimi.ingsw.gameAction.win.*;
+import it.polimi.ingsw.server.Server;
 import it.polimi.ingsw.utils.*;
 import it.polimi.ingsw.utils.Observable;
 
@@ -322,7 +323,6 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
                     allGodCards.add(p.getMyGodCard());
 
-
                     if (p.getTokenColor().equals(getTurn())){
                         playingConnection.get(p.getUsername()).asyncSend(firstTokenPlacement);
 
@@ -366,13 +366,110 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                 text.append("\n").append(god.toString());
             }
             ServerResponse nextGodChoice = new ServerResponse(Action.SELECT_YOUR_GOD_CARD, null, null, null, allGodCards, text.toString(), null);
-            notify(nextGodChoice);
+
+            for (Player p: allPlayers){
+
+                if (p.getTokenColor().equals(getTurn())){
+                    playingConnection.get(p.getUsername()).asyncSend(nextGodChoice);
+
+                }
+                else{
+                    ServerResponse waitResponse = new ServerResponse(Action.WAIT_OTHER_PLAYER_MOVE, null, null, null, null, text.toString(), null);
+                    playingConnection.get(p.getUsername()).asyncSend(waitResponse);
+                }
+            }
         }
     }
 
 
+    /**
+     *
+     */
+    public void placeToken(PlayerAction playerAction) throws WrongNumberPlayerException, ImpossibleTurnException {
+
+        Cell targetCell = playerAction.getFirstCell();
+        ServerResponse waitResponse = new ServerResponse(Action.WAIT_OTHER_PLAYER_MOVE, null, null, null, null, null, null);
+
+        // If the cell is correct
+        if (targetCell!=null && battlefield.getCell(targetCell)!=null){
 
 
+            // If the first token has a position and the second not, it is assigned and the turn is updated
+            if (getPlayerInTurn().getToken1().getTokenPosition()!=null && getPlayerInTurn().getToken2().getTokenPosition()==null) {
+                getPlayerInTurn().getToken2().setTokenPosition(targetCell);
+                battlefield.getCell(targetCell).setOccupied();
+                updateTurn();
+            }
+
+
+            // If the first token has no position, it is assigned
+            if (getPlayerInTurn().getToken1().getTokenPosition()==null) {
+                getPlayerInTurn().getToken1().setTokenPosition(targetCell);
+                battlefield.getCell(targetCell).setOccupied();
+            }
+
+            boolean gameCanStart = false;
+
+            for (Player p: allPlayers){
+
+                // If all the tokens of all players have a position the game can start
+                if (p.getToken1().getTokenPosition()==null || p.getToken2().getTokenPosition()==null){
+                    break;
+                }
+                // If someone need to place his token, he has to do it before the game start
+                else{
+                    gameCanStart=true;
+                }
+            }
+
+            if (gameCanStart){
+
+                ServerResponse gameStart = new ServerResponse(Action.ASK_FOR_MOVE, getCopy(), null, null, null,null, getPlayerInTurn());
+
+                for (Player p: allPlayers){
+
+                    if (p.getTokenColor().equals(getTurn())){
+                        playingConnection.get(p.getUsername()).asyncSend(gameStart);
+
+                    }
+                    else{
+                        playingConnection.get(p.getUsername()).asyncSend(waitResponse);
+                    }
+                }
+
+            } else {
+
+                ServerResponse tokenPlacement = new ServerResponse(Action.PLACE_YOUR_TOKEN, getCopy(), null, null, null,null, null);
+
+                // Tell the player he has to play and the opponent to wait
+                for (Player p: allPlayers){
+
+                    if (p.getTokenColor().equals(getTurn())){
+                        playingConnection.get(p.getUsername()).asyncSend(tokenPlacement);
+
+                    }
+                    else{
+                        playingConnection.get(p.getUsername()).asyncSend(waitResponse);
+                    }
+                }
+            }
+
+        }
+        // If the cell is not correct
+        else {
+            ServerResponse tokenPlacement = new ServerResponse(Action.PLACE_YOUR_TOKEN, getCopy(), null, null, null,null, null);
+            for (Player p: allPlayers){
+
+                if (p.getTokenColor().equals(getTurn())){
+                    playingConnection.get(p.getUsername()).asyncSend(tokenPlacement);
+
+                }
+                else{
+                    playingConnection.get(p.getUsername()).asyncSend(waitResponse);
+                }
+            }
+        }
+    }
 
 
     /**
