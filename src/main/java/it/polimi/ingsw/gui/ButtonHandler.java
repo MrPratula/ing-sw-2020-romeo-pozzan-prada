@@ -31,9 +31,6 @@ public class ButtonHandler implements ActionListener {
     }
 
     public void IncrementHeight() throws CellHeightException, ReachHeightLimitException {
-        button.setBackground(Color.YELLOW);
-        //button.setIcon(pics[2]);
-
         if(button.cell.getHeight()==0){
             button.setIcon(pics[1]);
             button.cell.incrementHeight();
