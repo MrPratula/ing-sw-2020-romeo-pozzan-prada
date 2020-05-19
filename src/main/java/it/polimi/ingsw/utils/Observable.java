@@ -21,7 +21,8 @@ public class Observable<Message> {
         }
     }
 
-    protected void notify(Message message) throws CellOutOfBattlefieldException, ImpossibleTurnException, ReachHeightLimitException, CellHeightException, WrongNumberPlayerException, IOException {
+    // cercare valori di default
+    protected void notify(Message message, List<Observer> receivers) throws CellOutOfBattlefieldException, ImpossibleTurnException, ReachHeightLimitException, CellHeightException, WrongNumberPlayerException, IOException {
         synchronized (observers) {
             for (Observer<Message> observer : observers) {
                 observer.update(message);

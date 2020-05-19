@@ -11,7 +11,6 @@ import it.polimi.ingsw.gameAction.move.ArtemisMoves;
 import it.polimi.ingsw.gameAction.move.MoveContext;
 import it.polimi.ingsw.gameAction.move.SimpleMoves;
 import it.polimi.ingsw.gameAction.win.*;
-import it.polimi.ingsw.server.Server;
 import it.polimi.ingsw.utils.*;
 import it.polimi.ingsw.utils.Observable;
 
@@ -26,7 +25,7 @@ import java.util.*;
 public class Model extends Observable<ServerResponse> implements Cloneable {
 
     private static boolean didAthenaMovedUp;
-    private final Battlefield battlefield;
+    private Battlefield battlefield;
     private TokenColor turn;
     private List<Player> allPlayers = new ArrayList<>();
     private List<GodCard> allGodCards = new ArrayList<>();
@@ -41,6 +40,10 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     }
 
     /*    GETTER     */
+
+    public void setBattlefield(Battlefield battlefield){
+        this.battlefield = battlefield;
+    }
 
     public List<Player> getAllPlayers() {
         return allPlayers;

@@ -1,4 +1,5 @@
 package it.polimi.ingsw.model;
+import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
 import it.polimi.ingsw.controller.ReachHeightLimitException;
 import org.junit.After;
@@ -13,11 +14,16 @@ public class BattlefieldTest {
     Player p1,p2,p3;
     Token t1,t2,t3,t11,t22,t33;
     List<Player> players;
+    Model model;
+    View view;
 
     @Before
     public void setUp() throws Exception {
 
         battlefield = new Battlefield();
+        model = new Model();
+        model.setBattlefield(battlefield);
+        view = new View();
 
         p1 = new Player("Alpha",TokenColor.RED, null);
         p2 = new Player("Beta",TokenColor.BLUE, null);
@@ -69,7 +75,9 @@ public class BattlefieldTest {
         players.add(p2);
         players.add(p3);
 
-        battlefield.setPlayers(players);
+        for(Player p: players){
+            model.addPlayer(p);
+        }
     }
 
     @After
@@ -81,8 +89,8 @@ public class BattlefieldTest {
      * with some different heights and tokens
      */
     @Test
-    public void PrintCLITest() throws ReachHeightLimitException {
-        battlefield.printCLI();
+    public void PrintCLITest() throws ReachHeightLimitException, CellOutOfBattlefieldException {
+        view.printCLI(model.getBattlefield(), model.getAllPlayers());
     }
 
 
@@ -101,7 +109,8 @@ public class BattlefieldTest {
         validMoves.add(battlefield.getCell(4,3));
         validMoves.add(battlefield.getCell(4,2));
 
-        battlefield.printValidMovesCLI(validMoves);
+        //view.printValidMovesCLI(model.getBattlefield(), model.getAllPlayers(), validMoves);
+
         // we don't care passing the selected token,
         // we just have to print the valid moves around him
     }

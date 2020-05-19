@@ -195,7 +195,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                 }
 
                 if (serverResponse.getModelCopy()!=null){
-                    serverResponse.getModelCopy().getBattlefield().printCLI();
+                    printCLI(serverResponse.getModelCopy().getBattlefield(), serverResponse.getModelCopy().getAllPlayers());
                 }
 
                 System.out.println("Another player is making his choice.\nPlease wait your turn...");
@@ -253,7 +253,8 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                 while (needToLoop) {
 
                     System.out.println(serverResponse.getAction().toString());
-                    serverResponse.getModelCopy().getBattlefield().printCLI();
+                    printCLI(serverResponse.getModelCopy().getBattlefield(), serverResponse.getModelCopy().getAllPlayers());
+
 
                     try {
                         message = scanner.nextLine();
@@ -283,7 +284,8 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
             case SET_UP: {
                 //prints the battlefield
-                serverResponse.getModelCopy().getBattlefield().printCLI();
+                printCLI(serverResponse.getModelCopy().getBattlefield(), serverResponse.getModelCopy().getAllPlayers());
+
                 //prints the message for the user
                 System.out.print(serverResponse.getAction().getInfo());
                 //compute the user input
@@ -313,7 +315,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
             case ASK_FOR_PROMETHEUS_POWER:{
                 //prints the battlefield
-                serverResponse.getModelCopy().getBattlefield().printCLI();
+                printCLI(serverResponse.getModelCopy().getBattlefield(), serverResponse.getModelCopy().getAllPlayers());
                 //prints the message for the user
                 System.out.print(serverResponse.getAction().getInfo());
                 //compute the user input, IN THIS CASE IT'S JUST yes/no
@@ -363,7 +365,8 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
             case START_NEW_TURN:                       //casi mergeati, l'user deve fare la stessa azione, quindi li ho accumunati
             case TOKEN_NOT_MOVABLE: {
                 //prints the battlefield
-                serverResponse.getModelCopy().getBattlefield().printCLI();
+                printCLI(serverResponse.getModelCopy().getBattlefield(), serverResponse.getModelCopy().getAllPlayers());
+
                 //prints the message for the user
                 System.out.print(serverResponse.getAction().getInfo());
                 //compute the user input
@@ -387,7 +390,8 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
             case ASK_FOR_MOVE: {
                 //prints the battlefield
-                serverResponse.getModelCopy().getBattlefield().printCLI();
+                printCLI(serverResponse.getModelCopy().getBattlefield(), serverResponse.getModelCopy().getAllPlayers());
+
                 //prints the message for the user
                 System.out.print(serverResponse.getAction().getInfo());//compute the user input
                 String[] inputs = getUserInput();
@@ -415,7 +419,8 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
             case ASK_FOR_BUILD: {
                 //prints the battlefield
-                serverResponse.getModelCopy().getBattlefield().printCLI();
+                printCLI(serverResponse.getModelCopy().getBattlefield(), serverResponse.getModelCopy().getAllPlayers());
+
                 //prints the message for the user
                 System.out.print(serverResponse.getAction().getInfo());
                 //compute the user input
@@ -548,7 +553,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
      * a green backgrounds all the cells in the ValidMoves param
      * @param validMoves: cells that have to be printed on a green background
      */
-    public void printValidMovesCLI(List<Cell> validMoves, Battlefield battlefield, List<Player> allPlayers, Token selectedToken/*volevo evidenziarlo nella stampa, ma viene osceno, al max lo tolgo e via*/) throws ReachHeightLimitException, CellOutOfBattlefieldException {
+    public void printValidMovesCLI(List<Cell> validMoves, Battlefield battlefield, List<Player> allPlayers) throws ReachHeightLimitException, CellOutOfBattlefieldException {
 
         System.out.print("\n");
 
