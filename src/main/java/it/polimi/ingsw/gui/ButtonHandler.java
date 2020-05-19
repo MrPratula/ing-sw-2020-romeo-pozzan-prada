@@ -4,12 +4,12 @@ import it.polimi.ingsw.controller.CellHeightException;
 import it.polimi.ingsw.controller.ReachHeightLimitException;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
 public class ButtonHandler implements ActionListener {
+
     CellButton button;
     // Array with all the pics
     ImageIcon[] pics = new ImageIcon[8];
@@ -22,7 +22,7 @@ public class ButtonHandler implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         try {
-            IncrementHeight();
+            incrementHeight();
         } catch (CellHeightException cellHeightException) {
             cellHeightException.printStackTrace();
         } catch (ReachHeightLimitException reachHeightLimitException) {
@@ -30,7 +30,7 @@ public class ButtonHandler implements ActionListener {
         }
     }
 
-    public void IncrementHeight() throws CellHeightException, ReachHeightLimitException {
+    public void incrementHeight() throws CellHeightException, ReachHeightLimitException {
         if(button.cell.getHeight()==0){
             button.setIcon(pics[1]);
             button.cell.incrementHeight();

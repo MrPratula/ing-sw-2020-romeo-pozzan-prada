@@ -27,7 +27,7 @@ public class GameFrame extends JFrame {
 
     // Array with all the pics
     ImageIcon level0 = new ImageIcon("C:\\Users\\ricca\\Desktop\\gui\\level0.png");
-    ImageIcon tokerRed = new ImageIcon("C:\\Users\\ricca\\Desktop\\gui\\tokenRed.png");
+    ImageIcon tokenRed = new ImageIcon("C:\\Users\\ricca\\Desktop\\gui\\tokenRed.png");
 
 
     private Battlefield battlefield; ///////////////////////////////////
@@ -63,7 +63,7 @@ public class GameFrame extends JFrame {
         }
 
         //try to put a token
-        buttons[prevI][prevJ].setIcon(tokerRed);
+        buttons[prevI][prevJ].setIcon(tokenRed);
 
         mainPanel.add(battlefieldPanel, BorderLayout.NORTH);
         mainPanel.add(messageLabel, BorderLayout.SOUTH);
