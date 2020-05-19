@@ -32,6 +32,7 @@ public class RemoteView extends Observable<PlayerAction> implements Observer<Ser
         this.server = server;
     }
 
+
     /**
      * The model notifies the remote view with a ServerResponse.
      * It is received here and it is sent asynchronously via the connection to the client.
