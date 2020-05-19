@@ -195,7 +195,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                 }
 
                 if (serverResponse.getModelCopy()!=null){
-                    printCLI(serverResponse.getModelCopy().getBattlefield(), serverResponse.getModelCopy().getAllPlayers());
+                    printCLI(serverResponse.getModelCopy().getBattlefield(), serverResponse.getModelCopy().getAllPlayers(),null);
                 }
 
                 System.out.println("Another player is making his choice.\nPlease wait your turn...");
@@ -253,7 +253,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                 while (needToLoop) {
 
                     System.out.println(serverResponse.getAction().toString());
-                    printCLI(serverResponse.getModelCopy().getBattlefield(), serverResponse.getModelCopy().getAllPlayers());
+                    printCLI(serverResponse.getModelCopy().getBattlefield(), serverResponse.getModelCopy().getAllPlayers(),null);
 
 
                     try {
@@ -284,7 +284,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
             case SET_UP: {
                 //prints the battlefield
-                printCLI(serverResponse.getModelCopy().getBattlefield(), serverResponse.getModelCopy().getAllPlayers());
+                printCLI(serverResponse.getModelCopy().getBattlefield(), serverResponse.getModelCopy().getAllPlayers(),null);
 
                 //prints the message for the user
                 System.out.print(serverResponse.getAction().getInfo());
@@ -315,7 +315,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
             case ASK_FOR_PROMETHEUS_POWER:{
                 //prints the battlefield
-                printCLI(serverResponse.getModelCopy().getBattlefield(), serverResponse.getModelCopy().getAllPlayers());
+                printCLI(serverResponse.getModelCopy().getBattlefield(), serverResponse.getModelCopy().getAllPlayers(),null);
                 //prints the message for the user
                 System.out.print(serverResponse.getAction().getInfo());
                 //compute the user input, IN THIS CASE IT'S JUST yes/no
@@ -365,7 +365,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
             case START_NEW_TURN:                       //casi mergeati, l'user deve fare la stessa azione, quindi li ho accumunati
             case TOKEN_NOT_MOVABLE: {
                 //prints the battlefield
-                printCLI(serverResponse.getModelCopy().getBattlefield(), serverResponse.getModelCopy().getAllPlayers());
+                printCLI(serverResponse.getModelCopy().getBattlefield(), serverResponse.getModelCopy().getAllPlayers(),null);
 
                 //prints the message for the user
                 System.out.print(serverResponse.getAction().getInfo());
@@ -390,7 +390,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
             case ASK_FOR_MOVE: {
                 //prints the battlefield
-                printCLI(serverResponse.getModelCopy().getBattlefield(), serverResponse.getModelCopy().getAllPlayers());
+                printCLI(serverResponse.getModelCopy().getBattlefield(), serverResponse.getModelCopy().getAllPlayers(),null);
 
                 //prints the message for the user
                 System.out.print(serverResponse.getAction().getInfo());//compute the user input
@@ -419,7 +419,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
             case ASK_FOR_BUILD: {
                 //prints the battlefield
-                printCLI(serverResponse.getModelCopy().getBattlefield(), serverResponse.getModelCopy().getAllPlayers());
+                printCLI(serverResponse.getModelCopy().getBattlefield(), serverResponse.getModelCopy().getAllPlayers(),null);
 
                 //prints the message for the user
                 System.out.print(serverResponse.getAction().getInfo());
@@ -471,164 +471,113 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
     }
 
-   // public void printCLI() throws CellOutOfBattlefieldException {
 
     /**
-     * This method prints in stdout the battlefield when a player modifies it.
-     * It prints a grey matrix with white numbers:
-     *  -the numbers represents the cell height.
-     *  -the color of the background of a cell represents the position of
-     *   the tokens of the same colors.
-     *  -if the height is X, it means that there is a dome.
+     * Here i print the CLI for the user, depending on the parameter validMoves;
+     * if it is null, i print the normal battlefield with the tokens on;
+     * otherwise i print with a green backgrounds all the cells in the ValidMoves param.
+     *
      * @param battlefield: the board of the game
-     * @param allPlayers: all the player in game
+     * @param allPlayers: the players in the game
+     * @param validMoves: cells that have to be printed on a green background (can be null)
+     * @throws ReachHeightLimitException
      * @throws CellOutOfBattlefieldException
      */
-    public void printCLI(Battlefield battlefield, List<Player> allPlayers) throws ReachHeightLimitException,CellOutOfBattlefieldException {
+     public void printCLI(Battlefield battlefield, List<Player> allPlayers, List<Cell> validMoves) throws ReachHeightLimitException, CellOutOfBattlefieldException {
 
         System.out.print("\n");
 
         for (int y = 4; y > -1; y--) {
-            // first of all, let's print the index of the battlefield
+
             System.out.print("\033[030m");          //white written
             System.out.print(y + " ");
             for (int x = 0; x < 5; x++) {
-                // then we check if exists a token of any player in this position
-                if (!battlefield.getCell(x,y).getThereIsPlayer()) {
-                    System.out.print("\033[030m");          //black written
-                    System.out.print("\033[047m");          //on white board
-                    System.out.print("\033[047m");          //on a white board
-                    System.out.print(" ");
-                    if (battlefield.getCell(x,y).getIsDome()) {
-                        System.out.print("X");
-                    } else {                                                      // else
-                        if (battlefield.getCell(x,y).getHeight()<=3) {
-                            System.out.print(battlefield.getCell(x,y).getHeight());
-                        }
-                        else{ throw new ReachHeightLimitException("Illegal height");
-                        }
+                if (validMoves != null){
+                    if (validMoves.contains(battlefield.getCell(x,y))) {
+
+                        System.out.print("\033[047m");          //on a white board
+                        System.out.print("\033[030m");          //white written
+                        System.out.print("\033[042m");          //on a board of GREEN color
+                        System.out.print(" ");
+                        System.out.print(battlefield.getCell(x, y).getHeight());
+                        System.out.print(" ");
+                        System.out.print("\033[047m");          //on a white board
                     }
-                    System.out.print(" ");
-                } else {
-                    for (Player p : allPlayers) {
-                        if ( p.getToken1().getTokenPosition()!=null)  {
-                            if ( p.getToken1().getTokenPosition().equals(battlefield.getCell(x,y)) ) {
-                                System.out.print("\033[047m");          //on a white board
-                                System.out.print("\033[030m");          //white written
-                                TokenColor t = p.getTokenColor();
-                                System.out.print(t.getEscape());        //on a board of the player color
-                                System.out.print(" ");
-                                System.out.print(battlefield.getCell(x,y).getHeight());
-                                System.out.print(" ");
-                                System.out.print("\033[047m");          //on a white board
-                            }
-                        } if (p.getToken2().getTokenPosition() != null) {
-                            if ( p.getToken2().getTokenPosition().equals(battlefield.getCell(x,y)) ) {
-                                System.out.print("\033[047m");          //on a white board
-                                System.out.print("\033[030m");          //white written
-                                TokenColor t = p.getTokenColor();
-                                System.out.print(t.getEscape());        //on a board of the player color
-                                System.out.print(" ");
-                                System.out.print(battlefield.getCell(x,y).getHeight());
-                                System.out.print(" ");
-                                System.out.print("\033[047m");          //on a white board
-                            }
-                        }
-                    }
+                    else  printInnerCLI(battlefield,allPlayers,validMoves,x,y);
                 }
+                else  printInnerCLI(battlefield,allPlayers, null,x,y);
             }
             System.out.print("\033[039m");             //white written
-            System.out.print("\033[049m");           //on a black board
+            System.out.print("\033[049m");             //on a black board
             System.out.print("\n");
         }
         System.out.print("\033[030m");             //white written
-        System.out.print("\033[049m");           //on a black board
+        System.out.print("\033[049m");             //on a black board
         System.out.print("   0  1  2  3  4\n");
     }
 
 
-
     /**
-     * The same as normal printCLI(), but he prints on
-     * a green backgrounds all the cells in the ValidMoves param
-     * @param validMoves: cells that have to be printed on a green background
+     * Auxiliary method to print the cli, here i check the token position's
+     * @param battlefield: the board of the game
+     * @param allPlayers: the players in the game
+     * @param validMoves: cells that have to be printed on a green background (can be null)
+     * @param x: position x of the battlefield
+     * @param y: position y of the battlefield
+     * @throws CellOutOfBattlefieldException
+     * @throws ReachHeightLimitException
      */
-    public void printValidMovesCLI(List<Cell> validMoves, Battlefield battlefield, List<Player> allPlayers) throws ReachHeightLimitException, CellOutOfBattlefieldException {
+    private void printInnerCLI(Battlefield battlefield, List<Player> allPlayers, List<Cell> validMoves, int x, int y) throws CellOutOfBattlefieldException, ReachHeightLimitException {
 
-        System.out.print("\n");
-
-        for (int y = 4; y > -1; y--) {
-            // first of all, let's print the index of the battlefield
-            System.out.print("\033[030m");          //white written
-            System.out.print(y + " ");
-            for (int x = 0; x < 5; x++) {
-
-                if (validMoves.contains(battlefield.getCell(x,y))) {
-
-                    System.out.print("\033[047m");          //on a white board
-                    System.out.print("\033[030m");          //white written
-
-                    System.out.print("\033[042m");               //on a board of VALIDMOVES color
-                    System.out.print(" ");
-                    System.out.print(battlefield.getCell(x,y).getHeight());
-                    System.out.print(" ");
-
-                    System.out.print("\033[047m");          //on a white board
-
+        // we check if exists a token of any player in this position
+        if (!battlefield.getCell(x, y).getThereIsPlayer()) {
+            System.out.print("\033[030m");          //black written
+            System.out.print("\033[047m");          //on white board
+            System.out.print("\033[047m");          //on a white board
+            System.out.print(" ");
+            if (battlefield.getCell(x, y).getIsDome()) {
+                System.out.print("X");
+            } else {                                                      // else
+                if (battlefield.getCell(x, y).getHeight() <= 3) {
+                    System.out.print(battlefield.getCell(x, y).getHeight());
                 } else {
-                    // then we check if exists a token of any player in this position
-                    if (!battlefield.getCell(x,y).getThereIsPlayer()) {
-                        System.out.print("\033[030m");          //black written
-                        System.out.print("\033[047m");          //on white board
-                        System.out.print("\033[047m");          //on a white board
-                        System.out.print(" ");
-                        if (battlefield.getCell(x,y).getIsDome()) {
-                            System.out.print("X");
-                        } else {                                                      // else
-                            if (battlefield.getCell(x,y).getHeight()<=3) {
-                                System.out.print(battlefield.getCell(x,y).getHeight());
-                            }
-                            else{ throw new ReachHeightLimitException("Illegal height");
-                            }
-                        }
-                        System.out.print(" ");
-                    } else {
-                        for (Player p : allPlayers) {
-                            if ( p.getToken1().getTokenPosition()!=null ) {
-                                if (p.getToken1().getTokenPosition().equals(battlefield.getCell(x,y))) {
-                                    System.out.print("\033[047m");          //on a white board
-                                    System.out.print("\033[030m");          //white written
-                                    TokenColor t = p.getTokenColor();
-                                    System.out.print(t.getEscape());        //on a board of the player color
-                                    System.out.print(" ");
-                                    System.out.print(battlefield.getCell(x,y).getHeight());
-                                    System.out.print(" ");
-                                    System.out.print("\033[047m");          //on a white board
-                                }
-                            }
-                            if(p.getToken2().getTokenPosition()!=null) {
-                                if (p.getToken2().getTokenPosition().equals(battlefield.getCell(x,y))) {
-                                    System.out.print("\033[047m");          //on a white board
-                                    System.out.print("\033[030m");          //white written
-                                    TokenColor t = p.getTokenColor();
-                                    System.out.print(t.getEscape());        //on a board of the player color
-                                    System.out.print(" ");
-                                    System.out.print(battlefield.getCell(x,y).getHeight());
-                                    System.out.print(" ");
-                                    System.out.print("\033[047m");          //on a white board
-                                }
-                            }
-                        }
+                    throw new ReachHeightLimitException("Illegal height");
+                }
+            }
+            System.out.print(" ");
+        }
+        else {
+            for (Player p : allPlayers) {
+                if (p.getToken1().getTokenPosition() != null && p.getToken1().getTokenPosition()!=null) {                                  //if he has the first token
+                    if (p.getToken1().getTokenPosition().equals(battlefield.getCell(x,y))) {    //i print his background correctly
+                        colorBackground(battlefield, x, y, p);
+                    }
+                }
+                if (p.getToken2().getTokenPosition() != null && p.getToken2().getTokenPosition()!=null) {                                 //if he has the first token
+                    if (p.getToken2().getTokenPosition().equals(battlefield.getCell(x,y))) {   //i print his background correctly
+                        colorBackground(battlefield, x, y, p);
                     }
                 }
             }
-            System.out.print("\033[039m");             //white written
-            System.out.print("\033[049m");           //on a black board
-            System.out.print("\n");
         }
-        System.out.print("\033[030m");             //white written
-        System.out.print("\033[049m");           //on a black board
-        System.out.print("   0  1  2  3  4\n");
+    }
+
+    /**
+     * Auxiliary method to color the background according to
+     * the color of the token on that precise position
+     * @param battlefield: the board of the game
+     * @param x: position x of the battlefield
+     * @param y: position y of the battlefield
+     */
+    private void colorBackground(Battlefield battlefield, int x, int y, Player p) throws CellOutOfBattlefieldException {
+        System.out.print("\033[047m");          //on a white board
+        System.out.print("\033[030m");          //white written
+        TokenColor t = p.getTokenColor();
+        System.out.print(t.getEscape());        //on a board of the player color
+        System.out.print(" ");
+        System.out.print(battlefield.getCell(x, y).getHeight());
+        System.out.print(" ");
+        System.out.print("\033[047m");          //on a white board
     }
 
 

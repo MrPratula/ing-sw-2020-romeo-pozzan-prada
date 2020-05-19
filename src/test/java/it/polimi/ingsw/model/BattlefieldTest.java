@@ -90,7 +90,7 @@ public class BattlefieldTest {
      */
     @Test
     public void PrintCLITest() throws ReachHeightLimitException, CellOutOfBattlefieldException {
-        view.printCLI(model.getBattlefield(), model.getAllPlayers());
+        view.printCLI(model.getBattlefield(), model.getAllPlayers(), null);
     }
 
 
@@ -109,7 +109,7 @@ public class BattlefieldTest {
         validMoves.add(battlefield.getCell(4,3));
         validMoves.add(battlefield.getCell(4,2));
 
-        //view.printValidMovesCLI(model.getBattlefield(), model.getAllPlayers(), validMoves);
+        view.printCLI(model.getBattlefield(), model.getAllPlayers(), validMoves);
 
         // we don't care passing the selected token,
         // we just have to print the valid moves around him
