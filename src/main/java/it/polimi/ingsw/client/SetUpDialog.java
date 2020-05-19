@@ -1,16 +1,13 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.gui.GameFrame;
 import it.polimi.ingsw.gui.LobbyFrame;
 import it.polimi.ingsw.gui.SwingView;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.PlayerAction;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 
 
 public class SetUpDialog extends JDialog{

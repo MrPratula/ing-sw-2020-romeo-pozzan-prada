@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 
 public class SwingView extends View {
@@ -22,9 +23,6 @@ public class SwingView extends View {
     private JButton playButton;      //3.1
 
 
-    //main: new swingView();
-
-    //@Override
     public SwingView(){
 
         mainFrame = new JFrame("Santorini");
@@ -35,10 +33,10 @@ public class SwingView extends View {
         mainPanel.setBackground(Color.BLACK);
 
         logoImage = new JLabel();
-        logoImage.setIcon(new ImageIcon("C:\\Users\\ricca\\IdeaProjects\\ing-sw-2020-romeo-pozzan-prada\\src\\main\\java\\it\\polimi\\ingsw\\gui\\graphics\\Santorini.png"));
+        logoImage.setIcon(new ImageIcon(new File("./src/main/graphics/Santorini.png").getAbsolutePath()));
 
         playButton = new JButton();
-        playButton.setIcon(new ImageIcon("C:\\Users\\ricca\\IdeaProjects\\ing-sw-2020-romeo-pozzan-prada\\src\\main\\java\\it\\polimi\\ingsw\\gui\\graphics\\ButtonPlay.png"));
+        playButton.setIcon(new ImageIcon(new File("./src/main/graphics/ButtonPlay.png").getAbsolutePath()));
         playButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

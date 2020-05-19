@@ -8,4 +8,8 @@ public class CellButton extends JButton {
 
     Cell cell;
 
+    public Cell getCell(){
+        return cell;
+    }
+
 }

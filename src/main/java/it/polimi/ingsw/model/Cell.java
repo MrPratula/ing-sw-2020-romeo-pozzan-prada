@@ -96,7 +96,7 @@ public class Cell implements Serializable {
      * @return true if they have the same x and y coords.
      */
     public boolean equals(Cell targetCell) {
-        return this.posX==targetCell.getPosX() && this.posY==targetCell.getPosY();
+        return this.getPosX()==targetCell.getPosX() && this.getPosY()==targetCell.getPosY();
     }
 
     /**
@@ -111,7 +111,7 @@ public class Cell implements Serializable {
 
         if (this.isDome) {
             throw new ReachHeightLimitException(
-                    String.format("Cell at (%d,%d) is a dome and can't be built anymore", this.posX, this.posY));
+                    String.format("Cell at (%d,%d) is a dome and can't be built anymore", this.getPosX(), this.getPosY()));
         }
         if (this.height == 3) {
             this.setIsDome();
@@ -121,6 +121,6 @@ public class Cell implements Serializable {
             this.height++;
         }
         else throw new CellHeightException(
-                String.format("Cell at (%d,%d) has height = %d out of range [0,3]", this.posX, this.posY, this.getHeight()));
+                String.format("Cell at (%d,%d) has height = %d out of range [0,3]", this.getPosX(), this.getPosY(), this.getHeight()));
     }
 }
