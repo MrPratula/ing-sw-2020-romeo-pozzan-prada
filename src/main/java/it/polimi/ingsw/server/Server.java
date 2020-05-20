@@ -97,9 +97,9 @@ public class Server  {
 
                 // Accept a client who requires for this port
                 Socket socket = serverSocket.accept();
-                // Crate a Connection for that specific client
+                // Create a Connection for that specific client
                 Connection connection = new Connection(socket, this);
-                // Save this connection to the connections list
+                // Save this connection in the connections list
                 registerConnection(connection);
                 // Let's start the Connection run() method in an asynchronous thread
 
@@ -141,7 +141,7 @@ public class Server  {
      */
     public synchronized void lobby(Connection connection, String name) throws IOException, InterruptedException {
 
-        System.out.println(name.toUpperCase()+ " is entered into the lobby");
+        System.out.println(name.toUpperCase()+ " entered into the lobby");
 
         waitingConnection.put(name, connection);
 
