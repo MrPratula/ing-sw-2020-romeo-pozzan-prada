@@ -283,7 +283,6 @@ public class Server  {
     public void initGame() {
 
         model.setTurn(TokenColor.RED);
-        model.setPlayingConnection(playingConnection);
 
         // 2 decks. One with all the god cards, and one empty where to put the drew god cards
         List<GodCard> godsDeck = new ArrayList<>(Arrays.asList(GodCard.values()).subList(0, 14));

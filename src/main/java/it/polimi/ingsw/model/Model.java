@@ -29,9 +29,6 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     private TokenColor turn;
     private List<Player> allPlayers = new ArrayList<>();
     private List<GodCard> allGodCards = new ArrayList<>();
-    private Map<String, Connection> playingConnection = new HashMap<>();
-
-
 
 
 
@@ -74,6 +71,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         return didAthenaMovedUp;
     }
 
+
     /**
      * It adds a player to the list of all players
      * @param player: Player that has to be added
@@ -81,12 +79,6 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     public void addPlayer(Player player) {
         allPlayers.add(player);
     }
-
-    public void setPlayingConnection(Map<String, Connection> playingConnection) {
-        this.playingConnection = playingConnection;
-    }
-
-
 
 
     /**
@@ -110,6 +102,24 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             }
         }
         return null;
+    }
+
+
+    /**
+     * @param playerActive a player in the game.
+     * @return all the opponent of that player.
+     */
+    public List<Player> getOpponents(Player playerActive) {
+
+        List<Player> opponents = null;
+        for (Player p: allPlayers) {
+            if (!playerActive.getUsername().equals(p.getUsername())) {
+                try{
+                    opponents.add(p);
+                } catch (NullPointerException ignored){}
+            }
+        }
+        return opponents;
     }
 
 
@@ -204,26 +214,15 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         } else {
             serverResponse = new ServerResponse(Action.ASK_FOR_MOVE, this.getCopy(), validMoves, null,null, null, null);
         }
-        notify(serverResponse);
+
+        List<Player> target = new ArrayList<>();
+        target.add(getPlayerInTurn());
+
+        notify(serverResponse, target);
     }
 
 
-    /**
-     * @param playerActive a player in the game.
-     * @return all the opponent of that player.
-     */
-    public List<Player> getOpponents(Player playerActive) {
 
-        List<Player> opponents = null;
-        for (Player p: allPlayers) {
-            if (!playerActive.getUsername().equals(p.getUsername())) {
-                try{
-                    opponents.add(p);
-                } catch (NullPointerException ignored){}
-            }
-        }
-        return opponents;
-    }
 
 
     /**
@@ -272,6 +271,13 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     }
 
 
+    public List<Player> toList(Player p){
+        List<Player> singleList = new ArrayList<>();
+        singleList.add(p);
+        return singleList;
+    }
+
+
     /**
      * It parse the player action to get the chose god from a player,
      * then that got is set to that player and removed from the allGodCards list.
@@ -312,7 +318,6 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
              */
             if (allGodCards.isEmpty()){
 
-
                 // Write the text to notify all players who has which god card
                 StringBuilder text= new StringBuilder("Everyone has picked his God:");
                 for (Player p: allPlayers) {
@@ -327,12 +332,11 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                     allGodCards.add(p.getMyGodCard());
 
                     if (p.getTokenColor().equals(getTurn())){
-                        playingConnection.get(p.getUsername()).asyncSend(firstTokenPlacement);
-
+                        notify(firstTokenPlacement, toList(p));
                     }
                     else{
                         ServerResponse waitResponse = new ServerResponse(Action.WAIT_OTHER_PLAYER_MOVE, null, null, null, null, text.toString(), null);
-                        playingConnection.get(p.getUsername()).asyncSend(waitResponse);
+                        notify(waitResponse, toList(p));
                     }
                 }
             }
@@ -784,8 +788,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             }
         }
 
-        // After the build need to check if chronus win.
-
+        // After the build need to check if chronus win
         List<GodCard> allGodcards = getGodCards(allPlayers);
 
         if (allGodcards.contains(GodCard.CHRONUS)){
