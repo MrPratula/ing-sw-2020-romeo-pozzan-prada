@@ -2,6 +2,7 @@ package it.polimi.ingsw.gui;
 
 import it.polimi.ingsw.client.SetUpDialog;
 import it.polimi.ingsw.client.View;
+import it.polimi.ingsw.model.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,16 +14,17 @@ import java.io.File;
 public class SwingView extends View {
 
     private JFrame mainFrame;        //1
-
     private JPanel mainPanel;        //2
-
     private JLabel logoImage;        //2.1
-
-    private JLabel startGameLabel;
-
     private JButton playButton;      //3.1
+    //private JLabel startGameLabel;
+
+    private Player player;
 
 
+    /**
+     * Constructor of the client view with Swing GUI
+     */
     public SwingView(){
 
         mainFrame = new JFrame("Santorini");

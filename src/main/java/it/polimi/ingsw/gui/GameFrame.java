@@ -65,8 +65,8 @@ public class GameFrame extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         battlefieldPanel.setLayout(new GridLayout(5,5,10,10));
-        for(int i=0; i<5 ;i++){
-            for(int j=0; j<5; j++){
+        for(int j=4; j>-1 ; j--){
+            for(int i=0; i<5; i++){
                 //here i create a button for every cell
                 buttons[i][j] = new CellButton();
                 buttons[i][j].setSize(100,100);
@@ -77,7 +77,7 @@ public class GameFrame extends JFrame {
         }
 
         //try to put a token
-        buttons[prevI][prevJ].setIcon(pics[5]);
+        //buttons[prevI][prevJ].setIcon(pics[5]);
 
         mainPanel.add(battlefieldPanel, BorderLayout.NORTH);
         mainPanel.add(messageLabel, BorderLayout.SOUTH);

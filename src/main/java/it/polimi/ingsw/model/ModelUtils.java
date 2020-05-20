@@ -5,8 +5,8 @@ import java.util.List;
 
 
 /**
- * Class used to pass some utils from the Model, such as the battlefield,
- * turn, and a list of the Players in game
+ * Class used to pass some utils from the Model, such as
+ * the battlefield, the turn, and a list of the Players in game
  */
 public class ModelUtils implements Serializable {
 

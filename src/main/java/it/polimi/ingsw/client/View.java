@@ -23,7 +23,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
     /**
      * When needed, it computes the input of the user, properly divided.
-     * @return an Array of Strings, containing the  user input.
+     * @return an Array of Strings, containing the user input.
      */
     public String[] getUserInput(){
         Scanner in = new Scanner(System.in);
@@ -474,8 +474,10 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
     /**
      * Here i print the CLI for the user, depending on the parameter validMoves;
-     * if it is null, i print the normal battlefield with the tokens on;
-     * otherwise i print with a green backgrounds all the cells in the ValidMoves param.
+     *   -if it is null, i print the normal battlefield with the tokens on, with
+     *    the number on every cell representing the height of that one, X if dome,
+     *    and the background in the color of the token on it (if present);
+     *   -otherwise i print even a green backgrounds behind the cells in the ValidMoves param.
      *
      * @param battlefield: the board of the game
      * @param allPlayers: the players in the game
