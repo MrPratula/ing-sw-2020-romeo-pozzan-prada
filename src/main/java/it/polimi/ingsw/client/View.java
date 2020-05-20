@@ -73,8 +73,8 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
      */
     public List<Player> computeOpponentPlayers (ServerResponse serverResponse){
 
-        int numberOfPlayers = serverResponse.getModelCopy().getAllPlayers().size();
-        List<Player> players = serverResponse.getModelCopy().getAllPlayers();
+        int numberOfPlayers = serverResponse.getPack().getModelCopy().getAllPlayers().size();
+        List<Player> players = serverResponse.getPack().getModelCopy().getAllPlayers();
         Player opp1 = null, opp2 = null;
         if(numberOfPlayers==2){
             if(players.get(0).equals(getPlayer()))  opp1 = players.get(1);
@@ -119,7 +119,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
         PlayerAction playerAction;
         int posX, posY;
 
-        switch (serverResponse.getAction()) {
+        switch (serverResponse.getPack().getAction()) {
 
 
             // The first time a player connects it is asked for his name
@@ -127,7 +127,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
             case WELCOME:
             case INVALID_NAME: {
                 // Print hello what is your name?
-                System.out.println(serverResponse.getAction().toString());
+                System.out.println(serverResponse.getPack().getAction().toString());
                 Scanner scanner = new Scanner(System.in);
                 String name = scanner.nextLine();
                 playerAction = new PlayerAction(Action.MY_NAME, null, null, null, 0, 0, null, null, false, name);
@@ -142,7 +142,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
             case HOW_MANY_PLAYERS:
             case WRONG_NUMBER_OF_PLAYER: {
 
-                System.out.println(serverResponse.getAction().toString());
+                System.out.println(serverResponse.getPack().getAction().toString());
                 int numberOfPlayers;
 
                 while (true) {
@@ -169,52 +169,26 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
             // Just tell the client the server is not popped
             // When the first player answer how much players there will be, waiting for the players to connect
+            case WAIT_OTHER_PLAYERS_TO_CONNECT:
             case NUMBER_RECEIVED: {
-                System.out.println("Please wait for the player to begin...");
+                System.out.println(serverResponse.getPack().getAction().toString());
                 break;
             }
 
 
-            // Second and third player must wait till the first say how much player there will be in the game
-            // If someone try to connect before the first player answered, so the lobby is locked
-            case WAIT_PLEASE:{
-                System.out.println(serverResponse.getAction().toString());
-                break;
-            }
+            //The first choice is send by the server and contains player data
+            case SELECT_YOUR_GOD_CARD_FROM_SERVER: {
 
+                this.player = serverResponse.getPack().getPlayer();
 
-            /*
-             * Each time a player has to wait that other player make a choice
-             * There are different messages if a player has to wait for another player move or build
-             * This is called when a player has to wait for another one to pick his god card
-             */
-            case WAIT_OTHER_PLAYER_MOVE:{
+                System.out.println(serverResponse.getPack().getAction().toString());
 
-                if (serverResponse.getOutMessage()!=null){
-                    System.out.println(serverResponse.getOutMessage());
-                }
-
-                if (serverResponse.getModelCopy()!=null){
-                    printCLI(serverResponse.getModelCopy().getBattlefield(), serverResponse.getModelCopy().getAllPlayers(),null);
-                }
-
-                System.out.println("Another player is making his choice.\nPlease wait your turn...");
-                break;
-            }
-
-
-            case SELECT_YOUR_GOD_CARD: {
-
-                this.player = serverResponse.getPlayer();
-
-                System.out.println("Please choose a God Card you want to use for this game.");
-
-                List<GodCard> godInGame = serverResponse.getGodCards();
+                List<GodCard> godInGame = serverResponse.getPack().getGodCards();
                 boolean needToLoop = true;
                 String choice;
 
                 while (needToLoop) {
-                    System.out.println(serverResponse.getOutMessage());
+                    System.out.println(serverResponse.getPack().getMessageInTurn());
                     Scanner scanner = new Scanner(System.in);
 
                     // Check if the input is a valid string
@@ -230,6 +204,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                             System.out.println("Ohhh good choice!");
                             playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, this.player, null, null, 0, 0, null, null, false, choice.toUpperCase());
                             notifyClient(playerAction);
+                            player=serverResponse.getPack().getPlayer();
                             needToLoop = false;
                         }
                     }
@@ -237,48 +212,123 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                 break;
             }
 
-
-            case PLACE_YOUR_TOKEN:{
-
-                if (serverResponse.getOutMessage()!=null){
-                    System.out.println(serverResponse.getOutMessage());
-                }
-
-                boolean needToLoop = true;
-                Scanner scanner = new Scanner(System.in);
-                String message;
-                String[] messageParsed;
-                Cell targetCell = null;
-
-                while (needToLoop) {
-
-                    System.out.println(serverResponse.getAction().toString());
-                    printCLI(serverResponse.getModelCopy().getBattlefield(), serverResponse.getModelCopy().getAllPlayers(),null);
-
-
-                    try {
-                        message = scanner.nextLine();
-                        messageParsed = message.split(",");
-
-                        targetCell = serverResponse.getModelCopy().getBattlefield().getCell(Integer.parseInt(messageParsed[0]), Integer.parseInt(messageParsed[1]));
-
-                    } catch (Exception exception) {
-                        targetCell = null;
-                    }
-
-                    if (targetCell!= null) {
-                        needToLoop = false;
-                    }
-                }
-
-                playerAction = new PlayerAction(Action.TOKEN_PLACED, this.player, null, null, 0, 0, targetCell, null, false, null);
-                notifyClient(playerAction);
-
-
+            // The second player receive the god choice message, the 2nd and 3rd receive this with player data
+            case WAIT_AND_SAVE_PLAYER_FROM_SERVER:{
+                player = serverResponse.getPack().getPlayer();
+                System.out.println(serverResponse.getPack().getAction().toString());
                 break;
             }
 
 
+            // TILL NOW ALL THE MESSAGES ARE BROADCAST-RECEIVED
+
+            case SELECT_YOUR_GOD_CARD:{
+
+                Pack pack = serverResponse.getPack();
+
+                // If the player is not in turn he is just notified to wait
+                if (!player.getTokenColor().equals(serverResponse.getTurn())){
+                    System.out.println(pack.getMessageOpponents());
+                }
+                // else he has to pick his god card
+                else {
+                    List<GodCard> godInGame = serverResponse.getPack().getGodCards();
+                    boolean needToLoop = true;
+                    String choice;
+
+                    while (needToLoop) {
+                        System.out.println(serverResponse.getPack().getMessageInTurn());
+                        Scanner scanner = new Scanner(System.in);
+
+                        // Check if the input is a valid string
+                        try {
+                            choice = scanner.nextLine();
+                        } catch (InputMismatchException exception) {
+                            choice = "error";
+                        }
+
+                        // Check if the string is a valid god name
+                        for (GodCard god: godInGame) {
+                            if (choice.toUpperCase().equals(god.name().toUpperCase())){
+                                System.out.println("Ohhh good choice!");
+                                playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, this.player, null, null, 0, 0, null, null, false, choice.toUpperCase());
+                                notifyClient(playerAction);
+                                needToLoop = false;
+                            }
+                        }
+                    }
+
+                }
+                break;
+            }
+
+            // A player has to place his token, other wait
+            case PLACE_YOUR_TOKEN:{
+
+                Pack pack = serverResponse.getPack();
+                printCLI(pack.getModelCopy(), null);
+
+                if (!player.getTokenColor().equals(serverResponse.getTurn())){
+                    System.out.println(pack.getMessageOpponents());
+                }
+                else {
+                    boolean needToLoop = true;
+                    Scanner scanner = new Scanner(System.in);
+                    String message;
+                    String[] messageParsed;
+                    Cell targetCell = null;
+
+                    while (needToLoop) {
+
+                        System.out.println(pack.getAction().toString());
+                        printCLI(pack.getModelCopy(), null);
+
+                        try {
+                            message = scanner.nextLine();
+                            messageParsed = message.split(",");
+
+                            targetCell = pack.getModelCopy().getBattlefield().getCell(Integer.parseInt(messageParsed[0]), Integer.parseInt(messageParsed[1]));
+
+                        } catch (Exception exception) {
+                            targetCell = null;
+                        }
+
+                        if (targetCell!= null) {
+                            needToLoop = false;
+                        }
+                    }
+                    playerAction = new PlayerAction(Action.TOKEN_PLACED, this.player, null, null, 0, 0, targetCell, null, false, null);
+                    notifyClient(playerAction);
+                }
+                break;
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
 
 
 
@@ -479,13 +529,12 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
      *    and the background in the color of the token on it (if present);
      *   -otherwise i print even a green backgrounds behind the cells in the ValidMoves param.
      *
-     * @param battlefield: the board of the game
-     * @param allPlayers: the players in the game
      * @param validMoves: cells that have to be printed on a green background (can be null)
-     * @throws ReachHeightLimitException
-     * @throws CellOutOfBattlefieldException
      */
-     public void printCLI(Battlefield battlefield, List<Player> allPlayers, List<Cell> validMoves) throws ReachHeightLimitException, CellOutOfBattlefieldException {
+     public void printCLI(ModelUtils modelCopy, List<Cell> validMoves) throws ReachHeightLimitException, CellOutOfBattlefieldException {
+
+         Battlefield battlefield = modelCopy.getBattlefield();
+         List<Player> allPlayers = modelCopy.getAllPlayers();
 
         System.out.print("\n");
 

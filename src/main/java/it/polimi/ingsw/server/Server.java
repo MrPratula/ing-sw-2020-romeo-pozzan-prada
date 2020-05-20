@@ -8,10 +8,7 @@ import it.polimi.ingsw.model.GodCard;
 import it.polimi.ingsw.model.Model;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.TokenColor;
-import it.polimi.ingsw.utils.Action;
-import it.polimi.ingsw.utils.Connection;
-import it.polimi.ingsw.utils.PlayerAction;
-import it.polimi.ingsw.utils.ServerResponse;
+import it.polimi.ingsw.utils.*;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -157,7 +154,8 @@ public class Server  {
             setUpFirstPlayer();
 
         } else {
-            connection.asyncSend(new ServerResponse(Action.WAIT_PLEASE, null, null, null,null, null, null));
+            Pack pack = new Pack(Action.WAIT_OTHER_PLAYERS_TO_CONNECT);
+            connection.asyncSend(new ServerResponse(null, pack));
         }
 
         // When the players are 2 or 3, based on the first player choice
@@ -248,7 +246,7 @@ public class Server  {
         playingConnection.put(player1.getUsername(), c1);
 
         // Ask for how many players there will be in the game (2 or 3)
-        c1.asyncSend(new ServerResponse(Action.HOW_MANY_PLAYERS, null, null, null, null ,null, null));
+        c1.asyncSend(new ServerResponse(null, new Pack(Action.HOW_MANY_PLAYERS)));
 
         // Receive a message from the first player
         PlayerAction playerAction = c1.listenSocket();
@@ -263,12 +261,12 @@ public class Server  {
                 // Set the number and brake the loop
                 if (playerAction.getTokenMain() == 2 || playerAction.getTokenMain() == 3) {
                     setNumberOfPlayers(playerAction.getTokenMain());
-                    c1.asyncSend(new ServerResponse(Action.NUMBER_RECEIVED, null, null, null,null, null, null));
+                    c1.asyncSend(new ServerResponse(null, new Pack(Action.NUMBER_RECEIVED)));
                     needToLoop = false;
 
                     // Cached a nasty client. It is not accepted
                 } else {
-                    c1.asyncSend(new ServerResponse(Action.WRONG_NUMBER_OF_PLAYER, null, null, null, null, null, null));
+                    c1.asyncSend(new ServerResponse(null, new Pack(Action.WRONG_NUMBER_OF_PLAYER)));
                 }
             }
         }
@@ -322,8 +320,17 @@ public class Server  {
 
             List<Player> allPlayers = model.getAllPlayers();
 
-            c1.asyncSend(new ServerResponse(Action.WAIT_OTHER_PLAYER_MOVE, null, null, null, null, null, allPlayers.get(0)));
-            c2.asyncSend(new ServerResponse(Action.SELECT_YOUR_GOD_CARD, null, null, null, godInGame, text.toString(), allPlayers.get(1)));
+            Pack player1Pack = new Pack(Action.WAIT_AND_SAVE_PLAYER_FROM_SERVER);
+            Pack player2Pack = new Pack(Action.SELECT_YOUR_GOD_CARD_FROM_SERVER);
+
+            player1Pack.setPlayer(allPlayers.get(0));
+            player2Pack.setPlayer(allPlayers.get(1));
+
+            player2Pack.setGodCards(godInGame);
+            player2Pack.setMessageInTurn(text.toString());
+
+            c1.asyncSend(new ServerResponse(null, player1Pack));
+            c2.asyncSend(new ServerResponse(null, player2Pack));
         }
         else{
             Connection c1 = waitingConnection.get(keys.get(2));
@@ -332,9 +339,21 @@ public class Server  {
 
             List<Player> allPlayers = model.getAllPlayers();
 
-            c1.asyncSend(new ServerResponse(Action.WAIT_OTHER_PLAYER_MOVE, null, null, null, null, null,  allPlayers.get(0)));
-            c2.asyncSend(new ServerResponse(Action.SELECT_YOUR_GOD_CARD, null, null, null, godInGame, text.toString(),  allPlayers.get(1)));
-            c3.asyncSend(new ServerResponse(Action.WAIT_OTHER_PLAYER_MOVE, null, null, null, null, null,  allPlayers.get(2)));
+
+            Pack player1Pack = new Pack(Action.WAIT_AND_SAVE_PLAYER_FROM_SERVER);
+            Pack player2Pack = new Pack(Action.SELECT_YOUR_GOD_CARD_FROM_SERVER);
+            Pack player3Pack = new Pack(Action.WAIT_AND_SAVE_PLAYER_FROM_SERVER);
+
+            player1Pack.setPlayer(allPlayers.get(0));
+            player2Pack.setPlayer(allPlayers.get(1));
+            player3Pack.setPlayer(allPlayers.get(2));
+
+            player2Pack.setGodCards(godInGame);
+            player2Pack.setMessageInTurn(text.toString());
+
+            c1.asyncSend(new ServerResponse(null, player1Pack));
+            c2.asyncSend(new ServerResponse(null, player2Pack));
+            c3.asyncSend(new ServerResponse(null, player3Pack));
         }
     }
 

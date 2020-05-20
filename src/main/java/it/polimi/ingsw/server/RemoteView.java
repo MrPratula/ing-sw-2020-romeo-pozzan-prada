@@ -55,7 +55,7 @@ public class RemoteView extends Observable<PlayerAction> implements Observer<Ser
      * @param playerAction the action to send.
      */
     public void sendAction(PlayerAction playerAction) throws ImpossibleTurnException, IOException, CellHeightException, WrongNumberPlayerException, ReachHeightLimitException, CellOutOfBattlefieldException {
-        notify(playerAction, null);
+        notify(playerAction);
     }
 
 
