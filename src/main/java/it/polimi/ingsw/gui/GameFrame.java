@@ -30,7 +30,8 @@ public class GameFrame extends JFrame {
     CellButton[][] buttons = new CellButton[5][5];
 
     //path of the source with the images to display
-    String startPath = "./src/main/graphics/";
+    String startPath = "./src/main/images/";
+    //FIXME: se vuoi vedere le immagini normali cambia "images" con "graphics" qui sopra nel path
 
     // Array with all the pics
     ImageIcon[] pics = new ImageIcon[]{
@@ -64,20 +65,20 @@ public class GameFrame extends JFrame {
         setResizable(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        battlefieldPanel.setLayout(new GridLayout(5,5,10,10));
+        battlefieldPanel.setLayout(new GridLayout(5,5,1,1));
         for(int j=4; j>-1 ; j--){
             for(int i=0; i<5; i++){
                 //here i create a button for every cell
                 buttons[i][j] = new CellButton();
+                buttons[i][j].setBorderPainted(false);
+                buttons[i][j].setContentAreaFilled(false);
+
                 buttons[i][j].setSize(100,100);
                 putInitialBuild(buttons[i][j],i,j);
                 battlefieldPanel.add(buttons[i][j]);
                 buttons[i][j].addActionListener(new ButtonHandler(buttons[i][j], pics));
             }
         }
-
-        //try to put a token
-        //buttons[prevI][prevJ].setIcon(pics[5]);
 
         mainPanel.add(battlefieldPanel, BorderLayout.NORTH);
         mainPanel.add(messageLabel, BorderLayout.SOUTH);
@@ -88,9 +89,9 @@ public class GameFrame extends JFrame {
     private void putInitialBuild(CellButton cellButton, int i, int j) {
         //cellButton.setBounds(0,0,100,100);
         cellButton.setIcon(pics[0]);
-        cellButton.setBackground(Color.black);
+        cellButton.setBackground(Color.BLACK);
         cellButton.cell=new Cell(i,j);
-        cellButton.cell.setHeight(0); //set heigh at 0
+        cellButton.cell.setHeight(0);
     }
 
     private boolean isValidMove(int i, int j) {

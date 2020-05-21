@@ -43,18 +43,31 @@ public class ButtonHandler implements ActionListener {
        if(button.getCell().getIsDome()){
            JOptionPane.showMessageDialog(new JFrame(),"You can't build over a dome!","Error", JOptionPane.ERROR_MESSAGE);  //posso anche mettere un'immagine error
        }
+
        else {
            if (button.getCell().getHeight() == 0) {
                button.setIcon(pics[1]);
+               //button.setRolloverIcon(pics[1]);
+               //button.setPressedIcon(pics[1]);
+               //button.setDisabledIcon(pics[1]);
                button.getCell().incrementHeight();
            } else if (button.getCell().getHeight() == 1) {
                button.setIcon(pics[2]);
+               //button.setRolloverIcon(pics[2]);
+               //button.setPressedIcon(pics[2]);
+               //button.setDisabledIcon(pics[2]);
                button.getCell().incrementHeight();
            } else if (button.getCell().getHeight() == 2) {
                button.setIcon(pics[3]);
+               //button.setRolloverIcon(pics[3]);
+               //button.setPressedIcon(pics[3]);
+               //button.setDisabledIcon(pics[3]);
                button.getCell().incrementHeight();
            } else if (button.getCell().getHeight() == 3) {
                button.setIcon(pics[4]);
+               //button.setRolloverIcon(pics[4]);
+               //button.setPressedIcon(pics[4]);
+               //button.setDisabledIcon(pics[4]);
                button.getCell().incrementHeight();
            }
        }
