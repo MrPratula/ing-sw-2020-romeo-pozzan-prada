@@ -25,12 +25,24 @@ public class Player implements Serializable {
      * @param username    the name of the player. It should be unique
      * @param color       the color that identify the player and his tokens
      */
-    public Player(String username, TokenColor color, Connection connection) {
-
+    public Player(String username, TokenColor color) {
         this.username = username;
         this.tokenColor = color;
         this.token1 = new Token(color);
         this.token2 = new Token(color);
+
+        if (this.tokenColor.equals(TokenColor.RED)){
+            this.token1.setId(1);
+            this.token2.setId(11);
+        }
+        if (this.tokenColor.equals(TokenColor.BLUE)){
+            this.token1.setId(2);
+            this.token2.setId(22);
+        }
+        if (this.tokenColor.equals(TokenColor.YELLOW)){
+            this.token1.setId(3);
+            this.token2.setId(33);
+        }
     }
 
     /*  GETTER  */

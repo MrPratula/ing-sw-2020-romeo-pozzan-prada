@@ -18,16 +18,15 @@ public enum Action implements Serializable {
     MY_NAME("Inside this message there is my name"),
     NUMBER_OF_PLAYERS("The first player communicated how many players there are"),
     CHOSE_GOD_CARD ("A player has chose his god card"),
-
-
-
-
-    TOKEN_SET_UP("A player selected the set-up position for the token"),
     TOKEN_PLACED("A token has been placed"),
+    TOKEN_SELECTED("A player selected a token"),
+    PROMETHEUS_ANSWER("Prometheus wants to use his God power!"),
+    WHERE_TO_MOVE_SELECTED("A player choose where to move a token"),
 
-    PROMETHEUS_POWER("Prometheus wants to use his God power!"),
-    SELECT_TOKEN("A player has selected a token"),
-    MOVE("A player moved a token"),
+
+
+
+
     BUILD("A player made a build. Switch turn"),
 
 
@@ -49,32 +48,36 @@ public enum Action implements Serializable {
     // Broadcast
 
     SELECT_YOUR_GOD_CARD("Which one of these GodCards do you want to use in this game?"),
+    PLACE_YOUR_TOKEN("Please choose a position for your token... (x,y)"),
+    ASK_FOR_SELECT_TOKEN("Which token do you want to move? (x,y)"),
+    ASK_FOR_PROMETHEUS_POWER("Do you want to use your GodPower? [yes][no]\nIf your Worker does not move up, it may build both before and after moving."),
+
+    TOKEN_NOT_MOVABLE("You can not move this token, please select a movable one! (x,y)"),
+    GAME_OVER("GAME OVER"),
+    PLAYER_LOST(""),
+    ASK_FOR_WHERE_TO_MOVE("Where do you want to move your token? (x,y)\nOnly the green cell are accepted"),
 
 
 
 
 
+
+    PROMETHEUS_FIRST_MOVE(""),
 
     NOT_YOUR_TURN("Wait your turn to perform your action!"),
 
     START_NEW_TURN("Your turn is ended!"),
-    ASK_FOR_PROMETHEUS_POWER("Do you want to use your GodPower? [yes][no]"),
-    ASK_FOR_MOVE("Where do you want to move your token? (x,y)"),
     ASK_FOR_BUILD("Where do you want to build? (x,y)"),
 
-    GAME_OVER("GAME OVER"),
-    PLAYER_LOST("You lost the game, your tokens will be wiped!"),
 
     SET_UP("Select the position you want to place your first token (x,y)"),
 
     WAIT_OTHER_PLAYER_MOVE("Someone else is performing their move. Please wait your turn..."),
-    PLACE_YOUR_TOKEN("Please choose a position for your token... (x,y)"),
 
     PRINT_MESSAGE("Write here some text to be printed..."),
 
     // ERROR MESSAGES
     WRONG_INPUT("Please insert a valid choice!"),
-    TOKEN_NOT_MOVABLE("You can not move this token, please select a movable one! (x,y)"),
     CONNECTION_CLOSE("Connection closed from SERVER side!"),
 
 

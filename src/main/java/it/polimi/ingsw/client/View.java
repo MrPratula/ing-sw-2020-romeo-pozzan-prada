@@ -22,21 +22,20 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
     }
 
     /**
-     * When needed, it computes the input of the user, properly divided.
-     * @return an Array of Strings, containing the user input.
+     * It gets a string from player and divide it in two element separated by a comma.
+     * @return a n-elements Array of Strings, where n is the number of comma+1 in the user input.
      */
     public String[] getUserInput(){
         Scanner in = new Scanner(System.in);
         String inputLine = in.nextLine();
-        String[] inputs = inputLine.split(",");
-        return inputs;
+        return inputLine.split(",");
     }
 
 
     /**
      * When needed, it returns the token that has just been selected from the user,
      * and even the not selected one (it can be useful).
-     * @param serverResponse: the response passed throught the observers from the server.
+     * @param serverResponse: the response passed through the observers from the server.
      * @param posX: the first input of the user, i.e. the column of the battlefield.
      * @param posY: the second input of the user, i.e. the row of the battlefield.
      * @return a list containing the selected and the not selected token.
@@ -116,9 +115,6 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
     @Override
     public void update(ServerResponse serverResponse) throws ImpossibleTurnException, IOException, CellHeightException, WrongNumberPlayerException, ReachHeightLimitException, CellOutOfBattlefieldException {
 
-        PlayerAction playerAction;
-        int posX, posY;
-
         switch (serverResponse.getPack().getAction()) {
 
 
@@ -126,6 +122,9 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
             // This continue till the name is valid
             case WELCOME:
             case INVALID_NAME: {
+
+                PlayerAction playerAction;
+
                 // Print hello what is your name?
                 System.out.println(serverResponse.getPack().getAction().toString());
                 Scanner scanner = new Scanner(System.in);
@@ -141,6 +140,8 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
             // The Server check for nasty client too
             case HOW_MANY_PLAYERS:
             case WRONG_NUMBER_OF_PLAYER: {
+
+                PlayerAction playerAction;
 
                 System.out.println(serverResponse.getPack().getAction().toString());
                 int numberOfPlayers;
@@ -178,6 +179,8 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
             //The first choice is send by the server and contains player data
             case SELECT_YOUR_GOD_CARD_FROM_SERVER: {
+
+                PlayerAction playerAction;
 
                 this.player = serverResponse.getPack().getPlayer();
 
@@ -224,6 +227,8 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
             case SELECT_YOUR_GOD_CARD:{
 
+                PlayerAction playerAction;
+
                 Pack pack = serverResponse.getPack();
 
                 // If the player is not in turn he is just notified to wait
@@ -265,6 +270,8 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
             // A player has to place his token, other wait
             case PLACE_YOUR_TOKEN:{
 
+                PlayerAction playerAction;
+
                 Pack pack = serverResponse.getPack();
                 printCLI(pack.getModelCopy(), null);
 
@@ -303,12 +310,141 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                 break;
             }
 
+            case PLAYER_LOST:
+            case TOKEN_NOT_MOVABLE:
+            case ASK_FOR_SELECT_TOKEN: {
+
+                PlayerAction playerAction = null;
+                Pack pack = serverResponse.getPack();
+
+                // Update the player
+                this.player = pack.getPlayer();
 
 
+                if (!player.getTokenColor().equals(serverResponse.getTurn())){
+                    printCLI(pack.getModelCopy(), null);
+                    System.out.println(pack.getMessageOpponents());
+                }
+                else {
+
+                    if (pack.getMessageInTurn() != null){
+                        System.out.println(pack.getMessageInTurn());
+                    }
+
+                    boolean needToLoop = true;
+
+                    while (needToLoop){
+                        printCLI(pack.getModelCopy(), null);
+                        System.out.print(serverResponse.getPack().getAction().getInfo());
+
+                        try{
+                            String[] inputs = getUserInput();
+
+                            int selectedToken = getToken(inputs, player);
+
+                            if (selectedToken != 0){
+                                playerAction = new PlayerAction(Action.TOKEN_SELECTED, getPlayer(), null, null, selectedToken, 0, null, null, false, null);
+                                needToLoop = false;
+                            }
+                        } catch (Exception e){
+                            System.out.println("Your input wasn't correct!");
+                        }
+                    }
+                    notifyClient(playerAction);
+                }
+                break;
+            }
 
 
+            case ASK_FOR_PROMETHEUS_POWER:{
+
+                Pack pack = serverResponse.getPack();
+                printCLI(pack.getModelCopy(), null);
+
+                if (!player.getTokenColor().equals(serverResponse.getTurn())){
+                    System.out.println(pack.getMessageOpponents());
+                }
+                else {
+
+                    boolean needToLoop = true;
+                    PlayerAction playerAction = null;
+                    System.out.print(serverResponse.getPack().getAction().getInfo());
+
+                    while (needToLoop){
+                        try {
+
+                            Scanner scanner = new Scanner(System.in);
+                            String answer = scanner.nextLine().toUpperCase();
+
+                            if (answer.equals("YES")) {
+                                playerAction = new PlayerAction(Action.PROMETHEUS_ANSWER, player, null, null, 0, 0, null, null, true, null);
+                                needToLoop = false;
+                            }
+                            else if (answer.equals("NO")) {
+                                playerAction = new PlayerAction(Action.PROMETHEUS_ANSWER, player, null, null, 0, 0, null, null, false, null);
+                                needToLoop = false;
+                            }
+                            else {
+                                System.out.println("Please write yes or no...");
+                            }
+
+                        }catch (Exception e){
+                            System.out.println("Please write yes or no...");
+                            needToLoop = true;
+                        }
+                    }
+                    notifyClient(playerAction);
+                }
+                break;
+            }
 
 
+            case GAME_OVER:{
+                Pack pack = serverResponse.getPack();
+                printCLI(pack.getModelCopy(), null);
+                System.out.print(serverResponse.getPack().getAction().getInfo());
+                System.out.println(pack.getMessageInTurn());
+                break;
+            }
+
+
+            case ASK_FOR_WHERE_TO_MOVE:{
+
+                Pack pack = serverResponse.getPack();
+                printCLI(pack.getModelCopy(), pack.getValidMoves());
+
+                if (!player.getTokenColor().equals(serverResponse.getTurn())){
+                    System.out.println(pack.getMessageOpponents());
+                }
+                else{
+
+                    boolean needToLoop = true;
+                    PlayerAction playerAction = null;
+
+
+                    while (needToLoop){
+
+                        printCLI(pack.getModelCopy(), pack.getValidMoves());
+                        System.out.println(pack.getAction().toString());
+
+
+                        try{
+                            String[] inputs = getUserInput();
+
+                            Cell selectedCell = getCell(inputs, pack.getModelCopy().getBattlefield());
+
+                            if (selectedCell != null){
+                                playerAction = new PlayerAction(Action.WHERE_TO_MOVE_SELECTED, getPlayer(), null, null, 0, 0, selectedCell, null, false, null);
+                                needToLoop = false;
+                            }
+                        } catch (Exception e){
+                            System.out.println("Your input wasn't correct!");
+                        }
+                    }
+                    notify(playerAction);
+                }
+                break;
+            }
 
 
 
@@ -381,7 +517,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                     //compute opponent players
                     List<Player> opponentPlayers = computeOpponentPlayers(serverResponse);
                     try {
-                        playerAction = new PlayerAction(Action.PROMETHEUS_POWER, getPlayer(), opponentPlayers.get(0), opponentPlayers.get(1), tokens.get(0).getId(), tokens.get(1).getId(), null, null, true, null);
+                        playerAction = new PlayerAction(Action.PROMETHEUS_ANSWER, getPlayer(), opponentPlayers.get(0), opponentPlayers.get(1), tokens.get(0).getId(), tokens.get(1).getId(), null, null, true, null);
                         notifyClient(playerAction);////////////////////
                     } catch (NullPointerException e) {
                         System.out.println(e.getMessage());
@@ -438,34 +574,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                 break;
             }
 
-            case ASK_FOR_MOVE: {
-                //prints the battlefield
-                printCLI(serverResponse.getModelCopy().getBattlefield(), serverResponse.getModelCopy().getAllPlayers(),null);
 
-                //prints the message for the user
-                System.out.print(serverResponse.getAction().getInfo());//compute the user input
-                String[] inputs = getUserInput();
-                //calculates which token has been selected
-                List<Token> tokens = computeTokens(serverResponse, Integer.parseInt(inputs[0]), Integer.parseInt(inputs[1]));
-                //compute opponent players
-                List<Player> opponentPlayers = computeOpponentPlayers(serverResponse);
-                try {
-                    //cell is the position we want to move the token
-                    Cell cell = serverResponse.getModelCopy().getBattlefield().getCell(Integer.parseInt(inputs[0]), Integer.parseInt(inputs[1]));
-                   /* if( !serverResponse.getValidBuilds().contains(cell) ){  //non so se funziona la contains, al massimo facciamo il check con le pos
-                        System.out.println("Error! You can't select this cell, try again! ");
-                    }
-                    */
-                    playerAction = new PlayerAction(Action.MOVE, getPlayer(), opponentPlayers.get(0), opponentPlayers.get(1), tokens.get(0).getId(), tokens.get(1).getId(), null, null, false, null);
-                    notifyClient(playerAction);////////////////////
-
-                } catch (NullPointerException e) {
-                    System.out.println(e.getMessage());
-                } catch (CellOutOfBattlefieldException e) {
-                    e.printStackTrace();//////////////////auto
-                }
-                break;
-            }
 
             case ASK_FOR_BUILD: {
                 //prints the battlefield
@@ -520,6 +629,66 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
         }
 
     }
+
+
+
+
+
+
+
+
+
+    public int getToken(String[] inputs, Player player){
+
+        int selectX, selectY;
+        selectX = Integer.parseInt(inputs[0]);
+        selectY = Integer.parseInt(inputs[1]);
+
+        if (player.getToken1().getTokenPosition().getPosX() == selectX && player.getToken1().getTokenPosition().getPosY() == selectY){
+            return player.getToken1().getId();
+        }
+        else if (player.getToken2().getTokenPosition().getPosX() == selectX && player.getToken2().getTokenPosition().getPosY() == selectY){
+            return player.getToken2().getId();
+        }
+        else return 0;
+    }
+
+
+
+    public Cell getCell(String[] inputs, Battlefield battlefield){
+
+        int selectX, selectY;
+        selectX = Integer.parseInt(inputs[0]);
+        selectY = Integer.parseInt(inputs[1]);
+
+        try {
+            return battlefield.getCell(selectX, selectY);
+        } catch (CellOutOfBattlefieldException e) {
+            return null;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     /**

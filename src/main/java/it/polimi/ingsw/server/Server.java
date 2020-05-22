@@ -179,7 +179,7 @@ public class Server  {
             }
 
             // Create the players with a name and a color
-            Player player2 = new Player(c2.getName(), TokenColor.BLUE, c2);
+            Player player2 = new Player(c2.getName(), TokenColor.BLUE);
 
             // Create the remote view with a connection and a player
             RemoteView remoteView2 = new RemoteView(c2, player2);
@@ -199,7 +199,7 @@ public class Server  {
             // Set up all of this for a 3rd eventual player
             if (numberOfPlayers == 3) {
                 c3 = waitingConnection.get(keys.get(0));
-                player3 = new Player(c3.getName(), TokenColor.YELLOW, c3);
+                player3 = new Player(c3.getName(), TokenColor.YELLOW);
                 remoteView3 = new RemoteView(c3, player3);
                 model.addPlayer(player3);
                 model.addObserver(remoteView3);
@@ -225,7 +225,7 @@ public class Server  {
         List<String> keys = new ArrayList<>(waitingConnection.keySet());
         Connection c1 = waitingConnection.get(keys.get(0));
 
-        Player player1 = new Player(c1.getName(), TokenColor.RED, c1);
+        Player player1 = new Player(c1.getName(), TokenColor.RED);
         RemoteView remoteView1 = new RemoteView(c1, player1);
         remoteView1.setServer(this);
 

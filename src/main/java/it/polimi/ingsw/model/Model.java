@@ -30,6 +30,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     private List<Player> allPlayers = new ArrayList<>();
     private List<GodCard> allGodCards = new ArrayList<>();
 
+    Token prometheusToken;
 
 
     public Model() {
@@ -210,7 +211,6 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                     text.append("\n").append(p.getMyGodCard().toString());
                 }
 
-
                 Pack pack = new Pack(Action.PLACE_YOUR_TOKEN);
                 pack.setModelCopy(getCopy());
                 pack.setMessageInTurn(text.toString());
@@ -260,30 +260,77 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     }
 
 
+    /**
+     * Check if the message is correct. If not is requested the same thing to the same player.
+     * If it is, then if the same player has another token to place it is requested the same thing to that player,
+     * else it check if all the player have placed their tokens. If so then the game can start,
+     * else it requested the same thing to the next player.
+     * @param playerAction package message with all the info.
+     */
+    public void placeToken(PlayerAction playerAction) throws WrongNumberPlayerException, ImpossibleTurnException, CellOutOfBattlefieldException, ReachHeightLimitException, CellHeightException, IOException {
 
+        Cell targetCell = playerAction.getFirstCell();
+        ServerResponse serverResponse;
 
+        // If the cell is correct
+        if (targetCell!=null && battlefield.getCell(targetCell)!=null){
 
+            // If the first token has a position and the second not, it is assigned and the turn is updated
+            if (getPlayerInTurn().getToken1().getTokenPosition()!=null && getPlayerInTurn().getToken2().getTokenPosition()==null) {
+                getPlayerInTurn().getToken2().setTokenPosition(targetCell);
+                battlefield.getCell(targetCell).setOccupied();
+                updateTurn();
+            }
 
+            // If the first token has no position, it is assigned
+            if (getPlayerInTurn().getToken1().getTokenPosition()==null) {
+                getPlayerInTurn().getToken1().setTokenPosition(targetCell);
+                battlefield.getCell(targetCell).setOccupied();
+            }
 
+            boolean gameCanStart = false;
 
+            for (Player p: allPlayers){
 
+                // If someone need to place his token, he has to do it before the game start
+                if (p.getToken1().getTokenPosition()==null || p.getToken2().getTokenPosition()==null){
+                    break;
+                }
+                // If all the tokens of all players have a position the game can start
+                else{
+                    gameCanStart=true;
+                }
+            }
 
+            Pack pack;
+            if (gameCanStart){
 
+                pack = new Pack(Action.ASK_FOR_SELECT_TOKEN);
+                pack.setModelCopy(getCopy());
+                pack.setPlayer(getPlayerInTurn());
+                pack.setMessageOpponents("Another player is choosing which token to move, wait please...");
 
+            } else {
 
+                pack = new Pack(Action.PLACE_YOUR_TOKEN);
+                pack.setPlayer(getPlayerInTurn());
+                pack.setModelCopy(getCopy());
+                pack.setMessageOpponents("Another player is placing his tokens onto the battlefield, wait please...");
 
+            }
+            serverResponse = new ServerResponse(getTurn(), pack);
+        }
+        // If the cell is not correct, nothing change and the player receive the same request
+        else {
+            Pack pack = new Pack(Action.PLACE_YOUR_TOKEN);
+            pack.setPlayer(getPlayerInTurn());
+            pack.setModelCopy(getCopy());
+            pack.setMessageOpponents("Another player is placing his tokens onto the battlefield, wait please...");
 
-
-
-
-
-
-
-
-
-
-
-
+            serverResponse = new ServerResponse(getTurn(), pack);
+        }
+        notify(serverResponse);
+    }
 
 
     /**
@@ -302,40 +349,103 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     public void validMoves(PlayerAction playerAction) throws CellOutOfBattlefieldException, WrongNumberPlayerException, ImpossibleTurnException, CellHeightException, IOException, ReachHeightLimitException {
 
         int selectedTokenId = playerAction.getTokenMain();
-        int otherTokenId = playerAction.getTokenOther();
+        Token otherToken = null;
+
+        try {
+            if (getPlayerInTurn().getToken1().getId() == selectedTokenId) {
+                otherToken = getPlayerInTurn().getToken2();
+            }
+            if (getPlayerInTurn().getToken2().getId() == selectedTokenId) {
+                otherToken = getPlayerInTurn().getToken1();
+            }
+        } catch (NullPointerException e){
+            otherToken = null;
+        }
 
         Token selectedToken = parseToken(selectedTokenId);
-        if (selectedToken == null || !selectedToken.getTokenColor().equals(turn)) {
-            this.notifyWrongInput(playerAction);
-            return;
-        }
-        Token otherToken = parseToken(otherTokenId);
 
-        Player playerActive = playerAction.getPlayer();
-
-        List<Player> opponents = getOpponents(playerActive);
+        List<Player> opponents = getOpponents(getPlayerInTurn());
         List<Token> enemyTokens = getTokens(opponents);
 
-        GodCard myGodCard = playerActive.getMyGodCard();
+        GodCard myGodCard = getPlayerInTurn().getMyGodCard();
         List<GodCard> enemyGodCards = getGodCards(opponents);
 
-        List<Cell> validMoves = new ArrayList<>();
-
+        List<Cell> validMoves;
         validMoves = computeValidMoves(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, getBattlefield());
 
         ServerResponse serverResponse;
 
         if (validMoves == null) {
-            serverResponse = checkLoseForMove(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, getBattlefield(), opponents, playerActive);
+            serverResponse = checkLoseForMove(otherToken, enemyTokens, myGodCard, enemyGodCards);
         } else {
-            serverResponse = new ServerResponse(Action.ASK_FOR_MOVE, this.getCopy(), validMoves, null,null, null, null);
+
+            Pack pack = new Pack(Action.ASK_FOR_WHERE_TO_MOVE);
+            pack.setModelCopy(getCopy());
+            pack.setValidMoves(validMoves);
+            pack.setMessageOpponents(getPlayerInTurn().getUsername()+" is selecting where to move his token...");
+
+            serverResponse = new ServerResponse(getTurn(), pack);
         }
-
-        List<Player> target = new ArrayList<>();
-        target.add(getPlayerInTurn());
-
-        notify(serverResponse, target);
+        notify(serverResponse);
     }
+
+
+    /**
+     * When the controller receive a TOKEN_SELECTED if the owner has Prometheus,
+     * I ask him if he want to use his power or not.
+     * The token he want to move is saved for his next answer.
+     * @param playerAction the packet with all the info
+     */
+    public void askForPrometheus(PlayerAction playerAction) throws ImpossibleTurnException, IOException, CellHeightException, WrongNumberPlayerException, ReachHeightLimitException, CellOutOfBattlefieldException {
+
+        Pack pack = new Pack(Action.ASK_FOR_PROMETHEUS_POWER);
+        pack.setPlayer(getPlayerInTurn());
+        pack.setModelCopy(getCopy());
+        pack.setMessageOpponents("Another player is choosing if use Prometheus power or not...");
+
+        prometheusToken = parseToken(playerAction.getTokenMain());
+
+        ServerResponse serverResponse = new ServerResponse(getTurn(), pack);
+        notify(serverResponse);
+    }
+
+
+    public void prometheusFirstBuild() throws CellOutOfBattlefieldException, ReachHeightLimitException, CellHeightException, IOException, ImpossibleTurnException, WrongNumberPlayerException {
+
+        Pack pack = new Pack(Action.ASK_FOR_BUILD);
+        pack.setPlayer(getPlayerInTurn());
+        pack.setMessageOpponents(getPlayerInTurn().getUsername()+" has used his power!\nHe is placing his first build!");
+        pack.setModelCopy(getCopy());
+
+        Token token2 = getPlayerInTurn().getToken2();
+        List<Token> enemyTokens = getTokens(getOpponents(getPlayerInTurn()));
+        GodCard myGodCard = getPlayerInTurn().getMyGodCard();
+        List<GodCard> enemyGodCards = getGodCards(getOpponents(getPlayerInTurn()));
+
+        List<Cell> validBuilds = validBuilds(prometheusToken, token2, enemyTokens, myGodCard, enemyGodCards, getBattlefield());
+        prometheusToken = null;
+
+        pack.setValidBuilds(validBuilds);
+
+        ServerResponse serverResponse = new ServerResponse(getTurn(), pack);
+        notify(serverResponse);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -387,104 +497,12 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     }
 
 
-    public List<Player> toList(Player p){
-        List<Player> singleList = new ArrayList<>();
-        singleList.add(p);
-        return singleList;
-    }
 
 
 
 
 
-    /**
-     *
-     */
-    public void placeToken(PlayerAction playerAction) throws WrongNumberPlayerException, ImpossibleTurnException {
 
-        Cell targetCell = playerAction.getFirstCell();
-        ServerResponse waitResponse = new ServerResponse(Action.WAIT_OTHER_PLAYER_MOVE, null, null, null, null, null, null);
-
-        // If the cell is correct
-        if (targetCell!=null && battlefield.getCell(targetCell)!=null){
-
-
-            // If the first token has a position and the second not, it is assigned and the turn is updated
-            if (getPlayerInTurn().getToken1().getTokenPosition()!=null && getPlayerInTurn().getToken2().getTokenPosition()==null) {
-                getPlayerInTurn().getToken2().setTokenPosition(targetCell);
-                battlefield.getCell(targetCell).setOccupied();
-                updateTurn();
-            }
-
-
-            // If the first token has no position, it is assigned
-            if (getPlayerInTurn().getToken1().getTokenPosition()==null) {
-                getPlayerInTurn().getToken1().setTokenPosition(targetCell);
-                battlefield.getCell(targetCell).setOccupied();
-            }
-
-            boolean gameCanStart = false;
-
-            for (Player p: allPlayers){
-
-                // If all the tokens of all players have a position the game can start
-                if (p.getToken1().getTokenPosition()==null || p.getToken2().getTokenPosition()==null){
-                    break;
-                }
-                // If someone need to place his token, he has to do it before the game start
-                else{
-                    gameCanStart=true;
-                }
-            }
-
-            if (gameCanStart){
-
-                ServerResponse gameStart = new ServerResponse(Action.ASK_FOR_MOVE, getCopy(), null, null, null,null, getPlayerInTurn());
-
-                for (Player p: allPlayers){
-
-                    if (p.getTokenColor().equals(getTurn())){
-                        playingConnection.get(p.getUsername()).asyncSend(gameStart);
-
-                    }
-                    else{
-                        playingConnection.get(p.getUsername()).asyncSend(waitResponse);
-                    }
-                }
-
-            } else {
-
-                ServerResponse tokenPlacement = new ServerResponse(Action.PLACE_YOUR_TOKEN, getCopy(), null, null, null,null, null);
-
-                // Tell the player he has to play and the opponent to wait
-                for (Player p: allPlayers){
-
-                    if (p.getTokenColor().equals(getTurn())){
-                        playingConnection.get(p.getUsername()).asyncSend(tokenPlacement);
-
-                    }
-                    else{
-                        playingConnection.get(p.getUsername()).asyncSend(waitResponse);
-                    }
-                }
-            }
-
-        }
-        // If the cell is not correct
-        else {
-            ServerResponse tokenPlacement = new ServerResponse(Action.PLACE_YOUR_TOKEN, getCopy(), null, null, null,null, null);
-            for (Player p: allPlayers){
-
-                if (p.getTokenColor().equals(getTurn())){
-                    playingConnection.get(p.getUsername()).asyncSend(tokenPlacement);
-
-                }
-                else{
-                    playingConnection.get(p.getUsername()).asyncSend(waitResponse);
-                }
-            }
-        }
-    }
 
 
     /**
@@ -569,30 +587,42 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * It could be a TOKEN_NOT_MOVABLE, GAME_OVER or PLAYER_LOST.
      * @throws CellOutOfBattlefieldException if something goes wrong.
      */
-    public ServerResponse checkLoseForMove(Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield, List<Player> opponents, Player playerActive) throws CellOutOfBattlefieldException, WrongNumberPlayerException, ImpossibleTurnException {
+    public ServerResponse checkLoseForMove(Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards) throws CellOutOfBattlefieldException, WrongNumberPlayerException, ImpossibleTurnException {
 
-        if (otherToken == null) {                              // se il secondo token non esiste
-            if (allPlayers.size()==2) {                                             // se ci sono 2 player
-                return gameOver(opponents.get(0).getUsername());
+        // If there is no 2nd token
+        if (otherToken == null) {
+            // If there are 2 players
+            if (allPlayers.size()==2) {
+                return gameOver(getNextPlayer().getUsername());
             }
-            if (allPlayers.size() == 3) {                                             // se ci sono 3 player
-                return playerLost(playerActive);
+            // If there are 3 players
+            if (allPlayers.size() == 3) {
+                return playerLost(getPlayerInTurn());
             }
         }
-        else {                                                                  // se il secondo token esiste
-            List<Cell> validMoves2 = new ArrayList<>();
+        // If there is 2nd token
+        else {
+            List<Cell> validMoves2;
             validMoves2 = computeValidMoves(otherToken, null, enemyTokens, myGodCard, enemyGodCards, battlefield);
 
-            if (validMoves2 == null) {                                         // se non lo posso muovere
-                if (allPlayers.size() == 2) {                                     // se ci sono 2 player
-                    return gameOver(opponents.get(0).getUsername());
+            // If i can not move it
+            if (validMoves2 == null) {
+                if (allPlayers.size() == 2) {
+                    // If there are 2 players
+                    return gameOver(getNextPlayer().getUsername());
                 }
-            if (allPlayers.size() == 3) {                                         // se ci sono 3 player
-                    return playerLost(playerActive);
+            // If there are 3 players
+            if (allPlayers.size() == 3) {
+                    return playerLost(getPlayerInTurn());
                 }
             }
         }
-        return new ServerResponse(Action.TOKEN_NOT_MOVABLE, this.getCopy(), null, null,null, null, null);
+
+        Pack pack = new Pack(Action.TOKEN_NOT_MOVABLE);
+        pack.setModelCopy(getCopy());
+        pack.setMessageOpponents(getPlayerInTurn().getUsername()+" can not move the token he selected...");
+
+        return new ServerResponse(getTurn(), pack);
     }
 
 
@@ -816,7 +846,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         // Prometheus check: here he chose to use his godpower, so now he doesn't have to finish his turn, but he has to perform a simple move and a simple build
         if(playerAction.getPlayer().getMyGodCard().equals((GodCard.PROMETHEUS))  && playerAction.getDoWantUsePower()){          //qui prometeo ha fatto solo la prima build, come dice il boolean
             String askForSelectPrometheus = String.format("Remember: now you can't move-up! Please %s, select where you want to move your selected token(%s) (x,y)",this.turn.toString(), playerAction.getTokenMain());      //quindi da qui potrà partire la prometheusMove e poi simple build come da routine
-            ServerResponse serverResponse = new ServerResponse(Action.ASK_FOR_MOVE, this.getCopy(), null, null,null, askForSelectPrometheus, null);
+            ServerResponse serverResponse = new ServerResponse(Action.ASK_FOR_SELECT_TOKEN, this.getCopy(), null, null,null, askForSelectPrometheus, null);
             // HERE PROMETHEUS TURN DOESN'T END, SO WE DON'T APPLY THE UPDATE TURN! quindi metto in else la condizione di update turn, in modo che alla vera build finale di prometeo la fa la update turn
         }
 
@@ -865,8 +895,13 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * @return the correct ServerResponse.
      */
     public ServerResponse gameOver (String winner) {
-        String victoryMessage = String.format("%s HAS WIN!", winner.toUpperCase());
-        return new ServerResponse (Action.GAME_OVER, this.getCopy(), null,null, null, victoryMessage, null);
+
+        Pack pack = new Pack(Action.GAME_OVER);
+        String message = winner.toUpperCase()+" has win the game!";
+        pack.setMessageInTurn(message);
+        pack.setModelCopy(getCopy());
+
+        return new ServerResponse (getTurn(), pack);
     }
 
 
@@ -876,9 +911,18 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * @return the correct ServerResponse.
      */
     public ServerResponse playerLost (Player looser) throws WrongNumberPlayerException, ImpossibleTurnException {
-        String lostMessage = String.format("%s HAS LOST! Better luck next time!", looser.getUsername().toUpperCase());
+
+
+        Pack pack = new Pack(Action.PLAYER_LOST);
+        String message = looser.getUsername().toUpperCase()+" has lost the game!";
+        pack.setMessageInTurn(message);
+        pack.setMessageOpponents(message);
+        pack.setModelCopy(getCopy());
+
         removeFromTheGame(looser);
-        return new ServerResponse (Action.PLAYER_LOST, this.getCopy(), null,null, null, lostMessage, null);
+        pack.setPlayer(getPlayerInTurn());
+
+        return new ServerResponse (getTurn(), pack);
     }
 
 
@@ -891,8 +935,6 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         player.getToken1().getTokenPosition().setFree();
         player.getToken2().getTokenPosition().setFree();
         allPlayers.remove(player);
-
-        // probabilmente dovrei anche deallocare cose e liberarne altre, ma confido nel garbage collector <3
 
         updateTurn();
     }
@@ -970,7 +1012,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                 whatAction = "Please insert the position of a token you can move.";
                 break;
             }
-            case MOVE: {
+            case TOKEN_SELECTED: {
                 whatAction = "Please insert a valid position where you can move your token.";
                 break;
             }

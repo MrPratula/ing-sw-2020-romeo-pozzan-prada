@@ -48,7 +48,43 @@ public class Controller implements Observer<PlayerAction> {
                     break;
                 }
 
-                case PROMETHEUS_POWER:{
+                case TOKEN_SELECTED: {
+
+                    if (playerAction.getPlayer().getMyGodCard().equals(GodCard.PROMETHEUS)){
+                        model.askForPrometheus(playerAction);
+                    }
+                    else{
+                        model.validMoves(playerAction);
+                    }
+                    break;
+                }
+
+                case PROMETHEUS_ANSWER:{
+
+                    if (playerAction.getDoWantUsePower()){
+                        model.prometheusFirstBuild();
+                    }
+                    else {
+                        model.validMoves(playerAction);
+                    }
+                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                case PROMETHEUS_ANSWER:{
                     ///////////////////////////////
                             //simple build - prometheus move, simple build
                     List<Cell> validBuilds = model.askForValidBuilds(playerAction);
@@ -66,12 +102,9 @@ public class Controller implements Observer<PlayerAction> {
                     break;
                 }
 
-                case SELECT_TOKEN: {
-                    model.validMoves(playerAction);
-                    break;
-                }
 
-                case MOVE:{
+
+                case TOKEN_SELECTED:{
 
                     List<Cell> validMoves = model.askValidMoves(playerAction);
                     Cell targetCell = playerAction.getFirstCell();
