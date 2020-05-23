@@ -27,7 +27,7 @@ public class SwingView extends View {
     /**
      * Constructor of the client view with Swing GUI
      */
-    public SwingView(){
+    public SwingView(/*Player p*/){
 
 /*  modo1
 
@@ -75,9 +75,7 @@ public class SwingView extends View {
         frame.setSize(300,200);
         frame.setVisible(true);
 */
-
-        /* modo 2
-
+/* modo 2
         mainFrame = new JFrame("Santorini");
         mainFrame.setResizable(true);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -107,16 +105,18 @@ public class SwingView extends View {
         mainFrame.add(over);
 */
 
-      mainFrame = new JFrame("Santorini");
+        //this.player = p;
+
+        mainFrame = new JFrame("Santorini");
         mainFrame.setResizable(true);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         mainPanel = new JPanel();
         mainPanel.setBackground(Color.WHITE);
 
-        logoImage = new JLabel(new ImageIcon(new File("./src/main/graphics/Santorini.png").getAbsolutePath()));
+        logoImage = new JLabel(new ImageIcon(new File("./src/main/images/Santorini.png").getAbsolutePath()));
 
-        playButton = new JButton(new ImageIcon(new File("./src/main/graphics/ButtonPlay.png").getAbsolutePath()));
+        playButton = new JButton(new ImageIcon(new File("./src/main/images/ButtonPlay.png").getAbsolutePath()));
         playButton.setContentAreaFilled(false);
         playButton.setBorderPainted(false);
         playButton.addActionListener(new ActionListener() {

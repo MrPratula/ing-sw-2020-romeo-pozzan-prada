@@ -2,6 +2,7 @@ package it.polimi.ingsw.gui;
 
 import it.polimi.ingsw.model.Battlefield;
 import it.polimi.ingsw.model.Cell;
+import it.polimi.ingsw.model.ModelUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,17 +36,31 @@ public class GameFrame extends JFrame {
 
     // Array with all the pics
     ImageIcon[] pics = new ImageIcon[]{
-        new ImageIcon(new File(startPath + "level0.png").getAbsolutePath()),         //level 0
-        new ImageIcon(new File(startPath + "level1.png").getAbsolutePath()),         //level 0
-        new ImageIcon(new File(startPath + "level2.png").getAbsolutePath()),         //level 0
-        new ImageIcon(new File(startPath + "level3.png").getAbsolutePath()),         //level 0
-        new ImageIcon(new File(startPath + "levelDome.png").getAbsolutePath()),         //level 0
-        new ImageIcon(new File(startPath + "tokenRed.png").getAbsolutePath()),         //level 0
-        new ImageIcon(new File(startPath + "tokenBlue.png").getAbsolutePath()),         //level 0
-        new ImageIcon(new File(startPath + "tokenYellow.png").getAbsolutePath()),         //level 0
+            new ImageIcon(new File(startPath + "level0.png").getAbsolutePath()),  //0
+            new ImageIcon(new File(startPath + "level1.png").getAbsolutePath()),   //1
+            new ImageIcon(new File(startPath + "level2.png").getAbsolutePath()),  //2
+            new ImageIcon(new File(startPath + "level3.png").getAbsolutePath()),  //3
+            new ImageIcon(new File(startPath + "levelDome.png").getAbsolutePath()), //4
+            new ImageIcon(new File(startPath + "level0tokenRed.png").getAbsolutePath()),  //5
+            new ImageIcon(new File(startPath + "level1tokenRed.png").getAbsolutePath()), //6
+            new ImageIcon(new File(startPath + "level2tokenRed.png").getAbsolutePath()), //7
+            new ImageIcon(new File(startPath + "level3tokenRed.png").getAbsolutePath()),  //8
+            new ImageIcon(new File(startPath + "level0tokenBlue.png").getAbsolutePath()),   //9
+            new ImageIcon(new File(startPath + "level1tokenBlue.png").getAbsolutePath()),  //10
+            new ImageIcon(new File(startPath + "level2tokenBlue.png").getAbsolutePath()),  //11
+            new ImageIcon(new File(startPath + "level3tokenBlue.png").getAbsolutePath()), //12
+            new ImageIcon(new File(startPath + "level0tokenYellow.png").getAbsolutePath()), //13
+            new ImageIcon(new File(startPath + "level1tokenYellow.png").getAbsolutePath()), //14
+            new ImageIcon(new File(startPath + "level2tokenYellow.png").getAbsolutePath()), //15
+            new ImageIcon(new File(startPath + "level3tokenYellow.png").getAbsolutePath()), //16
+            new ImageIcon(new File(startPath + "level0Text.png").getAbsolutePath()),  //17
+            new ImageIcon(new File(startPath + "level1Text.png").getAbsolutePath()), //18
+            new ImageIcon(new File(startPath + "level2Text.png").getAbsolutePath()),//19
+            new ImageIcon(new File(startPath + "level3Text.png").getAbsolutePath()), //20
+            new ImageIcon(new File(startPath + "levelDomeText.png").getAbsolutePath()), //21
     };
 
-    private Battlefield battlefield; ///////////////////////////////////
+    private ModelUtils modelUtils; ///////////////////////////////////
 
     public JPanel getBattlefieldPanel() {
         return battlefieldPanel;
@@ -76,7 +91,9 @@ public class GameFrame extends JFrame {
                 buttons[i][j].setSize(100,100);
                 putInitialBuild(buttons[i][j],i,j);
                 battlefieldPanel.add(buttons[i][j]);
-                buttons[i][j].addActionListener(new ButtonHandler(buttons[i][j], pics));
+
+                //herei add a listener to this button (owning a Cell)
+                buttons[i][j].addActionListener(new ButtonHandler(buttons[i][j], pics, modelUtils));
             }
         }
 
