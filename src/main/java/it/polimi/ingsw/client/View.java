@@ -35,79 +35,10 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
     }
 
 
-    /**
-     * When needed, it returns the token that has just been selected from the user,
-     * and even the not selected one (it can be useful).
-     * @param serverResponse: the response passed through the observers from the server.
-     * @param posX: the first input of the user, i.e. the column of the battlefield.
-     * @param posY: the second input of the user, i.e. the row of the battlefield.
-     * @return a list containing the selected and the not selected token.
-     */
-    public List<Token> computeTokens(ServerResponse serverResponse, int posX, int posY){
-
-        Token selectedToken, otherToken;
-        if (getPlayer().getToken1().getTokenPosition().getPosX() == posX &&
-                getPlayer().getToken1().getTokenPosition().getPosY() == posY) {
-            selectedToken = getPlayer().getToken1();
-            otherToken = getPlayer().getToken2();
-        }  else
-        if (getPlayer().getToken2().getTokenPosition().getPosX() == posX &&
-                getPlayer().getToken2().getTokenPosition().getPosY() == posY) {
-            selectedToken = getPlayer().getToken2();
-            otherToken = getPlayer().getToken1();
-        } else {
-            selectedToken = null;
-            otherToken = null;
-        }
-
-        List<Token> tokens = new ArrayList<>();
-        tokens.add(selectedToken);
-        tokens.add(otherToken);
-        return tokens;
-    }
-
-
-
-    /**
-     * When needed, it returns the opponent players(1 or 2) of the player associated to this view.
-     * @param serverResponse: the response passed throught the observers from the server.
-     * @return a list containing the opponent players.
-     */
-    public List<Player> computeOpponentPlayers (ServerResponse serverResponse){
-
-        int numberOfPlayers = serverResponse.getPack().getModelCopy().getAllPlayers().size();
-        List<Player> players = serverResponse.getPack().getModelCopy().getAllPlayers();
-        Player opp1 = null, opp2 = null;
-        if(numberOfPlayers==2){
-            if(players.get(0).equals(getPlayer()))  opp1 = players.get(1);
-            else opp1 = players.get(0);
-        }
-        if(numberOfPlayers==3){                             ///si potrebbe fare meglio
-            for(int i=0; i<3; i++){
-                if(players.get(i).equals(getPlayer())){
-                    opp1 = players.get(1);
-                    opp2 = players.get(2);
-                }
-            }
-        }
-
-        List<Player> opponents = new ArrayList<>();
-        opponents.add(opp1);
-        opponents.add(opp2);
-        return opponents;
-    }
-
-
     public void notifyClient(PlayerAction playerAction) throws CellOutOfBattlefieldException, ReachHeightLimitException, CellHeightException, IOException, ImpossibleTurnException, WrongNumberPlayerException {
         notify(playerAction);
     }
 
-    /**
-     * QUI LA VIEW DEVE FARE COSE, PROBABILMENTE SOLO CHIAMARE UPDATE
-     */
-    public void run(){
-
-    }
 
 
     /**
@@ -118,8 +49,10 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
     @Override
     public void update(ServerResponse serverResponse) throws ImpossibleTurnException, IOException, CellHeightException, WrongNumberPlayerException, ReachHeightLimitException, CellOutOfBattlefieldException {
 
-        switch (serverResponse.getPack().getAction()) {
+        System.out.println();
+        System.out.println("Executing "+serverResponse.getPack().getAction().getName().toUpperCase());
 
+        switch (serverResponse.getPack().getAction()) {
 
             // The first time a player connects it is asked for his name
             // This continue till the name is valid
@@ -208,10 +141,10 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                     for (GodCard god: godInGame) {
                         if (choice.toUpperCase().equals(god.name().toUpperCase())){
                             System.out.println("Ohhh good choice!");
-                            playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, this.player, null, null, 0, 0, null, null, false, choice.toUpperCase());
-                            notifyClient(playerAction);
                             player=serverResponse.getPack().getPlayer();
+                            playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, player, null, null, 0, 0, null, null, false, choice.toUpperCase());
                             needToLoop = false;
+                            notifyClient(playerAction);
                         }
                     }
                 }
@@ -259,13 +192,12 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                         for (GodCard god: godInGame) {
                             if (choice.toUpperCase().equals(god.name().toUpperCase())){
                                 System.out.println("Ohhh good choice!");
-                                playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, this.player, null, null, 0, 0, null, null, false, choice.toUpperCase());
+                                playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, player, null, null, 0, 0, null, null, false, choice.toUpperCase());
                                 notifyClient(playerAction);
                                 needToLoop = false;
                             }
                         }
                     }
-
                 }
                 break;
             }
@@ -274,11 +206,10 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
             case PLACE_YOUR_TOKEN:{
 
                 PlayerAction playerAction;
-
                 Pack pack = serverResponse.getPack();
-                printCLI(pack.getModelCopy(), null);
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
+                    printCLI(pack.getModelCopy(), null);
                     System.out.println(pack.getMessageOpponents());
                 }
                 else {
@@ -288,10 +219,11 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                     String[] messageParsed;
                     Cell targetCell = null;
 
-                    while (needToLoop) {
+                    System.out.println(pack.getMessageInTurn());
 
-                        System.out.println(pack.getAction().toString());
+                    while (needToLoop) {
                         printCLI(pack.getModelCopy(), null);
+                        System.out.println(pack.getAction().toString());
 
                         try {
                             message = scanner.nextLine();
@@ -299,15 +231,17 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
                             targetCell = pack.getModelCopy().getBattlefield().getCell(Integer.parseInt(messageParsed[0]), Integer.parseInt(messageParsed[1]));
 
+                            if (targetCell!= null && isFree(targetCell, pack.getModelCopy())) {
+                                needToLoop = false;
+                            }
+
                         } catch (Exception exception) {
                             targetCell = null;
                         }
 
-                        if (targetCell!= null) {
-                            needToLoop = false;
-                        }
+
                     }
-                    playerAction = new PlayerAction(Action.TOKEN_PLACED, this.player, null, null, 0, 0, targetCell, null, false, null);
+                    playerAction = new PlayerAction(Action.TOKEN_PLACED, player, null, null, 0, 0, targetCell, null, false, null);
                     notifyClient(playerAction);
                 }
                 break;
@@ -320,15 +254,13 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                 PlayerAction playerAction = null;
                 Pack pack = serverResponse.getPack();
 
-                // Update the player
-                this.player = pack.getPlayer();
-
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
                     printCLI(pack.getModelCopy(), null);
                     System.out.println(pack.getMessageOpponents());
                 }
                 else {
-
+                    // Update the player
+                    this.player = pack.getPlayer();
                     if (pack.getMessageInTurn() != null){
                         System.out.println(pack.getMessageInTurn());
                     }
@@ -337,7 +269,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
                     while (needToLoop){
                         printCLI(pack.getModelCopy(), null);
-                        System.out.print(serverResponse.getPack().getAction().getInfo());
+                        System.out.println(serverResponse.getPack().getAction().getInfo());
 
                         try{
                             String[] inputs = getUserInput();
@@ -345,7 +277,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                             int selectedToken = getToken(inputs, player);
 
                             if (selectedToken != 0){
-                                playerAction = new PlayerAction(Action.TOKEN_SELECTED, getPlayer(), null, null, selectedToken, 0, null, null, false, null);
+                                playerAction = new PlayerAction(Action.TOKEN_SELECTED, player, null, null, selectedToken, 0, null, null, false, null);
                                 savedToken = selectedToken;
                                 needToLoop = false;
                             }
@@ -435,7 +367,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                             Cell selectedCell = getCell(inputs, pack.getModelCopy().getBattlefield());
 
                             if (selectedCell != null){
-                                playerAction = new PlayerAction(Action.WHERE_TO_MOVE_SELECTED, getPlayer(), null, null, savedToken, 0, selectedCell, null, false, null);
+                                playerAction = new PlayerAction(Action.WHERE_TO_MOVE_SELECTED, player, null, null, savedToken, 0, selectedCell, null, false, null);
                                 needToLoop = false;
                             }
                         } catch (Exception e){
@@ -533,13 +465,6 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
     }
 
 
-
-
-
-
-
-
-
     public int getToken(String[] inputs, Player player){
 
         int selectX, selectY;
@@ -572,25 +497,29 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
 
 
+    public boolean isFree(Cell targetCell, ModelUtils modelCopy){
 
+        List<Player> allPlayers = modelCopy.getAllPlayers();
 
+        for (Player p: allPlayers) {
+            if (p.getToken1() != null) {
+                if (p.getToken1().getTokenPosition() != null) {
+                    if (targetCell.equals(p.getToken1().getTokenPosition()))
+                        return false;
+                }
+            }
+            if (p.getToken2() != null) {
+                if (p.getToken1().getTokenPosition() != null) {
+                    if (targetCell.equals(p.getToken1().getTokenPosition()))
+                        return false;
+                }
+            }
+        }
 
+        Battlefield battlefield = modelCopy.getBattlefield();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        return !battlefield.getCell(targetCell).getIsDome();
+    }
 
 
     /**
@@ -646,8 +575,6 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
      * @param validMoves: cells that have to be printed on a green background (can be null)
      * @param x: position x of the battlefield
      * @param y: position y of the battlefield
-     * @throws CellOutOfBattlefieldException
-     * @throws ReachHeightLimitException
      */
     private void printInnerCLI(Battlefield battlefield, List<Player> allPlayers, List<Cell> validMoves, int x, int y) throws CellOutOfBattlefieldException, ReachHeightLimitException {
 
@@ -684,6 +611,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
         }
     }
 
+
     /**
      * Auxiliary method to color the background according to
      * the color of the token on that precise position
@@ -701,6 +629,4 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
         System.out.print(" ");
         System.out.print("\033[047m");          //on a white board
     }
-
-
 }

@@ -72,8 +72,4 @@ public class PlayerAction implements Serializable {
         return this.args;
     }
 
-    public void processAction(){
-
-    }
-
 }

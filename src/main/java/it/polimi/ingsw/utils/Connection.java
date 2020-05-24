@@ -151,7 +151,7 @@ public class Connection extends Observable<PlayerAction> implements Runnable{
                         // Check for upper case to avoid having Lorenzo and lorenzo in the same game
                         if (n.toUpperCase().equals(name.toUpperCase())){
                             Pack pack2 = new Pack(Action.INVALID_NAME);
-                            asyncSend(new ServerResponse(null, pack));
+                            asyncSend(new ServerResponse(null, pack2));
                         }
                         else {
                             this.name = name;
@@ -170,7 +170,7 @@ public class Connection extends Observable<PlayerAction> implements Runnable{
 
             try {
                 server.lobby(thisConnection, name);
-            } catch (IOException | InterruptedException e) {
+            } catch (IOException e) {
                 System.err.println("Error in launch new thread into lobby");
                 e.printStackTrace();
             }

@@ -112,12 +112,10 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      */
     public List<Player> getOpponents(Player playerActive) {
 
-        List<Player> opponents = null;
+        List<Player> opponents = new ArrayList<>();
         for (Player p: allPlayers) {
-            if (!playerActive.getUsername().equals(p.getUsername())) {
-                try{
-                    opponents.add(p);
-                } catch (NullPointerException ignored){}
+            if (!p.getTokenColor().equals(playerActive.getTokenColor())) {
+                opponents.add(p);
             }
         }
         return opponents;
@@ -275,11 +273,10 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         // If the cell is correct
         if (targetCell!=null && battlefield.getCell(targetCell)!=null){
 
-            // If the first token has a position and the second not, it is assigned and the turn is updated
+            // If the first token has a position and the second not, it is assigned
             if (getPlayerInTurn().getToken1().getTokenPosition()!=null && getPlayerInTurn().getToken2().getTokenPosition()==null) {
                 getPlayerInTurn().getToken2().setTokenPosition(targetCell);
                 battlefield.getCell(targetCell).setOccupied();
-                updateTurn();
             }
 
             // If the first token has no position, it is assigned
@@ -287,6 +284,9 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                 getPlayerInTurn().getToken1().setTokenPosition(targetCell);
                 battlefield.getCell(targetCell).setOccupied();
             }
+
+            if (getPlayerInTurn().getToken1().getTokenPosition()!=null && getPlayerInTurn().getToken2().getTokenPosition()!=null)
+                updateTurn();
 
             boolean gameCanStart = false;
 
@@ -456,7 +456,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * @return all the tokens of those players.
      */
     public List<Token> getTokens(List<Player> players) {
-        List<Token> tokens = null;
+        List<Token> tokens = new ArrayList<>();
         for (Player p: players) {
             try {
                 tokens.add(p.getToken1());
@@ -472,7 +472,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * @return a list of all those players god cards.
      */
     public List<GodCard> getGodCards(List<Player> players) {
-        List<GodCard> godCards = null;
+        List<GodCard> godCards = new ArrayList<>();
         for (Player p: players) {
             try {
                 godCards.add(p.getMyGodCard());
