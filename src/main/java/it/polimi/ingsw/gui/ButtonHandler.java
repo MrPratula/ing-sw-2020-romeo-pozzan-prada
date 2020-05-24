@@ -2,11 +2,10 @@ package it.polimi.ingsw.gui;
 
 import it.polimi.ingsw.controller.CellHeightException;
 import it.polimi.ingsw.controller.ReachHeightLimitException;
-import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.ModelUtils;
-import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.TokenColor;
 import it.polimi.ingsw.utils.PlayerAction;
+import it.polimi.ingsw.utils.ServerResponse;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -41,8 +40,10 @@ public class ButtonHandler implements ActionListener {
 
 
         //  solo per compilare
+        ServerResponse s = new ServerResponse(null,null);
         PlayerAction playerAction = new PlayerAction(null,null,null,null,0,0,null,null,false,"");
 
+        //switch(clickedButtonEvent.getSource()):{}
         switch(playerAction.getAction()) {
             case ASK_FOR_BUILD: {
                 try {
@@ -74,23 +75,23 @@ public class ButtonHandler implements ActionListener {
         switch (tc){
             case RED:{
                 if(height==0) prevButton.setIcon(pics[5]);
-                if(height==0) prevButton.setIcon(pics[6]);
-                if(height==0) prevButton.setIcon(pics[7]);
-                if(height==0) prevButton.setIcon(pics[8]);
+                if(height==1) prevButton.setIcon(pics[6]);
+                if(height==2) prevButton.setIcon(pics[7]);
+                if(height==2) prevButton.setIcon(pics[8]);
                 break;
             }
             case BLUE:{
                 if(height==0) prevButton.setIcon(pics[9]);
-                if(height==0) prevButton.setIcon(pics[10]);
-                if(height==0) prevButton.setIcon(pics[11]);
-                if(height==0) prevButton.setIcon(pics[12]);
+                if(height==1) prevButton.setIcon(pics[10]);
+                if(height==2) prevButton.setIcon(pics[11]);
+                if(height==3) prevButton.setIcon(pics[12]);
                 break;
             }
             case YELLOW:{
                 if(height==0) prevButton.setIcon(pics[13]);
-                if(height==0) prevButton.setIcon(pics[14]);
-                if(height==0) prevButton.setIcon(pics[15]);
-                if(height==0) prevButton.setIcon(pics[16]);
+                if(height==1) prevButton.setIcon(pics[14]);
+                if(height==2) prevButton.setIcon(pics[15]);
+                if(height==3) prevButton.setIcon(pics[16]);
                 break;
             }
             default: break;
@@ -157,7 +158,7 @@ public class ButtonHandler implements ActionListener {
             //if i just selected to increment a cell occupied
             if (cellButton.getCell().getThereIsPlayer()) {
                 // se il player corrent è ZEUS ed è il suo turno
-                //    if(/*thisPlayer*/.getMyGodCard().toString().equals("ZEUS") && modelUtils.getTurn().equals(p.getTokenColor()))  //prendo immagine con suo token piu alta e faccio
+//                    if(modelUtils.getMyGodCard().toString().equals("ZEUS") && modelUtils.getTurn().equals(p.getTokenColor()))  //prendo immagine con suo token piu alta e faccio
                 // se non è zeus
                 //    else  JOptionPane.showMessageDialog(new JFrame(),"You can't build here!","Error", JOptionPane.ERROR_MESSAGE);
             } else{
