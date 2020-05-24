@@ -112,12 +112,10 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      */
     public List<Player> getOpponents(Player playerActive) {
 
-        List<Player> opponents = null;
+        List<Player> opponents = new ArrayList<>();
         for (Player p: allPlayers) {
-            if (!playerActive.getUsername().equals(p.getUsername())) {
-                try{
-                    opponents.add(p);
-                } catch (NullPointerException ignored){}
+            if (!p.getTokenColor().equals(playerActive.getTokenColor())) {
+                opponents.add(p);
             }
         }
         return opponents;
@@ -458,7 +456,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * @return all the tokens of those players.
      */
     public List<Token> getTokens(List<Player> players) {
-        List<Token> tokens = null;
+        List<Token> tokens = new ArrayList<>();
         for (Player p: players) {
             try {
                 tokens.add(p.getToken1());
@@ -474,7 +472,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * @return a list of all those players god cards.
      */
     public List<GodCard> getGodCards(List<Player> players) {
-        List<GodCard> godCards = null;
+        List<GodCard> godCards = new ArrayList<>();
         for (Player p: players) {
             try {
                 godCards.add(p.getMyGodCard());
