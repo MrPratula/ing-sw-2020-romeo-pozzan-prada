@@ -22,12 +22,12 @@ public class ChooseGodCardWindow extends JDialog {
             new ImageIcon(new File(startPath + "artemis.png").getAbsolutePath()),   //1
             new ImageIcon(new File(startPath + "athena.png").getAbsolutePath()),  //2
             new ImageIcon(new File(startPath + "atlas.png").getAbsolutePath()),  //3
-            new ImageIcon(new File(startPath + "chronus.png").getAbsolutePath()), //4
+            new ImageIcon(new File(startPath + "chronuss.png").getAbsolutePath()), //4
             new ImageIcon(new File(startPath + "demeter.png").getAbsolutePath()),  //5
             new ImageIcon(new File(startPath + "hephaestus.png").getAbsolutePath()), //6
             new ImageIcon(new File(startPath + "hera.png").getAbsolutePath()), //7
             new ImageIcon(new File(startPath + "hestia.png").getAbsolutePath()),  //8
-            new ImageIcon(new File(startPath + "limus.png").getAbsolutePath()),   //9
+            new ImageIcon(new File(startPath + "limuss.png").getAbsolutePath()),   //9
             new ImageIcon(new File(startPath + "minotaur.png").getAbsolutePath()),  //10
             new ImageIcon(new File(startPath + "pan.png").getAbsolutePath()),  //11
             new ImageIcon(new File(startPath + "prometheus.png").getAbsolutePath()), //12
@@ -55,8 +55,19 @@ public class ChooseGodCardWindow extends JDialog {
      */
     public ChooseGodCardWindow(List<GodCard> godInGame) {
 
+        setTitle("Choose your GodCard for the game");
+
         mainPanel = new JPanel();
         mainPanel.setLayout(new GridLayout(1,2));
+
+        buttonGod1 = new JButton();
+        buttonGod2 = new JButton();
+        buttonGod1.setSize(400,700);
+        buttonGod2.setSize(400,700);
+        buttonGod1.setBorderPainted(false);
+        buttonGod2.setBorderPainted(false);
+        buttonGod1.setContentAreaFilled(false);
+        buttonGod2.setContentAreaFilled(false);
 
         List<ImageIcon> godsToDisplay = selectGodsToDisplay(godInGame);
         buttonGod1.setIcon(godsToDisplay.get(0));
@@ -83,11 +94,18 @@ public class ChooseGodCardWindow extends JDialog {
 
         mainPanel.add(buttonGod1);
         mainPanel.add(buttonGod2);
+        add(mainPanel,BorderLayout.CENTER);
 
         pack();
         setVisible(true);
     }
 
+    /**
+     * Selects the text of the 2 gods in the game, to be displayed
+     * when the mouse pass on the button
+     * @param godInGame: current gods
+     * @return power of the 2 gods of the game in text format
+     */
     private List<ImageIcon> selectTextToDisplay(List<GodCard> godInGame) {
 
         List<ImageIcon> textToDisplay = new ArrayList<>();
@@ -99,7 +117,7 @@ public class ChooseGodCardWindow extends JDialog {
                 case ARTEMIS: textToDisplay.set(i,godcards[15]);
                 case ATHENA:textToDisplay.set(i,godcards[16]);
                 case ATLAS: textToDisplay.set(i,godcards[17]);
-                case CHRONUS: {textToDisplay.set(i,godcards[18]);break;}
+                case CHRONUS: {textToDisplay.add(godcards[18]);break;}
                 case DEMETER: textToDisplay.set(i,godcards[19]);
                 case HEPHAESTUS: textToDisplay.add(godcards[20]);
                 case HERA: textToDisplay.set(i,godcards[21]);

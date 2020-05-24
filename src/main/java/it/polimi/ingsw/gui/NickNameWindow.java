@@ -67,7 +67,7 @@ public class NickNameWindow extends JDialog{
         confirmButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(!nicknameTextField.getText().isBlank()) new LobbyFrame();
+                if(!nicknameTextField.getText().trim().isEmpty()) new LobbyFrame();
                 else JOptionPane.showMessageDialog(new JFrame(),"You have to type a name!","Error", JOptionPane.ERROR_MESSAGE);  //posso anche mettere un'immagine error
             }
         });
