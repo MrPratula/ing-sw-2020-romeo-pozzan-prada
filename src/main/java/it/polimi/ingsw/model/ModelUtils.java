@@ -15,7 +15,7 @@ public class ModelUtils implements Serializable {
     private List<Player> allPlayers;
 
     public ModelUtils(Battlefield battlefield) {
-        this.battlefield= battlefield;
+        this.battlefield = battlefield;
     }
 
 

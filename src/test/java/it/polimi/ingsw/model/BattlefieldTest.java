@@ -25,9 +25,9 @@ public class BattlefieldTest {
         model.setBattlefield(battlefield);
         view = new View();
 
-        p1 = new Player("Alpha",TokenColor.RED, null);
-        p2 = new Player("Beta",TokenColor.BLUE, null);
-        p3 = new Player("Charlie",TokenColor.YELLOW, null);
+        p1 = new Player("Alpha",TokenColor.RED);
+        p2 = new Player("Beta",TokenColor.BLUE);
+        p3 = new Player("Charlie",TokenColor.YELLOW);
 
         t1 = new Token(TokenColor.RED);
         t11 = new Token(TokenColor.RED);
@@ -90,9 +90,8 @@ public class BattlefieldTest {
      */
     @Test
     public void PrintCLITest() throws ReachHeightLimitException, CellOutOfBattlefieldException {
-        view.printCLI(model.getBattlefield(), model.getAllPlayers(), null);
+        view.printCLI(model.getCopy(), null);
     }
-
 
 
     /**
@@ -109,7 +108,8 @@ public class BattlefieldTest {
         validMoves.add(battlefield.getCell(4,3));
         validMoves.add(battlefield.getCell(4,2));
 
-        view.printCLI(model.getBattlefield(), model.getAllPlayers(), validMoves);
+        view.printCLI(model.getCopy(), validMoves);
+
 
         // we don't care passing the selected token,
         // we just have to print the valid moves around him

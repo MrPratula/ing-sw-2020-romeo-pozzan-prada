@@ -50,14 +50,14 @@ public class Controller implements Observer<PlayerAction> {
 
                 case TOKEN_SELECTED: {
 
-                    if (playerAction.getPlayer().getMyGodCard().equals(GodCard.PROMETHEUS)){
+                    if (playerAction.getPlayer().getMyGodCard().equals(GodCard.PROMETHEUS)) {
                         model.askForPrometheus(playerAction);
-                    }
-                    else{
+                    } else {
                         model.validMoves(playerAction);
                     }
-                    break;
+                break;
                 }
+
 
                 case PROMETHEUS_ANSWER:{
 
@@ -70,41 +70,7 @@ public class Controller implements Observer<PlayerAction> {
                 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                case PROMETHEUS_ANSWER:{
-                    ///////////////////////////////
-                            //simple build - prometheus move, simple build
-                    List<Cell> validBuilds = model.askForValidBuilds(playerAction);
-                    Cell targetCell = playerAction.getFirstCell();
-
-                    for (Cell c: validBuilds) {
-                        if (c.getPosX() == targetCell.getPosX() && c.getPosY() == targetCell.getPosY()) {
-                            model.performBuild(playerAction);
-                            //here prometheus finished his first move
-                        }
-                        else{
-                            model.notifyWrongInput(playerAction);
-                        }
-                    }
-                    break;
-                }
-
-
-
-                case TOKEN_SELECTED:{
+                case WHERE_TO_MOVE_SELECTED:{
 
                     List<Cell> validMoves = model.askValidMoves(playerAction);
                     Cell targetCell = playerAction.getFirstCell();
@@ -112,20 +78,18 @@ public class Controller implements Observer<PlayerAction> {
                         if (c.getPosX() == targetCell.getPosX() && c.getPosY() == targetCell.getPosY()){
                             model.performMove(playerAction);
                         }
-                        else {
-                            model.notifyWrongInput(playerAction);
-                        }
                     }
                     break;
                 }
 
-                case BUILD:{
+
+                case WHERE_TO_BUILD_SELECTED:{
                     List<Cell> validBuilds = model.askForValidBuilds(playerAction);
                     Cell targetCell = playerAction.getFirstCell();
 
                     for (Cell c: validBuilds) {
                         if (c.getPosX() == targetCell.getPosX() && c.getPosY() == targetCell.getPosY()){
-                            if(playerAction.getPlayer().getMyGodCard().equals(GodCard.DEMETER)){
+                            if(playerAction.getPlayer().getMyGodCard().equals(GodCard.DEMETER) && playerAction.getDoWantUsePower()){
                                 if (model.differentCell(targetCell, playerAction.getSecondCell())){
                                     model.performBuild(playerAction);
                                 }else {
@@ -153,8 +117,8 @@ public class Controller implements Observer<PlayerAction> {
             }
         }
         else {
+            // this should never happen
             System.out.println("BAAAAAAAAAAAD");
-            model.notifyNotYourTurn();
         }
     }
 }

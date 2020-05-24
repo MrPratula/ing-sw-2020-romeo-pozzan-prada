@@ -13,6 +13,7 @@ import java.util.Scanner;
 public class View extends Observable<PlayerAction> implements Observer<ServerResponse>  {
 
     private Player player;
+    private int savedToken;
 
     public View() {
     }
@@ -28,6 +29,8 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
     public String[] getUserInput(){
         Scanner in = new Scanner(System.in);
         String inputLine = in.nextLine();
+        if (inputLine.toUpperCase().equals("NO"))
+            return null;
         return inputLine.split(",");
     }
 
@@ -320,7 +323,6 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                 // Update the player
                 this.player = pack.getPlayer();
 
-
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
                     printCLI(pack.getModelCopy(), null);
                     System.out.println(pack.getMessageOpponents());
@@ -344,6 +346,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
                             if (selectedToken != 0){
                                 playerAction = new PlayerAction(Action.TOKEN_SELECTED, getPlayer(), null, null, selectedToken, 0, null, null, false, null);
+                                savedToken = selectedToken;
                                 needToLoop = false;
                             }
                         } catch (Exception e){
@@ -421,12 +424,10 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                     boolean needToLoop = true;
                     PlayerAction playerAction = null;
 
-
                     while (needToLoop){
 
                         printCLI(pack.getModelCopy(), pack.getValidMoves());
                         System.out.println(pack.getAction().toString());
-
 
                         try{
                             String[] inputs = getUserInput();
@@ -434,7 +435,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                             Cell selectedCell = getCell(inputs, pack.getModelCopy().getBattlefield());
 
                             if (selectedCell != null){
-                                playerAction = new PlayerAction(Action.WHERE_TO_MOVE_SELECTED, getPlayer(), null, null, 0, 0, selectedCell, null, false, null);
+                                playerAction = new PlayerAction(Action.WHERE_TO_MOVE_SELECTED, getPlayer(), null, null, savedToken, 0, selectedCell, null, false, null);
                                 needToLoop = false;
                             }
                         } catch (Exception e){
@@ -447,187 +448,88 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
             }
 
 
+            case ASK_FOR_BUILD:{
 
+                Pack pack = serverResponse.getPack();
+                printCLI(pack.getModelCopy(), pack.getValidBuilds());
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            
-
-
-
-            case SET_UP: {
-                //prints the battlefield
-                printCLI(serverResponse.getModelCopy().getBattlefield(), serverResponse.getModelCopy().getAllPlayers(),null);
-
-                //prints the message for the user
-                System.out.print(serverResponse.getAction().getInfo());
-                //compute the user input
-                String[] inputs = getUserInput();
-                TokenColor tc;
-                switch (serverResponse.getOutMessage()) {
-                    case "TokenColor.RED":
-                        tc = TokenColor.RED;
-                    case "TokenColor.BLUE":
-                        tc = TokenColor.BLUE;
-                    default:
-                        tc = TokenColor.YELLOW;
+                if (!player.getTokenColor().equals(serverResponse.getTurn())){
+                    System.out.println(pack.getMessageOpponents());
                 }
-                Token token = new Token(tc);
-                token.setId(1);///////////////////modificare
-                token.setTokenPosition(serverResponse.getModelCopy().getBattlefield().getCell(Integer.parseInt(inputs[0]), Integer.parseInt(inputs[1])));
-                try {
-                    playerAction = new PlayerAction(Action.TOKEN_SET_UP, getPlayer(), null, null, token.getId(), 0, null, null, false, null);
-                    notifyClient(playerAction);////////////////////
-                } catch (NullPointerException e) {
-                    System.out.println(e.getMessage());
-                } catch (CellOutOfBattlefieldException e) {
-                    e.printStackTrace();//////////////////auto
-                }
-                break;
-            }
+                else{
 
-            case ASK_FOR_PROMETHEUS_POWER:{
-                //prints the battlefield
-                printCLI(serverResponse.getModelCopy().getBattlefield(), serverResponse.getModelCopy().getAllPlayers(),null);
-                //prints the message for the user
-                System.out.print(serverResponse.getAction().getInfo());
-                //compute the user input, IN THIS CASE IT'S JUST yes/no
-                Scanner in = new Scanner(System.in);
-                String input = in.nextLine();
+                    boolean needToLoop = true;
+                    PlayerAction playerAction = null;
 
-                if (input.equals("yes")) {
-                    System.out.println("Which token do you want to build with? (x,y)");
-                    //compute the user input
-                    String[] inputs = getUserInput();
-                    //calculates which token has been selected
-                    List<Token> tokens = computeTokens(serverResponse, Integer.parseInt(inputs[0]), Integer.parseInt(inputs[1]));
-                    //compute opponent players
-                    List<Player> opponentPlayers = computeOpponentPlayers(serverResponse);
-                    try {
-                        playerAction = new PlayerAction(Action.PROMETHEUS_ANSWER, getPlayer(), opponentPlayers.get(0), opponentPlayers.get(1), tokens.get(0).getId(), tokens.get(1).getId(), null, null, true, null);
-                        notifyClient(playerAction);////////////////////
-                    } catch (NullPointerException e) {
-                        System.out.println(e.getMessage());
-                    } catch (CellOutOfBattlefieldException e) {
-                        e.printStackTrace();//////////////////auto
+                    // If i have demeter i have to pick 2 cell for build
+                    if (player.getMyGodCard().equals(GodCard.DEMETER)){
+
+                        Cell selectedCell = null;
+                        Cell otherCell = null;
+
+                        printCLI(pack.getModelCopy(), pack.getValidBuilds());
+                        System.out.println(pack.getAction().toString());
+
+                        while (needToLoop) {
+
+                            try {
+                                String[] inputs = getUserInput();
+
+                                if (inputs==null && selectedCell!=null){
+                                    playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, getPlayer(), null, null, savedToken, 0, selectedCell, null, false, null);
+                                    savedToken = 0;
+                                    needToLoop = false;
+                                    break;
+                                }
+
+                                else if (otherCell==null && selectedCell!=null)
+                                    otherCell=getCell(inputs, pack.getModelCopy().getBattlefield());
+
+                                else if (selectedCell==null)
+                                    selectedCell = getCell(inputs, pack.getModelCopy().getBattlefield());
+
+                                if (selectedCell != null && otherCell!=null) {
+                                    playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, getPlayer(), null, null, savedToken, 0, selectedCell, otherCell, true, null);
+                                    savedToken = 0;
+                                    needToLoop = false;
+                                }
+                                else {
+                                    printCLI(pack.getModelCopy(), pack.getValidBuilds());
+                                    System.out.println("Select where do you want to place your second build... (x,y)\nType 'no' if you don't want to build a second time!");
+                                }
+                            } catch (Exception e) {
+                                printCLI(pack.getModelCopy(), pack.getValidBuilds());
+                                System.out.println("Your input wasn't correct!");
+                            }
+                        }
                     }
-                } else if (input.equals("no")) {
-                    //prints the message for the user
-                    System.out.println("Where do you want to move your token? (x,y)");
-                    //System.out.print(serverResponse.getAction().getInfo());    errato
-                    //compute the user input
-                    String[] inputs = getUserInput();
-                    //calculates which token has been selected
-                    List<Token> tokens = computeTokens(serverResponse, Integer.parseInt(inputs[0]), Integer.parseInt(inputs[1]));
-                    //compute opponent players
-                    List<Player> opponentPlayers = computeOpponentPlayers(serverResponse);
-                    try {
-                        playerAction = new PlayerAction(Action.SELECT_TOKEN, getPlayer(), opponentPlayers.get(0), opponentPlayers.get(1), tokens.get(0).getId(), tokens.get(1).getId(), null, null, false, null);
-                        notifyClient(playerAction);
-                    } catch (NullPointerException e) {
-                        System.out.println(e.getMessage());
-                    } catch (CellOutOfBattlefieldException e) {
-                        e.printStackTrace();//////////////////auto
+                    // If not demeter only one build
+                    else {
+                        while (needToLoop) {
+
+                            printCLI(pack.getModelCopy(), pack.getValidBuilds());
+                            System.out.println(pack.getAction().toString());
+
+                            try {
+                                String[] inputs = getUserInput();
+
+                                Cell selectedCell = getCell(inputs, pack.getModelCopy().getBattlefield());
+
+                                if (selectedCell != null) {
+                                    playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, getPlayer(), null, null, savedToken, 0, selectedCell, null, false, null);
+                                    savedToken = 0;
+                                    needToLoop = false;
+                                }
+                            } catch (Exception e) {
+                                System.out.println("Your input wasn't correct!");
+                            }
+                        }
                     }
-                } else {
-                    throw new IllegalArgumentException(); //dubbia gestione del wrong input
+                    notify(playerAction);
                 }
                 break;
             }
-
-            case START_NEW_TURN:                       //casi mergeati, l'user deve fare la stessa azione, quindi li ho accumunati
-            case TOKEN_NOT_MOVABLE: {
-                //prints the battlefield
-                printCLI(serverResponse.getModelCopy().getBattlefield(), serverResponse.getModelCopy().getAllPlayers(),null);
-
-                //prints the message for the user
-                System.out.print(serverResponse.getAction().getInfo());
-                //compute the user input
-                String[] inputs = getUserInput();
-                //calculates which token has been selected
-                List<Token> tokens = computeTokens(serverResponse, Integer.parseInt(inputs[0]), Integer.parseInt(inputs[1]));
-                //compute opponent players
-                List<Player> opponentPlayers = computeOpponentPlayers(serverResponse);
-                try {
-                    //cell is the cell we want to increment
-                    Cell cell = serverResponse.getModelCopy().getBattlefield().getCell(Integer.parseInt(inputs[0]), Integer.parseInt(inputs[1]));
-                    playerAction = new PlayerAction(Action.SELECT_TOKEN, getPlayer(), opponentPlayers.get(0), opponentPlayers.get(1), tokens.get(0).getId(), tokens.get(1).getId(), cell, null, false, null);
-                    notifyClient(playerAction);
-                } catch (NullPointerException e) {
-                    System.out.println(e.getMessage());
-                } catch (CellOutOfBattlefieldException e) {
-                    e.printStackTrace();//////////////////auto
-                }
-                break;
-            }
-
-
-
-            case ASK_FOR_BUILD: {
-                //prints the battlefield
-                printCLI(serverResponse.getModelCopy().getBattlefield(), serverResponse.getModelCopy().getAllPlayers(),null);
-
-                //prints the message for the user
-                System.out.print(serverResponse.getAction().getInfo());
-                //compute the user input
-                String[] inputs = getUserInput();
-                //calculates which token has been selected
-                List<Token> tokens = computeTokens(serverResponse, Integer.parseInt(inputs[0]), Integer.parseInt(inputs[1]) );
-                //compute opponent players
-                List<Player> opponentPlayers = computeOpponentPlayers(serverResponse);
-                try {
-                    //cell is the cell we want to increment
-                    Cell cell = serverResponse.getModelCopy().getBattlefield().getCell(Integer.parseInt(inputs[0]), Integer.parseInt(inputs[1]));
-                    playerAction = new PlayerAction(Action.BUILD, getPlayer(), opponentPlayers.get(0), opponentPlayers.get(1), tokens.get(0).getId(), tokens.get(1).getId(), cell, null, false, null);
-                    notifyClient(playerAction);////////////////////
-
-                } catch (NullPointerException e) {
-                    System.out.println(e.getMessage());
-                } catch (CellOutOfBattlefieldException e) {
-                    e.printStackTrace();//////////////////auto
-                }
-                break;
-            }
-
-            case NOT_YOUR_TURN: {
-                //prints the message for the user
-                System.out.print(serverResponse.getAction().getInfo());
-
-                //e poi??????????????????????????????????????
-                break;
-            }
-
-            case PLAYER_LOST: {
-                //prints the message for the user
-                System.out.print(serverResponse.getAction().getInfo());
-
-                //e poi??????????????????????????????????????
-                break;
-            }
-
-            case GAME_OVER: {
-                //prints the message for the user
-                System.out.print(serverResponse.getAction().getInfo());
-
-                //e poi??????????????????????????????????????
-                break;
-            }
-
         }
-
     }
 
 

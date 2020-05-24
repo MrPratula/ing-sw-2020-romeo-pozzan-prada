@@ -2,7 +2,6 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
 import it.polimi.ingsw.controller.ReachHeightLimitException;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -25,9 +24,9 @@ public class BattlefieldLimitTest {
         model.setBattlefield(battlefield);
         view = new View();
 
-        p1 = new Player("Alpha", TokenColor.RED, null);
-        p2 = new Player("Beta", TokenColor.BLUE, null);
-        p3 = new Player("Charlie", TokenColor.YELLOW, null);
+        p1 = new Player("Alpha", TokenColor.RED);
+        p2 = new Player("Beta", TokenColor.BLUE);
+        p3 = new Player("Charlie", TokenColor.YELLOW);
 
         t1 = new Token(TokenColor.RED);
         t11 = new Token(TokenColor.RED);
@@ -51,7 +50,7 @@ public class BattlefieldLimitTest {
             model.addPlayer(p);
         }
 
-        view.printCLI(model.getBattlefield(), model.getAllPlayers(), null);
+        view.printCLI(model.getCopy(), null);
         //output: empty battlefield, because tokens has no position
 
         t1.setTokenPosition(battlefield.getCell(1, 0));
@@ -61,7 +60,7 @@ public class BattlefieldLimitTest {
         t3.setTokenPosition(battlefield.getCell(2,4));*/
         t33.setTokenPosition(battlefield.getCell(0,3));
 
-        view.printCLI(model.getBattlefield(), model.getAllPlayers(), null);
+        view.printCLI(model.getCopy(), null);
         //output: again empty battlefield, because tokens has a position, but their cell isn't set as Occupied
 
         battlefield.getCell(1, 0).setOccupied();
@@ -73,7 +72,7 @@ public class BattlefieldLimitTest {
 
         //battlefield.getCell(1,4).setIsDome();
 
-        view.printCLI(model.getBattlefield(), model.getAllPlayers(), null);
+        view.printCLI(model.getCopy(), null);
         //output: colored tokens, because they has a position, AND their cell is set as Occupied
 
         battlefield.getCell(1, 0).setHeight(1);
@@ -89,21 +88,15 @@ public class BattlefieldLimitTest {
         battlefield.getCell(2, 1).setIsDome();
         battlefield.getCell(2, 0).setIsDome();
 
-        view.printCLI(model.getBattlefield(), model.getAllPlayers(), null);
+        view.printCLI(model.getCopy(), null);
+
         //here i see the height
 
         battlefield.getCell(1, 4).incrementHeight();
         battlefield.getCell(4, 0).incrementHeight();
         battlefield.getCell(2, 0).setIsDome();
 
-        view.printCLI(model.getBattlefield(), model.getAllPlayers(), null);
-        // testing methods
-
-        /*p2.setToken2(t22);
-        p3.setToken1(t3);
-        */
-
-
+        view.printCLI(model.getCopy(), null);
     }
 
 
@@ -113,7 +106,7 @@ public class BattlefieldLimitTest {
      */
     @Test
     public void PrintCLITest() throws ReachHeightLimitException, CellOutOfBattlefieldException {
-        view.printCLI(model.getBattlefield(), model.getAllPlayers(), null);
+        view.printCLI(model.getCopy(), null);
     }
 
 }

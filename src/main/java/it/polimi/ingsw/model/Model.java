@@ -636,19 +636,14 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      */
     public void performMove (PlayerAction playerAction) throws CellOutOfBattlefieldException, ReachHeightLimitException, CellHeightException, IOException, ImpossibleTurnException, WrongNumberPlayerException {
 
-        Player playerActive = playerAction.getPlayer();
+        Player playerActive = getPlayerInTurn();
         GodCard myGodCard = playerActive.getMyGodCard();
         Cell targetCell = playerAction.getFirstCell();
 
         int selectedTokenId = playerAction.getTokenMain();
-        int otherTokenId = playerAction.getTokenOther();
-
         Token selectedToken = parseToken(selectedTokenId);
-        if (selectedToken == null || !selectedToken.getTokenColor().equals(turn)) {
-            this.notifyWrongInput(playerAction);
-            return;
-        }
-        Token otherToken = parseToken(otherTokenId);
+
+        Token otherToken = getOtherToken(selectedTokenId);
 
         List<Player> opponents = getOpponents(playerActive);
         List<Token> enemyTokens = getTokens(opponents);
@@ -694,8 +689,67 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             }
         }
         else {
-            ServerResponse serverResponse = new ServerResponse(Action.ASK_FOR_BUILD, this.getCopy(), null, validBuilds, null,null, null);
+            Pack pack = new Pack(Action.ASK_FOR_BUILD);
+            pack.setPlayer(getPlayerInTurn());
+            pack.setModelCopy(getCopy());
+            pack.setValidBuilds(validBuilds);
+            pack.setMessageOpponents(getPlayerInTurn().getUsername()+" is choosing where to build...");
+
+            ServerResponse serverResponse = new ServerResponse(getTurn(), pack);
             notify(serverResponse);
+        }
+    }
+
+
+    /**
+     * @param firstTokenID unique integer of a token
+     * @return the other token of the player who own the token with the ID in the parameter
+     */
+    public Token getOtherToken(int firstTokenID){
+
+        Player red = null;
+        Player blue = null;
+        Player yellow = null;
+
+        for (Player p: allPlayers){
+            if (p.getTokenColor().equals(TokenColor.RED)){
+                red=p;
+            }
+            if (p.getTokenColor().equals(TokenColor.BLUE)){
+                blue=p;
+            }
+            if (p.getTokenColor().equals(TokenColor.YELLOW)){
+                yellow=p;
+            }
+        }
+
+        switch (firstTokenID){
+
+            case 1:{
+                if (red!=null)
+                    return red.getToken2();
+            }
+            case 11:{
+                if (red!=null)
+                    return red.getToken1();
+            }
+            case 2:{
+                if (blue!=null)
+                    return blue.getToken2();
+            }
+            case 22:{
+                if (blue!=null)
+                    return blue.getToken1();
+            }
+            case 3:{
+                if (yellow!=null)
+                    return yellow.getToken2();
+            }
+            case 33:{
+                if (yellow!=null)
+                    return yellow.getToken1();
+            }
+            default: return null;
         }
     }
 
@@ -777,9 +831,9 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * After a build has been made, the turn is updated.
      * @param playerAction the message from the observer that contain all the information.
      */
-    public void performBuild (PlayerAction playerAction) throws WrongNumberPlayerException, ImpossibleTurnException, CellHeightException, ReachHeightLimitException, CellOutOfBattlefieldException {
+    public void performBuild (PlayerAction playerAction) throws WrongNumberPlayerException, ImpossibleTurnException, CellHeightException, ReachHeightLimitException, CellOutOfBattlefieldException, IOException {
 
-        Player playerActive = playerAction.getPlayer();
+        Player playerActive = getPlayerInTurn();
         GodCard myGodCard = playerActive.getMyGodCard();
         Cell targetCell = playerAction.getFirstCell();
         Cell second_cell = playerAction.getSecondCell();
@@ -843,19 +897,18 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             }
         }
 
-        // Prometheus check: here he chose to use his godpower, so now he doesn't have to finish his turn, but he has to perform a simple move and a simple build
-        if(playerAction.getPlayer().getMyGodCard().equals((GodCard.PROMETHEUS))  && playerAction.getDoWantUsePower()){          //qui prometeo ha fatto solo la prima build, come dice il boolean
-            String askForSelectPrometheus = String.format("Remember: now you can't move-up! Please %s, select where you want to move your selected token(%s) (x,y)",this.turn.toString(), playerAction.getTokenMain());      //quindi da qui potrà partire la prometheusMove e poi simple build come da routine
-            ServerResponse serverResponse = new ServerResponse(Action.ASK_FOR_SELECT_TOKEN, this.getCopy(), null, null,null, askForSelectPrometheus, null);
-            // HERE PROMETHEUS TURN DOESN'T END, SO WE DON'T APPLY THE UPDATE TURN! quindi metto in else la condizione di update turn, in modo che alla vera build finale di prometeo la fa la update turn
-        }
+        updateTurn();
 
-        //  After the build has been done, the turn is ended and a new player has to begin his turn. (only if he is not Prometheus)
+        String inTurnMessage = String.format("%s is now your turn!",getPlayerInTurn().getUsername().toUpperCase());
+        String opponentMessage = String.format("Is now %s turn!",getPlayerInTurn().getUsername().toUpperCase());
+        Pack pack = new Pack(Action.ASK_FOR_SELECT_TOKEN);
+        pack.setMessageOpponents(opponentMessage);
+        pack.setMessageInTurn(inTurnMessage);
+        pack.setModelCopy(getCopy());
+        pack.setPlayer(getPlayerInTurn());
 
-        else this.updateTurn();
-
-        String askForSelect = String.format("Player %s select the token you want to move (x,y)",this.turn.toString());
-        ServerResponse serverResponse = new ServerResponse(Action.START_NEW_TURN, this.getCopy(), null, null,null, askForSelect, null);
+        ServerResponse serverResponse = new ServerResponse(getTurn(), pack);
+        notify(serverResponse);
     }
 
 
@@ -983,19 +1036,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     }
 
 
-    /**
-     * It is called by the controller if a player make a request when it is not his turn.
-     * It creates a ServerResponse with a message that tells him whose player is turn.
-     * @throws CellOutOfBattlefieldException if something goes wrong.
-     */
-    public void notifyNotYourTurn() throws CellOutOfBattlefieldException, ReachHeightLimitException, CellHeightException, IOException, ImpossibleTurnException, WrongNumberPlayerException {
 
-        String whoIsTurn = String.format("Now is player %s turn!", this.turn.toString());
-
-        ServerResponse serverResponse = new ServerResponse(Action.NOT_YOUR_TURN, null, null,null, null, whoIsTurn, null);
-
-        notify(serverResponse);
-    }
 
 
     /**
@@ -1008,23 +1049,26 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         String whatAction;
 
         switch (playerAction.getAction()) {
-            case SELECT_TOKEN: {
+            case TOKEN_SELECTED: {
                 whatAction = "Please insert the position of a token you can move.";
                 break;
             }
-            case TOKEN_SELECTED: {
+            case WHERE_TO_MOVE_SELECTED: {
                 whatAction = "Please insert a valid position where you can move your token.";
                 break;
             }
             default: {
-                whatAction = Action.WRONG_INPUT.getInfo();
+                whatAction = null;
             }
         }
 
-        String errorMessage = String.format("%s your choice is not valid.\n%s",
-                playerAction.getPlayer().getUsername().toUpperCase(), whatAction);
+        Pack pack = new Pack(Action.WRONG_INPUT);
+        pack.setPlayer(getPlayerInTurn());
+        pack.setModelCopy(getCopy());
+        pack.setMessageInTurn(whatAction);
+        pack.setMessageOpponents(getPlayerInTurn().getUsername()+" has insert a non valid choice...");
 
-        ServerResponse serverResponse = new ServerResponse(Action.WRONG_INPUT, null, null, null,null, errorMessage, null);
+        ServerResponse serverResponse = new ServerResponse(getTurn(), pack);
         notify(serverResponse);
     }
 

@@ -22,12 +22,12 @@ public enum Action implements Serializable {
     TOKEN_SELECTED("A player selected a token"),
     PROMETHEUS_ANSWER("Prometheus wants to use his God power!"),
     WHERE_TO_MOVE_SELECTED("A player choose where to move a token"),
+    WHERE_TO_BUILD_SELECTED(""),
 
 
 
 
 
-    BUILD("A player made a build. Switch turn"),
 
 
     /*    FROM SERVER TO CLIENT     */
@@ -49,13 +49,14 @@ public enum Action implements Serializable {
 
     SELECT_YOUR_GOD_CARD("Which one of these GodCards do you want to use in this game?"),
     PLACE_YOUR_TOKEN("Please choose a position for your token... (x,y)"),
+
     ASK_FOR_SELECT_TOKEN("Which token do you want to move? (x,y)"),
     ASK_FOR_PROMETHEUS_POWER("Do you want to use your GodPower? [yes][no]\nIf your Worker does not move up, it may build both before and after moving."),
-
     TOKEN_NOT_MOVABLE("You can not move this token, please select a movable one! (x,y)"),
     GAME_OVER("GAME OVER"),
     PLAYER_LOST(""),
     ASK_FOR_WHERE_TO_MOVE("Where do you want to move your token? (x,y)\nOnly the green cell are accepted"),
+    WRONG_INPUT("Please insert a valid choice!"),
 
 
 
@@ -77,7 +78,6 @@ public enum Action implements Serializable {
     PRINT_MESSAGE("Write here some text to be printed..."),
 
     // ERROR MESSAGES
-    WRONG_INPUT("Please insert a valid choice!"),
     CONNECTION_CLOSE("Connection closed from SERVER side!"),
 
 
