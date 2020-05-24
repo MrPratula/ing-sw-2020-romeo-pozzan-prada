@@ -32,7 +32,6 @@ public class GameFrame extends JFrame {
 
     //path of the source with the images to display
     String startPath = "./src/main/images/";
-    //FIXME: se vuoi vedere le immagini normali cambia "images" con "graphics" qui sopra nel path
 
     // Array with all the pics
     ImageIcon[] pics = new ImageIcon[]{
