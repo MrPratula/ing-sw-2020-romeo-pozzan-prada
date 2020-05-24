@@ -118,8 +118,9 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
     @Override
     public void update(ServerResponse serverResponse) throws ImpossibleTurnException, IOException, CellHeightException, WrongNumberPlayerException, ReachHeightLimitException, CellOutOfBattlefieldException {
 
-        switch (serverResponse.getPack().getAction()) {
+        System.out.println("Executing "+serverResponse.getPack().getAction().getName().toUpperCase());
 
+        switch (serverResponse.getPack().getAction()) {
 
             // The first time a player connects it is asked for his name
             // This continue till the name is valid
@@ -208,10 +209,10 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                     for (GodCard god: godInGame) {
                         if (choice.toUpperCase().equals(god.name().toUpperCase())){
                             System.out.println("Ohhh good choice!");
-                            playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, this.player, null, null, 0, 0, null, null, false, choice.toUpperCase());
-                            notifyClient(playerAction);
                             player=serverResponse.getPack().getPlayer();
+                            playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, player, null, null, 0, 0, null, null, false, choice.toUpperCase());
                             needToLoop = false;
+                            notifyClient(playerAction);
                         }
                     }
                 }
@@ -259,13 +260,12 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                         for (GodCard god: godInGame) {
                             if (choice.toUpperCase().equals(god.name().toUpperCase())){
                                 System.out.println("Ohhh good choice!");
-                                playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, this.player, null, null, 0, 0, null, null, false, choice.toUpperCase());
+                                playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, player, null, null, 0, 0, null, null, false, choice.toUpperCase());
                                 notifyClient(playerAction);
                                 needToLoop = false;
                             }
                         }
                     }
-
                 }
                 break;
             }
@@ -274,11 +274,10 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
             case PLACE_YOUR_TOKEN:{
 
                 PlayerAction playerAction;
-
                 Pack pack = serverResponse.getPack();
-                printCLI(pack.getModelCopy(), null);
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
+                    printCLI(pack.getModelCopy(), null);
                     System.out.println(pack.getMessageOpponents());
                 }
                 else {
@@ -289,9 +288,8 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                     Cell targetCell = null;
 
                     while (needToLoop) {
-
-                        System.out.println(pack.getAction().toString());
                         printCLI(pack.getModelCopy(), null);
+                        System.out.println(pack.getAction().toString());
 
                         try {
                             message = scanner.nextLine();
@@ -299,15 +297,17 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
                             targetCell = pack.getModelCopy().getBattlefield().getCell(Integer.parseInt(messageParsed[0]), Integer.parseInt(messageParsed[1]));
 
+                            if (targetCell!= null && isFree(targetCell, pack.getModelCopy())) {
+                                needToLoop = false;
+                            }
+
                         } catch (Exception exception) {
                             targetCell = null;
                         }
 
-                        if (targetCell!= null) {
-                            needToLoop = false;
-                        }
+
                     }
-                    playerAction = new PlayerAction(Action.TOKEN_PLACED, this.player, null, null, 0, 0, targetCell, null, false, null);
+                    playerAction = new PlayerAction(Action.TOKEN_PLACED, player, null, null, 0, 0, targetCell, null, false, null);
                     notifyClient(playerAction);
                 }
                 break;
@@ -320,15 +320,15 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                 PlayerAction playerAction = null;
                 Pack pack = serverResponse.getPack();
 
-                // Update the player
-                this.player = pack.getPlayer();
+
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
                     printCLI(pack.getModelCopy(), null);
                     System.out.println(pack.getMessageOpponents());
                 }
                 else {
-
+                    // Update the player
+                    this.player = pack.getPlayer();
                     if (pack.getMessageInTurn() != null){
                         System.out.println(pack.getMessageInTurn());
                     }
@@ -345,7 +345,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                             int selectedToken = getToken(inputs, player);
 
                             if (selectedToken != 0){
-                                playerAction = new PlayerAction(Action.TOKEN_SELECTED, getPlayer(), null, null, selectedToken, 0, null, null, false, null);
+                                playerAction = new PlayerAction(Action.TOKEN_SELECTED, player, null, null, selectedToken, 0, null, null, false, null);
                                 savedToken = selectedToken;
                                 needToLoop = false;
                             }
@@ -435,7 +435,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                             Cell selectedCell = getCell(inputs, pack.getModelCopy().getBattlefield());
 
                             if (selectedCell != null){
-                                playerAction = new PlayerAction(Action.WHERE_TO_MOVE_SELECTED, getPlayer(), null, null, savedToken, 0, selectedCell, null, false, null);
+                                playerAction = new PlayerAction(Action.WHERE_TO_MOVE_SELECTED, player, null, null, savedToken, 0, selectedCell, null, false, null);
                                 needToLoop = false;
                             }
                         } catch (Exception e){
@@ -533,13 +533,6 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
     }
 
 
-
-
-
-
-
-
-
     public int getToken(String[] inputs, Player player){
 
         int selectX, selectY;
@@ -572,7 +565,29 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
 
 
+    public boolean isFree(Cell targetCell, ModelUtils modelCopy){
 
+        List<Player> allPlayers = modelCopy.getAllPlayers();
+
+        for (Player p: allPlayers) {
+            if (p.getToken1() != null) {
+                if (p.getToken1().getTokenPosition() != null) {
+                    if (targetCell.equals(p.getToken1().getTokenPosition()))
+                        return false;
+                }
+            }
+            if (p.getToken2() != null) {
+                if (p.getToken1().getTokenPosition() != null) {
+                    if (targetCell.equals(p.getToken1().getTokenPosition()))
+                        return false;
+                }
+            }
+        }
+
+        Battlefield battlefield = modelCopy.getBattlefield();
+
+        return !battlefield.getCell(targetCell).getIsDome();
+    }
 
 
 

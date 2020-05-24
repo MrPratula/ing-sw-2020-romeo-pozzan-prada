@@ -275,11 +275,10 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         // If the cell is correct
         if (targetCell!=null && battlefield.getCell(targetCell)!=null){
 
-            // If the first token has a position and the second not, it is assigned and the turn is updated
+            // If the first token has a position and the second not, it is assigned
             if (getPlayerInTurn().getToken1().getTokenPosition()!=null && getPlayerInTurn().getToken2().getTokenPosition()==null) {
                 getPlayerInTurn().getToken2().setTokenPosition(targetCell);
                 battlefield.getCell(targetCell).setOccupied();
-                updateTurn();
             }
 
             // If the first token has no position, it is assigned
@@ -287,6 +286,9 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                 getPlayerInTurn().getToken1().setTokenPosition(targetCell);
                 battlefield.getCell(targetCell).setOccupied();
             }
+
+            if (getPlayerInTurn().getToken1().getTokenPosition()!=null && getPlayerInTurn().getToken2().getTokenPosition()!=null)
+                updateTurn();
 
             boolean gameCanStart = false;
 

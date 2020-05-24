@@ -123,7 +123,7 @@ public class Server  {
      * The connection is removed from the list and removed from playingConnection.
      * @param connection the connection to remove.
      */
-    public synchronized void deregisterConnection(Connection connection) throws IOException {
+    public synchronized void deregisterConnection(Connection connection) {
         connections.remove(connection);
         playingConnection.get(connection.getName()).closeConnection();
         playingConnection.remove(connection.getName());
@@ -136,13 +136,11 @@ public class Server  {
      * When there are 2 or 3 players in the waiting connection,
      * the game is set up and it starts.
      */
-    public synchronized void lobby(Connection connection, String name) throws IOException, InterruptedException {
+    public synchronized void lobby(Connection connection, String name) throws IOException {
 
         System.out.println(name.toUpperCase()+ " entered into the lobby");
 
         waitingConnection.put(name, connection);
-
-        Thread firstPlayerThread = null;
 
         // Player 1 is always instantiated
         // Only the first one is asked for how many players

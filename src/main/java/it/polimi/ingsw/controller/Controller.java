@@ -37,7 +37,6 @@ public class Controller implements Observer<PlayerAction> {
 
             switch(playerAction.getAction()){
 
-
                 case CHOSE_GOD_CARD: {
                     model.computeGodChoices(playerAction);
                     break;
@@ -57,7 +56,6 @@ public class Controller implements Observer<PlayerAction> {
                     }
                 break;
                 }
-
 
                 case PROMETHEUS_ANSWER:{
 

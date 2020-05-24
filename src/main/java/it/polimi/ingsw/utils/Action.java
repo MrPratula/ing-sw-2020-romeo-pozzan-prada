@@ -10,7 +10,6 @@ import java.io.Serializable;
  */
 public enum Action implements Serializable {
 
-
     /*************CLI**************/
 
     /*    FROM CLIENT TO SERVER     */
@@ -24,14 +23,7 @@ public enum Action implements Serializable {
     WHERE_TO_MOVE_SELECTED("A player choose where to move a token"),
     WHERE_TO_BUILD_SELECTED(""),
 
-
-
-
-
-
-
     /*    FROM SERVER TO CLIENT     */
-
 
     WELCOME("Welcome to Santorini! What is your name?"),
     INVALID_NAME("This name is not available, please try with another one..."),
@@ -49,7 +41,6 @@ public enum Action implements Serializable {
 
     SELECT_YOUR_GOD_CARD("Which one of these GodCards do you want to use in this game?"),
     PLACE_YOUR_TOKEN("Please choose a position for your token... (x,y)"),
-
     ASK_FOR_SELECT_TOKEN("Which token do you want to move? (x,y)"),
     ASK_FOR_PROMETHEUS_POWER("Do you want to use your GodPower? [yes][no]\nIf your Worker does not move up, it may build both before and after moving."),
     TOKEN_NOT_MOVABLE("You can not move this token, please select a movable one! (x,y)"),
@@ -57,37 +48,16 @@ public enum Action implements Serializable {
     PLAYER_LOST(""),
     ASK_FOR_WHERE_TO_MOVE("Where do you want to move your token? (x,y)\nOnly the green cell are accepted"),
     WRONG_INPUT("Please insert a valid choice!"),
-
-
-
-
-
-
-    PROMETHEUS_FIRST_MOVE(""),
-
-    NOT_YOUR_TURN("Wait your turn to perform your action!"),
-
-    START_NEW_TURN("Your turn is ended!"),
     ASK_FOR_BUILD("Where do you want to build? (x,y)"),
-
-
-    SET_UP("Select the position you want to place your first token (x,y)"),
-
-    WAIT_OTHER_PLAYER_MOVE("Someone else is performing their move. Please wait your turn..."),
-
-    PRINT_MESSAGE("Write here some text to be printed..."),
 
     // ERROR MESSAGES
     CONNECTION_CLOSE("Connection closed from SERVER side!"),
-
 
     /*************GUI**************/
 
     /*    FROM CLIENT TO SERVER     */
 
     INITIALISED("User typed his username and number_of_players");
-
-
 
     private String info;
 
