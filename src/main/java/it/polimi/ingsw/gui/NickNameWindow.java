@@ -17,16 +17,6 @@ public class NickNameWindow extends JDialog{
 
 
 
-    /**
-     * Inner class that handle the first action
-     */
-    private class ConfirmListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e){
-                NickNameWindow.this.dispose(); //graphic standard
-        }
-    }
-
     public JTextField getNicknameTextField() {
         return nicknameTextField;
     }
@@ -36,7 +26,7 @@ public class NickNameWindow extends JDialog{
      * and here he has to put his name and number(FIXME)
      * @param swingView
      */
-    public NickNameWindow(SwingView swingView) {
+    public NickNameWindow(final SwingView swingView) {
 
         this.view = swingView;
 
@@ -61,14 +51,18 @@ public class NickNameWindow extends JDialog{
         //the button to confirm the selection
         confirmButton = new JButton("Confirm");
         confirmButton.setBounds(10,20,80,25);
-        confirmButton.addActionListener(new ConfirmListener());
         add(confirmButton, BorderLayout.PAGE_END);
 
         confirmButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(!nicknameTextField.getText().trim().isEmpty()) new LobbyFrame();
-                else JOptionPane.showMessageDialog(new JFrame(),"You have to type a name!","Error", JOptionPane.ERROR_MESSAGE);  //posso anche mettere un'immagine error
+                if(!nicknameTextField.getText().trim().isEmpty()){
+                    new LobbyFrame();
+                    NickNameWindow.this.dispose(); //compattato i due ActionListener
+                }
+                else {
+                    JOptionPane.showMessageDialog(new JFrame(), "You have to type a name!", "Error", JOptionPane.ERROR_MESSAGE);  //posso anche mettere un'immagine error
+                }
             }
         });
 

@@ -39,7 +39,6 @@ public class SwingView extends View {
     public SwingView(){
 
         //this.player = p;
-
         mainFrame = new JFrame("Santorini");
         mainFrame.setResizable(true);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -56,6 +55,7 @@ public class SwingView extends View {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new NickNameWindow(SwingView.this);
+                mainFrame.dispose(); //close mainFrame.
             }
         });
 
