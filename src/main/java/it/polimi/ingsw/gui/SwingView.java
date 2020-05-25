@@ -36,7 +36,7 @@ public class SwingView extends View {
     /**
      * Constructor of the client view with Swing GUI
      */
-    public SwingView(/*Player p*/){
+    public SwingView(){
 
         //this.player = p;
 
@@ -186,7 +186,7 @@ public class SwingView extends View {
             // When the first player answer how much players there will be, waiting for the players to connect
             case WAIT_OTHER_PLAYERS_TO_CONNECT:
             case NUMBER_RECEIVED: {
-                System.out.println(serverResponse.getPack().getAction().toString());
+                JOptionPane.showMessageDialog(new JFrame(),serverResponse.getPack().getAction().toString(),"NUMBER_RECEIVED", JOptionPane.INFORMATION_MESSAGE);  //posso anche mettere un'immagine error
                 break;
             }
 
@@ -197,8 +197,9 @@ public class SwingView extends View {
                 List<GodCard> godInGame = serverResponse.getPack().getGodCards();
 
                 ChooseGodCardWindow c = new ChooseGodCardWindow(this.mainFrame,godInGame);
-//c.getButtonGroup().getSelection().get;
-                //PlayerAction playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, this.player, null, null, 0, 0, null, null, false, c..toUpperCase());
+
+                //TODO: non so come beccare la risposta del jbutton
+                //PlayerAction playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, this.player, null, null, 0, 0, null, null, false, c.getSelcetion().toUpperCase());
                 //notifyClient(playerAction);
                 player = serverResponse.getPack().getPlayer();
                 break;
@@ -222,34 +223,20 @@ public class SwingView extends View {
 
                 // If the player is not in turn he is just notified to wait
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
-                    System.out.println(pack.getMessageOpponents());
+                    JOptionPane.showMessageDialog(new JFrame(),pack.getMessageOpponents(),"JUST WAIT", JOptionPane.WARNING_MESSAGE);  //posso anche mettere un'immagine error
                 }
                 // else he has to pick his god card
                 else {
                     List<GodCard> godInGame = serverResponse.getPack().getGodCards();
                     boolean needToLoop = true;
-                    String choice;
 
                     while (needToLoop) {
-                        System.out.println(serverResponse.getPack().getMessageInTurn());
-                        Scanner scanner = new Scanner(System.in);
-
-                        // Check if the input is a valid string
-                        try {
-                            choice = scanner.nextLine();
-                        } catch (InputMismatchException exception) {
-                            choice = "error";
-                        }
-
-                        // Check if the string is a valid god name
-                        for (GodCard god: godInGame) {
-                            if (choice.toUpperCase().equals(god.name().toUpperCase())){
-                                System.out.println("Ohhh good choice!");
-                                playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, this.player, null, null, 0, 0, null, null, false, choice.toUpperCase());
-                                notifyClient(playerAction);
-                                needToLoop = false;
-                            }
-                        }
+                        JOptionPane.showMessageDialog(new JFrame(),serverResponse.getPack().getMessageInTurn(),"INFO", JOptionPane.WARNING_MESSAGE);  //posso anche mettere un'immagine error
+                        //this.player = serverResponse.getPack().getPlayer();
+                        ChooseGodCardWindow c = new ChooseGodCardWindow(this.mainFrame,godInGame);
+                        //TODO: non so come beccare la risposta del jbutton
+                        //PlayerAction playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, this.player, null, null, 0, 0, null, null, false, c.getSelcetion().toUpperCase());
+                        //notifyClient(playerAction);
                     }
 
                 }
@@ -258,8 +245,6 @@ public class SwingView extends View {
 
             // A player has to place his token, other wait
             case PLACE_YOUR_TOKEN:{
-
-                PlayerAction playerAction;
 
                 Pack pack = serverResponse.getPack();
                 printCLI(pack.getModelCopy(), null);
@@ -293,7 +278,7 @@ public class SwingView extends View {
                             needToLoop = false;
                         }
                     }
-                    playerAction = new PlayerAction(Action.TOKEN_PLACED, this.player, null, null, 0, 0, targetCell, null, false, null);
+                    PlayerAction playerAction = new PlayerAction(Action.TOKEN_PLACED, this.player, null, null, 0, 0, targetCell, null, false, null);
                     notifyClient(playerAction);
                 }
                 break;

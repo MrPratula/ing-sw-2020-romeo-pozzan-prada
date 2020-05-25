@@ -12,8 +12,8 @@ import java.util.List;
 
 public class ChooseGodCardWindow extends JDialog {
 
-    private JPanel mainPanel;
-    private JButton buttonGod1, buttonGod2;
+    private final JPanel mainPanel;
+    private final JButton buttonGod1, buttonGod2;
     private ButtonGroup buttonGroup;
 
     final static String startPath = "./src/main/images/godcards/";
@@ -89,9 +89,8 @@ public class ChooseGodCardWindow extends JDialog {
         buttonGroup.add(buttonGod1);
         buttonGroup.add(buttonGod2);
 
-        List<ImageIcon> godsToDisplay = selectGodsToDisplay(godInGame);
+        final List<ImageIcon> godsToDisplay = selectGodsToDisplay(godInGame);
         buttonGod1.setIcon(godsToDisplay.get(0));
-        buttonGod1.setActionCommand("You selected "+ godsToDisplay.get(0).getDescription());
         buttonGod2.setIcon(godsToDisplay.get(1));
 
         List<ImageIcon> textToDisplay = selectTextToDisplay(godInGame);
@@ -101,14 +100,18 @@ public class ChooseGodCardWindow extends JDialog {
         buttonGod1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(mainFrame,e.getSource(),"You Selected: ",JOptionPane.INFORMATION_MESSAGE,new ImageIcon(new File("./src/main/images/utils/done.png").getAbsolutePath()));
+                buttonGod1.setActionCommand(godsToDisplay.get(0).toString());
+                JOptionPane.showMessageDialog(mainFrame,e.getSource(),"You Selected: ",JOptionPane.OK_OPTION,new ImageIcon(new File("./src/main/images/utils/done.png").getAbsolutePath()));
+                //buttonGroup.getSelection().getActionCommand();
                 dispose();
             }
         });
         buttonGod2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(mainFrame,e.getSource(),"You Selected: ",JOptionPane.INFORMATION_MESSAGE,new ImageIcon(new File("./src/main/images/utils/done.png").getAbsolutePath()));
+                buttonGod2.setActionCommand(godsToDisplay.get(1).toString());
+                JOptionPane.showMessageDialog(mainFrame,e.getSource(),"You Selected: ",JOptionPane.OK_OPTION,new ImageIcon(new File("./src/main/images/utils/done.png").getAbsolutePath()));
+                //buttonGroup.getSelection().getActionCommand();
                 dispose();
             }
         });
