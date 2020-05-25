@@ -31,7 +31,7 @@ public class GameFrame extends JFrame {
     CellButton[][] buttons = new CellButton[5][5];
 
     //path of the source with the images to display
-    String startPath = "./src/main/images/";
+    String startPath = "./src/main/images/buildings/";
 
     // Array with all the pics
     ImageIcon[] pics = new ImageIcon[]{

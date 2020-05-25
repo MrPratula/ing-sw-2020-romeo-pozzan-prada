@@ -29,6 +29,9 @@ public class SwingView extends View {
     private Player player;
     private int savedToken;
 
+    public JFrame getMainFrame() {
+        return mainFrame;
+    }
 
     /**
      * Constructor of the client view with Swing GUI
@@ -44,9 +47,9 @@ public class SwingView extends View {
         mainPanel = new JPanel();
         mainPanel.setBackground(Color.WHITE);
 
-        logoImage = new JLabel(new ImageIcon(new File("./src/main/images/Santorini.png").getAbsolutePath()));
+        logoImage = new JLabel(new ImageIcon(new File("./src/main/images/utils/Santorini.png").getAbsolutePath()));
 
-        playButton = new JButton(new ImageIcon(new File("./src/main/images/buttonPlay.png").getAbsolutePath()));
+        playButton = new JButton(new ImageIcon(new File("./src/main/images/utils/buttonPlay.png").getAbsolutePath()));
         playButton.setContentAreaFilled(false);
         playButton.setBorderPainted(false);
         playButton.addActionListener(new ActionListener() {
@@ -193,9 +196,9 @@ public class SwingView extends View {
                 this.player = serverResponse.getPack().getPlayer();
                 List<GodCard> godInGame = serverResponse.getPack().getGodCards();
 
-                ChooseGodCardWindow c = new ChooseGodCardWindow(godInGame);
-
-                //PlayerAction playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, this.player, null, null, 0, 0, null, null, false, c.get.toUpperCase());
+                ChooseGodCardWindow c = new ChooseGodCardWindow(this.mainFrame,godInGame);
+//c.getButtonGroup().getSelection().get;
+                //PlayerAction playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, this.player, null, null, 0, 0, null, null, false, c..toUpperCase());
                 //notifyClient(playerAction);
                 player = serverResponse.getPack().getPlayer();
                 break;
@@ -204,7 +207,7 @@ public class SwingView extends View {
             // The second player receive the god choice message, the 2nd and 3rd receive this with player data
             case WAIT_AND_SAVE_PLAYER_FROM_SERVER:{
                 player = serverResponse.getPack().getPlayer();
-                System.out.println(serverResponse.getPack().getAction().toString());
+                //TODO System.out.println(serverResponse.getPack().getAction().toString());
                 break;
             }
 
