@@ -242,39 +242,18 @@ public class SwingView extends View {
             case PLACE_YOUR_TOKEN:{
 
                 Pack pack = serverResponse.getPack();
-                printCLI(pack.getModelCopy(), null);
+                //printCLI(pack.getModelCopy(), null);
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
-                    System.out.println(pack.getMessageOpponents());
+                    JOptionPane.showMessageDialog(new JFrame(),pack.getMessageOpponents(),"JUST WAIT", JOptionPane.WARNING_MESSAGE);  //posso anche mettere un'immagine error
                 }
                 else {
-                    boolean needToLoop = true;
-                    Scanner scanner = new Scanner(System.in);
-                    String message;
-                    String[] messageParsed;
-                    Cell targetCell = null;
+                    JOptionPane.showMessageDialog(new JFrame(),pack.getAction().toString(),"YOUR TURN", JOptionPane.WARNING_MESSAGE);  //posso anche mettere un'immagine
 
-                    while (needToLoop) {
+                    //get selected cell on the gameframe
 
-                        System.out.println(pack.getAction().toString());
-                        printCLI(pack.getModelCopy(), null);
-
-                        try {
-                            message = scanner.nextLine();
-                            messageParsed = message.split(",");
-
-                            targetCell = pack.getModelCopy().getBattlefield().getCell(Integer.parseInt(messageParsed[0]), Integer.parseInt(messageParsed[1]));
-
-                        } catch (Exception exception) {
-                            targetCell = null;
-                        }
-
-                        if (targetCell!= null) {
-                            needToLoop = false;
-                        }
-                    }
-                    PlayerAction playerAction = new PlayerAction(Action.TOKEN_PLACED, this.player, null, null, 0, 0, targetCell, null, false, null);
-                    notifyClient(playerAction);
+                   // PlayerAction playerAction = new PlayerAction(Action.TOKEN_PLACED, this.player, null, null, 0, 0, targetCell, null, false, null);
+                   // notifyClient(playerAction);
                 }
                 break;
             }
