@@ -71,7 +71,7 @@ public class ChooseGodCardWindow extends JDialog {
      */
     public ChooseGodCardWindow(final JFrame mainFrame, List<GodCard> godInGame) {
 
-        setTitle("Choose your GodCard for the game");
+        setTitle("Which one of these GodCards do you want to use in this game?");
 
         mainPanel = new JPanel();
         mainPanel.setLayout(new GridLayout(1,2));

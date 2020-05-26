@@ -197,7 +197,7 @@ public class SwingView extends View {
 
                 ChooseGodCardWindow c = new ChooseGodCardWindow(this.mainFrame,godInGame);
 
-                //TODO: non so come beccare la risposta del jbutton
+                //fixme : forse fatto
                 PlayerAction playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, this.player, null, null, 0, 0, null, null, false,c.getButtonGroup().getSelection().getActionCommand());
                 notifyClient(playerAction);
                 player = serverResponse.getPack().getPlayer();
@@ -216,8 +216,6 @@ public class SwingView extends View {
 
             case SELECT_YOUR_GOD_CARD:{
 
-                PlayerAction playerAction;
-
                 Pack pack = serverResponse.getPack();
 
                 // If the player is not in turn he is just notified to wait
@@ -227,16 +225,14 @@ public class SwingView extends View {
                 // else he has to pick his god card
                 else {
                     List<GodCard> godInGame = serverResponse.getPack().getGodCards();
-                    boolean needToLoop = true;
 
-                    while (needToLoop) {
-                        JOptionPane.showMessageDialog(new JFrame(),serverResponse.getPack().getMessageInTurn(),"INFO", JOptionPane.WARNING_MESSAGE);  //posso anche mettere un'immagine error
-                        //this.player = serverResponse.getPack().getPlayer();
-                        ChooseGodCardWindow c = new ChooseGodCardWindow(this.mainFrame,godInGame);
-                        //TODO: non so come beccare la risposta del jbutton
-                        //PlayerAction playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, this.player, null, null, 0, 0, null, null, false, c.getSelcetion().toUpperCase());
-                        //notifyClient(playerAction);
-                    }
+                    //JOptionPane.showMessageDialog(new JFrame(),serverResponse.getPack().getMessageInTurn(),"INFO", JOptionPane.WARNING_MESSAGE);  //posso anche mettere un'immagine error
+                    this.player = serverResponse.getPack().getPlayer();
+                    ChooseGodCardWindow c = new ChooseGodCardWindow(this.mainFrame,godInGame);
+                    //fixme : forse fatto
+                    PlayerAction playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, this.player, null, null, 0, 0, null, null, false,c.getButtonGroup().getSelection().getActionCommand());
+                    notifyClient(playerAction);
+                    player = serverResponse.getPack().getPlayer();
 
                 }
                 break;
