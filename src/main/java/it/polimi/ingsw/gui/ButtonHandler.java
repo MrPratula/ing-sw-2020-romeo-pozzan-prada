@@ -38,7 +38,6 @@ public class ButtonHandler implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent clickedButtonEvent) {
 
-
         //  solo per compilare
         ServerResponse s = new ServerResponse(null,null);
         PlayerAction playerAction = new PlayerAction(null,null,null,null,0,0,null,null,false,"");

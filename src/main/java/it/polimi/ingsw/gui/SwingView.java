@@ -8,7 +8,6 @@ import it.polimi.ingsw.utils.*;
 import it.polimi.ingsw.utils.Action;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -199,8 +198,8 @@ public class SwingView extends View {
                 ChooseGodCardWindow c = new ChooseGodCardWindow(this.mainFrame,godInGame);
 
                 //TODO: non so come beccare la risposta del jbutton
-                //PlayerAction playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, this.player, null, null, 0, 0, null, null, false, c.getSelcetion().toUpperCase());
-                //notifyClient(playerAction);
+                PlayerAction playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, this.player, null, null, 0, 0, null, null, false,c.getButtonGroup().getSelection().getActionCommand());
+                notifyClient(playerAction);
                 player = serverResponse.getPack().getPlayer();
                 break;
             }

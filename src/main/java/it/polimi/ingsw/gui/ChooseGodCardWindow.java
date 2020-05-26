@@ -13,7 +13,7 @@ import java.util.List;
 public class ChooseGodCardWindow extends JDialog {
 
     private final JPanel mainPanel;
-    private final JButton buttonGod1, buttonGod2;
+    private final GodButton buttonGod1, buttonGod2;
     private ButtonGroup buttonGroup;
 
     final static String startPath = "./src/main/images/godcards/";
@@ -23,12 +23,12 @@ public class ChooseGodCardWindow extends JDialog {
         new ImageIcon(new File(startPath + "artemis.png").getAbsolutePath()),   //1
         new ImageIcon(new File(startPath + "athena.png").getAbsolutePath()),  //2
         new ImageIcon(new File(startPath + "atlas.png").getAbsolutePath()),  //3
-        new ImageIcon(new File(startPath + "chronuss.png").getAbsolutePath()), //4
+        new ImageIcon(new File(startPath + "chronus.png").getAbsolutePath()), //4
         new ImageIcon(new File(startPath + "demeter.png").getAbsolutePath()),  //5
         new ImageIcon(new File(startPath + "hephaestus.png").getAbsolutePath()), //6
         new ImageIcon(new File(startPath + "hera.png").getAbsolutePath()), //7
         new ImageIcon(new File(startPath + "hestia.png").getAbsolutePath()),  //8
-        new ImageIcon(new File(startPath + "limuss.png").getAbsolutePath()),   //9
+        new ImageIcon(new File(startPath + "limus.png").getAbsolutePath()),   //9
         new ImageIcon(new File(startPath + "minotaur.png").getAbsolutePath()),  //10
         new ImageIcon(new File(startPath + "pan.png").getAbsolutePath()),  //11
         new ImageIcon(new File(startPath + "prometheus.png").getAbsolutePath()), //12
@@ -52,10 +52,6 @@ public class ChooseGodCardWindow extends JDialog {
 
     /*       GETTER       */
 
-    public ButtonGroup getButtonGroup() {
-        return buttonGroup;
-    }
-
     public JButton getButtonGod1() {
         return buttonGod1;
     }
@@ -64,6 +60,9 @@ public class ChooseGodCardWindow extends JDialog {
         return buttonGod2;
     }
 
+    public ButtonGroup getButtonGroup() {
+        return buttonGroup;
+    }
 
     /**
      * Window that shows two buttons with two gods:
@@ -78,8 +77,8 @@ public class ChooseGodCardWindow extends JDialog {
         mainPanel.setLayout(new GridLayout(1,2));
 
         buttonGroup = new ButtonGroup();
-        buttonGod1 = new JButton();
-        buttonGod2 = new JButton();
+        buttonGod1 = new GodButton(godInGame.get(0));
+        buttonGod2 = new GodButton(godInGame.get(1));
         buttonGod1.setSize(400,700);
         buttonGod2.setSize(400,700);
         buttonGod1.setBorderPainted(false);
@@ -100,18 +99,18 @@ public class ChooseGodCardWindow extends JDialog {
         buttonGod1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                buttonGod1.setActionCommand(godsToDisplay.get(0).toString());
-                JOptionPane.showMessageDialog(mainFrame,e.getSource(),"You Selected: ",JOptionPane.OK_OPTION,new ImageIcon(new File("./src/main/images/utils/done.png").getAbsolutePath()));
-                //buttonGroup.getSelection().getActionCommand();
+                //((GodButton) e.getSource()).getGodCard();
+                buttonGod1.setActionCommand(buttonGod1.getGodCard().name());
+                JOptionPane.showMessageDialog(mainFrame,new ImageIcon(new File(startPath +((GodButton) e.getSource()).getGodCard().name().toLowerCase()+ ".png").getAbsolutePath()),"You Selected: "+((GodButton) e.getSource()).getGodCard().name(), JOptionPane.INFORMATION_MESSAGE,new ImageIcon(new File("./src/main/images/utils/done.png").getAbsolutePath()));
                 dispose();
             }
         });
         buttonGod2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                buttonGod2.setActionCommand(godsToDisplay.get(1).toString());
-                JOptionPane.showMessageDialog(mainFrame,e.getSource(),"You Selected: ",JOptionPane.OK_OPTION,new ImageIcon(new File("./src/main/images/utils/done.png").getAbsolutePath()));
-                //buttonGroup.getSelection().getActionCommand();
+                //((GodButton) e.getSource()).getGodCard();
+                buttonGod2.setActionCommand(buttonGod2.getGodCard().name());
+                JOptionPane.showMessageDialog(mainFrame,new ImageIcon(new File(startPath +((GodButton) e.getSource()).getGodCard().name().toLowerCase()+ ".png").getAbsolutePath()),"You Selected: "+((GodButton) e.getSource()).getGodCard().name(), JOptionPane.INFORMATION_MESSAGE,new ImageIcon(new File("./src/main/images/utils/done.png").getAbsolutePath()));
                 dispose();
             }
         });

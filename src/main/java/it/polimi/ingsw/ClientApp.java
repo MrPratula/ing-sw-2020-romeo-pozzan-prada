@@ -14,10 +14,11 @@ public class ClientApp {
 
     public static void main(String[] args) {
 
-
         SwingView s = new SwingView();
-        //List<GodCard> l = new ArrayList<>(); l.add(GodCard.LIMUS); l.add(GodCard.CHRONUS);
-        //ChooseGodCardWindow c = new ChooseGodCardWindow(s.getMainFrame(),l);
+        List<GodCard> l = new ArrayList<>(); l.add(GodCard.LIMUS); l.add(GodCard.CHRONUS);
+        ChooseGodCardWindow c = new ChooseGodCardWindow(s.getMainFrame(),l);
+
+        //NPE    System.out.println(c.getButtonGroup().getSelection().getActionCommand());
 
         Client client = new Client("127.0.0.1", 12345);
 

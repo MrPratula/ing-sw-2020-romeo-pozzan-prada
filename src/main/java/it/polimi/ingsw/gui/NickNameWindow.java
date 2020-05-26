@@ -66,6 +66,7 @@ public class NickNameWindow extends JDialog{
             }
         });
 
+        setLocationRelativeTo(null);
         pack();
         setVisible(true);
     }
