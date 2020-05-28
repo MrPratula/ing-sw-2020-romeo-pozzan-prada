@@ -1,8 +1,6 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.controller.*;
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.TokenColor;
 import it.polimi.ingsw.utils.*;
 
 import java.io.*;

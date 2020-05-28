@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.cli;
 
 import java.io.Serializable;
 import java.util.List;

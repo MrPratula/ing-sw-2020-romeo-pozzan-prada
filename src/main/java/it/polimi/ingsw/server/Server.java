@@ -4,10 +4,10 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.controller.ImpossibleTurnException;
 import it.polimi.ingsw.controller.WrongNumberPlayerException;
-import it.polimi.ingsw.model.GodCard;
-import it.polimi.ingsw.model.Model;
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.TokenColor;
+import it.polimi.ingsw.cli.GodCard;
+import it.polimi.ingsw.cli.Model;
+import it.polimi.ingsw.cli.Player;
+import it.polimi.ingsw.cli.TokenColor;
 import it.polimi.ingsw.utils.*;
 
 import java.io.*;

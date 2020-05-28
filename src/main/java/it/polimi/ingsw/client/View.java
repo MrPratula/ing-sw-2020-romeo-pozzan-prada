@@ -1,11 +1,10 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.controller.*;
-import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.cli.*;
 import it.polimi.ingsw.utils.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;

@@ -1,9 +1,9 @@
 package it.polimi.ingsw.gui;
 
 import it.polimi.ingsw.client.View;
-import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.cli.Player;
 import it.polimi.ingsw.controller.*;
-import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.cli.*;
 import it.polimi.ingsw.utils.*;
 import it.polimi.ingsw.utils.Action;
 import java.io.IOException;

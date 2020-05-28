@@ -2,8 +2,8 @@ package it.polimi.ingsw.gui;
 
 import it.polimi.ingsw.controller.CellHeightException;
 import it.polimi.ingsw.controller.ReachHeightLimitException;
-import it.polimi.ingsw.model.ModelUtils;
-import it.polimi.ingsw.model.TokenColor;
+import it.polimi.ingsw.cli.ModelUtils;
+import it.polimi.ingsw.cli.TokenColor;
 import it.polimi.ingsw.utils.PlayerAction;
 import it.polimi.ingsw.utils.ServerResponse;
 
