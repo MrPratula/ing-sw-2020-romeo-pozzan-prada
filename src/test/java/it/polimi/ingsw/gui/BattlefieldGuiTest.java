@@ -98,6 +98,7 @@ public class BattlefieldGuiTest {
     }
 
 
+    //fixme: temporary orange
     /**
      * Test that prints the GUI, this time with the
      * valid moves (ORANGE CELLS) for the selected token
