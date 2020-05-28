@@ -227,7 +227,7 @@ public class Server  {
         RemoteView remoteView1 = new RemoteView(c1, player1);
         remoteView1.setServer(this);
 
-        // Create the model and the controller for the current game
+        // Create the model (and battlefield) and the controller for the current game
         model = new Model();
         controller = new Controller(model);
 
