@@ -1,7 +1,7 @@
 package it.polimi.ingsw.controller;
 
 ;
-import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.cli.*;
 import it.polimi.ingsw.utils.PlayerAction;
 import it.polimi.ingsw.utils.Observer;
 
@@ -42,10 +42,12 @@ public class Controller implements Observer<PlayerAction> {
                     break;
                 }
 
+
                 case TOKEN_PLACED:{
                     model.placeToken(playerAction);
                     break;
                 }
+
 
                 case TOKEN_SELECTED: {
 
@@ -56,6 +58,7 @@ public class Controller implements Observer<PlayerAction> {
                     }
                 break;
                 }
+
 
                 case PROMETHEUS_ANSWER:{
 

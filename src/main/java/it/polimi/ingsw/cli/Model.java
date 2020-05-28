@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.cli;
 
 import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.gameAction.build.*;
@@ -205,6 +205,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                 // Write the text to notify all players who has which god card
                 StringBuilder text= new StringBuilder("Everyone has picked his God:");
                 for (Player p: allPlayers) {
+                    allGodCards.add(p.getMyGodCard());
                     text.append("\n").append(p.getUsername().toUpperCase()).append(" ---> ").append(p.getMyGodCard().name().toUpperCase());
                     text.append("\n").append(p.getMyGodCard().toString());
                 }

@@ -1,14 +1,13 @@
 package it.polimi.ingsw.gui;
 
 import it.polimi.ingsw.client.View;
-import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.cli.Player;
 import it.polimi.ingsw.controller.*;
-import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.cli.*;
 import it.polimi.ingsw.utils.*;
 import it.polimi.ingsw.utils.Action;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -26,6 +25,9 @@ public class SwingView extends View {
     private JButton playButton;      //3.1
     private JLabel logoImage;
 
+    private GameFrame gameFrame;
+    private CellButton[][] battlefieldGUI;
+
     private Player player;
     private int savedToken;
 
@@ -33,10 +35,18 @@ public class SwingView extends View {
         return mainFrame;
     }
 
+    public CellButton[][] getBattlefieldGUI() {
+        return battlefieldGUI;
+    }
+
+    public void setBattlefieldGUI(CellButton[][] battlefieldGUI) {
+        this.battlefieldGUI = battlefieldGUI;
+    }
+
     /**
      * Constructor of the client view with Swing GUI
      */
-    public SwingView(/*Player p*/){
+    public SwingView(){
 
         //this.player = p;
         mainFrame = new JFrame("Santorini");
@@ -182,7 +192,7 @@ public class SwingView extends View {
             // When the first player answer how much players there will be, waiting for the players to connect
             case WAIT_OTHER_PLAYERS_TO_CONNECT:
             case NUMBER_RECEIVED: {
-                System.out.println(serverResponse.getPack().getAction().toString());
+                JOptionPane.showMessageDialog(new JFrame(),serverResponse.getPack().getAction().toString(),"NUMBER_RECEIVED", JOptionPane.INFORMATION_MESSAGE);  //posso anche mettere un'immagine error
                 break;
             }
 
@@ -193,9 +203,10 @@ public class SwingView extends View {
                 List<GodCard> godInGame = serverResponse.getPack().getGodCards();
 
                 ChooseGodCardWindow c = new ChooseGodCardWindow(this.mainFrame,godInGame);
-//c.getButtonGroup().getSelection().get;
-                //PlayerAction playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, this.player, null, null, 0, 0, null, null, false, c..toUpperCase());
-                //notifyClient(playerAction);
+
+                //fixme : forse fatto
+                PlayerAction playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, this.player, null, null, 0, 0, null, null, false,c.getButtonGroup().getSelection().getActionCommand());
+                notifyClient(playerAction);
                 player = serverResponse.getPack().getPlayer();
                 break;
             }
@@ -212,41 +223,23 @@ public class SwingView extends View {
 
             case SELECT_YOUR_GOD_CARD:{
 
-                PlayerAction playerAction;
-
                 Pack pack = serverResponse.getPack();
 
                 // If the player is not in turn he is just notified to wait
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
-                    System.out.println(pack.getMessageOpponents());
+                    JOptionPane.showMessageDialog(new JFrame(),pack.getMessageOpponents(),"JUST WAIT", JOptionPane.WARNING_MESSAGE);  //posso anche mettere un'immagine error
                 }
                 // else he has to pick his god card
                 else {
                     List<GodCard> godInGame = serverResponse.getPack().getGodCards();
-                    boolean needToLoop = true;
-                    String choice;
 
-                    while (needToLoop) {
-                        System.out.println(serverResponse.getPack().getMessageInTurn());
-                        Scanner scanner = new Scanner(System.in);
-
-                        // Check if the input is a valid string
-                        try {
-                            choice = scanner.nextLine();
-                        } catch (InputMismatchException exception) {
-                            choice = "error";
-                        }
-
-                        // Check if the string is a valid god name
-                        for (GodCard god: godInGame) {
-                            if (choice.toUpperCase().equals(god.name().toUpperCase())){
-                                System.out.println("Ohhh good choice!");
-                                playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, this.player, null, null, 0, 0, null, null, false, choice.toUpperCase());
-                                notifyClient(playerAction);
-                                needToLoop = false;
-                            }
-                        }
-                    }
+                    //JOptionPane.showMessageDialog(new JFrame(),serverResponse.getPack().getMessageInTurn(),"INFO", JOptionPane.WARNING_MESSAGE);  //posso anche mettere un'immagine error
+                    this.player = serverResponse.getPack().getPlayer();
+                    ChooseGodCardWindow c = new ChooseGodCardWindow(this.mainFrame,godInGame);
+                    //fixme : forse fatto
+                    PlayerAction playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, this.player, null, null, 0, 0, null, null, false,c.getButtonGroup().getSelection().getActionCommand());
+                    notifyClient(playerAction);
+                    player = serverResponse.getPack().getPlayer();
 
                 }
                 break;
@@ -255,42 +248,26 @@ public class SwingView extends View {
             // A player has to place his token, other wait
             case PLACE_YOUR_TOKEN:{
 
-                PlayerAction playerAction;
-
                 Pack pack = serverResponse.getPack();
-                printCLI(pack.getModelCopy(), null);
+
+                //here the battlefieldGUI is set up
+                this.gameFrame = new GameFrame();
+
+                this.battlefieldGUI = gameFrame.getBattlefieldGUI();
+
+                //displayGui(pack.getModelCopy(), null);
+                //printCLI(pack.getModelCopy(), null);
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
-                    System.out.println(pack.getMessageOpponents());
+                    JOptionPane.showMessageDialog(new JFrame(),pack.getMessageOpponents(),"JUST WAIT", JOptionPane.WARNING_MESSAGE);  //posso anche mettere un'immagine error
                 }
                 else {
-                    boolean needToLoop = true;
-                    Scanner scanner = new Scanner(System.in);
-                    String message;
-                    String[] messageParsed;
-                    Cell targetCell = null;
+                    JOptionPane.showMessageDialog(new JFrame(),pack.getAction().toString(),"YOUR TURN", JOptionPane.WARNING_MESSAGE);  //posso anche mettere un'immagine
 
-                    while (needToLoop) {
+                    //get selected cell on the gameframe
 
-                        System.out.println(pack.getAction().toString());
-                        printCLI(pack.getModelCopy(), null);
-
-                        try {
-                            message = scanner.nextLine();
-                            messageParsed = message.split(",");
-
-                            targetCell = pack.getModelCopy().getBattlefield().getCell(Integer.parseInt(messageParsed[0]), Integer.parseInt(messageParsed[1]));
-
-                        } catch (Exception exception) {
-                            targetCell = null;
-                        }
-
-                        if (targetCell!= null) {
-                            needToLoop = false;
-                        }
-                    }
-                    playerAction = new PlayerAction(Action.TOKEN_PLACED, this.player, null, null, 0, 0, targetCell, null, false, null);
-                    notifyClient(playerAction);
+                   // PlayerAction playerAction = new PlayerAction(Action.TOKEN_PLACED, this.player, null, null, 0, 0, targetCell, null, false, null);
+                   // notifyClient(playerAction);
                 }
                 break;
             }
@@ -515,12 +492,152 @@ public class SwingView extends View {
     }
 
 
+    /**
+     * Here i print the GUI for the user, depending on the parameter validMoves;
+     *   -if it is null, i print the normal battlefield with the tokens on
+     *   -otherwise i print even a green backgrounds behind the cells in the ValidMoves param.
+     * @param validMoves: cells that have to be printed on a green background (can be null)
+     * @param modelCopy: contains the the board of the game and the players in the game
+     */
+    public void displayGui(ModelUtils modelCopy, List<Cell> validMoves) throws CellOutOfBattlefieldException {
 
+        Battlefield battlefield = modelCopy.getBattlefield();
+        List<Player> allPlayers = modelCopy.getAllPlayers();
 
+        for (int y = 4; y > -1; y--) {
 
+            for (int x = 0; x < 5; x++) {
 
+                if (validMoves != null) {
+                    if (validMoves.contains(battlefield.getCell(x, y))) {
+                        battlefieldGUI[x][y].getCell().setHeight(battlefield.getCell(x, y).getHeight());
+                        battlefieldGUI[x][y].setIcon(selectIcon(null, battlefield.getCell(x, y),true));
+                        battlefieldGUI[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x,y)));
+                    }
+                    else{
+                        displayInnerGui(battlefield, allPlayers, validMoves, y, x);
+                    }
+                }
+                else{
+                    displayInnerGui(battlefield, allPlayers,null, y, x);
+                }
+            }
+        }
+    }
 
+    /**
+     * Auxiliary method to print the GUI, here i check the token position's
+     * @param battlefield: the board of the game
+     * @param allPlayers: the players in the game
+     * @param validMoves: cells that have to be printed on a different background (can be null)
+     * @param x: position x of the battlefield
+     * @param y: position y of the battlefield
+     */
+    public void displayInnerGui(Battlefield battlefield, List<Player> allPlayers,List<Cell> validMoves, int y, int x) throws CellOutOfBattlefieldException {
 
+        // we check if exists a token of any player in this position
+        if(!battlefield.getCell(x, y).getThereIsPlayer()){
+            battlefieldGUI[x][y].getCell().setHeight(battlefield.getCell(x,y).getHeight());
+            battlefieldGUI[x][y].setIcon(selectIcon(null,battlefield.getCell(x,y),false));
+            battlefieldGUI[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x,y)));
+        }
+        else{
+            for(Player p : allPlayers) {
+                if (p.getToken1().getTokenPosition() != null && p.getToken1().getTokenPosition()!=null) {                                  //if he has the first token
+                    if (p.getToken1().getTokenPosition().equals(battlefield.getCell(x, y))) {
+                        battlefieldGUI[x][y].getCell().setHeight(battlefield.getCell(x, y).getHeight());
+                        battlefieldGUI[x][y].setIcon(selectIcon(p, battlefield.getCell(x, y),false));
+                        battlefieldGUI[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x,y)));
+                    }
+                }
+                if (p.getToken2().getTokenPosition() != null && p.getToken2().getTokenPosition()!=null) {                                  //if he has the first token
+                    if (p.getToken2().getTokenPosition().equals(battlefield.getCell(x, y))) {
+                        battlefieldGUI[x][y].getCell().setHeight(battlefield.getCell(x, y).getHeight());
+                        battlefieldGUI[x][y].setIcon(selectIcon(p, battlefield.getCell(x, y),false));
+                        battlefieldGUI[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x,y)));
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * It selects the right text image depending on the characteristic
+     * @param cell: the cell in wich i have to put the icon
+     * @return ImageIcon of the cell to display
+     */
+    public Icon selectRolloverIcon(Cell cell) {
+
+        String startPath = "./src/main/images/buildings/";
+        //display basic text  height
+        return switchOnHeight(cell.getHeight(),startPath,"level0Text.png","level1Text.png","level2Text.png","level3Text.png","levelDomeText.png");
+    }
+
+    /**
+     * It selects the right image depending on the characteristic
+     * @param player: if it's not null, that one is the player on that cell
+     * @param cell: the cell in wich i have to put the icon
+     * @return ImageIcon of the cell to display
+     */
+    public ImageIcon selectIcon(Player player, Cell cell, boolean iHaveToDisplayValidMoves) {
+
+        String startPath = "./src/main/images/buildings/";
+        ImageIcon toReturn = new ImageIcon();
+
+        //display basic height with no players on it
+        if(player == null) {
+            if(iHaveToDisplayValidMoves) return switchOnHeight(cell.getHeight(),startPath,"level0.png","level1.png","level2.png","level3.png","levelDome.png");
+            else return switchOnHeight(cell.getHeight(),startPath,"level0ValidMove.png","level1ValidMove.png","level2ValidMove.png","level3ValidMove.png","levelDome.png");
+
+        }
+        //display height with currespundant player on it
+        else{
+            switch(player.getTokenColor()){
+                case RED:{
+                    return switchOnHeight(cell.getHeight(),startPath,"level0tokenRed.png","level1tokenRed.png","level2tokenRed.png","level3tokenRed.png","levelDome.png");
+                }
+                case BLUE:{
+                    return switchOnHeight(cell.getHeight(),startPath,"level0tokenBlue.png","level1tokenBlue.png","level2tokenBlue.png","level3tokenBlue.png","levelDome.png");
+                }
+                case YELLOW:{
+                    return switchOnHeight(cell.getHeight(),startPath,"level0tokenYellow.png","level1tokenYellow.png","level2tokenYellow.png","level3tokenYellow.png","levelDome.png");
+                }
+            }
+        }
+        return toReturn;
+    }
+
+    /**
+     * Switch on dynamic images
+     * @param height of this cell
+     * @param startPath starting path of images
+     * @param str0 in case of level 0
+     * @param str1 in case of level 1
+     * @param str2 in case of level 2
+     * @param str3 in case of level 3
+     * @param str4 in case of level dome
+     * @return
+     */
+    public ImageIcon switchOnHeight(int height, String startPath, String str0, String str1, String str2, String str3, String str4) {
+
+        switch (height) {
+            case 0: {
+               return new ImageIcon(new File(startPath + str0).getAbsolutePath());
+            }
+            case 1: {
+                return new ImageIcon(new File(startPath + str1).getAbsolutePath());
+            }
+            case 2: {
+                return new ImageIcon(new File(startPath + str2).getAbsolutePath());
+            }
+            case 3: {
+                return new ImageIcon(new File(startPath + str3).getAbsolutePath());
+            }
+            default: { //dome
+                return new ImageIcon(new File(startPath + str4).getAbsolutePath());
+            }
+        }
+    }
 
     public int getToken(String[] inputs, Player player){
 
@@ -536,8 +653,6 @@ public class SwingView extends View {
         }
         else return 0;
     }
-
-
 
     public Cell getCell(String[] inputs, Battlefield battlefield){
 

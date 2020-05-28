@@ -4,11 +4,18 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.controller.ImpossibleTurnException;
 import it.polimi.ingsw.controller.WrongNumberPlayerException;
+<<<<<<< HEAD
 import it.polimi.ingsw.gui.LobbyFrame;
 import it.polimi.ingsw.model.GodCard;
 import it.polimi.ingsw.model.Model;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.TokenColor;
+=======
+import it.polimi.ingsw.cli.GodCard;
+import it.polimi.ingsw.cli.Model;
+import it.polimi.ingsw.cli.Player;
+import it.polimi.ingsw.cli.TokenColor;
+>>>>>>> c6f74a73a1240b3b2d2662f8927b1de52eaaef37
 import it.polimi.ingsw.utils.*;
 
 import java.io.*;
@@ -228,7 +235,7 @@ public class Server  {
         RemoteView remoteView1 = new RemoteView(c1, player1);
         remoteView1.setServer(this);
 
-        // Create the model and the controller for the current game
+        // Create the model (and battlefield) and the controller for the current game
         model = new Model();
         controller = new Controller(model);
 

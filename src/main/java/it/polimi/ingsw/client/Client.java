@@ -1,9 +1,12 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.controller.*;
+<<<<<<< HEAD
 import it.polimi.ingsw.gui.SwingView;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.TokenColor;
+=======
+>>>>>>> c6f74a73a1240b3b2d2662f8927b1de52eaaef37
 import it.polimi.ingsw.utils.*;
 
 import java.io.*;

@@ -14,8 +14,11 @@ public class LobbyFrame {
      * FIXME: da fare con solo il primo a aggiungerci gli altri
      */
     public LobbyFrame(){
+
         lobbyFrame = new JFrame("Lobby");
+        lobbyFrame.setLocationRelativeTo(null);
         lobbyFrame.setSize(500,500);
+
         mainPanel = new JPanel();
         info = new JLabel("Wait for other players to connect");
 

@@ -1,9 +1,7 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.cli;
 import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
-import it.polimi.ingsw.controller.ReachHeightLimitException;
 
 import java.io.Serializable;
-import java.util.*;
 
 /**
  * A Battlefield is a matrix of Cell.

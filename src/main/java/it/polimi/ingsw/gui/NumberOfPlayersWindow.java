@@ -62,6 +62,7 @@ public class NumberOfPlayersWindow extends JDialog{
             }
         });
 
+        setLocationRelativeTo(null);
         pack();
         setVisible(true);
 
