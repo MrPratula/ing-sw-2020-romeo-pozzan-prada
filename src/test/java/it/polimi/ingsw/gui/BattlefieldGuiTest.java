@@ -1,31 +1,37 @@
-package it.polimi.ingsw.cli;
-import it.polimi.ingsw.client.View;
+package it.polimi.ingsw.gui;
+
+import it.polimi.ingsw.cli.*;
 import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
 import it.polimi.ingsw.controller.ReachHeightLimitException;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class BattlefieldTest {
+public class BattlefieldGuiTest {
 
     Battlefield battlefield;
     Player p1,p2,p3;
     Token t1,t2,t3,t11,t22,t33;
     List<Player> players;
     Model model;
-    View view;
+    SwingView swingView;
+    //CellButton[][] battlefieldGUI;
+    GameFrame g;
 
     @Before
     public void setUp() throws Exception {
 
+        g = new GameFrame();
+
         battlefield = new Battlefield();
         model = new Model();
         model.setBattlefield(battlefield);
-        view = new View();
+        swingView = new SwingView();
+        swingView.setBattlefieldGUI(g.getBattlefieldGUI());
 
-        p1 = new Player("Alpha",TokenColor.RED);
+        p1 = new Player("Alpha", TokenColor.RED);
         p2 = new Player("Beta",TokenColor.BLUE);
         p3 = new Player("Charlie",TokenColor.YELLOW);
 
@@ -80,26 +86,24 @@ public class BattlefieldTest {
         }
     }
 
-    @After
-    public void tearDown() throws Exception { }
-
 
     /**
-     * Test that prints the CLI, i.e. the battlefield
+     * Test that prints the GUI, i.e. the battlefield
      * with some different heights and tokens
      */
     @Test
-    public void PrintCLITest() throws ReachHeightLimitException, CellOutOfBattlefieldException {
-        view.printCLI(model.getCopy(), null);
+    public void displayGuiTest() throws ReachHeightLimitException, CellOutOfBattlefieldException {
+        swingView.displayGui(model.getCopy(), null);
+        g.setVisible(true);
     }
 
 
     /**
-     * Test that prints the CLI, this time with the
-     * valid moves (GREEN CELLS) for the selected token
+     * Test that prints the GUI, this time with the
+     * valid moves (ORANGE CELLS) for the selected token
      */
     @Test
-    public void PrintCLITestWithValidMoves(/* List<Cell> validMoves */) throws CellOutOfBattlefieldException, ReachHeightLimitException {
+    public void displayGuiTestWithValidMoves(/* List<Cell> validMoves */) throws CellOutOfBattlefieldException, ReachHeightLimitException {
 
         List<Cell> validMoves = new ArrayList<>(); //saranno passate come parametro
         validMoves.add(battlefield.getCell(3,1));
@@ -108,11 +112,13 @@ public class BattlefieldTest {
         validMoves.add(battlefield.getCell(4,3));
         validMoves.add(battlefield.getCell(4,2));
 
-        view.printCLI(model.getCopy(), validMoves);
-
+        swingView.displayGui(model.getCopy(), validMoves);
+        g.setVisible(true);
 
         // we don't care passing the selected token,
         // we just have to print the valid moves around him
     }
+
+
 
 }

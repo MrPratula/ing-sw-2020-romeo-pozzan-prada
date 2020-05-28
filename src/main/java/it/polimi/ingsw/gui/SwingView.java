@@ -25,11 +25,22 @@ public class SwingView extends View {
     private JButton playButton;      //3.1
     private JLabel logoImage;
 
+    private GameFrame gameFrame;
+    private CellButton[][] battlefieldGUI;
+
     private Player player;
     private int savedToken;
 
     public JFrame getMainFrame() {
         return mainFrame;
+    }
+
+    public CellButton[][] getBattlefieldGUI() {
+        return battlefieldGUI;
+    }
+
+    public void setBattlefieldGUI(CellButton[][] battlefieldGUI) {
+        this.battlefieldGUI = battlefieldGUI;
     }
 
     /**
@@ -242,6 +253,13 @@ public class SwingView extends View {
             case PLACE_YOUR_TOKEN:{
 
                 Pack pack = serverResponse.getPack();
+
+                //here the battlefieldGUI is set up
+                this.gameFrame = new GameFrame();
+
+                this.battlefieldGUI = gameFrame.getBattlefieldGUI();
+
+                //displayGui(pack.getModelCopy(), null);
                 //printCLI(pack.getModelCopy(), null);
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
@@ -478,12 +496,152 @@ public class SwingView extends View {
     }
 
 
+    /**
+     * Here i print the GUI for the user, depending on the parameter validMoves;
+     *   -if it is null, i print the normal battlefield with the tokens on
+     *   -otherwise i print even a green backgrounds behind the cells in the ValidMoves param.
+     * @param validMoves: cells that have to be printed on a green background (can be null)
+     * @param modelCopy: contains the the board of the game and the players in the game
+     */
+    public void displayGui(ModelUtils modelCopy, List<Cell> validMoves) throws CellOutOfBattlefieldException {
 
+        Battlefield battlefield = modelCopy.getBattlefield();
+        List<Player> allPlayers = modelCopy.getAllPlayers();
 
+        for (int y = 4; y > -1; y--) {
 
+            for (int x = 0; x < 5; x++) {
 
+                if (validMoves != null) {
+                    if (validMoves.contains(battlefield.getCell(x, y))) {
+                        battlefieldGUI[x][y].getCell().setHeight(battlefield.getCell(x, y).getHeight());
+                        battlefieldGUI[x][y].setIcon(selectIcon(null, battlefield.getCell(x, y),true));
+                        battlefieldGUI[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x,y)));
+                    }
+                    else{
+                        displayInnerGui(battlefield, allPlayers, validMoves, y, x);
+                    }
+                }
+                else{
+                    displayInnerGui(battlefield, allPlayers,null, y, x);
+                }
+            }
+        }
+    }
 
+    /**
+     * Auxiliary method to print the GUI, here i check the token position's
+     * @param battlefield: the board of the game
+     * @param allPlayers: the players in the game
+     * @param validMoves: cells that have to be printed on a different background (can be null)
+     * @param x: position x of the battlefield
+     * @param y: position y of the battlefield
+     */
+    public void displayInnerGui(Battlefield battlefield, List<Player> allPlayers,List<Cell> validMoves, int y, int x) throws CellOutOfBattlefieldException {
 
+        // we check if exists a token of any player in this position
+        if(!battlefield.getCell(x, y).getThereIsPlayer()){
+            battlefieldGUI[x][y].getCell().setHeight(battlefield.getCell(x,y).getHeight());
+            battlefieldGUI[x][y].setIcon(selectIcon(null,battlefield.getCell(x,y),false));
+            battlefieldGUI[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x,y)));
+        }
+        else{
+            for(Player p : allPlayers) {
+                if (p.getToken1().getTokenPosition() != null && p.getToken1().getTokenPosition()!=null) {                                  //if he has the first token
+                    if (p.getToken1().getTokenPosition().equals(battlefield.getCell(x, y))) {
+                        battlefieldGUI[x][y].getCell().setHeight(battlefield.getCell(x, y).getHeight());
+                        battlefieldGUI[x][y].setIcon(selectIcon(p, battlefield.getCell(x, y),false));
+                        battlefieldGUI[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x,y)));
+                    }
+                }
+                if (p.getToken2().getTokenPosition() != null && p.getToken2().getTokenPosition()!=null) {                                  //if he has the first token
+                    if (p.getToken2().getTokenPosition().equals(battlefield.getCell(x, y))) {
+                        battlefieldGUI[x][y].getCell().setHeight(battlefield.getCell(x, y).getHeight());
+                        battlefieldGUI[x][y].setIcon(selectIcon(p, battlefield.getCell(x, y),false));
+                        battlefieldGUI[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x,y)));
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * It selects the right text image depending on the characteristic
+     * @param cell: the cell in wich i have to put the icon
+     * @return ImageIcon of the cell to display
+     */
+    public Icon selectRolloverIcon(Cell cell) {
+
+        String startPath = "./src/main/images/buildings/";
+        //display basic text  height
+        return switchOnHeight(cell.getHeight(),startPath,"level0Text.png","level1Text.png","level2Text.png","level3Text.png","levelDomeText.png");
+    }
+
+    /**
+     * It selects the right image depending on the characteristic
+     * @param player: if it's not null, that one is the player on that cell
+     * @param cell: the cell in wich i have to put the icon
+     * @return ImageIcon of the cell to display
+     */
+    public ImageIcon selectIcon(Player player, Cell cell, boolean iHaveToDisplayValidMoves) {
+
+        String startPath = "./src/main/images/buildings/";
+        ImageIcon toReturn = new ImageIcon();
+
+        //display basic height with no players on it
+        if(player == null) {
+            if(iHaveToDisplayValidMoves) return switchOnHeight(cell.getHeight(),startPath,"level0.png","level1.png","level2.png","level3.png","levelDome.png");
+            else return switchOnHeight(cell.getHeight(),startPath,"level0ValidMove.png","level1ValidMove.png","level2ValidMove.png","level3ValidMove.png","levelDome.png");
+
+        }
+        //display height with currespundant player on it
+        else{
+            switch(player.getTokenColor()){
+                case RED:{
+                    return switchOnHeight(cell.getHeight(),startPath,"level0tokenRed.png","level1tokenRed.png","level2tokenRed.png","level3tokenRed.png","levelDome.png");
+                }
+                case BLUE:{
+                    return switchOnHeight(cell.getHeight(),startPath,"level0tokenBlue.png","level1tokenBlue.png","level2tokenBlue.png","level3tokenBlue.png","levelDome.png");
+                }
+                case YELLOW:{
+                    return switchOnHeight(cell.getHeight(),startPath,"level0tokenYellow.png","level1tokenYellow.png","level2tokenYellow.png","level3tokenYellow.png","levelDome.png");
+                }
+            }
+        }
+        return toReturn;
+    }
+
+    /**
+     * Switch on dynamic images
+     * @param height of this cell
+     * @param startPath starting path of images
+     * @param str0 in case of level 0
+     * @param str1 in case of level 1
+     * @param str2 in case of level 2
+     * @param str3 in case of level 3
+     * @param str4 in case of level dome
+     * @return
+     */
+    public ImageIcon switchOnHeight(int height, String startPath, String str0, String str1, String str2, String str3, String str4) {
+
+        switch (height) {
+            case 0: {
+               return new ImageIcon(new File(startPath + str0).getAbsolutePath());
+            }
+            case 1: {
+                return new ImageIcon(new File(startPath + str1).getAbsolutePath());
+            }
+            case 2: {
+                return new ImageIcon(new File(startPath + str2).getAbsolutePath());
+            }
+            case 3: {
+                return new ImageIcon(new File(startPath + str3).getAbsolutePath());
+            }
+            default: { //dome
+                return new ImageIcon(new File(startPath + str4).getAbsolutePath());
+            }
+        }
+    }
 
     public int getToken(String[] inputs, Player player){
 
@@ -499,8 +657,6 @@ public class SwingView extends View {
         }
         else return 0;
     }
-
-
 
     public Cell getCell(String[] inputs, Battlefield battlefield){
 

@@ -9,7 +9,7 @@ import java.io.File;
 
 
 /**
- * Main Frame of the Gui
+ * Main Frame of the game for the Gui
  */
 public class GameFrame extends JFrame {
 
@@ -23,7 +23,7 @@ public class GameFrame extends JFrame {
     JLabel messageLabel = new JLabel();
 
     //button for every cell
-    CellButton[][] buttons = new CellButton[5][5];
+    CellButton[][] battlefieldGUI = new CellButton[5][5];
 
     //path of the source with the images to display
     String startPath = "./src/main/images/buildings/";
@@ -52,6 +52,10 @@ public class GameFrame extends JFrame {
             new ImageIcon(new File(startPath + "level2Text.png").getAbsolutePath()),//19
             new ImageIcon(new File(startPath + "level3Text.png").getAbsolutePath()), //20
             new ImageIcon(new File(startPath + "levelDomeText.png").getAbsolutePath()), //21
+            new ImageIcon(new File(startPath + "level0ValidMove.png").getAbsolutePath()), //22
+            new ImageIcon(new File(startPath + "level1ValidMove.png").getAbsolutePath()), //23
+            new ImageIcon(new File(startPath + "level2ValidMove.png").getAbsolutePath()), //24
+            new ImageIcon(new File(startPath + "level3ValidMove.png").getAbsolutePath()), //25
     };
 
     private ModelUtils modelUtils; ///////////////////////////////////
@@ -59,8 +63,9 @@ public class GameFrame extends JFrame {
     public JPanel getBattlefieldPanel() {
         return battlefieldPanel;
     }
-    public CellButton[][] getButtons() {
-        return buttons;
+
+    public CellButton[][] getBattlefieldGUI() {
+        return battlefieldGUI;
     }
 
     //starting position FIXME
@@ -78,16 +83,19 @@ public class GameFrame extends JFrame {
         for(int j=4; j>-1 ; j--){
             for(int i=0; i<5; i++){
                 //here i create a button for every cell
-                buttons[i][j] = new CellButton();
-                buttons[i][j].setBorderPainted(false);
-                buttons[i][j].setContentAreaFilled(false);
+                battlefieldGUI[i][j] = new CellButton();
+                battlefieldGUI[i][j].setBorderPainted(false);
+                battlefieldGUI[i][j].setContentAreaFilled(false);
+                battlefieldGUI[i][j].setSize(100,100);
+                battlefieldGUI[i][j].setIcon(pics[0]);
+                battlefieldGUI[i][j].setBackground(Color.BLACK);
+                battlefieldGUI[i][j].cell = new Cell(i,j);
+                battlefieldGUI[i][j].cell.setHeight(0);
 
-                buttons[i][j].setSize(100,100);
-                putInitialBuild(buttons[i][j],i,j);
-                battlefieldPanel.add(buttons[i][j]);
+                battlefieldPanel.add(battlefieldGUI[i][j]);
 
-                //herei add a listener to this button (owning a Cell)
-                buttons[i][j].addActionListener(new ButtonHandler(buttons[i][j], pics, modelUtils));
+                //here i add a listener to this button (owning a Cell)
+                battlefieldGUI[i][j].addActionListener(new ButtonHandler(battlefieldGUI[i][j], pics, modelUtils));
             }
         }
 
@@ -97,17 +105,5 @@ public class GameFrame extends JFrame {
         setVisible(true);
     }
 
-    private void putInitialBuild(CellButton cellButton, int i, int j) {
-        //cellButton.setBounds(0,0,100,100);
-        cellButton.setIcon(pics[0]);
-        cellButton.setBackground(Color.BLACK);
-        cellButton.cell=new Cell(i,j);
-        cellButton.cell.setHeight(0);
-    }
-
-    private boolean isValidMove(int i, int j) {
-        return true;
-        //TODO
-    }
 
 }

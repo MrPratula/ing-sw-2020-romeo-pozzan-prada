@@ -529,6 +529,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
      *   -otherwise i print even a green backgrounds behind the cells in the ValidMoves param.
      *
      * @param validMoves: cells that have to be printed on a green background (can be null)
+     * @param modelCopy: contains the the board of the game and the players in the game
      */
      public void printCLI(ModelUtils modelCopy, List<Cell> validMoves) throws ReachHeightLimitException, CellOutOfBattlefieldException {
 
@@ -541,7 +542,9 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
             System.out.print("\033[030m");          //white written
             System.out.print(y + " ");
+
             for (int x = 0; x < 5; x++) {
+
                 if (validMoves != null){
                     if (validMoves.contains(battlefield.getCell(x,y))) {
 
@@ -568,7 +571,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
 
     /**
-     * Auxiliary method to print the cli, here i check the token position's
+     * Auxiliary method to print the CLI, here i check the token position's
      * @param battlefield: the board of the game
      * @param allPlayers: the players in the game
      * @param validMoves: cells that have to be printed on a green background (can be null)
