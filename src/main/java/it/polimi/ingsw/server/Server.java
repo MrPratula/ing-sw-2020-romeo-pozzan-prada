@@ -4,6 +4,7 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.controller.ImpossibleTurnException;
 import it.polimi.ingsw.controller.WrongNumberPlayerException;
+import it.polimi.ingsw.gui.LobbyFrame;
 import it.polimi.ingsw.model.GodCard;
 import it.polimi.ingsw.model.Model;
 import it.polimi.ingsw.model.Player;

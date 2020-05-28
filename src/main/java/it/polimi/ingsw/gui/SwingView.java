@@ -104,8 +104,6 @@ public class SwingView extends View {
         return tokens;
     }
 
-
-
     /**
      * When needed, it returns the opponent players(1 or 2) of the player associated to this view.
      * @param serverResponse: the response passed throught the observers from the server.
@@ -157,8 +155,6 @@ public class SwingView extends View {
             case WELCOME:{
 
                 NickNameWindow s = new NickNameWindow(this);
-                PlayerAction playerAction = new PlayerAction(Action.MY_NAME,null,null, null, 0, 0, null, null, false, s.getNicknameTextField().getText());
-                notifyClient(playerAction);
                 break;
             }
             case INVALID_NAME: {

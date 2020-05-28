@@ -1,9 +1,14 @@
 package it.polimi.ingsw.gui;
 
+import it.polimi.ingsw.controller.*;
+import it.polimi.ingsw.utils.Action;
+import it.polimi.ingsw.utils.PlayerAction;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 
 public class NickNameWindow extends JDialog{
@@ -57,8 +62,24 @@ public class NickNameWindow extends JDialog{
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(!nicknameTextField.getText().trim().isEmpty()){
-                    new LobbyFrame();
-                    NickNameWindow.this.dispose(); //compattato i due ActionListener
+                    PlayerAction playerAction = new PlayerAction(Action.MY_NAME,null,null, null, 0, 0, null, null, false, nicknameTextField.getText());
+                    try {
+                        System.out.println("Nome: "+nicknameTextField.getText());
+                        view.notifyClient(playerAction);
+                        NickNameWindow.this.dispose();
+                    } catch (CellOutOfBattlefieldException cellOutOfBattlefieldException) {
+                        cellOutOfBattlefieldException.printStackTrace();
+                    } catch (ReachHeightLimitException reachHeightLimitException) {
+                        reachHeightLimitException.printStackTrace();
+                    } catch (CellHeightException cellHeightException) {
+                        cellHeightException.printStackTrace();
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    } catch (ImpossibleTurnException impossibleTurnException) {
+                        impossibleTurnException.printStackTrace();
+                    } catch (WrongNumberPlayerException wrongNumberPlayerException) {
+                        wrongNumberPlayerException.printStackTrace();
+                    }
                 }
                 else {
                     JOptionPane.showMessageDialog(new JFrame(), "You have to type a name!", "Error", JOptionPane.ERROR_MESSAGE);  //posso anche mettere un'immagine error
@@ -69,6 +90,5 @@ public class NickNameWindow extends JDialog{
         pack();
         setVisible(true);
     }
-
 
 }

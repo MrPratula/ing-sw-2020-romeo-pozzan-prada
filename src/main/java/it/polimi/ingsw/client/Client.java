@@ -1,12 +1,14 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.controller.*;
+import it.polimi.ingsw.gui.SwingView;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.TokenColor;
 import it.polimi.ingsw.utils.*;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.Scanner;
 
 
 public class Client extends Observable<ServerResponse> implements Observer<PlayerAction> {
@@ -109,6 +111,16 @@ public class Client extends Observable<ServerResponse> implements Observer<Playe
      */
     public void run() throws IOException {
 
+        //TEMPORANEO per decidere se cli o gui (solo inizialmente)
+        System.out.println("1 to use Cli, 2 to use Gui");
+        Scanner scanner = new Scanner(System.in);
+        int number = scanner.nextInt();
+        while(number != 1 && number != 2){
+            System.out.println("Wrong number, try again: ");
+            System.out.println("1 per Cli, 2 per Gui");
+            number = scanner.nextInt();
+        }
+
         Socket socket = new Socket(ip, port);
         System.out.println("Connection established!");
         setActive(true);
@@ -116,8 +128,12 @@ public class Client extends Observable<ServerResponse> implements Observer<Playe
         objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
         objectInputStream = new ObjectInputStream(socket.getInputStream());
 
+        View view;
+
         // Create a view for this client and set up the observers
-        View view = new View();
+        if(number==1) { view = new View(); }
+        else{ view = new SwingView(); }
+
         view.addObserver(this);
         addObserver(view);
 

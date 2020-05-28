@@ -16,11 +16,6 @@ public class ServerApp
 {
     public static void main( String[] args ) {
 
-        // servono per far partire la gui ( nelle due cose che abbiamo fatto )
-        // ovviamente non è questo il loro posto, è solo per testare.
-        //new GameFrame();
-        //SwingView s = new SwingView();
-
         System.out.println("Hi I am the SERVER");
         Server server;
 
