@@ -1,7 +1,7 @@
 package it.polimi.ingsw.gameAction;
 
 import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
-import it.polimi.ingsw.model.Battlefield;
+import it.polimi.ingsw.cli.Battlefield;
 
 public class Utility {
 

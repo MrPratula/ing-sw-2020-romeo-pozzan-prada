@@ -3,15 +3,13 @@ package it.polimi.ingsw.gameAction.build;
 import it.polimi.ingsw.controller.CellHeightException;
 import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
 import it.polimi.ingsw.controller.ReachHeightLimitException;
-import it.polimi.ingsw.model.Battlefield;
-import it.polimi.ingsw.model.Cell;
+import it.polimi.ingsw.cli.Battlefield;
+import it.polimi.ingsw.cli.Cell;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class HestiaBuildTest {
     Battlefield battlefield = null;

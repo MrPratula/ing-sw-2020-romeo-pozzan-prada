@@ -3,7 +3,7 @@ package it.polimi.ingsw.gameAction.build;
 import it.polimi.ingsw.controller.CellHeightException;
 import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
 import it.polimi.ingsw.controller.ReachHeightLimitException;
-import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.cli.*;
 
 import java.util.List;
 

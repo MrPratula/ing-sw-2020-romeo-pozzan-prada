@@ -2,15 +2,13 @@ package it.polimi.ingsw.gameAction.move;
 
 
 import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
-import it.polimi.ingsw.model.Battlefield;
-import it.polimi.ingsw.model.Cell;
-import it.polimi.ingsw.model.Token;
-import it.polimi.ingsw.model.TokenColor;
+import it.polimi.ingsw.cli.Battlefield;
+import it.polimi.ingsw.cli.Cell;
+import it.polimi.ingsw.cli.Token;
+import it.polimi.ingsw.cli.TokenColor;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import javax.swing.text.rtf.RTFEditorKit;
 
 /**
  * A token can move in all 8 Cells around himself with the following exceptions:

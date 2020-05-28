@@ -1,12 +1,10 @@
 package it.polimi.ingsw.utils;
 
 import it.polimi.ingsw.controller.*;
-import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.server.Server;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Connection extends Observable<PlayerAction> implements Runnable{

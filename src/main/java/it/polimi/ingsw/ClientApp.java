@@ -3,9 +3,8 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.gui.ChooseGodCardWindow;
 import it.polimi.ingsw.gui.SwingView;
-import it.polimi.ingsw.model.GodCard;
+import it.polimi.ingsw.cli.GodCard;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

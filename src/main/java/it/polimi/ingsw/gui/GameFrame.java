@@ -1,16 +1,11 @@
 package it.polimi.ingsw.gui;
 
-import it.polimi.ingsw.model.Battlefield;
-import it.polimi.ingsw.model.Cell;
-import it.polimi.ingsw.model.ModelUtils;
+import it.polimi.ingsw.cli.Cell;
+import it.polimi.ingsw.cli.ModelUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.ImageObserver;
-import java.awt.image.ImageProducer;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 
 
 /**

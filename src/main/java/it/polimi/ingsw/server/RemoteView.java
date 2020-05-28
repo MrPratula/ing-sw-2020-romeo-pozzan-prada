@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.controller.*;
-import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.cli.Player;
 import it.polimi.ingsw.utils.*;
 
 import java.io.*;
@@ -19,7 +19,7 @@ public class RemoteView extends Observable<PlayerAction> implements Observer<Ser
      * @param connection connection to receive and send objects.
      * @param player the player corresponding this remote view.
      */
-    public RemoteView(Connection connection, Player player) throws IOException {
+    public RemoteView(Connection connection, Player player) {
         this.player = player;
         this.connection = connection;
         connection.addObserver(new MessageReceiver());
