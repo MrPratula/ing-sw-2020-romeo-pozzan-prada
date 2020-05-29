@@ -1,9 +1,13 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.cli.GodCard;
+import it.polimi.ingsw.gui.ChooseFirstGodCardsWindow;
+import it.polimi.ingsw.gui.ChooseGodCardWindow;
 import it.polimi.ingsw.server.Server;
 
 
 import java.io.IOException;
+import java.util.List;
 
 
 /**
@@ -16,6 +20,8 @@ public class ServerApp
 
         System.out.println("Hi I am the SERVER");
         Server server;
+
+        new ChooseFirstGodCardsWindow();
 
         try {
             // The Server is not created by new Server because it is Singleton, so

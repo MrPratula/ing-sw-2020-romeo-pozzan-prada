@@ -16,6 +16,8 @@ public enum Action implements Serializable {
 
     MY_NAME("Inside this message there is my name"),
     NUMBER_OF_PLAYERS("The first player communicated how many players there are"),
+    //action per la scelta delle prime 2/3 godcards da parte del primo player.
+    CHOSE_FIRST_GOD_CARDS("First player has to choose 2/3 godcards"),
     CHOSE_GOD_CARD ("A player has chose his god card"),
     TOKEN_PLACED("A token has been placed"),
     TOKEN_SELECTED("A player selected a token"),

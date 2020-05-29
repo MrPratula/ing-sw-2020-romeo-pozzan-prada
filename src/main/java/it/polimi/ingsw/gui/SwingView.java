@@ -163,14 +163,13 @@ public class SwingView extends View {
             // This continue till the name is valid
             case WELCOME:{
 
-                NickNameWindow s = new NickNameWindow(this);
+                new NickNameWindow(this);
                 break;
             }
             case INVALID_NAME: {
 
-                //probably dovrei prenderlo dalla classe
                 JOptionPane.showMessageDialog(new JFrame(),"Your name is invalid","Error", JOptionPane.ERROR_MESSAGE);  //posso anche mettere un'immagine error
-                NickNameWindow s = new NickNameWindow(this);
+                new NickNameWindow(this);
                 break;
             }
 
@@ -179,7 +178,7 @@ public class SwingView extends View {
             case HOW_MANY_PLAYERS:
             case WRONG_NUMBER_OF_PLAYER: {
 
-                NumberOfPlayersWindow n = new NumberOfPlayersWindow(this);
+                new NumberOfPlayersWindow(this);
                 break;
             }
 
@@ -189,6 +188,10 @@ public class SwingView extends View {
             case NUMBER_RECEIVED: {
                 JOptionPane.showMessageDialog(new JFrame(),serverResponse.getPack().getAction().toString(),"NUMBER_RECEIVED", JOptionPane.INFORMATION_MESSAGE);  //posso anche mettere un'immagine error
                 break;
+            }
+
+            case CHOSE_FIRST_GOD_CARDS:{
+                new ChooseFirstGodCardsWindow();
             }
 
             //The first choice is send by the server and contains player data
