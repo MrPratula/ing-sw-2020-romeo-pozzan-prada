@@ -425,6 +425,11 @@ public class Server  {
             }
         }
 
+        List<GodCard> godInGame = new ArrayList<>();
+        while(godInGame.size()!=3){
+            //Ask to choose 2/3 Godcards
+
+        }
         // Ask to choose 2/3 Godcards
         c1.asyncSend(new ServerResponse(null, new Pack(Action.CHOSE_FIRST_GOD_CARDS)));
         //fatto fino a qua su ^.

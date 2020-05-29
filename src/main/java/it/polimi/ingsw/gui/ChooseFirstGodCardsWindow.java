@@ -16,7 +16,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+
 public class ChooseFirstGodCardsWindow {
+
     Model model=new Model();
     List<GodCard> godInGame = new ArrayList<>(Arrays.asList(GodCard.values()).subList(0, 14));
 
@@ -51,9 +53,8 @@ public class ChooseFirstGodCardsWindow {
             new ImageIcon(new File(startPath + "panText.png").getAbsolutePath()),  //11
             new ImageIcon(new File(startPath + "prometheusText.png").getAbsolutePath()), //12
             new ImageIcon(new File(startPath + "zeusText.png").getAbsolutePath()), //13
+
     };
-
-
 
     public ChooseFirstGodCardsWindow() {
         // And add them to the model
@@ -76,7 +77,6 @@ public class ChooseFirstGodCardsWindow {
 
         for(int i=0; i<14; i++) {
             buttonGod[i] = new GodButton(godInGame.get(i));
-            buttonGod[i].setSize(400,700);
             buttonGod[i].setBorderPainted(false);
             buttonGod[i].setContentAreaFilled(false);
             buttonGroup.add(buttonGod[i]);
@@ -173,6 +173,5 @@ public class ChooseFirstGodCardsWindow {
         }
         return godsToDisplay;
     }
-
 
 }
