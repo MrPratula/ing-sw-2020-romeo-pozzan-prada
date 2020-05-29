@@ -1,7 +1,5 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.gui.GameFrame;
-import it.polimi.ingsw.gui.SwingView;
 import it.polimi.ingsw.server.Server;
 
 
@@ -20,7 +18,6 @@ public class ServerApp
         Server server;
 
         try {
-
             // The Server is not created by new Server because it is Singleton, so
             // it calls the getInstance Method that create a server if it doesn't exist
             server = Server.getInstance();

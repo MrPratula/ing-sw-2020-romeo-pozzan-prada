@@ -172,8 +172,6 @@ public class SwingView extends View {
                 //probably dovrei prenderlo dalla classe
                 JOptionPane.showMessageDialog(new JFrame(),"Your name is invalid","Error", JOptionPane.ERROR_MESSAGE);  //posso anche mettere un'immagine error
                 NickNameWindow s = new NickNameWindow(this);
-                PlayerAction playerAction = new PlayerAction(Action.MY_NAME, null, null, null,0, 0, null, null, false, s.getNicknameTextField().getText());
-                notifyClient(playerAction);
                 break;
             }
 
@@ -183,8 +181,6 @@ public class SwingView extends View {
             case WRONG_NUMBER_OF_PLAYER: {
 
                 NumberOfPlayersWindow n = new NumberOfPlayersWindow(this);
-                PlayerAction playerAction = new PlayerAction(Action.NUMBER_OF_PLAYERS, null, null, null, (Integer)n.getNumberOfPlayersBox().getSelectedItem(), 0, null, null, false, null);
-                notifyClient(playerAction);
                 break;
             }
 

@@ -1,9 +1,14 @@
 package it.polimi.ingsw.gui;
 
+import it.polimi.ingsw.controller.*;
+import it.polimi.ingsw.utils.Action;
+import it.polimi.ingsw.utils.PlayerAction;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class NumberOfPlayersWindow extends JDialog{
 
@@ -58,7 +63,12 @@ public class NumberOfPlayersWindow extends JDialog{
         confirmButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new LobbyFrame();
+                PlayerAction playerAction = new PlayerAction(Action.NUMBER_OF_PLAYERS, null, null, null, (int)numberOfPlayersBox.getSelectedItem(), 0, null, null, false, null);
+                try {
+                    view.notifyClient(playerAction);
+                } catch (CellOutOfBattlefieldException | WrongNumberPlayerException | ImpossibleTurnException | IOException | CellHeightException | ReachHeightLimitException cellOutOfBattlefieldException) {
+                    cellOutOfBattlefieldException.printStackTrace();
+                }
             }
         });
 

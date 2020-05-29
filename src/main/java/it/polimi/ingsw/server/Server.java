@@ -8,6 +8,7 @@ import it.polimi.ingsw.cli.GodCard;
 import it.polimi.ingsw.cli.Model;
 import it.polimi.ingsw.cli.Player;
 import it.polimi.ingsw.cli.TokenColor;
+import it.polimi.ingsw.gui.LobbyFrame;
 import it.polimi.ingsw.utils.*;
 
 import java.io.*;
