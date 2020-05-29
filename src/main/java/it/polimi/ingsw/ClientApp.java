@@ -2,6 +2,7 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.gui.ChooseGodCardWindow;
+import it.polimi.ingsw.gui.GameFrame;
 import it.polimi.ingsw.gui.SwingView;
 import it.polimi.ingsw.cli.GodCard;
 
@@ -14,6 +15,7 @@ public class ClientApp {
 
     public static void main(String[] args) {
 
+        new GameFrame();
         /*
         SwingView s = new SwingView();
         List<GodCard> l = new ArrayList<>(); l.add(GodCard.LIMUS); l.add(GodCard.CHRONUS);

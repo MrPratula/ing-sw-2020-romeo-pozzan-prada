@@ -6,7 +6,11 @@ import javax.swing.*;
 
 public class CellButton extends JButton {
 
-    Cell cell;
+    private Cell cell;
+
+    public CellButton(int x, int y) {
+        this.cell = new Cell(x,y);
+    }
 
     public Cell getCell(){
         return cell;

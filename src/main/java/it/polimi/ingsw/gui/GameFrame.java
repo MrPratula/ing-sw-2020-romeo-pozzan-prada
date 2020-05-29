@@ -83,14 +83,14 @@ public class GameFrame extends JFrame {
         for(int j=4; j>-1 ; j--){
             for(int i=0; i<5; i++){
                 //here i create a button for every cell
-                battlefieldGUI[i][j] = new CellButton();
+                battlefieldGUI[i][j] = new CellButton(i,j);
                 battlefieldGUI[i][j].setBorderPainted(false);
                 battlefieldGUI[i][j].setContentAreaFilled(false);
                 battlefieldGUI[i][j].setSize(100,100);
                 battlefieldGUI[i][j].setIcon(pics[0]);
                 battlefieldGUI[i][j].setBackground(Color.BLACK);
-                battlefieldGUI[i][j].cell = new Cell(i,j);
-                battlefieldGUI[i][j].cell.setHeight(0);
+                //battlefieldGUI[i][j].getCell() = new Cell(i,j);
+                battlefieldGUI[i][j].getCell().setHeight(0);
 
                 battlefieldPanel.add(battlefieldGUI[i][j]);
 

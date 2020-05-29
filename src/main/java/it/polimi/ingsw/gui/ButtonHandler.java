@@ -17,7 +17,7 @@ public class ButtonHandler implements ActionListener {
     private ModelUtils modelUtils;
     final private CellButton cellButton;
     private CellButton prevButton;
-    private ImageIcon[] pics = new ImageIcon[8];
+    private ImageIcon[] pics;
 
     public ButtonHandler(CellButton cellButton, ImageIcon[] pics, ModelUtils modelUtils) {
         this.cellButton = cellButton;

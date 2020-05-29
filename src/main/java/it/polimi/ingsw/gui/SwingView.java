@@ -159,7 +159,6 @@ public class SwingView extends View {
 
         switch (serverResponse.getPack().getAction()) {
 
-
             // The first time a player connects it is asked for his name
             // This continue till the name is valid
             case WELCOME:{
@@ -198,11 +197,8 @@ public class SwingView extends View {
                 this.player = serverResponse.getPack().getPlayer();
                 List<GodCard> godInGame = serverResponse.getPack().getGodCards();
 
-                ChooseGodCardWindow c = new ChooseGodCardWindow(this.mainFrame,godInGame);
+                ChooseGodCardWindow c = new ChooseGodCardWindow(this.mainFrame,this, godInGame);
 
-                //fixme : forse fatto
-                PlayerAction playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, this.player, null, null, 0, 0, null, null, false,c.getButtonGroup().getSelection().getActionCommand());
-                notifyClient(playerAction);
                 player = serverResponse.getPack().getPlayer();
                 break;
             }
@@ -231,7 +227,7 @@ public class SwingView extends View {
 
                     //JOptionPane.showMessageDialog(new JFrame(),serverResponse.getPack().getMessageInTurn(),"INFO", JOptionPane.WARNING_MESSAGE);  //posso anche mettere un'immagine error
                     this.player = serverResponse.getPack().getPlayer();
-                    ChooseGodCardWindow c = new ChooseGodCardWindow(this.mainFrame,godInGame);
+                    ChooseGodCardWindow c = new ChooseGodCardWindow(this.mainFrame,this,godInGame);
                     //fixme : forse fatto
                     PlayerAction playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, this.player, null, null, 0, 0, null, null, false,c.getButtonGroup().getSelection().getActionCommand());
                     notifyClient(playerAction);

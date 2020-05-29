@@ -1,12 +1,16 @@
 package it.polimi.ingsw.gui;
 
 import it.polimi.ingsw.cli.GodCard;
+import it.polimi.ingsw.controller.*;
+import it.polimi.ingsw.utils.Action;
+import it.polimi.ingsw.utils.PlayerAction;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +19,7 @@ public class ChooseGodCardWindow extends JDialog {
     private final JPanel mainPanel;
     private final GodButton buttonGod1, buttonGod2;
     private ButtonGroup buttonGroup;
+    private SwingView view;
 
     final static String startPath = "./src/main/images/godcards/";
 
@@ -69,7 +74,9 @@ public class ChooseGodCardWindow extends JDialog {
      * the user must choose one on them.
      * @param godInGame: gods to choose between
      */
-    public ChooseGodCardWindow(final JFrame mainFrame, List<GodCard> godInGame) {
+    public ChooseGodCardWindow(final JFrame mainFrame, final SwingView swingView, List<GodCard> godInGame) {
+
+        this.view = swingView;
 
         setTitle("Which one of these GodCards do you want to use in this game?");
 
@@ -99,18 +106,32 @@ public class ChooseGodCardWindow extends JDialog {
         buttonGod1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //((GodButton) e.getSource()).getGodCard();
-                buttonGod1.setActionCommand(buttonGod1.getGodCard().name());
-                JOptionPane.showMessageDialog(mainFrame,new ImageIcon(new File(startPath +((GodButton) e.getSource()).getGodCard().name().toLowerCase()+ ".png").getAbsolutePath()),"You Selected: "+((GodButton) e.getSource()).getGodCard().name(), JOptionPane.INFORMATION_MESSAGE,new ImageIcon(new File("./src/main/images/utils/done.png").getAbsolutePath()));
+
+                //buttonGod1.setActionCommand(buttonGod1.getGodCard().name());
+                PlayerAction playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, ChooseGodCardWindow.this.view.getPlayer(), null, null, 0, 0, null, null, false,buttonGod1.getGodCard().name());
+                try {
+                    JOptionPane.showMessageDialog(mainFrame,new ImageIcon(new File(startPath +((GodButton) e.getSource()).getGodCard().name().toLowerCase()+ ".png").getAbsolutePath()),"You Selected: "+((GodButton) e.getSource()).getGodCard().name(), JOptionPane.INFORMATION_MESSAGE,new ImageIcon(new File("./src/main/images/utils/done.png").getAbsolutePath()));
+                    swingView.notifyClient(playerAction);
+                } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException cellOutOfBattlefieldException) {
+                    cellOutOfBattlefieldException.printStackTrace();
+                }
+
                 dispose();
             }
         });
         buttonGod2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //((GodButton) e.getSource()).getGodCard();
-                buttonGod2.setActionCommand(buttonGod2.getGodCard().name());
-                JOptionPane.showMessageDialog(mainFrame,new ImageIcon(new File(startPath +((GodButton) e.getSource()).getGodCard().name().toLowerCase()+ ".png").getAbsolutePath()),"You Selected: "+((GodButton) e.getSource()).getGodCard().name(), JOptionPane.INFORMATION_MESSAGE,new ImageIcon(new File("./src/main/images/utils/done.png").getAbsolutePath()));
+
+                //buttonGod2.setActionCommand(buttonGod1.getGodCard().name());
+                PlayerAction playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, ChooseGodCardWindow.this.view.getPlayer(), null, null, 0, 0, null, null, false,buttonGod2.getGodCard().name());
+                try {
+                    JOptionPane.showMessageDialog(mainFrame,new ImageIcon(new File(startPath +((GodButton) e.getSource()).getGodCard().name().toLowerCase()+ ".png").getAbsolutePath()),"You Selected: "+((GodButton) e.getSource()).getGodCard().name(), JOptionPane.INFORMATION_MESSAGE,new ImageIcon(new File("./src/main/images/utils/done.png").getAbsolutePath()));
+                    swingView.notifyClient(playerAction);
+                } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException cellOutOfBattlefieldException) {
+                    cellOutOfBattlefieldException.printStackTrace();
+                }
+
                 dispose();
             }
         });
