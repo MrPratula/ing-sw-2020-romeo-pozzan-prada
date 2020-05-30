@@ -254,7 +254,7 @@ public class SwingView extends View {
                 //printCLI(pack.getModelCopy(), null);
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
-                    JOptionPane.showMessageDialog(new JFrame(),pack.getMessageOpponents(),"JUST WAIT", JOptionPane.WARNING_MESSAGE);  //posso anche mettere un'immagine error
+                    JOptionPane.showMessageDialog(new JFrame(),pack.getMessageOpponents(),"NOT YOUR TURN, PLEASE WAIT", JOptionPane.WARNING_MESSAGE);  //posso anche mettere un'immagine error
                 }
                 else {
                     JOptionPane.showMessageDialog(new JFrame(),pack.getAction().toString(),"YOUR TURN", JOptionPane.WARNING_MESSAGE);  //posso anche mettere un'immagine

@@ -20,7 +20,7 @@ public class GameFrame extends JFrame {
     JPanel battlefieldPanel = new JPanel();
 
     //label where the server tell the player what he has to do
-    JLabel messageLabel = new JLabel();
+    JLabel messageLabel = new JLabel("Messages displayed here");
 
     //button for every cell
     CellButton[][] battlefieldGUI = new CellButton[5][5];
