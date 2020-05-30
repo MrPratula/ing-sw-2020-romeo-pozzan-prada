@@ -250,16 +250,23 @@ public class SwingView extends View {
 
                 this.battlefieldGUI = gameFrame.getBattlefieldGUI();
 
-                //displayGui(pack.getModelCopy(), null);
                 //printCLI(pack.getModelCopy(), null);
 
-                if (!player.getTokenColor().equals(serverResponse.getTurn())){
-                    JOptionPane.showMessageDialog(new JFrame(),pack.getMessageOpponents(),"NOT YOUR TURN, PLEASE WAIT", JOptionPane.WARNING_MESSAGE);  //posso anche mettere un'immagine error
+                if (!player.getTokenColor().equals(serverResponse.getTurn())){  //forse while
+                    JOptionPane.showMessageDialog(new JFrame(),pack.getMessageOpponents(),"NOT YOUR TURN, "+pack.getPlayer().getUsername().toUpperCase()+"!, PLEASE WAIT", JOptionPane.WARNING_MESSAGE);  //posso anche mettere un'immagine error
                 }
                 else {
-                    JOptionPane.showMessageDialog(new JFrame(),pack.getAction().toString(),"YOUR TURN", JOptionPane.WARNING_MESSAGE);  //posso anche mettere un'immagine
+                    JOptionPane.showMessageDialog(new JFrame(),pack.getAction().toString(),"YOUR TURN, "+pack.getPlayer().getUsername().toUpperCase(), JOptionPane.WARNING_MESSAGE);  //posso anche mettere un'immagine
+
+                    gameFrame.setAction(pack.getAction());
+
+                    //display the text of the action that the user should do
+                    gameFrame.getMessageLabel().setText("NOW "+pack.getPlayer().getUsername().toUpperCase()+", SELECT A CELL TO "+Action.PLACE_YOUR_TOKEN.toString());
 
                     //get selected cell on the gameframe
+
+                    //displayGui(pack.getModelCopy(), null);
+
 
                    // PlayerAction playerAction = new PlayerAction(Action.TOKEN_PLACED, this.player, null, null, 0, 0, targetCell, null, false, null);
                    // notifyClient(playerAction);
@@ -487,6 +494,7 @@ public class SwingView extends View {
     }
 
 
+
     /**
      * Here i print the GUI for the user, depending on the parameter validMoves;
      *   -if it is null, i print the normal battlefield with the tokens on
@@ -510,11 +518,11 @@ public class SwingView extends View {
                         battlefieldGUI[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x,y)));
                     }
                     else{
-                        displayInnerGui(battlefield, allPlayers, validMoves, y, x);
+                        displayInnerGui(battlefield, allPlayers, y, x);
                     }
                 }
                 else{
-                    displayInnerGui(battlefield, allPlayers,null, y, x);
+                    displayInnerGui(battlefield, allPlayers, y, x);
                 }
             }
         }
@@ -524,11 +532,10 @@ public class SwingView extends View {
      * Auxiliary method to print the GUI, here i check the token position's
      * @param battlefield: the board of the game
      * @param allPlayers: the players in the game
-     * @param validMoves: cells that have to be printed on a different background (can be null)
      * @param x: position x of the battlefield
      * @param y: position y of the battlefield
      */
-    public void displayInnerGui(Battlefield battlefield, List<Player> allPlayers,List<Cell> validMoves, int y, int x) throws CellOutOfBattlefieldException {
+    public void displayInnerGui(Battlefield battlefield, List<Player> allPlayers, int y, int x) throws CellOutOfBattlefieldException {
 
         // we check if exists a token of any player in this position
         if(!battlefield.getCell(x, y).getThereIsPlayer()){
@@ -561,7 +568,7 @@ public class SwingView extends View {
      * @param cell: the cell in wich i have to put the icon
      * @return ImageIcon of the cell to display
      */
-    public Icon selectRolloverIcon(Cell cell) {
+    public ImageIcon selectRolloverIcon(Cell cell) {
 
         String startPath = "./src/main/images/buildings/";
         //display basic text  height
@@ -569,7 +576,7 @@ public class SwingView extends View {
     }
 
     /**
-     * It selects the right image depending on the characteristic
+     * It selects the right image depending on the characteristics
      * @param player: if it's not null, that one is the player on that cell
      * @param cell: the cell in wich i have to put the icon
      * @return ImageIcon of the cell to display
@@ -603,7 +610,7 @@ public class SwingView extends View {
     }
 
     /**
-     * Switch on dynamic images
+     * Switch on dynamic images to choose which one has to be displayed
      * @param height of this cell
      * @param startPath starting path of images
      * @param str0 in case of level 0

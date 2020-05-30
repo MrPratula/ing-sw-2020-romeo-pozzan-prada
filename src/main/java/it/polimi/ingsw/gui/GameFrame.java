@@ -2,11 +2,14 @@ package it.polimi.ingsw.gui;
 
 import it.polimi.ingsw.cli.Cell;
 import it.polimi.ingsw.cli.ModelUtils;
+import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.ServerResponse;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -26,6 +29,11 @@ public class GameFrame extends JFrame {
 
     //button for every cell
     CellButton[][] battlefieldGUI = new CellButton[5][5];
+
+    private Action action;
+
+    //buttonHandler for every button
+    List<ButtonHandler> battlefieldButtons = new ArrayList<>();
 
     //path of the source with the images to display
     String startPath = "./src/main/images/buildings/";
@@ -62,19 +70,22 @@ public class GameFrame extends JFrame {
 
     private ModelUtils modelUtils; ///////////////////////////////////
 
-    public JPanel getBattlefieldPanel() {
-        return battlefieldPanel;
-    }
-
+    /*      GETTER       */
     public CellButton[][] getBattlefieldGUI() {
         return battlefieldGUI;
     }
 
-    //starting position FIXME
-    int prevI=3, prevJ=4;
+    public List<ButtonHandler> getBattlefieldButtons() {
+        return battlefieldButtons;
+    }
 
-    //Constructor of the main frame where the user will see the battlefield and can play on it
+    public JLabel getMessageLabel() {
+        return messageLabel;
+    }
 
+    /**
+     * Constructor of the main frame where the user will see the battlefield and can play on it
+     */
     public GameFrame(/*ServerResponse serverResponse*/) {
         super("Battlefield");
         //this.serverResponse = serverResponse;
@@ -98,7 +109,9 @@ public class GameFrame extends JFrame {
                 battlefieldPanel.add(battlefieldGUI[i][j]);
 
                 //here i add a listener to this button (owning a Cell)
-                battlefieldGUI[i][j].addActionListener(new ButtonHandler(battlefieldGUI[i][j], pics, modelUtils /*serverResponse*/));
+                ButtonHandler bh = new ButtonHandler(battlefieldGUI[i][j], pics, modelUtils, action /*,serverResponse*/);
+                battlefieldButtons.add(bh);
+                battlefieldGUI[i][j].addActionListener(bh);
             }
         }
 
@@ -109,4 +122,7 @@ public class GameFrame extends JFrame {
     }
 
 
+    public void setAction(Action action) {
+        this.action = action;
+    }
 }

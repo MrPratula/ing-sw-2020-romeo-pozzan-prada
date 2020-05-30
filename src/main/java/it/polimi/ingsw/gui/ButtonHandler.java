@@ -4,7 +4,6 @@ import it.polimi.ingsw.controller.CellHeightException;
 import it.polimi.ingsw.controller.ReachHeightLimitException;
 import it.polimi.ingsw.cli.ModelUtils;
 import it.polimi.ingsw.cli.TokenColor;
-import it.polimi.ingsw.server.Server;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.PlayerAction;
 import it.polimi.ingsw.utils.ServerResponse;
@@ -12,24 +11,22 @@ import it.polimi.ingsw.utils.ServerResponse;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.rmi.ServerError;
 
 
 public class ButtonHandler implements ActionListener {
 
-    //ServerResponse serverResponse;
-    Action action;
-
     private ModelUtils modelUtils;
     final private CellButton cellButton;
     private CellButton prevButton;
+    private Action action;
     private ImageIcon[] pics;
 
-    public ButtonHandler(CellButton cellButton, ImageIcon[] pics, ModelUtils modelUtils /*ServerResponse serverResponse*/) {
+    public ButtonHandler(CellButton cellButton, ImageIcon[] pics, ModelUtils modelUtils, Action action /*, ServerResponse serverResponse*/) {
         //this.serverResponse = serverResponse;
         this.cellButton = cellButton;
        // this.prevButton = prevButton;
         this.modelUtils = modelUtils;
+        this.action = action;
         this.pics = pics;
     }
 
@@ -42,16 +39,29 @@ public class ButtonHandler implements ActionListener {
         return prevButton;
     }
 
+    public void setAction(Action action) {
+        this.action = action;
+    }
+
     @Override
     public void actionPerformed(ActionEvent clickedButtonEvent) {
-        action = Action.ASK_FOR_BUILD;
 
         //  solo per compilare
         ServerResponse s = new ServerResponse(null,null);
         PlayerAction playerAction = new PlayerAction(null,null,null,null,0,0,null,null,false,"");
 
-        //switch(clickedButtonEvent.getSource()):{}
-        switch(/*serverResponse.getPack().getAction()*/action) {
+        switch(this.action) {
+            case PLACE_YOUR_TOKEN:{
+                //(CellButton) clickedButtonEvent.getSource().
+                if(getCellButton().getCell().getThereIsPlayer() || getCellButton().getCell().getIsDome()){
+                    //impossible move
+                }
+                else{
+                    //getCellButton().setIcon(swingView.selectIcon(pack.getPlayer(),getCellButton().getCell(),false));
+                    //getCellButton().setRolloverIcon(swingView.selectRolloverIcon(pack.getPlayer(),getCellButton().getCell(),false));
+                }
+
+            }
             case ASK_FOR_BUILD: {
                 try {
                     prevButton = (CellButton) clickedButtonEvent.getSource(); //dubbio
