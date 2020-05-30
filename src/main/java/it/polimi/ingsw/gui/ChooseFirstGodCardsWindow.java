@@ -57,6 +57,8 @@ public class ChooseFirstGodCardsWindow {
     };
 
     public ChooseFirstGodCardsWindow() {
+        int volte=0;
+
         // And add them to the model
         for (GodCard god : godInGame) {
             model.addGod(god);
@@ -65,7 +67,6 @@ public class ChooseFirstGodCardsWindow {
         JFrame mainFrame = new JFrame("God");
         JPanel mainPanel;
         JDialog dialog = new JDialog();
-        dialog.setTitle("Which one of these GodCards do you want to use in this game?");
 
         GodButton[] buttonGod = new GodButton[14];
         ButtonGroup buttonGroup;
@@ -109,6 +110,8 @@ public class ChooseFirstGodCardsWindow {
 
         mainFrame.pack();
         mainFrame.setVisible(true);
+        //Frame che dice al giocatore cosa fare (cioè che dovrà scegliere tre god)
+        JOptionPane.showMessageDialog(new JFrame(), "You have to select 3 gods", "GodCard", JOptionPane.INFORMATION_MESSAGE);
     }
 
 

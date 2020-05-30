@@ -426,16 +426,15 @@ public class Server  {
         }
 
         List<GodCard> godInGame = new ArrayList<>();
+        GodCard god;
         while(godInGame.size()!=3){
-            //Ask to choose 2/3 Godcards
-
+            //Ask to choose 3 Godcards
+            c1.asyncSend(new ServerResponse(null, new Pack(Action.CHOSE_FIRST_GOD_CARDS)));
+            // Receive a message from the first player
+            playerAction = c1.listenSocket();
+            //godInGame.add(playerAction.getArgs().toUpperCase().equals(GodCard.name().toUpperCase()));
         }
-        // Ask to choose 2/3 Godcards
-        c1.asyncSend(new ServerResponse(null, new Pack(Action.CHOSE_FIRST_GOD_CARDS)));
-        //fatto fino a qua su ^.
 
-        // Receive a message from the first player
-        playerAction = c1.listenSocket();
 
         // And loop it till the message is correct
         needToLoop = true;
