@@ -2,6 +2,7 @@ package it.polimi.ingsw.gui;
 
 import it.polimi.ingsw.cli.Cell;
 import it.polimi.ingsw.cli.ModelUtils;
+import it.polimi.ingsw.utils.ServerResponse;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,6 +13,7 @@ import java.io.File;
  * Main Frame of the game for the Gui
  */
 public class GameFrame extends JFrame {
+    //ServerResponse serverResponse;
 
     //main panel on the frame with the battlefield
     JPanel mainPanel = new JPanel();
@@ -73,8 +75,9 @@ public class GameFrame extends JFrame {
 
     //Constructor of the main frame where the user will see the battlefield and can play on it
 
-    public GameFrame() {
+    public GameFrame(/*ServerResponse serverResponse*/) {
         super("Battlefield");
+        //this.serverResponse = serverResponse;
         setSize(800,800);
         setResizable(true);
         setLocationRelativeTo(null);
@@ -95,7 +98,7 @@ public class GameFrame extends JFrame {
                 battlefieldPanel.add(battlefieldGUI[i][j]);
 
                 //here i add a listener to this button (owning a Cell)
-                battlefieldGUI[i][j].addActionListener(new ButtonHandler(battlefieldGUI[i][j], pics, modelUtils));
+                battlefieldGUI[i][j].addActionListener(new ButtonHandler(battlefieldGUI[i][j], pics, modelUtils /*serverResponse*/));
             }
         }
 
