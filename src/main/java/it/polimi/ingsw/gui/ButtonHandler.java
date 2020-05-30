@@ -4,22 +4,29 @@ import it.polimi.ingsw.controller.CellHeightException;
 import it.polimi.ingsw.controller.ReachHeightLimitException;
 import it.polimi.ingsw.cli.ModelUtils;
 import it.polimi.ingsw.cli.TokenColor;
+import it.polimi.ingsw.server.Server;
+import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.PlayerAction;
 import it.polimi.ingsw.utils.ServerResponse;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.ServerError;
 
 
 public class ButtonHandler implements ActionListener {
+
+    //ServerResponse serverResponse;
+    Action action;
 
     private ModelUtils modelUtils;
     final private CellButton cellButton;
     private CellButton prevButton;
     private ImageIcon[] pics;
 
-    public ButtonHandler(CellButton cellButton, ImageIcon[] pics, ModelUtils modelUtils) {
+    public ButtonHandler(CellButton cellButton, ImageIcon[] pics, ModelUtils modelUtils /*ServerResponse serverResponse*/) {
+        //this.serverResponse = serverResponse;
         this.cellButton = cellButton;
        // this.prevButton = prevButton;
         this.modelUtils = modelUtils;
@@ -37,13 +44,14 @@ public class ButtonHandler implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent clickedButtonEvent) {
+        action = Action.ASK_FOR_BUILD;
 
         //  solo per compilare
         ServerResponse s = new ServerResponse(null,null);
         PlayerAction playerAction = new PlayerAction(null,null,null,null,0,0,null,null,false,"");
 
         //switch(clickedButtonEvent.getSource()):{}
-        switch(playerAction.getAction()) {
+        switch(/*serverResponse.getPack().getAction()*/action) {
             case ASK_FOR_BUILD: {
                 try {
                     prevButton = (CellButton) clickedButtonEvent.getSource(); //dubbio
@@ -76,7 +84,7 @@ public class ButtonHandler implements ActionListener {
                 if(height==0) prevButton.setIcon(pics[5]);
                 if(height==1) prevButton.setIcon(pics[6]);
                 if(height==2) prevButton.setIcon(pics[7]);
-                if(height==2) prevButton.setIcon(pics[8]);
+                if(height==3) prevButton.setIcon(pics[8]);
                 break;
             }
             case BLUE:{
