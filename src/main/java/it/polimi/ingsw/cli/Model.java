@@ -468,25 +468,6 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /**
      * @param players a list of players.
      * @return all the tokens of those players.
@@ -531,14 +512,6 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         }
         return null;
     }
-
-
-
-
-
-
-
-
 
 
     /**
@@ -828,9 +801,17 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         if (enemyGodCards.contains(GodCard.LIMUS)){
             BuildContext thisBuild = new BuildContext(new LimusBuild());
             List<Cell> toRemove = thisBuild.executeValidBuilds(selectedToken, otherToken, enemyTokens, enemyGodCards, battlefield, allPlayers);
-            for(Cell c: toRemove){                                  //lavora diversamente: toglie quelle vicine a LIMUS
-                validBuilds.remove(c);
+
+            List<Cell> validBuildsToReturn = new ArrayList<>(validBuilds);
+
+            for(Cell returnCell: validBuilds){
+                for(Cell removeCell: toRemove){
+                    if (returnCell.equals(removeCell)){
+                        validBuildsToReturn.remove(returnCell);
+                    }
+                }
             }
+            return validBuildsToReturn;
         }
         return validBuilds;
     }
@@ -1080,9 +1061,6 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     }
 
 
-
-
-
     /**
      * It is called by the controller to notify the player-in-turn that he has insert a wrong or
      * a non expected input.
@@ -1124,10 +1102,10 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     }
 
     /**
-     * The targetcell can't be a perimeterl cell.
+     * The targetCell can't be a perimeter cell.
      */
-    public boolean notperimetercell(Cell targetcell){
-        return ((targetcell.getPosX()!=4 && targetcell.getPosY()!=4) && (targetcell.getPosX()!=0 && targetcell.getPosY()!=0));
+    public boolean notPerimeterCell(Cell targetCell){
+        return ((targetCell.getPosX()!=4 && targetCell.getPosY()!=4) && (targetCell.getPosX()!=0 && targetCell.getPosY()!=0));
     }
 
 

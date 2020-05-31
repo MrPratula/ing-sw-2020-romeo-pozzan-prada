@@ -25,8 +25,8 @@ public class LimusBuild implements BuildBehavior {
         List<Cell> toRemove = new ArrayList<>();
 
         for (Player p : allPlayers) {
-            if(p.getMyGodCard().equals((GodCard.LIMUS))){                                           // se in gioco c'è limus
-                List<Cell> limusTokensPosition = new ArrayList<>();                                 //metto le posizioni dei token di limus
+            if(p.getMyGodCard().equals((GodCard.LIMUS))){
+                List<Cell> limusTokensPosition = new ArrayList<>();
                 limusTokensPosition.add(p.getToken1().getTokenPosition());
                 limusTokensPosition.add(p.getToken2().getTokenPosition());
                 int provX, provY, i, j;
@@ -36,12 +36,11 @@ public class LimusBuild implements BuildBehavior {
                         provX = c.getPosX()+i;
                         for(j=-1; j<2; j++){
                             provY = c.getPosY()+j;
-                            if(battlefield.getCell(provX,provY).getHeight()!=3){                      //puo costruire un dome tranquillamente
-                                toRemove.add(battlefield.getCell(provX, provY));                      //lista di celle da rimuovere dalla validBuildsProvv nel chiamante
+                            if(battlefield.getCell(provX,provY).getHeight()!=3){
+                                toRemove.add(battlefield.getCell(provX, provY));
                             }
                         }
                     }
-                    //else    puo costruire un dome tranquillamente
                 }
             }
         }

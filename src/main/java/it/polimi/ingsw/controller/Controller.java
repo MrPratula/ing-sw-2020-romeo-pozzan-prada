@@ -80,6 +80,9 @@ public class Controller implements Observer<PlayerAction> {
                         if (c.getPosX() == targetCell.getPosX() && c.getPosY() == targetCell.getPosY()){
                             model.performMove(playerAction);
                         }
+                        else{
+                            model.notifyWrongInput(playerAction);
+                        }
                     }
                     break;
                 }
@@ -108,7 +111,7 @@ public class Controller implements Observer<PlayerAction> {
                             // Check for hestia power condition
                             if (model.getPlayerInTurn().getMyGodCard().equals(GodCard.HESTIA)){
                                 if (playerAction.getDoWantUsePower()){
-                                    if (model.notperimetercell(playerAction.getSecondCell())) {
+                                    if (model.notPerimeterCell(playerAction.getSecondCell())) {
                                         model.performBuild(playerAction);
                                     }
                                     else {
@@ -130,8 +133,8 @@ public class Controller implements Observer<PlayerAction> {
             }
         }
         else {
-            // this should never happen
             System.out.println("BAAAAAAAAAAAD");
+            model.notifyWrongInput(playerAction);
         }
     }
 }

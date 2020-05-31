@@ -31,33 +31,40 @@ public class SimpleBuild implements BuildBehavior{
         int provX, provY;
         List<Cell> buildableCells = new ArrayList<Cell>();
 
-        enemyTokens.add(selectedToken);
-        if (otherToken!=null)
-            enemyTokens.add(otherToken);
-
-        for (int i=-1; i<2; i++){                                                   // ciclo di +-1 intorno alla posizione del token
-            provX = selectedToken.getTokenPosition().getPosX()+i;                            // per poter ottenere le 8 caselle in cui
-            for (int j=-1; j<2; j++){                                               // posso costruire
+        // Iter around select token
+        for (int i=-1; i<2; i++){
+            provX = selectedToken.getTokenPosition().getPosX()+i;
+            for (int j=-1; j<2; j++){
                 provY = selectedToken.getTokenPosition().getPosY()+j;
 
-                if ( (provX>=0 && provX <5) && (provY>=0 && provY<5) &&                       // la cella provv è dentro le dimensioni del battlefield
-                    (!battlefield.getCell(provX,provY).getIsDome()) ) {                         // non deve essere una cupola
-
-                        buildableCells.add(battlefield.getCell(provX, provY));
+                // Check if the position is into the battlefield and it is not a dome
+                if ( (provX>=0 && provX <5) && (provY>=0 && provY<5) && (!battlefield.getCell(provX,provY).getIsDome()) ) {
+                    buildableCells.add(battlefield.getCell(provX, provY));
                 }
             }
         }
 
         // Then all the cells where is present a token will be removed
-        buildableCells.remove(selectedToken.getTokenPosition());
 
-        if (otherToken!=null) buildableCells.remove(otherToken.getTokenPosition());
+        List<Cell> cellsToReturn = new ArrayList<>(buildableCells);
 
-        for (Token t: enemyTokens) {
-            buildableCells.remove(t.getTokenPosition());
+        for (Cell c: buildableCells){
+            if (c.equals(selectedToken.getTokenPosition())){
+                cellsToReturn.remove(c);
+            }
+            if (otherToken!=null) {
+                if (c.equals(selectedToken.getTokenPosition())){
+                    cellsToReturn.remove(c);
+                }
+            }
+            for (Token t: enemyTokens) {
+                if (c.equals(t.getTokenPosition())){
+                    cellsToReturn.remove(c);
+                }
+            }
         }
 
-        return buildableCells;
+        return cellsToReturn;
     }
 
 

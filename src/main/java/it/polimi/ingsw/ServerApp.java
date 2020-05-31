@@ -1,14 +1,10 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.cli.GodCard;
-import it.polimi.ingsw.gui.ChooseFirstGodCardsWindow;
-import it.polimi.ingsw.gui.ChooseGodCardWindow;
 import it.polimi.ingsw.gui.GameFrame;
 import it.polimi.ingsw.server.Server;
 
 
 import java.io.IOException;
-import java.util.List;
 
 
 /**

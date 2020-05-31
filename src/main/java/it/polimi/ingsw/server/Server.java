@@ -287,11 +287,21 @@ public class Server  {
         List<GodCard> godInGame = new ArrayList<>();
 
         // Draw n god cards and put them into the empty deck
+
+
         while (numberOfPlayers!=0) {
             drawAGod(godsDeck, godInGame);
             numberOfPlayers--;
         }
+
+
+
         // And add them to the model
+
+        //godInGame.add(GodCard.LIMUS);
+        //godInGame.add(GodCard.PAN);
+
+
         for (GodCard god: godInGame) {
             model.addGod(god);
         }

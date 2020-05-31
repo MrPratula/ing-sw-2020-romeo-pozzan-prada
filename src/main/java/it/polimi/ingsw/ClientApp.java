@@ -1,15 +1,9 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.client.Client;
-import it.polimi.ingsw.gui.ChooseGodCardWindow;
 import it.polimi.ingsw.gui.GameFrame;
-import it.polimi.ingsw.gui.SwingView;
-import it.polimi.ingsw.cli.GodCard;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 
 public class ClientApp {
 
