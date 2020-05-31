@@ -12,5 +12,5 @@
 !pom.xml
 !resourses/
 !deliveries/uml/**
-!deliveries/battlefieldTest.jpg
+!deliveries/battlefieldTest/
 !src/**
