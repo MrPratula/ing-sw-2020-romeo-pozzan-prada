@@ -208,8 +208,91 @@ public class ActionTest {
 
 
     @Test
-    void WHERE_TO_MOVE_SELECTED_test(){
+    void WHERE_TO_MOVE_SELECTED_test() throws WrongNumberPlayerException, IOException, CellHeightException, ImpossibleTurnException, ReachHeightLimitException, CellOutOfBattlefieldException {
 
+        model.setTurn(TokenColor.RED);
+        model.setBattlefield(Utility.setUpForTest2());
+
+        player1.getToken1().setTokenPosition(model.getBattlefield().getCell(1,2));
+        model.getBattlefield().getCell(1,2).setOccupied();
+        player1.getToken2().setTokenPosition(model.getBattlefield().getCell(1,3));
+        model.getBattlefield().getCell(1,3).setOccupied();
+        player2.getToken1().setTokenPosition(model.getBattlefield().getCell(2,4));
+        model.getBattlefield().getCell(2,4).setOccupied();
+        player2.getToken2().setTokenPosition(model.getBattlefield().getCell(3,3));
+        model.getBattlefield().getCell(3,3).setOccupied();
+
+        player1.setMyGodCard(player1God);
+        player2.setMyGodCard(player2God);
+
+        int savedToken = 1;
+        Cell selectedCell = model.getBattlefield().getCell(0,1);
+
+        PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_MOVE_SELECTED, player1, null, null, savedToken, 0, selectedCell, null, false, null);
+        controller.update(playerAction);
+
+        Assert.assertEquals(0, player1.getToken1().getTokenPosition().getPosX());
+        Assert.assertEquals(1, player1.getToken1().getTokenPosition().getPosY());
+        Assert.assertFalse(model.getBattlefield().getCell(1,2).getThereIsPlayer());
+        Assert.assertTrue(model.getBattlefield().getCell(0,1).getThereIsPlayer());
     }
 
+    @Test
+    void WHERE_TO_BUILD_SELECTED_test() throws CellOutOfBattlefieldException, ImpossibleTurnException, ReachHeightLimitException, CellHeightException, WrongNumberPlayerException, IOException {
+
+        model.setTurn(TokenColor.RED);
+        model.setBattlefield(Utility.setUpForTest2());
+
+        player1.getToken1().setTokenPosition(model.getBattlefield().getCell(0,1));
+        model.getBattlefield().getCell(1,2).setOccupied();
+        player1.getToken2().setTokenPosition(model.getBattlefield().getCell(1,3));
+        model.getBattlefield().getCell(1,3).setOccupied();
+        player2.getToken1().setTokenPosition(model.getBattlefield().getCell(2,4));
+        model.getBattlefield().getCell(2,4).setOccupied();
+        player2.getToken2().setTokenPosition(model.getBattlefield().getCell(3,3));
+        model.getBattlefield().getCell(3,3).setOccupied();
+
+        player1.setMyGodCard(player1God);
+        player2.setMyGodCard(player2God);
+
+        int savedToken = 1;
+        Cell selectedCell = model.getBattlefield().getCell(1,1);
+
+        PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, player1, null, null, savedToken, 0, selectedCell, null, false, null);
+        controller.update(playerAction);
+
+        Assert.assertEquals(model.getTurn(), TokenColor.BLUE);
+        Assert.assertEquals(1, model.getBattlefield().getCell(1,1).getHeight());
+    }
+
+
+    @Test
+    void WHERE_TO_BUILD_SELECTED_hestiaTest() throws CellOutOfBattlefieldException, ImpossibleTurnException, ReachHeightLimitException, CellHeightException, WrongNumberPlayerException, IOException {
+
+        model.setTurn(TokenColor.RED);
+        model.setBattlefield(Utility.setUpForTest2());
+
+        player1.getToken1().setTokenPosition(model.getBattlefield().getCell(0,1));
+        model.getBattlefield().getCell(1,2).setOccupied();
+        player1.getToken2().setTokenPosition(model.getBattlefield().getCell(1,3));
+        model.getBattlefield().getCell(1,3).setOccupied();
+        player2.getToken1().setTokenPosition(model.getBattlefield().getCell(2,4));
+        model.getBattlefield().getCell(2,4).setOccupied();
+        player2.getToken2().setTokenPosition(model.getBattlefield().getCell(3,3));
+        model.getBattlefield().getCell(3,3).setOccupied();
+
+        player1.setMyGodCard(GodCard.HESTIA);
+        player2.setMyGodCard(player2God);
+
+        int savedToken = 1;
+        Cell secondCell = model.getBattlefield().getCell(1,1);
+        Cell selectedCell = model.getBattlefield().getCell(0,0);
+
+        PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, player1, null, null, savedToken, 0, selectedCell, secondCell, true, null);
+        controller.update(playerAction);
+
+        Assert.assertEquals(model.getTurn(), TokenColor.BLUE);
+        Assert.assertEquals(1, model.getBattlefield().getCell(1,1).getHeight());
+        Assert.assertEquals(1, model.getBattlefield().getCell(0,0).getHeight());
+    }
 }

@@ -917,9 +917,9 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         }
 
         // After the build need to check if chronus win
-        List<GodCard> allGodcards = getGodCards(allPlayers);
+        List<GodCard> allGodCards = getGodCards(allPlayers);
 
-        if (allGodcards.contains(GodCard.CHRONUS)){
+        if (allGodCards.contains(GodCard.CHRONUS)){
             WinContext thisWin = new WinContext(new ChronusWin());
             if (thisWin.executeCheckWin(null, battlefield)) {
                 String winner = null;
@@ -1106,7 +1106,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             }
         }
 
-        Pack pack = new Pack(Action.WRONG_INPUT);
+        Pack pack = new Pack(playerAction.getAction());
         pack.setPlayer(getPlayerInTurn());
         pack.setModelCopy(getCopy());
         pack.setMessageInTurn(whatAction);

@@ -91,24 +91,35 @@ public class Controller implements Observer<PlayerAction> {
 
                     for (Cell c: validBuilds) {
                         if (c.getPosX() == targetCell.getPosX() && c.getPosY() == targetCell.getPosY()){
-                            if(playerAction.getPlayer().getMyGodCard().equals(GodCard.DEMETER) && playerAction.getDoWantUsePower()){
-                                if (model.differentCell(targetCell, playerAction.getSecondCell())){
-                                    model.performBuild(playerAction);
-                                }else {
-                                    model.notifyWrongInput(playerAction);
+
+                            // Check for demeter power condition
+                            if (model.getPlayerInTurn().getMyGodCard().equals(GodCard.DEMETER)){
+                                if (playerAction.getDoWantUsePower()){
+                                    if (model.differentCell(targetCell, playerAction.getSecondCell())){
+                                        model.performBuild(playerAction);
+                                    }
+                                    else {
+                                        model.notifyWrongInput(playerAction);
+                                    }
+                                    break;
                                 }
                             }
-                            if(playerAction.getPlayer().getMyGodCard().equals((GodCard.HESTIA))){
-                                if(model.notperimetercell(playerAction.getSecondCell())){
-                                    model.performBuild(playerAction);
-                                }
-                                else{
-                                    model.notifyWrongInput(playerAction);
+
+                            // Check for hestia power condition
+                            if (model.getPlayerInTurn().getMyGodCard().equals(GodCard.HESTIA)){
+                                if (playerAction.getDoWantUsePower()){
+                                    if (model.notperimetercell(playerAction.getSecondCell())) {
+                                        model.performBuild(playerAction);
+                                    }
+                                    else {
+                                        model.notifyWrongInput(playerAction);
+                                    }
+                                    break;
                                 }
                             }
-                            else {
-                                model.performBuild(playerAction);
-                            }
+
+                            // Normal build else
+                            model.performBuild(playerAction);
                         }
                         else{
                             model.notifyWrongInput(playerAction);

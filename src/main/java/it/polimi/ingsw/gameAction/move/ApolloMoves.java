@@ -74,16 +74,25 @@ public class ApolloMoves implements MoveBehavior {
                 }
             }
         }
-        Cell provPosition = selectedTokenPosition;
 
-        assert swapToken != null;
-        selectedToken.setTokenPosition(swapToken.getTokenPosition());
-        selectedToken.setOldHeight(selectedTokenPosition.getHeight());
+        // Simple move
+        if (swapToken==null){
+            selectedToken.getTokenPosition().setFree();
+            selectedToken.setOldHeight(selectedToken.getTokenPosition().getHeight());
 
-        swapToken.setOldHeight(swapToken.getTokenPosition().getHeight());
-        swapToken.setTokenPosition(provPosition);
+            selectedToken.setTokenPosition(targetCell);
+            selectedToken.getTokenPosition().setOccupied();
+        }
+        // Handle the swap
+        else{
+            selectedToken.setTokenPosition(swapToken.getTokenPosition());
+            selectedToken.setOldHeight(selectedTokenPosition.getHeight());
 
-        selectedToken.getTokenPosition().setOccupied();
-        swapToken.getTokenPosition().setOccupied();
+            swapToken.setOldHeight(swapToken.getTokenPosition().getHeight());
+            swapToken.setTokenPosition(selectedTokenPosition);
+
+            selectedToken.getTokenPosition().setOccupied();
+            swapToken.getTokenPosition().setOccupied();
+        }
     }
 }

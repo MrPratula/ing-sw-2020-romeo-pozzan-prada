@@ -28,7 +28,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
     public String[] getUserInput(){
         Scanner in = new Scanner(System.in);
         String inputLine = in.nextLine();
-        if (inputLine.toUpperCase().equals("NO"))
+        if (inputLine.toUpperCase().equals("NO") || inputLine.equals(""))
             return null;
         return inputLine.split(",");
     }
@@ -390,7 +390,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                     boolean needToLoop = true;
                     PlayerAction playerAction = null;
 
-                    // If i have demeter i have to pick 2 cell for build
+                    // If i have demeter i have to pick 2 different cell for build
                     if (player.getMyGodCard().equals(GodCard.DEMETER)){
 
                         Cell selectedCell = null;
@@ -399,37 +399,105 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                         printCLI(pack.getModelCopy(), pack.getValidBuilds());
                         System.out.println(pack.getAction().toString());
 
+                        // Choose the first build
                         while (needToLoop) {
 
                             try {
                                 String[] inputs = getUserInput();
+                                selectedCell = getCell(inputs, pack.getModelCopy().getBattlefield());
+                                needToLoop = false;
+                            } catch (Exception e) {
+                                printCLI(pack.getModelCopy(), pack.getValidBuilds());
+                                System.out.println("Your input wasn't correct!");
+                            }
+                        }
+                        needToLoop = true;
 
-                                if (inputs==null && selectedCell!=null){
-                                    playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, getPlayer(), null, null, savedToken, 0, selectedCell, null, false, null);
-                                    savedToken = 0;
+                        // Choose the second build
+                        while (needToLoop) {
+
+                            System.out.println("Now select where you want to make your second build.\nRemember you can not choose the same cell.\nType 'no' or nothing if you don't want to make a second build.");
+
+                            try {
+
+                                String[] inputs = getUserInput();
+
+                                if (inputs == null) {
                                     needToLoop = false;
                                     break;
                                 }
 
-                                else if (otherCell==null && selectedCell!=null)
-                                    otherCell=getCell(inputs, pack.getModelCopy().getBattlefield());
-
-                                else if (selectedCell==null)
-                                    selectedCell = getCell(inputs, pack.getModelCopy().getBattlefield());
-
-                                if (selectedCell != null && otherCell!=null) {
-                                    playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, getPlayer(), null, null, savedToken, 0, selectedCell, otherCell, true, null);
-                                    savedToken = 0;
+                                otherCell = getCell(inputs, pack.getModelCopy().getBattlefield());
+                                if (!selectedCell.equals(otherCell)) {
                                     needToLoop = false;
-                                }
-                                else {
-                                    printCLI(pack.getModelCopy(), pack.getValidBuilds());
-                                    System.out.println("Select where do you want to place your second build... (x,y)\nType 'no' if you don't want to build a second time!");
                                 }
                             } catch (Exception e) {
                                 printCLI(pack.getModelCopy(), pack.getValidBuilds());
                                 System.out.println("Your input wasn't correct!");
                             }
+                        }
+
+                        if (otherCell!=null){
+                            playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, player, null, null, savedToken, 0, selectedCell, otherCell, true, null);
+                        }
+                        else {
+                            playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, player, null, null, savedToken, 0, selectedCell, null, false, null);
+                        }
+                    }
+
+                    // If i have Hestia i have to pick one cell and another not perimeter cell
+                    else if(player.getMyGodCard().equals(GodCard.HESTIA)){
+
+                        Cell selectedCell = null;
+                        Cell otherCell = null;
+
+                        printCLI(pack.getModelCopy(), pack.getValidBuilds());
+                        System.out.println(pack.getAction().toString());
+
+                        // Choose the first build
+                        while (needToLoop) {
+
+                            try {
+                                String[] inputs = getUserInput();
+                                selectedCell = getCell(inputs, pack.getModelCopy().getBattlefield());
+                                needToLoop = false;
+                            } catch (Exception e) {
+                                printCLI(pack.getModelCopy(), pack.getValidBuilds());
+                                System.out.println("Your input wasn't correct!");
+                            }
+                        }
+                        needToLoop = true;
+
+                        // Choose the second build
+                        while (needToLoop) {
+
+                            System.out.println("Now select where you want to make your second build.\nRemember you can not choose a cell on the perimeter.\nType 'no' or nothing if you don't want to make a second build.");
+
+                            try {
+
+                                String[] inputs = getUserInput();
+
+                                if (inputs == null) {
+                                    needToLoop = false;
+                                    break;
+                                }
+
+                                otherCell = getCell(inputs, pack.getModelCopy().getBattlefield());
+
+                                if (notPerimeterCell(otherCell)) {
+                                    needToLoop = false;
+                                }
+                            } catch (Exception e) {
+                                printCLI(pack.getModelCopy(), pack.getValidBuilds());
+                                System.out.println("Your input wasn't correct!");
+                            }
+                        }
+
+                        if (otherCell!=null){
+                            playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, player, null, null, savedToken, 0, selectedCell, otherCell, true, null);
+                        }
+                        else {
+                            playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, player, null, null, savedToken, 0, selectedCell, null, false, null);
                         }
                     }
                     // If not demeter only one build
@@ -446,7 +514,6 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
                                 if (selectedCell != null) {
                                     playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, getPlayer(), null, null, savedToken, 0, selectedCell, null, false, null);
-                                    savedToken = 0;
                                     needToLoop = false;
                                 }
                             } catch (Exception e) {
@@ -454,6 +521,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                             }
                         }
                     }
+                    savedToken = 0;
                     notify(playerAction);
                 }
                 break;
@@ -516,6 +584,11 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
         Battlefield battlefield = modelCopy.getBattlefield();
 
         return !battlefield.getCell(targetCell).getIsDome();
+    }
+
+
+    public boolean notPerimeterCell(Cell targetCell){
+        return ((targetCell.getPosX()!=4 && targetCell.getPosY()!=4) && (targetCell.getPosX()!=0 && targetCell.getPosY()!=0));
     }
 
 
