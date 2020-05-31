@@ -49,7 +49,6 @@ public class SimpleBuild implements BuildBehavior{
         }
 
         // Then all the cells where is present a token will be removed
-
         buildableCells.remove(selectedToken.getTokenPosition());
 
         if (otherToken!=null) buildableCells.remove(otherToken.getTokenPosition());

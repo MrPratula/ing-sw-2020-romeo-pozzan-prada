@@ -76,7 +76,7 @@ public class ChronusWinTest {
      */
     @Test void AtlasDomeFullTowerFailTest() throws CellOutOfBattlefieldException {
 
-        battlefield = Utility.setUpForTest();
+        battlefield = Utility.setUpForTest1();
 
         battlefield.getCell(4,0).setIsDome();
         battlefield.getCell(4,1).setIsDome();
@@ -97,7 +97,7 @@ public class ChronusWinTest {
      */
     @Test void AtlasDomeFullTowerSuccessTest() throws CellOutOfBattlefieldException {
 
-        battlefield = Utility.setUpForTest();
+        battlefield = Utility.setUpForTest1();
 
         battlefield.getCell(4,0).setHeight(3);
         battlefield.getCell(4,0).setIsDome();
@@ -126,7 +126,7 @@ public class ChronusWinTest {
      */
     @Test void lessThanFiveFullTowerTest() throws CellOutOfBattlefieldException {
 
-        battlefield = Utility.setUpForTest();
+        battlefield = Utility.setUpForTest1();
 
         WinContext thisWin = new WinContext(new ChronusWin());
         didIWin = thisWin.executeCheckWin(null, battlefield);

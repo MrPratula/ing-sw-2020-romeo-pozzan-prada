@@ -27,7 +27,7 @@ public class PanWinTest {
      */
     @BeforeEach void setUp() throws CellOutOfBattlefieldException {
 
-        battlefield = Utility.setUpForTest();
+        battlefield = Utility.setUpForTest1();
         movedToken = new Token(TokenColor.RED);
     }
 

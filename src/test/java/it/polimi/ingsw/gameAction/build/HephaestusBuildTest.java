@@ -27,7 +27,7 @@ class HephaestusBuildTest {
     @BeforeEach
     void setUp() throws CellOutOfBattlefieldException {
 
-        battlefield = Utility.setUpForTest();
+        battlefield = Utility.setUpForTest1();
         enemyTokens = new ArrayList<>();
         enemyTokens.add(new Token(TokenColor.RED));
         selectedToken = new Token(TokenColor.BLUE);

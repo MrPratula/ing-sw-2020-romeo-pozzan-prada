@@ -33,7 +33,7 @@ public class HeraWinTest {
      */
     @BeforeEach void setUp() throws CellOutOfBattlefieldException {
 
-        battlefield = Utility.setUpForTest();
+        battlefield = Utility.setUpForTest1();
         battlefield.getCell(1,4).setHeight(3);
         enemyGodCards = new ArrayList<>();
         enemyGodCards.add(GodCard.HERA);

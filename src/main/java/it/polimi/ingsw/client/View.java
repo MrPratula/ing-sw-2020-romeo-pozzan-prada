@@ -237,8 +237,6 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                         } catch (Exception exception) {
                             targetCell = null;
                         }
-
-
                     }
                     playerAction = new PlayerAction(Action.TOKEN_PLACED, player, null, null, 0, 0, targetCell, null, false, null);
                     notifyClient(playerAction);

@@ -68,6 +68,7 @@ public class Controller implements Observer<PlayerAction> {
                     else {
                         model.validMoves(playerAction);
                     }
+                    break;
                 }
 
 

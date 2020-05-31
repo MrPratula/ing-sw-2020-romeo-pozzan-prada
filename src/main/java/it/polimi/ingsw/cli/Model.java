@@ -25,12 +25,13 @@ import java.util.*;
 public class Model extends Observable<ServerResponse> implements Cloneable {
 
     private static boolean didAthenaMovedUp;
+    private boolean didPrometheusUsePower;
     private Battlefield battlefield;
     private TokenColor turn;
     private List<Player> allPlayers = new ArrayList<>();
     private List<GodCard> allGodCards = new ArrayList<>();
 
-    Token prometheusToken;
+    private Token prometheusToken;
 
 
     public Model() {
@@ -70,6 +71,16 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     // Only needed for test in AthenaMovesTest.
     public static boolean isDidAthenaMovedUp() {
         return didAthenaMovedUp;
+    }
+
+    // Only needed for test in TOKEN_SELECTED_test
+    public Token getPrometheusToken(){
+        return this.prometheusToken;
+    }
+
+    // Only needed for test in PROMETHEUS_ANSWER_test
+    public void setPrometheusToken(Token token){
+        this.prometheusToken = token;
     }
 
 
@@ -349,21 +360,41 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      */
     public void validMoves(PlayerAction playerAction) throws CellOutOfBattlefieldException, WrongNumberPlayerException, ImpossibleTurnException, CellHeightException, IOException, ReachHeightLimitException {
 
-        int selectedTokenId = playerAction.getTokenMain();
-        Token otherToken = null;
+        Token selectedToken, otherToken = null;
+        int selectedTokenId;
 
-        try {
-            if (getPlayerInTurn().getToken1().getId() == selectedTokenId) {
-                otherToken = getPlayerInTurn().getToken2();
+        if (playerAction.getAction().equals(Action.PROMETHEUS_ANSWER)){
+
+            selectedToken = prometheusToken;
+
+            try {
+                if (getPlayerInTurn().getToken1().getId() == prometheusToken.getId()) {
+                    otherToken = getPlayerInTurn().getToken2();
+                }
+                if (getPlayerInTurn().getToken2().getId() == prometheusToken.getId()) {
+                    otherToken = getPlayerInTurn().getToken1();
+                }
+            } catch (NullPointerException e){
+                otherToken = null;
             }
-            if (getPlayerInTurn().getToken2().getId() == selectedTokenId) {
-                otherToken = getPlayerInTurn().getToken1();
-            }
-        } catch (NullPointerException e){
-            otherToken = null;
         }
+        else{
 
-        Token selectedToken = parseToken(selectedTokenId);
+            selectedTokenId = playerAction.getTokenMain();
+
+            try {
+                if (getPlayerInTurn().getToken1().getId() == selectedTokenId) {
+                    otherToken = getPlayerInTurn().getToken2();
+                }
+                if (getPlayerInTurn().getToken2().getId() == selectedTokenId) {
+                    otherToken = getPlayerInTurn().getToken1();
+                }
+            } catch (NullPointerException e){
+                otherToken = null;
+            }
+
+            selectedToken = parseToken(selectedTokenId);
+        }
 
         List<Player> opponents = getOpponents(getPlayerInTurn());
         List<Token> enemyTokens = getTokens(opponents);
@@ -399,6 +430,9 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      */
     public void askForPrometheus(PlayerAction playerAction) throws ImpossibleTurnException, IOException, CellHeightException, WrongNumberPlayerException, ReachHeightLimitException, CellOutOfBattlefieldException {
 
+        // Set default value
+        didPrometheusUsePower = false;
+
         Pack pack = new Pack(Action.ASK_FOR_PROMETHEUS_POWER);
         pack.setPlayer(getPlayerInTurn());
         pack.setModelCopy(getCopy());
@@ -413,6 +447,8 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
     public void prometheusFirstBuild() throws CellOutOfBattlefieldException, ReachHeightLimitException, CellHeightException, IOException, ImpossibleTurnException, WrongNumberPlayerException {
 
+        didPrometheusUsePower = true;
+
         Pack pack = new Pack(Action.ASK_FOR_BUILD);
         pack.setPlayer(getPlayerInTurn());
         pack.setMessageOpponents(getPlayerInTurn().getUsername()+" has used his power!\nHe is placing his first build!");
@@ -424,7 +460,6 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         List<GodCard> enemyGodCards = getGodCards(getOpponents(getPlayerInTurn()));
 
         List<Cell> validBuilds = validBuilds(prometheusToken, token2, enemyTokens, myGodCard, enemyGodCards, getBattlefield());
-        prometheusToken = null;
 
         pack.setValidBuilds(validBuilds);
 
@@ -898,18 +933,26 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             }
         }
 
-        updateTurn();
+        ServerResponse serverResponse;
 
-        String inTurnMessage = String.format("%s is now your turn!",getPlayerInTurn().getUsername().toUpperCase());
-        String opponentMessage = String.format("Is now %s turn!",getPlayerInTurn().getUsername().toUpperCase());
-        Pack pack = new Pack(Action.ASK_FOR_SELECT_TOKEN);
-        pack.setMessageOpponents(opponentMessage);
-        pack.setMessageInTurn(inTurnMessage);
-        pack.setModelCopy(getCopy());
-        pack.setPlayer(getPlayerInTurn());
+        // If it was Prometheus first build need to make him move and build again
+        if (getPlayerInTurn().getMyGodCard().equals(GodCard.PROMETHEUS) && didPrometheusUsePower){
+            validMoves(playerAction);
+        }
+        else{
+            updateTurn();
 
-        ServerResponse serverResponse = new ServerResponse(getTurn(), pack);
-        notify(serverResponse);
+            String inTurnMessage = String.format("%s is now your turn!",getPlayerInTurn().getUsername().toUpperCase());
+            String opponentMessage = String.format("Is now %s turn!",getPlayerInTurn().getUsername().toUpperCase());
+            Pack pack = new Pack(Action.ASK_FOR_SELECT_TOKEN);
+            pack.setMessageOpponents(opponentMessage);
+            pack.setMessageInTurn(inTurnMessage);
+            pack.setModelCopy(getCopy());
+            pack.setPlayer(getPlayerInTurn());
+
+            serverResponse = new ServerResponse(getTurn(), pack);
+            notify(serverResponse);
+        }
     }
 
 

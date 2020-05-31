@@ -74,7 +74,7 @@ public class ArtemisMoveTest {
      */
     @Test void validMovesTest() throws CellOutOfBattlefieldException {
 
-        battlefield = Utility.setUpForTest();
+        battlefield = Utility.setUpForTest1();
 
         selectedToken.setTokenPosition(battlefield.getCell(2,2));
         battlefield.getCell(2,2).setOccupied();

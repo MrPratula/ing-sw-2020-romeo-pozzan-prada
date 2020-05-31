@@ -3,9 +3,6 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.cli.*;
 import it.polimi.ingsw.gameAction.Utility;
-import it.polimi.ingsw.gameAction.build.BuildContext;
-import it.polimi.ingsw.gameAction.build.SimpleBuild;
-import it.polimi.ingsw.server.RemoteView;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.PlayerAction;
 import org.junit.Assert;
@@ -13,7 +10,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,8 +19,6 @@ import java.util.List;
  * The single god card is tested in it's own section.
  */
 public class ActionTest {
-
-
 
     Controller controller;
     Model model;
@@ -61,10 +55,13 @@ public class ActionTest {
 
         allPlayers = model.getAllPlayers();
         allGodCards = model.getGodCards(allPlayers);
-
     }
 
 
+    /**
+     * The players should write some god names and then the corresponding god card
+     * is assigned to that player till there are no more players without a god card
+     */
     @Test
     void CHOSE_GOD_CARD_test() throws WrongNumberPlayerException, IOException, CellHeightException, ImpossibleTurnException, ReachHeightLimitException, CellOutOfBattlefieldException {
 
@@ -90,19 +87,129 @@ public class ActionTest {
     }
 
 
+    /**
+     * Place a token in 1,1 and 2,2 during set up phase,
+     * than player2 do the same in 3,3 and 4,4.
+     */
     @Test
-    void TOKEN_PLACED_test() {
-        
+    void TOKEN_PLACED_test() throws CellOutOfBattlefieldException, ImpossibleTurnException, ReachHeightLimitException, CellHeightException, WrongNumberPlayerException, IOException {
+
+        model.setTurn(TokenColor.RED);
+
+        // Player1 choose 1,1
+        Cell targetCell = model.getBattlefield().getCell(1,1);
+        PlayerAction playerAction = new PlayerAction(Action.TOKEN_PLACED, player1, null, null, 0, 0, targetCell, null, false, null);
+        controller.update(playerAction);
+
+        Assert.assertTrue(model.getBattlefield().getCell(1,1).getThereIsPlayer());
+        Assert.assertEquals(player1.getToken1().getTokenPosition().getPosX(), 1);
+        Assert.assertEquals(player1.getToken1().getTokenPosition().getPosY(), 1);
+
+        // Player1 choose 2,2
+        targetCell = model.getBattlefield().getCell(2,2);
+        playerAction = new PlayerAction(Action.TOKEN_PLACED, player1, null, null, 0, 0, targetCell, null, false, null);
+        controller.update(playerAction);
+
+        Assert.assertTrue(model.getBattlefield().getCell(2,2).getThereIsPlayer());
+        Assert.assertEquals(player1.getToken2().getTokenPosition().getPosX(), 2);
+        Assert.assertEquals(player1.getToken2().getTokenPosition().getPosY(), 2);
+
+        // Player2 choose 3,3
+        targetCell = model.getBattlefield().getCell(3,3);
+        playerAction = new PlayerAction(Action.TOKEN_PLACED, player2, null, null, 0, 0, targetCell, null, false, null);
+        controller.update(playerAction);
+
+        Assert.assertTrue(model.getBattlefield().getCell(3,3).getThereIsPlayer());
+        Assert.assertEquals(player2.getToken1().getTokenPosition().getPosX(), 3);
+        Assert.assertEquals(player2.getToken1().getTokenPosition().getPosY(), 3);
+
+        // Player2 choose 4,4
+        targetCell = model.getBattlefield().getCell(4,4);
+        playerAction = new PlayerAction(Action.TOKEN_PLACED, player2, null, null, 0, 0, targetCell, null, false, null);
+        controller.update(playerAction);
+
+        Assert.assertTrue(model.getBattlefield().getCell(4,4).getThereIsPlayer());
+        Assert.assertEquals(player2.getToken2().getTokenPosition().getPosX(), 4);
+        Assert.assertEquals(player2.getToken2().getTokenPosition().getPosY(), 4);
+
+        // Uncomment the following lines to see a cli printed of the generated battlefield
+        /*
+        View view = new View();
+        ModelUtils modelCopy = model.getCopy();
+        view.printCLI(modelCopy, null);
+         */
     }
 
 
+    /**
+     * Test the select token phase.
+     * There are no asset because nothing change server side, but it is tested
+     * the functioning.
+     * The correctness of the methods are tested in the gameAction section
+     */
+    @Test
+    void TOKEN_SELECTED_test() throws CellOutOfBattlefieldException, ImpossibleTurnException, ReachHeightLimitException, CellHeightException, WrongNumberPlayerException, IOException {
+
+        model.setTurn(TokenColor.RED);
+        model.setBattlefield(Utility.setUpForTest2());
+        player1.setMyGodCard(player1God);
+        player2.setMyGodCard(player2God);
+
+        player1.getToken1().setTokenPosition(model.getBattlefield().getCell(1,2));
+        player1.getToken2().setTokenPosition(model.getBattlefield().getCell(1,3));
+        player2.getToken1().setTokenPosition(model.getBattlefield().getCell(2,4));
+        player2.getToken2().setTokenPosition(model.getBattlefield().getCell(3,3));
+
+        // Player1 want to move token in 1,1
+        int selectedToken = 1;
+        PlayerAction playerAction = new PlayerAction(Action.TOKEN_SELECTED, player1, null, null, selectedToken, 0, null, null, false, null);
+        controller.update(playerAction);
+
+        // If player1 has prometheus the response is different
+        player1.setMyGodCard(GodCard.PROMETHEUS);
+        playerAction = new PlayerAction(Action.TOKEN_SELECTED, player1, null, null, selectedToken, 0, null, null, false, null);
+        controller.update(playerAction);
+        Assert.assertEquals(1, model.getPrometheusToken().getTokenPosition().getPosX());
+        Assert.assertEquals(2, model.getPrometheusToken().getTokenPosition().getPosY());
+    }
 
 
+    /**
+     * When a player has prometheus, after he select a token
+     * he is asked for the will to use his power or not.
+     * It is tested when it is YES or NO.
+     */
+    @Test
+    void PROMETHEUS_ANSWER_test() throws WrongNumberPlayerException, IOException, CellHeightException, ImpossibleTurnException, ReachHeightLimitException, CellOutOfBattlefieldException {
+
+        model.setTurn(TokenColor.RED);
+        model.setBattlefield(Utility.setUpForTest2());
+
+        player1.getToken1().setTokenPosition(model.getBattlefield().getCell(1,2));
+        model.getBattlefield().getCell(1,2).setOccupied();
+        player1.getToken2().setTokenPosition(model.getBattlefield().getCell(1,3));
+        model.getBattlefield().getCell(1,3).setOccupied();
+        player2.getToken1().setTokenPosition(model.getBattlefield().getCell(2,4));
+        model.getBattlefield().getCell(2,4).setOccupied();
+        player2.getToken2().setTokenPosition(model.getBattlefield().getCell(3,3));
+        model.getBattlefield().getCell(3,3).setOccupied();
+
+        player1.setMyGodCard(GodCard.PROMETHEUS);
+        model.setPrometheusToken(player1.getToken1());
+
+        // The case when prometheus answer is YES
+        PlayerAction playerAction = new PlayerAction(Action.PROMETHEUS_ANSWER, player1, null, null, 0, 0, null, null, true, null);
+        controller.update(playerAction);
+
+        // The case when prometheus answer is NO
+        playerAction = new PlayerAction(Action.PROMETHEUS_ANSWER, player1, null, null, 0, 0, null, null, false, null);
+        controller.update(playerAction);
+    }
 
 
+    @Test
+    void WHERE_TO_MOVE_SELECTED_test(){
 
-
-
-
+    }
 
 }

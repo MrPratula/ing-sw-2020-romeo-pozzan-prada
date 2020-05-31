@@ -69,7 +69,7 @@ public class AthenaMovesTest {
      */
     @Test void validMovesReductionTest() throws CellOutOfBattlefieldException {
 
-        battlefield = Utility.setUpForTest();
+        battlefield = Utility.setUpForTest1();
 
         selectedToken.setTokenPosition(battlefield.getCell(2,2));
         battlefield.getCell(2,2).setOccupied();
@@ -104,7 +104,7 @@ public class AthenaMovesTest {
      */
     @Test void performMoveMovingUpTest() throws CellOutOfBattlefieldException {
 
-        battlefield = Utility.setUpForTest();
+        battlefield = Utility.setUpForTest1();
         selectedToken.setTokenPosition(battlefield.getCell(2,2));
         targetCell = battlefield.getCell(1,3);
         battlefield.getCell(1,3).setOccupied();
@@ -124,7 +124,7 @@ public class AthenaMovesTest {
      */
     @Test void performMoveMovingDownTest() throws CellOutOfBattlefieldException {
 
-        battlefield = Utility.setUpForTest();
+        battlefield = Utility.setUpForTest1();
         selectedToken.setTokenPosition(battlefield.getCell(2,2));
         targetCell = battlefield.getCell(3,1);
         battlefield.getCell(3,1).setOccupied();
@@ -144,7 +144,7 @@ public class AthenaMovesTest {
      */
     @Test void performMoveMovingSameHeightTest() throws CellOutOfBattlefieldException {
 
-        battlefield = Utility.setUpForTest();
+        battlefield = Utility.setUpForTest1();
         selectedToken.setTokenPosition(battlefield.getCell(2,2));
         targetCell = battlefield.getCell(1,2);
         battlefield.getCell(1,2).setOccupied();
