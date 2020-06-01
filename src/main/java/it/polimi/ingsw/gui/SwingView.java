@@ -190,19 +190,10 @@ public class SwingView extends View {
                 break;
             }
 
-            case CHOSE_FIRST_GOD_CARDS:{
-                new ChooseFirstGodCardsWindow(this);
-            }
-
             //The first choice is send by the server and contains player data
             case CHOOSE_GOD_CARD_TO_PLAY: {
 
-                this.player = serverResponse.getPack().getPlayer();
-                List<GodCard> godInGame = serverResponse.getPack().getGodCards();
-                //player = serverResponse.getPack().getPlayer();
-
-                ChooseGodCardWindow c = new ChooseGodCardWindow(this.mainFrame,this, godInGame);
-
+                new ChooseGodCardToPlayWindow(serverResponse);
                 break;
             }
 

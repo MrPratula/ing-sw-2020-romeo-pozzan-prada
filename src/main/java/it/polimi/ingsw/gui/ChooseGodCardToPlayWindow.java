@@ -2,9 +2,11 @@ package it.polimi.ingsw.gui;
 
 import it.polimi.ingsw.cli.GodCard;
 import it.polimi.ingsw.cli.Model;
+import it.polimi.ingsw.cli.Player;
 import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.PlayerAction;
+import it.polimi.ingsw.utils.ServerResponse;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,20 +19,23 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class ChooseFirstGodCardsWindow {
+public class ChooseGodCardToPlayWindow {
+    Player player;
 
     Model model = new Model();
     List<GodCard> godInGame = new ArrayList<>(Arrays.asList(GodCard.values()).subList(0, 14));
     List<GodCard> selectedGods = new ArrayList<>();
     private SwingView view;
 
-    int n = 3;   //per ora
-    int cont = n;
+    int n;
+    int cont;
 
-    public ChooseFirstGodCardsWindow(final SwingView swingView) {
+    public ChooseGodCardToPlayWindow(ServerResponse serverResponse) {
 
-        this.view = swingView;
-
+        this.player = serverResponse.getPack().getPlayer();
+        List<GodCard> godInGame = serverResponse.getPack().getGodCards();
+        n= serverResponse.getPack().getNumberOfPlayers();
+        cont=n;
 
         // And add them to the model
         for (GodCard god : godInGame) {
@@ -173,3 +178,4 @@ public class ChooseFirstGodCardsWindow {
     }
 
 }
+

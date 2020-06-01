@@ -149,7 +149,8 @@ public class Server  {
 
             firstTime = false;
             numberOfPlayers = -1;
-            setUpFirstPlayer();
+            setUpFirstPlayerGui();
+            //setUpFirstPlayer();
 
         } else {
             Pack pack = new Pack(Action.WAIT_OTHER_PLAYERS_TO_CONNECT);
@@ -205,7 +206,8 @@ public class Server  {
                 playingConnection.put(player3.getUsername(), c3);
             }
             // Set up all the remaining stuff for the game to start
-            initGame();
+            //initGame();
+            initGameGui();
 
             // Clear the waiting connection
             waitingConnection.clear();
@@ -405,79 +407,20 @@ public class Server  {
                 }
             }
         }
-
-        List<GodCard> godInGame = new ArrayList<>();
-        GodCard god;
-        while(godInGame.size()!=3){
-            //Ask to choose 3 Godcards
-            c1.asyncSend(new ServerResponse(null, new Pack(Action.CHOSE_FIRST_GOD_CARDS)));
-            // Receive a message from the first player
-            playerAction = c1.listenSocket();
-            //godInGame.add(playerAction.getArgs().toUpperCase().equals(GodCard.name().toUpperCase()));
-        }
-
-
-        // And loop it till the message is correct
-        needToLoop = true;
-        while (needToLoop) {
-
-            if (playerAction.getAction().equals(Action.NUMBER_OF_PLAYERS)) {
-
-                // Double check for nasty client
-                // Set the number and brake the loop
-                if (playerAction.getTokenMain() == 2 || playerAction.getTokenMain() == 3) {
-                    setNumberOfPlayers(playerAction.getTokenMain());
-                    c1.asyncSend(new ServerResponse(null, new Pack(Action.NUMBER_RECEIVED)));
-                    needToLoop = false;
-
-                    // Cached a nasty client. It is not accepted
-                } else {
-                    c1.asyncSend(new ServerResponse(null, new Pack(Action.WRONG_NUMBER_OF_PLAYER)));
-                }
-            }
-        }
     }
-
-
-
-
-
 
     //init Game per la Gui
     public void initGameGui() {
 
-        // 2 decks. One with all the god cards, and one empty where to put the drew god cards
-        List<GodCard> godsDeck = new ArrayList<>(Arrays.asList(GodCard.values()).subList(0,14));
-        List<GodCard> godInGame = new ArrayList<>();
-
-        //ask first player to choose 2/3 Godcards.
-
-
         model.setTurn(TokenColor.RED);
 
-
-        // Draw n god cards and put them into the empty deck
-        while (numberOfPlayers!=0) {
-            drawAGod(godsDeck, godInGame);
-            numberOfPlayers--;
-        }
-        // And add them to the model
-        for (GodCard god: godInGame) {
-            model.addGod(god);
-        }
-
-        // Update the turn to let the second player the first choice
-        try {
-            model.updateTurn();
-        } catch (ImpossibleTurnException | WrongNumberPlayerException e) {
-            e.printStackTrace();
-        }
+        List<GodCard> godsDeck = new ArrayList<>(Arrays.asList(GodCard.values()).subList(0, 14));
 
         List<String> keys = new ArrayList<>(waitingConnection.keySet());
 
-        // Build a string with all the god card in game
+        // Build a string with all the god cards
         StringBuilder text= new StringBuilder("There are the following Gods available:");
-        for (GodCard god: godInGame) {
+        for (GodCard god: godsDeck) {
             text.append("\n").append(god.name().toUpperCase());
             text.append("\n").append(god.toString());
         }
@@ -490,14 +433,16 @@ public class Server  {
 
             List<Player> allPlayers = model.getAllPlayers();
 
-            Pack player1Pack = new Pack(Action.WAIT_AND_SAVE_PLAYER_FROM_SERVER);
-            Pack player2Pack = new Pack(Action.CHOOSE_GOD_CARD_TO_PLAY);
+            Pack player1Pack = new Pack(Action.CHOOSE_GOD_CARD_TO_PLAY);
+            Pack player2Pack = new Pack(Action.WAIT_AND_SAVE_PLAYER_FROM_SERVER);
 
             player1Pack.setPlayer(allPlayers.get(0));
             player2Pack.setPlayer(allPlayers.get(1));
 
-            player2Pack.setGodCards(godInGame);
-            player2Pack.setMessageInTurn(text.toString());
+            player1Pack.setGodCards(godsDeck);
+            player1Pack.setMessageInTurn(text.toString());
+            player1Pack.setNumberOfPlayers(2);
+
 
             c1.asyncSend(new ServerResponse(null, player1Pack));
             c2.asyncSend(new ServerResponse(null, player2Pack));
@@ -509,17 +454,17 @@ public class Server  {
 
             List<Player> allPlayers = model.getAllPlayers();
 
-
-            Pack player1Pack = new Pack(Action.WAIT_AND_SAVE_PLAYER_FROM_SERVER);
-            Pack player2Pack = new Pack(Action.CHOOSE_GOD_CARD_TO_PLAY);
+            Pack player1Pack = new Pack(Action.CHOOSE_GOD_CARD_TO_PLAY);
+            Pack player2Pack = new Pack(Action.WAIT_AND_SAVE_PLAYER_FROM_SERVER);
             Pack player3Pack = new Pack(Action.WAIT_AND_SAVE_PLAYER_FROM_SERVER);
 
             player1Pack.setPlayer(allPlayers.get(0));
             player2Pack.setPlayer(allPlayers.get(1));
             player3Pack.setPlayer(allPlayers.get(2));
 
-            player2Pack.setGodCards(godInGame);
-            player2Pack.setMessageInTurn(text.toString());
+            player1Pack.setGodCards(godsDeck);
+            player1Pack.setMessageInTurn(text.toString());
+            player1Pack.setNumberOfPlayers(3);
 
             c1.asyncSend(new ServerResponse(null, player1Pack));
             c2.asyncSend(new ServerResponse(null, player2Pack));
