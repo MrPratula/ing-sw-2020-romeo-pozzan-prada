@@ -20,19 +20,20 @@ import java.util.List;
 
 public class ChooseGodCardToPlayWindow {
     Player player;
+    SwingView swingView;
 
     Model model = new Model();
     List<GodCard> godInGame = new ArrayList<>(Arrays.asList(GodCard.values()).subList(0, 14));
     List<GodCard> selectedGods = new ArrayList<>();
-    private SwingView view;
 
     int n;
     int cont;
 
-    public ChooseGodCardToPlayWindow(ServerResponse serverResponse) {
+    public ChooseGodCardToPlayWindow(final SwingView swingView, ServerResponse serverResponse) {
 
+        this.swingView = swingView;
         this.player = serverResponse.getPack().getPlayer();
-        List<GodCard> godInGame = serverResponse.getPack().getGodCards();
+        godInGame = serverResponse.getPack().getGodCards();
         n= serverResponse.getPack().getNumberOfPlayers();
         cont=n;
 
@@ -75,11 +76,11 @@ public class ChooseGodCardToPlayWindow {
                                 //System.out.println(godStringToSplit);
                                 PlayerAction playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, null, null, null, 0, 0, null, null, false, godStringToSplit.toString());
                                 try {
-                                    view.notifyClient(playerAction);
+                                    swingView.notifyClient(playerAction);
+                                    mainFrame.dispose();
                                 } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | WrongNumberPlayerException | ImpossibleTurnException cellOutOfBattlefieldException) {
                                     cellOutOfBattlefieldException.printStackTrace();
                                 }
-                                mainFrame.dispose();
                             }
                         }
                         else{

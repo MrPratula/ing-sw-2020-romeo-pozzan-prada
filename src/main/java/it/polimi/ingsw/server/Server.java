@@ -149,8 +149,7 @@ public class Server  {
 
             firstTime = false;
             numberOfPlayers = -1;
-            setUpFirstPlayerGui();
-            //setUpFirstPlayer();
+            setUpFirstPlayer();
 
         } else {
             Pack pack = new Pack(Action.WAIT_OTHER_PLAYERS_TO_CONNECT);
@@ -206,8 +205,7 @@ public class Server  {
                 playingConnection.put(player3.getUsername(), c3);
             }
             // Set up all the remaining stuff for the game to start
-            //initGame();
-            initGameGui();
+            initGame();
 
             // Clear the waiting connection
             waitingConnection.clear();
@@ -355,123 +353,6 @@ public class Server  {
         godInGame.add(randomGod);
         godsDeck.remove(randomGod);
     }
-
-    //setUpFirstPlayer per la Gui
-    public void setUpFirstPlayerGui () throws IOException {
-
-        List<String> keys = new ArrayList<>(waitingConnection.keySet());
-        Connection c1 = waitingConnection.get(keys.get(0));
-
-        Player player1 = new Player(c1.getName(), TokenColor.RED);
-        RemoteView remoteView1 = new RemoteView(c1, player1);
-        remoteView1.setServer(this);
-
-        // Create the model (and battlefield) and the controller for the current game
-        model = new Model();
-        controller = new Controller(model);
-
-        // Add all the player to the list of all player in the model
-        model.addPlayer(player1);
-
-        // Link observer between model -> remoteView
-        model.addObserver(remoteView1);
-
-        // Link observer between remoteView(messageReceiver) -> Controller
-        remoteView1.addObserver(controller);
-
-        // Put player in playing connection list
-        playingConnection.put(player1.getUsername(), c1);
-
-        // Ask for how many players there will be in the game (2 or 3)
-        c1.asyncSend(new ServerResponse(null, new Pack(Action.HOW_MANY_PLAYERS)));
-
-        // Receive a message from the first player
-        PlayerAction playerAction = c1.listenSocket();
-
-        // And loop it till the message is correct
-        boolean needToLoop = true;
-        while (needToLoop) {
-
-            if (playerAction.getAction().equals(Action.NUMBER_OF_PLAYERS)) {
-
-                // Double check for nasty client
-                // Set the number and brake the loop
-                if (playerAction.getTokenMain() == 2 || playerAction.getTokenMain() == 3) {
-                    setNumberOfPlayers(playerAction.getTokenMain());
-                    c1.asyncSend(new ServerResponse(null, new Pack(Action.NUMBER_RECEIVED)));
-                    needToLoop = false;
-
-                    // Cached a nasty client. It is not accepted
-                } else {
-                    c1.asyncSend(new ServerResponse(null, new Pack(Action.WRONG_NUMBER_OF_PLAYER)));
-                }
-            }
-        }
-    }
-
-    //init Game per la Gui
-    public void initGameGui() {
-
-        model.setTurn(TokenColor.RED);
-
-        List<GodCard> godsDeck = new ArrayList<>(Arrays.asList(GodCard.values()).subList(0, 14));
-
-        List<String> keys = new ArrayList<>(waitingConnection.keySet());
-
-        // Build a string with all the god cards
-        StringBuilder text= new StringBuilder("There are the following Gods available:");
-        for (GodCard god: godsDeck) {
-            text.append("\n").append(god.name().toUpperCase());
-            text.append("\n").append(god.toString());
-        }
-
-        // Remember the hash map do not enqueue the value, but it is put on top
-        // That's the reason for strange values in keys.get(n)
-        if (waitingConnection.size()==2) {
-            Connection c1 = waitingConnection.get(keys.get(1));
-            Connection c2 = waitingConnection.get(keys.get(0));
-
-            List<Player> allPlayers = model.getAllPlayers();
-
-            Pack player1Pack = new Pack(Action.CHOOSE_GOD_CARD_TO_PLAY);
-            Pack player2Pack = new Pack(Action.WAIT_AND_SAVE_PLAYER_FROM_SERVER);
-
-            player1Pack.setPlayer(allPlayers.get(0));
-            player2Pack.setPlayer(allPlayers.get(1));
-
-            player1Pack.setGodCards(godsDeck);
-            player1Pack.setMessageInTurn(text.toString());
-            player1Pack.setNumberOfPlayers(2);
-
-
-            c1.asyncSend(new ServerResponse(null, player1Pack));
-            c2.asyncSend(new ServerResponse(null, player2Pack));
-        }
-        else{
-            Connection c1 = waitingConnection.get(keys.get(2));
-            Connection c2 = waitingConnection.get(keys.get(1));
-            Connection c3 = waitingConnection.get(keys.get(0));
-
-            List<Player> allPlayers = model.getAllPlayers();
-
-            Pack player1Pack = new Pack(Action.CHOOSE_GOD_CARD_TO_PLAY);
-            Pack player2Pack = new Pack(Action.WAIT_AND_SAVE_PLAYER_FROM_SERVER);
-            Pack player3Pack = new Pack(Action.WAIT_AND_SAVE_PLAYER_FROM_SERVER);
-
-            player1Pack.setPlayer(allPlayers.get(0));
-            player2Pack.setPlayer(allPlayers.get(1));
-            player3Pack.setPlayer(allPlayers.get(2));
-
-            player1Pack.setGodCards(godsDeck);
-            player1Pack.setMessageInTurn(text.toString());
-            player1Pack.setNumberOfPlayers(3);
-
-            c1.asyncSend(new ServerResponse(null, player1Pack));
-            c2.asyncSend(new ServerResponse(null, player2Pack));
-            c3.asyncSend(new ServerResponse(null, player3Pack));
-        }
-    }
-
 
 }
 
