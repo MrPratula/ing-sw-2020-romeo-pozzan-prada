@@ -393,18 +393,14 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                     if (pack.getPlayer() != null)
                         this.player = pack.getPlayer();
 
-                    printCLI(pack.getModelCopy(), pack.getValidBuilds());
-                    System.out.println(pack.getAction());
+                    boolean needToLoop = true;
+                    PlayerAction playerAction = null;
 
-                    if (!player.getTokenColor().equals(serverResponse.getTurn())) {
-                        System.out.println(pack.getMessageOpponents());
-                    } else {
+                    switch (player.getMyGodCard()) {
 
-                        boolean needToLoop = true;
-                        PlayerAction playerAction = null;
 
                         // If i have demeter i have to pick 2 different cell for build
-                        if (player.getMyGodCard().equals(GodCard.DEMETER)) {
+                        case DEMETER: {
 
                             Cell selectedCell = null;
                             Cell otherCell = null;
@@ -455,10 +451,14 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                             } else {
                                 playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, player, null, null, savedToken, 0, selectedCell, null, false, null);
                             }
+                            savedToken = 0;
+                            notify(playerAction);
+                            break;
                         }
 
+
                         // If i have Hestia i have to pick one cell and another not perimeter cell
-                        else if (player.getMyGodCard().equals(GodCard.HESTIA)) {
+                        case HESTIA: {
 
                             Cell selectedCell = null;
                             Cell otherCell = null;
@@ -510,9 +510,66 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                             } else {
                                 playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, player, null, null, savedToken, 0, selectedCell, null, false, null);
                             }
+                            savedToken = 0;
+                            notify(playerAction);
+                            break;
                         }
-                        // If not demeter only one build
-                        else {
+
+                        case ATLAS: {
+
+                            Cell selectedCell = null;
+
+                            // Ask for a cell to build
+                            while (needToLoop) {
+
+                                printCLI(pack.getModelCopy(), pack.getValidBuilds());
+                                System.out.println(pack.getAction().toString());
+
+
+                                try {
+                                    String[] inputs = getUserInput();
+
+                                    selectedCell = getCell(inputs, pack.getModelCopy().getBattlefield());
+
+                                    if (selectedCell != null) {
+                                        needToLoop = false;
+                                    }
+                                } catch (Exception e) {
+                                    System.out.println("Your input wasn't correct!");
+                                }
+                            }
+
+                            // If the cell is not height 3 i ask if he want to build a dome
+                            if (pack.getModelCopy().getBattlefield().getCell(selectedCell).getHeight()<3) {
+                                needToLoop = true;
+
+                                while (needToLoop) {
+
+                                    System.out.println("Do you want to build a dome here? [yes,any]");
+
+                                    try {
+
+                                        if (askYesOrNot()){
+                                            playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, getPlayer(), null, null, savedToken, 0, selectedCell, null, true, null);
+                                        }
+                                        else {
+                                            playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, getPlayer(), null, null, savedToken, 0, selectedCell, null, false, null);
+                                        }
+                                        needToLoop = false;
+
+                                    } catch (Exception e) {
+                                        System.out.println("Your input wasn't correct!");
+                                    }
+                                }
+                            }
+                            savedToken = 0;
+                            notify(playerAction);
+
+                            break;
+                        }
+
+                        // If other gods one normal build
+                        default: {
                             while (needToLoop) {
 
                                 printCLI(pack.getModelCopy(), pack.getValidBuilds());
@@ -531,10 +588,11 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                                     System.out.println("Your input wasn't correct!");
                                 }
                             }
+                            savedToken = 0;
+                            notify(playerAction);
                         }
-                        savedToken = 0;
-                        notify(playerAction);
                     }
+
                 }
                 break;
             }
@@ -601,6 +659,14 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
     public boolean notPerimeterCell(Cell targetCell){
         return ((targetCell.getPosX()!=4 && targetCell.getPosY()!=4) && (targetCell.getPosX()!=0 && targetCell.getPosY()!=0));
+    }
+
+    public boolean askYesOrNot(){
+
+        Scanner in = new Scanner(System.in);
+        String input = in.nextLine().toUpperCase();
+
+        return input.equals("Y") || input.equals("YE") || input.equals("YES") || input.equals("TRUE") || input.equals("SI");
     }
 
 
