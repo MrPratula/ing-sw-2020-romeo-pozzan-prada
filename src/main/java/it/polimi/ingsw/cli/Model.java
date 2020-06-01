@@ -262,7 +262,11 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                  * and the next player is asked to place his tokens on the battlefield
                  * and the other player are notified to wait
                  */
-                if (allGodCards.isEmpty()) {
+                if (allGodCards.size()==1) {
+
+                    GodCard lastGod = allGodCards.get(0);
+                    allGodCards.remove(lastGod);
+                    getPlayerInTurn().setMyGodCard(lastGod);
 
                     // Write the text to notify all players who has which god card
                     StringBuilder text = new StringBuilder("Everyone has picked his God:");
