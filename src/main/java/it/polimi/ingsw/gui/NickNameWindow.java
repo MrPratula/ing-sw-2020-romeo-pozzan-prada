@@ -29,10 +29,8 @@ public class NickNameWindow extends JDialog{
     /**
      * Dialog windows that opens when a player click on PLAY
      * and here he has to put his name and number(FIXME)
-     * @param swingView
      */
-    public NickNameWindow(final SwingView swingView) {
-
+    public NickNameWindow(SwingView swingView) {
         this.view = swingView;
 
         //Nickname's panel

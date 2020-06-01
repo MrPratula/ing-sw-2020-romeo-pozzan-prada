@@ -47,34 +47,6 @@ public class SwingView extends View {
      * Constructor of the client view with Swing GUI
      */
     public SwingView(){
-
-        //this.player = p;
-        mainFrame = new JFrame("Santorini");
-        mainFrame.setResizable(true);
-        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        mainPanel = new JPanel();
-        mainPanel.setBackground(Color.WHITE);
-
-        logoImage = new JLabel(new ImageIcon(new File("./src/main/images/utils/Santorini.png").getAbsolutePath()));
-
-        playButton = new JButton(new ImageIcon(new File("./src/main/images/utils/buttonPlay.png").getAbsolutePath()));
-        playButton.setContentAreaFilled(false);
-        playButton.setBorderPainted(false);
-        playButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new NickNameWindow(SwingView.this);
-                mainFrame.dispose(); //close mainFrame.
-            }
-        });
-
-        mainPanel.add(logoImage, BorderLayout.CENTER);
-        mainPanel.add(playButton, BorderLayout.SOUTH);
-        mainFrame.add(mainPanel, BorderLayout.CENTER);
-
-        mainFrame.pack();
-        mainFrame.setVisible(true);
     }
 
 
@@ -163,7 +135,7 @@ public class SwingView extends View {
             // This continue till the name is valid
             case WELCOME:{
 
-                new NickNameWindow(this);
+                new WelcomeFrame(this);
                 break;
             }
             case INVALID_NAME: {
