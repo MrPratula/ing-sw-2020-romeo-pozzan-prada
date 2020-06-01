@@ -4,6 +4,7 @@ import it.polimi.ingsw.cli.GodCard;
 import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.PlayerAction;
+import it.polimi.ingsw.utils.ServerResponse;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,6 +22,8 @@ public class ChooseGodCardWindow extends JDialog {
     private final GodButton buttonGod1, buttonGod2;
     private ButtonGroup buttonGroup;
     private SwingView view;
+
+    ServerResponse serverResponse;
 
 
     /*       GETTER       */
@@ -40,13 +43,14 @@ public class ChooseGodCardWindow extends JDialog {
     /**
      * Window that shows two buttons with two gods:
      * the user must choose one on them.
-     * @param godInGame: gods to choose between
      */
-    public ChooseGodCardWindow(final JFrame mainFrame, final SwingView swingView, List<GodCard> godInGame) {
+    public ChooseGodCardWindow(final SwingView swingView, final ServerResponse serverResponse) {
 
         this.view = swingView;
+        this.serverResponse = serverResponse;
+        List<GodCard> godInGame = serverResponse.getPack().getGodCards();
 
-        setTitle("Which one of these GodCards do you want to use in this game?");
+        final JFrame mainFrame = new JFrame("Which one of these GodCards do you want to use in this game?");
 
         mainPanel = new JPanel();
         mainPanel.setLayout(new GridLayout(1,2));
@@ -76,7 +80,7 @@ public class ChooseGodCardWindow extends JDialog {
             public void actionPerformed(ActionEvent e) {
 
                 //buttonGod1.setActionCommand(buttonGod1.getGodCard().name());
-                PlayerAction playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, ChooseGodCardWindow.this.view.getPlayer(), null, null, 0, 0, null, null, false,buttonGod1.getGodCard().name());
+                PlayerAction playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, swingView.getPlayer(), null, null, 0, 0, null, null, false,buttonGod1.getGodCard().name());
                 try {
                     JOptionPane.showMessageDialog(mainFrame,new ImageIcon(new File(startPath +((GodButton) e.getSource()).getGodCard().name().toLowerCase()+ ".png").getAbsolutePath()),"You Selected: "+((GodButton) e.getSource()).getGodCard().name(), JOptionPane.INFORMATION_MESSAGE,new ImageIcon(new File("./src/main/images/utils/done.png").getAbsolutePath()));
                     swingView.notifyClient(playerAction);
@@ -92,7 +96,7 @@ public class ChooseGodCardWindow extends JDialog {
             public void actionPerformed(ActionEvent e) {
 
                 //buttonGod2.setActionCommand(buttonGod1.getGodCard().name());
-                PlayerAction playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, ChooseGodCardWindow.this.view.getPlayer(), null, null, 0, 0, null, null, false,buttonGod2.getGodCard().name());
+                PlayerAction playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, swingView.getPlayer(), null, null, 0, 0, null, null, false,buttonGod2.getGodCard().name());
                 try {
                     JOptionPane.showMessageDialog(mainFrame,new ImageIcon(new File(startPath +((GodButton) e.getSource()).getGodCard().name().toLowerCase()+ ".png").getAbsolutePath()),"You Selected: "+((GodButton) e.getSource()).getGodCard().name(), JOptionPane.INFORMATION_MESSAGE,new ImageIcon(new File("./src/main/images/utils/done.png").getAbsolutePath()));
                     swingView.notifyClient(playerAction);
@@ -106,10 +110,11 @@ public class ChooseGodCardWindow extends JDialog {
 
         mainPanel.add(buttonGod1);
         mainPanel.add(buttonGod2);
-        add(mainPanel,BorderLayout.CENTER);
+        mainFrame.add(mainPanel,BorderLayout.CENTER);
 
-        pack();
-        setVisible(true);
+        mainFrame.pack();
+        mainFrame.setVisible(true);
+        mainFrame.setLocationRelativeTo(null);
     }
 
     /**

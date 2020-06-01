@@ -8,6 +8,7 @@ import it.polimi.ingsw.utils.*;
 import it.polimi.ingsw.utils.Action;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -187,20 +188,11 @@ public class SwingView extends View {
 
                 // If the player is not in turn he is just notified to wait
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
-                    JOptionPane.showMessageDialog(new JFrame(),pack.getMessageOpponents(),"JUST WAIT", JOptionPane.WARNING_MESSAGE);  //posso anche mettere un'immagine error
+                    JOptionPane.showMessageDialog(new JFrame(),pack.getMessageOpponents(),"NOT YOUR TURN, "+pack.getPlayer().getUsername().toUpperCase()+"!, PLEASE WAIT", JOptionPane.WARNING_MESSAGE);
                 }
                 // else he has to pick his god card
                 else {
-                    List<GodCard> godInGame = serverResponse.getPack().getGodCards();
-
-                    //JOptionPane.showMessageDialog(new JFrame(),serverResponse.getPack().getMessageInTurn(),"INFO", JOptionPane.WARNING_MESSAGE);  //posso anche mettere un'immagine error
-                    this.player = serverResponse.getPack().getPlayer();
-                    ChooseGodCardWindow c = new ChooseGodCardWindow(this.mainFrame,this,godInGame);
-                    //fixme : forse fatto
-                    PlayerAction playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, this.player, null, null, 0, 0, null, null, false,c.getButtonGroup().getSelection().getActionCommand());
-                    notifyClient(playerAction);
-                    player = serverResponse.getPack().getPlayer();
-
+                    new ChooseGodCardWindow(this, serverResponse);
                 }
                 break;
             }
