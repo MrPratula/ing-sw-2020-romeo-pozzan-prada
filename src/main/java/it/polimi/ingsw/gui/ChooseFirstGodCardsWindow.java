@@ -59,19 +59,28 @@ public class ChooseFirstGodCardsWindow {
                 public void actionPerformed(ActionEvent e) {
                     if(cont!=0) {
                         GodButton selectedGod = (GodButton) e.getSource();
-                        selectedGods.add(selectedGod.getGodCard());
-                        cont--;
-                    }
-                    else {
-                        JOptionPane.showMessageDialog(new JFrame(), "Ok! Thanks for the selections", "Selection confirmed", JOptionPane.INFORMATION_MESSAGE);
-                        mainFrame.dispose();
-                        //PlayerAction playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, this.getPlayer(), null, null, 0, 0, null, null, false, selectedGods);
-                        //view.notifyClient(playerAction);
+                        if(!selectedGods.contains(selectedGod.getGodCard())) {
+                            selectedGods.add(selectedGod.getGodCard());
+                            cont--;
+                            if(cont==0){
+                                JOptionPane.showMessageDialog(new JFrame(), "Ok! Thanks for the selections", "Selection confirmed", JOptionPane.INFORMATION_MESSAGE);
+                                mainFrame.dispose();
+                                //PlayerAction playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, this.getPlayer(), null, null, 0, 0, null, null, false, selectedGods);
+                                //view.notifyClient(playerAction);
 
-                        //ne seleziona 3 correttamente ma ne fa schiacciare un altro per uscire
-                        for (GodCard g : selectedGods) System.out.println(g.name());
-
+                                //ne seleziona 3 correttamente ma ne fa schiacciare un altro per uscire
+                                for (GodCard g : selectedGods) System.out.println(g.name());
+                            }
+                        }
+                        else{
+                            JOptionPane.showMessageDialog(new JFrame(),"God already selected","Error",JOptionPane.ERROR_MESSAGE);
+                        }
                     }
+                    //non dovrebbe mai finire qua
+                    else{
+                        JOptionPane.showMessageDialog(new JFrame(),"Something went wrong","Error",JOptionPane.ERROR_MESSAGE);
+                    }
+
                 }
 
             });
