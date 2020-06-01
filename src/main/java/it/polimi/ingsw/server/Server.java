@@ -295,7 +295,6 @@ public class Server  {
         }
 
 
-
         // And add them to the model
 
         //godInGame.add(GodCard.LIMUS);

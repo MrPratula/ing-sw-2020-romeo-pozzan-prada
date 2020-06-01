@@ -34,6 +34,8 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     private Token prometheusToken;
 
 
+
+
     public Model() {
         this.battlefield = new Battlefield();
     }
@@ -82,6 +84,20 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     public void setPrometheusToken(Token token){
         this.prometheusToken = token;
     }
+
+
+
+    //Test use only
+    private List<Cell> validCells;
+    public List<Cell> getValidCells(){
+        List<Cell> returnCell = validCells;
+        validCells = null;
+        return returnCell;
+    }
+
+
+
+
 
 
     /**
@@ -418,6 +434,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
             serverResponse = new ServerResponse(getTurn(), pack);
         }
+        validCells = validMoves;
         notify(serverResponse);
     }
 
@@ -705,6 +722,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             pack.setMessageOpponents(getPlayerInTurn().getUsername()+" is choosing where to build...");
 
             ServerResponse serverResponse = new ServerResponse(getTurn(), pack);
+            validCells = validBuilds;
             notify(serverResponse);
         }
     }
