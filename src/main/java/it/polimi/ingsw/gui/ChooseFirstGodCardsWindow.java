@@ -37,7 +37,7 @@ public class ChooseFirstGodCardsWindow {
             model.addGod(god);
         }
 
-        final JFrame mainFrame = new JFrame("God");
+        final JFrame mainFrame = new JFrame("Gods");
 
         GodButton[] buttonGod = new GodButton[14];
         ButtonGroup buttonGroup = new ButtonGroup();
@@ -63,24 +63,29 @@ public class ChooseFirstGodCardsWindow {
                             selectedGods.add(selectedGod.getGodCard());
                             cont--;
                             if(cont==0){
-                                JOptionPane.showMessageDialog(new JFrame(), "Ok! Thanks for the selections", "Selection confirmed", JOptionPane.INFORMATION_MESSAGE);
+                                StringBuilder godStringToSplit = new StringBuilder();
+                                for (GodCard g : selectedGods) {
+                                    godStringToSplit.append(g.name()).append(" ");
+                                }
+                                JOptionPane.showMessageDialog(new JFrame(), "Ok! Thanks for the selections. The GodCards in game will be: "+godStringToSplit, "Selection confirmed", JOptionPane.INFORMATION_MESSAGE);
+                                //System.out.println(godStringToSplit);
+                                PlayerAction playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, null, null, null, 0, 0, null, null, false, godStringToSplit.toString());
+                                try {
+                                    view.notifyClient(playerAction);
+                                } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | WrongNumberPlayerException | ImpossibleTurnException cellOutOfBattlefieldException) {
+                                    cellOutOfBattlefieldException.printStackTrace();
+                                }
                                 mainFrame.dispose();
-                                //PlayerAction playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, this.getPlayer(), null, null, 0, 0, null, null, false, selectedGods);
-                                //view.notifyClient(playerAction);
-
-                                //ne seleziona 3 correttamente ma ne fa schiacciare un altro per uscire
-                                for (GodCard g : selectedGods) System.out.println(g.name());
                             }
                         }
                         else{
-                            JOptionPane.showMessageDialog(new JFrame(),"God already selected","Error",JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(new JFrame(),"God already selected!","Error",JOptionPane.ERROR_MESSAGE);
                         }
                     }
                     //non dovrebbe mai finire qua
                     else{
-                        JOptionPane.showMessageDialog(new JFrame(),"Something went wrong","Error",JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(new JFrame(),"Something went wrong!","Error",JOptionPane.ERROR_MESSAGE);
                     }
-
                 }
 
             });
@@ -98,7 +103,7 @@ public class ChooseFirstGodCardsWindow {
         mainFrame.setLocationRelativeTo(null);
 
         //Frame che dice al giocatore cosa fare (cioè che dovrà scegliere tre god)
-        JOptionPane.showMessageDialog(new JFrame(), "You have to select "+n+" gods", "GodCard", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(new JFrame(), "Select the "+n+" GodCards for this game", "GodCard", JOptionPane.INFORMATION_MESSAGE);
     }
 
 
