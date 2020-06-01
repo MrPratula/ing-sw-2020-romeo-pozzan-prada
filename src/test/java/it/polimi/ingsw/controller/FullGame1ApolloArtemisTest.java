@@ -165,12 +165,4 @@ public class FullGame1ApolloArtemisTest {
 
         view.printCLI(model.getCopy(), model.getValidCells());
     }
-
-
-
-
-
-
-
-
 }

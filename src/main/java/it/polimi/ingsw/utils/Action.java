@@ -36,7 +36,7 @@ public enum Action implements Serializable {
     NUMBER_RECEIVED("Waiting for the players to begin..."),
     WAIT_OTHER_PLAYERS_TO_CONNECT("Please wait other players to connect..."),
 
-    SELECT_YOUR_GOD_CARD_FROM_SERVER("Which one of these GodCards do you want to use in this game?"),
+    CHOOSE_GOD_CARD_TO_PLAY("Choose which god cards you want to use in this game.\nType they'r name one by one..."),
     WAIT_AND_SAVE_PLAYER_FROM_SERVER("Wait your turn to select your God Card!"),
 
     // Broadcast

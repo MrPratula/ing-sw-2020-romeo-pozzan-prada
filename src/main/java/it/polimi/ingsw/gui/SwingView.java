@@ -195,7 +195,7 @@ public class SwingView extends View {
             }
 
             //The first choice is send by the server and contains player data
-            case SELECT_YOUR_GOD_CARD_FROM_SERVER: {
+            case CHOOSE_GOD_CARD_TO_PLAY: {
 
                 this.player = serverResponse.getPack().getPlayer();
                 List<GodCard> godInGame = serverResponse.getPack().getGodCards();

@@ -24,6 +24,8 @@ public class Pack implements Serializable {
 
     private Player player;
 
+    private int numberOfPlayers;
+
 
     public Pack(Action action){
         this.action = action;
@@ -87,5 +89,13 @@ public class Pack implements Serializable {
 
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    public int getNumberOfPlayers() {
+        return numberOfPlayers;
+    }
+
+    public void setNumberOfPlayers(int numberOfPlayers) {
+        this.numberOfPlayers = numberOfPlayers;
     }
 }

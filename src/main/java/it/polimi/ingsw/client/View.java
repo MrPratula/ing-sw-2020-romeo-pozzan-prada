@@ -5,6 +5,7 @@ import it.polimi.ingsw.cli.*;
 import it.polimi.ingsw.utils.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -112,8 +113,8 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
             }
 
 
-            //The first choice is send by the server and contains player data
-            case SELECT_YOUR_GOD_CARD_FROM_SERVER: {
+            //The first player have to choose which god use in this game
+            case CHOOSE_GOD_CARD_TO_PLAY: {
 
                 PlayerAction playerAction;
 
@@ -122,33 +123,52 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                 System.out.println(serverResponse.getPack().getAction().toString());
 
                 List<GodCard> godInGame = serverResponse.getPack().getGodCards();
+                List<GodCard> selectedGods = new ArrayList<>();
+
                 boolean needToLoop = true;
                 String choice;
+                int godToSelect = serverResponse.getPack().getNumberOfPlayers();
+                StringBuilder stringBuilder = new StringBuilder();
 
                 while (needToLoop) {
-                    System.out.println(serverResponse.getPack().getMessageInTurn());
+                    System.out.println("\n"+serverResponse.getPack().getMessageInTurn()+"\n");
                     Scanner scanner = new Scanner(System.in);
 
                     // Check if the input is a valid string
                     try {
                         choice = scanner.nextLine();
+
+                        for (GodCard god: godInGame) {
+                            if (choice.toUpperCase().equals(god.name().toUpperCase())){
+                                if(!selectedGods.contains(god)){
+                                    System.out.println("Ohhh good choice!");
+                                    godToSelect--;
+                                    selectedGods.add(god);
+                                }
+                                else {
+                                    System.out.println("You already choose this god. Please choose another one...");
+                                }
+                            }
+                        }
+
                     } catch (InputMismatchException exception) {
-                        choice = "error";
+                        System.out.println("Please insert a proper God name...");
                     }
 
-                    // Check if the string is a valid god name
-                    for (GodCard god: godInGame) {
-                        if (choice.toUpperCase().equals(god.name().toUpperCase())){
-                            System.out.println("Ohhh good choice!");
-                            player=serverResponse.getPack().getPlayer();
-                            playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, player, null, null, 0, 0, null, null, false, choice.toUpperCase());
-                            needToLoop = false;
-                            notifyClient(playerAction);
-                        }
+                    if (godToSelect==0){
+                        needToLoop = false;
                     }
                 }
+
+                for (GodCard god: selectedGods){
+                    stringBuilder.append(god.name().toUpperCase()).append(",");
+                }
+
+                playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, player, null, null, 0, 0, null, null, false, stringBuilder.toString());
+                notifyClient(playerAction);
                 break;
             }
+
 
             // The second player receive the god choice message, the 2nd and 3rd receive this with player data
             case WAIT_AND_SAVE_PLAYER_FROM_SERVER:{
@@ -177,6 +197,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                     String choice;
 
                     while (needToLoop) {
+                        System.out.println(serverResponse.getPack().getAction().toString());
                         System.out.println(serverResponse.getPack().getMessageInTurn());
                         Scanner scanner = new Scanner(System.in);
 
