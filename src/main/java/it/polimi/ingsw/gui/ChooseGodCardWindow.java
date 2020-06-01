@@ -124,21 +124,21 @@ public class ChooseGodCardWindow extends JDialog {
 
         for(GodCard g : godInGame) {
             switch (g){
-                case APOLLO:{ textToDisplay.add(Pics.APOLLOTEXT.getImage()); break;}
-                case ARTEMIS:{ textToDisplay.add(Pics.ARTEMISTEXT.getImage()); break;}
-                case ATHENA:{ textToDisplay.add(Pics.ATHENATEXT.getImage()); break;}
-                case ATLAS:{ textToDisplay.add(Pics.ATLASTEXT.getImage()); break;}
-                case CHRONUS:{ textToDisplay.add(Pics.CHRONUSTEXT.getImage()); break;}
-                case DEMETER:{ textToDisplay.add(Pics.DEMETERTEXT.getImage()); break;}
-                case HEPHAESTUS:{ textToDisplay.add(Pics.HEPHAESTUSTEXT.getImage()); break;}
-                case HERA:{ textToDisplay.add(Pics.HERATEXT.getImage()); break;}
-                case HESTIA:{ textToDisplay.add(Pics.HESTIATEXT.getImage()); break;}
-                case LIMUS: {textToDisplay.add(Pics.LIMUSTEXT.getImage());break;}
-                case MINOTAUR:{ textToDisplay.add(Pics.MINOTAURTEXT.getImage()); break;}
-                case PAN:{ textToDisplay.add(Pics.PANTEXT.getImage()); break;}
-                case PROMETHEUS:{ textToDisplay.add(Pics.PROMETHEUSTEXT.getImage()); break;}
+                case APOLLO:{ textToDisplay.add(Pics.APOLLOTEXT.getImageIcon()); break;}
+                case ARTEMIS:{ textToDisplay.add(Pics.ARTEMISTEXT.getImageIcon()); break;}
+                case ATHENA:{ textToDisplay.add(Pics.ATHENATEXT.getImageIcon()); break;}
+                case ATLAS:{ textToDisplay.add(Pics.ATLASTEXT.getImageIcon()); break;}
+                case CHRONUS:{ textToDisplay.add(Pics.CHRONUSTEXT.getImageIcon()); break;}
+                case DEMETER:{ textToDisplay.add(Pics.DEMETERTEXT.getImageIcon()); break;}
+                case HEPHAESTUS:{ textToDisplay.add(Pics.HEPHAESTUSTEXT.getImageIcon()); break;}
+                case HERA:{ textToDisplay.add(Pics.HERATEXT.getImageIcon()); break;}
+                case HESTIA:{ textToDisplay.add(Pics.HESTIATEXT.getImageIcon()); break;}
+                case LIMUS: {textToDisplay.add(Pics.LIMUSTEXT.getImageIcon());break;}
+                case MINOTAUR:{ textToDisplay.add(Pics.MINOTAURTEXT.getImageIcon()); break;}
+                case PAN:{ textToDisplay.add(Pics.PANTEXT.getImageIcon()); break;}
+                case PROMETHEUS:{ textToDisplay.add(Pics.PROMETHEUSTEXT.getImageIcon()); break;}
                 case ZEUS:{
-                    textToDisplay.add(Pics.ZEUSTEXT.getImage());
+                    textToDisplay.add(Pics.ZEUSTEXT.getImageIcon());
                     break;
                 }
             }
@@ -158,20 +158,20 @@ public class ChooseGodCardWindow extends JDialog {
 
         for(GodCard g : godInGame) {
             switch (g){
-                case APOLLO:{ godsToDisplay.add(Pics.APOLLO.getImage()); break;}
-                case ARTEMIS:{ godsToDisplay.add(Pics.ARTEMIS.getImage()); break;}
-                case ATHENA:{ godsToDisplay.add(Pics.ATHENA.getImage()); break;}
-                case ATLAS:{ godsToDisplay.add(Pics.ATLAS.getImage()); break;}
-                case CHRONUS:{ godsToDisplay.add(Pics.CHRONUS.getImage()); break;}
-                case DEMETER:{ godsToDisplay.add(Pics.DEMETER.getImage()); break;}
-                case HEPHAESTUS:{ godsToDisplay.add(Pics.HEPHAESTUS.getImage()); break;}
-                case HERA:{ godsToDisplay.add(Pics.HERA.getImage()); break;}
-                case HESTIA:{ godsToDisplay.add(Pics.HESTIA.getImage()); break;}
-                case LIMUS: {godsToDisplay.add(Pics.LIMUS.getImage());break;}
-                case MINOTAUR:{ godsToDisplay.add(Pics.MINOTAUR.getImage()); break;}
-                case PAN:{ godsToDisplay.add(Pics.PAN.getImage()); break;}
-                case PROMETHEUS:{ godsToDisplay.add(Pics.PROMETHEUS.getImage()); break;}
-                case ZEUS:{ godsToDisplay.add(Pics.ZEUS.getImage()); break;}
+                case APOLLO:{ godsToDisplay.add(Pics.APOLLO.getImageIcon()); break;}
+                case ARTEMIS:{ godsToDisplay.add(Pics.ARTEMIS.getImageIcon()); break;}
+                case ATHENA:{ godsToDisplay.add(Pics.ATHENA.getImageIcon()); break;}
+                case ATLAS:{ godsToDisplay.add(Pics.ATLAS.getImageIcon()); break;}
+                case CHRONUS:{ godsToDisplay.add(Pics.CHRONUS.getImageIcon()); break;}
+                case DEMETER:{ godsToDisplay.add(Pics.DEMETER.getImageIcon()); break;}
+                case HEPHAESTUS:{ godsToDisplay.add(Pics.HEPHAESTUS.getImageIcon()); break;}
+                case HERA:{ godsToDisplay.add(Pics.HERA.getImageIcon()); break;}
+                case HESTIA:{ godsToDisplay.add(Pics.HESTIA.getImageIcon()); break;}
+                case LIMUS: {godsToDisplay.add(Pics.LIMUS.getImageIcon());break;}
+                case MINOTAUR:{ godsToDisplay.add(Pics.MINOTAUR.getImageIcon()); break;}
+                case PAN:{ godsToDisplay.add(Pics.PAN.getImageIcon()); break;}
+                case PROMETHEUS:{ godsToDisplay.add(Pics.PROMETHEUS.getImageIcon()); break;}
+                case ZEUS:{ godsToDisplay.add(Pics.ZEUS.getImageIcon()); break;}
             }
         }
         return godsToDisplay;

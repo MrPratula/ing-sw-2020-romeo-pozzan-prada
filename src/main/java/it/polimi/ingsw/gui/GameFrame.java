@@ -21,7 +21,7 @@ public class GameFrame extends JFrame {
     private JPanel mainPanel = new JPanel();
 
     //first inner panel with the battlefield
-    private JPanel battlefieldPanel = new JPanel();
+    private BattlefieldPanel battlefieldPanel;
 
     //label where the server tell the player what he has to do
     private JLabel messageLabel = new JLabel("WELCOME! Messages will be displayed here");
@@ -43,20 +43,24 @@ public class GameFrame extends JFrame {
     public GameFrame(/*ServerResponse serverResponse*/) {
         super("Battlefield");
         //this.serverResponse = serverResponse;
-        setSize(800,800);
+        setSize(800,1000);
         setResizable(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        battlefieldPanel.setLayout(new GridLayout(5,5,1,1));
+
+        //setLayout(new BorderLayout());
+        battlefieldPanel = new BattlefieldPanel();
+        battlefieldPanel.setLayout(new GridLayout(5,5));
+
         for(int j=4; j>-1 ; j--){
             for(int i=0; i<5; i++){
                 //here i create a button for every cell
                 battlefieldGUI[i][j] = new CellButton(i,j);
                 battlefieldGUI[i][j].setBorderPainted(false);
                 battlefieldGUI[i][j].setContentAreaFilled(false);
-                battlefieldGUI[i][j].setSize(100,100);
-                battlefieldGUI[i][j].setIcon(Pics.LEVEL0.getImage());
-                battlefieldGUI[i][j].setBackground(Color.BLACK);
+                //battlefieldGUI[i][j].setSize(200,200);
+                battlefieldGUI[i][j].setIcon(Pics.LEVEL0.getImageIcon());
+                //battlefieldGUI[i][j].setBackground(Color.BLACK);
                 battlefieldGUI[i][j].getCell().setHeight(0);
 
                 battlefieldPanel.add(battlefieldGUI[i][j]);
@@ -76,6 +80,10 @@ public class GameFrame extends JFrame {
 
 
     /*      GETTER       */
+
+    public Action getAction() {
+        return action;
+    }
 
     public CellButton[][] getBattlefieldGUI() {
         return battlefieldGUI;

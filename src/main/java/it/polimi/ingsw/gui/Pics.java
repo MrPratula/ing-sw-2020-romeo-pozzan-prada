@@ -36,8 +36,8 @@ public enum Pics {
             LEVEL0VALIDMOVE("./src/main/images/buildings/" + "level0ValidMove.png"), //22
             LEVEL1VALIDMOVE("./src/main/images/buildings/" + "level1ValidMove.png"), //23
             LEVEL2VALIDMOVE("./src/main/images/buildings/" + "level2ValidMove.png"), //24
-            LEVEL3VALIDMOVE("./src/main/images/buildings/" + "level3ValidMove.png"), //25
-
+            LEVEL3VALIDMOVE("./src/main/images/buildings/" + "level3ValidMove.png"), //24
+            BOARD("./src/main/images/utils/" + "board.png"), //26
 
             APOLLO("./src/main/images/godcards/" + "apollo.png"),  //0
             ARTEMIS("./src/main/images/godcards/" + "artemis.png"),   //1
@@ -75,7 +75,7 @@ public enum Pics {
         this.path = path;
     }
 
-    public ImageIcon getImage(){
+    public ImageIcon getImageIcon(){
         return new ImageIcon(new File(this.getPath()).getAbsolutePath());
     }
 
