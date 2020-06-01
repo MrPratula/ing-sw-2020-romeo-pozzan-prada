@@ -1,9 +1,12 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.gui.ChooseFirstGodCardsWindow;
 import it.polimi.ingsw.gui.GameFrame;
+import it.polimi.ingsw.gui.SwingView;
 import it.polimi.ingsw.server.Server;
 
 
+import javax.swing.*;
 import java.io.IOException;
 
 
@@ -18,8 +21,8 @@ public class ServerApp
         System.out.println("Hi I am the SERVER");
         Server server;
 
-        //new ChooseFirstGodCardsWindow();
-        new GameFrame();
+        new ChooseFirstGodCardsWindow(new SwingView());
+        //new GameFrame();
 
         try {
             // The Server is not created by new Server because it is Singleton, so

@@ -191,7 +191,7 @@ public class SwingView extends View {
             }
 
             case CHOSE_FIRST_GOD_CARDS:{
-                new ChooseFirstGodCardsWindow();
+                new ChooseFirstGodCardsWindow(this);
             }
 
             //The first choice is send by the server and contains player data
@@ -199,17 +199,19 @@ public class SwingView extends View {
 
                 this.player = serverResponse.getPack().getPlayer();
                 List<GodCard> godInGame = serverResponse.getPack().getGodCards();
+                //player = serverResponse.getPack().getPlayer();
 
                 ChooseGodCardWindow c = new ChooseGodCardWindow(this.mainFrame,this, godInGame);
 
-                player = serverResponse.getPack().getPlayer();
                 break;
             }
 
             // The second player receive the god choice message, the 2nd and 3rd receive this with player data
             case WAIT_AND_SAVE_PLAYER_FROM_SERVER:{
                 player = serverResponse.getPack().getPlayer();
-                //TODO System.out.println(serverResponse.getPack().getAction().toString());
+
+                JOptionPane.showMessageDialog(new JFrame(),serverResponse.getPack().getAction().toString(),"WAIT_AND_SAVE_PLAYER_FROM_SERVER", JOptionPane.INFORMATION_MESSAGE);  //posso anche mettere un'immagine error
+
                 break;
             }
 
@@ -254,6 +256,7 @@ public class SwingView extends View {
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){  //forse while
                     JOptionPane.showMessageDialog(new JFrame(),pack.getMessageOpponents(),"NOT YOUR TURN, "+pack.getPlayer().getUsername().toUpperCase()+"!, PLEASE WAIT", JOptionPane.WARNING_MESSAGE);  //posso anche mettere un'immagine error
+                    //gameFrame.getBattlefieldButtons().get(0).getCellButton().
                 }
                 else {
                     JOptionPane.showMessageDialog(new JFrame(),pack.getAction().toString(),"YOUR TURN, "+pack.getPlayer().getUsername().toUpperCase(), JOptionPane.WARNING_MESSAGE);  //posso anche mettere un'immagine
@@ -285,31 +288,29 @@ public class SwingView extends View {
                 this.player = pack.getPlayer();
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
-                    printCLI(pack.getModelCopy(), null);
-                    System.out.println(pack.getMessageOpponents());
+                    displayGui(pack.getModelCopy(), null);
+                    gameFrame.getMessageLabel().setText(pack.getMessageOpponents());
                 }
                 else {
 
                     if (pack.getMessageInTurn() != null){
-                        System.out.println(pack.getMessageInTurn());
+                        gameFrame.getMessageLabel().setText(pack.getMessageInTurn());
                     }
+
 
                     boolean needToLoop = true;
 
                     while (needToLoop){
-                        printCLI(pack.getModelCopy(), null);
+                        displayGui(pack.getModelCopy(), null); //updategui()
                         System.out.print(serverResponse.getPack().getAction().getInfo());
 
                         try{
-                            String[] inputs = getUserInput();
+                            gameFrame.setAction(pack.getAction());
 
-                            int selectedToken = getToken(inputs, player);
+                            //display the text of the action that the user should do
+                            gameFrame.getMessageLabel().setText("NOW "+pack.getPlayer().getUsername().toUpperCase()+", SELECT A CELL TO "+Action.PLACE_YOUR_TOKEN.toString());
 
-                            if (selectedToken != 0){
-                                playerAction = new PlayerAction(Action.TOKEN_SELECTED, getPlayer(), null, null, selectedToken, 0, null, null, false, null);
-                                savedToken = selectedToken;
-                                needToLoop = false;
-                            }
+
                         } catch (Exception e){
                             System.out.println("Your input wasn't correct!");
                         }

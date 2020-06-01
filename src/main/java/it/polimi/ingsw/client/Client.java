@@ -72,7 +72,7 @@ public class Client extends Observable<ServerResponse> implements Observer<Playe
                         }
                     }
                 } catch (IOException | ImpossibleTurnException | ClassNotFoundException | CellHeightException | WrongNumberPlayerException | ReachHeightLimitException | CellOutOfBattlefieldException e) {
-                    System.out.println("qualche tipo di errore strano mi fa chiudere il socket");
+                    System.out.println("qualche tipo di errore strano mi fa chiudere il socket"+e.getMessage());
                     e.printStackTrace();
                     setActive(false);
                 }

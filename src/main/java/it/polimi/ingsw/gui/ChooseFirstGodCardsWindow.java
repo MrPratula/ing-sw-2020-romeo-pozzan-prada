@@ -19,99 +19,77 @@ import java.util.List;
 
 public class ChooseFirstGodCardsWindow {
 
-    Model model=new Model();
+    Model model = new Model();
     List<GodCard> godInGame = new ArrayList<>(Arrays.asList(GodCard.values()).subList(0, 14));
+    List<GodCard> selectedGods = new ArrayList<>();
+    private SwingView view;
 
-    final static String startPath = "./src/main/images/godcards/";
+    int n = 3;   //per ora
+    int cont = n;
 
-    private final ImageIcon[] godcards = new ImageIcon[]{
-            new ImageIcon(new File(startPath + "apollo.png").getAbsolutePath()),  //0
-            new ImageIcon(new File(startPath + "artemis.png").getAbsolutePath()),   //1
-            new ImageIcon(new File(startPath + "athena.png").getAbsolutePath()),  //2
-            new ImageIcon(new File(startPath + "atlas.png").getAbsolutePath()),  //3
-            new ImageIcon(new File(startPath + "chronus.png").getAbsolutePath()), //4
-            new ImageIcon(new File(startPath + "demeter.png").getAbsolutePath()),  //5
-            new ImageIcon(new File(startPath + "hephaestus.png").getAbsolutePath()), //6
-            new ImageIcon(new File(startPath + "hera.png").getAbsolutePath()), //7
-            new ImageIcon(new File(startPath + "hestia.png").getAbsolutePath()),  //8
-            new ImageIcon(new File(startPath + "limus.png").getAbsolutePath()),   //9
-            new ImageIcon(new File(startPath + "minotaur.png").getAbsolutePath()),  //10
-            new ImageIcon(new File(startPath + "pan.png").getAbsolutePath()),  //11
-            new ImageIcon(new File(startPath + "prometheus.png").getAbsolutePath()), //12
-            new ImageIcon(new File(startPath + "zeus.png").getAbsolutePath()), //13
-            new ImageIcon(new File(startPath + "apolloText.png").getAbsolutePath()),  //+ 0
-            new ImageIcon(new File(startPath + "artemisText.png").getAbsolutePath()),   //1
-            new ImageIcon(new File(startPath + "athenaText.png").getAbsolutePath()),  //2
-            new ImageIcon(new File(startPath + "atlasText.png").getAbsolutePath()),  //3
-            new ImageIcon(new File(startPath + "chronusText.png").getAbsolutePath()), //4
-            new ImageIcon(new File(startPath + "demeterText.png").getAbsolutePath()),  //5
-            new ImageIcon(new File(startPath + "hephaestusText.png").getAbsolutePath()), //6
-            new ImageIcon(new File(startPath + "heraText.png").getAbsolutePath()), //7
-            new ImageIcon(new File(startPath + "hestiaText.png").getAbsolutePath()),  //8
-            new ImageIcon(new File(startPath + "limusText.png").getAbsolutePath()),   //9
-            new ImageIcon(new File(startPath + "minotaurText.png").getAbsolutePath()),  //10
-            new ImageIcon(new File(startPath + "panText.png").getAbsolutePath()),  //11
-            new ImageIcon(new File(startPath + "prometheusText.png").getAbsolutePath()), //12
-            new ImageIcon(new File(startPath + "zeusText.png").getAbsolutePath()), //13
+    public ChooseFirstGodCardsWindow(final SwingView swingView) {
 
-    };
+        this.view = swingView;
 
-    public ChooseFirstGodCardsWindow() {
-        int volte=0;
 
         // And add them to the model
         for (GodCard god : godInGame) {
             model.addGod(god);
         }
 
-        JFrame mainFrame = new JFrame("God");
-        JPanel mainPanel;
-        JDialog dialog = new JDialog();
+        final JFrame mainFrame = new JFrame("God");
 
         GodButton[] buttonGod = new GodButton[14];
-        ButtonGroup buttonGroup;
+        ButtonGroup buttonGroup = new ButtonGroup();
 
-        mainPanel = new JPanel();
-        mainPanel.setLayout(new GridLayout(2,7));
+        JPanel mainPanel = new JPanel(new GridLayout(2,7));
 
-        buttonGroup = new ButtonGroup();
+        final List<ImageIcon> godsToDisplay = selectGodsToDisplay(godInGame);
+        final List<ImageIcon> textToDisplay = selectTextToDisplay(godInGame);
 
         for(int i=0; i<14; i++) {
             buttonGod[i] = new GodButton(godInGame.get(i));
             buttonGod[i].setBorderPainted(false);
             buttonGod[i].setContentAreaFilled(false);
-            buttonGroup.add(buttonGod[i]);
-        }
-
-
-        final List<ImageIcon> godsToDisplay = selectGodsToDisplay(godInGame);
-        for(int i=0; i<14; i++) {
             buttonGod[i].setIcon(godsToDisplay.get(i));
-        }
-
-        List<ImageIcon> textToDisplay = selectTextToDisplay(godInGame);
-        for(int i=0; i<14; i++) {
             buttonGod[i].setRolloverIcon(textToDisplay.get(i));
-        }
 
-        for(int i=0; i<14; i++) {
             buttonGod[i].addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    if(cont!=0) {
+                        GodButton selectedGod = (GodButton) e.getSource();
+                        selectedGods.add(selectedGod.getGodCard());
+                        cont--;
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(new JFrame(), "Ok! Thanks for the selections", "Selection confirmed", JOptionPane.INFORMATION_MESSAGE);
+                        mainFrame.dispose();
+                        //PlayerAction playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, this.getPlayer(), null, null, 0, 0, null, null, false, selectedGods);
+                        //view.notifyClient(playerAction);
 
+                        //ne seleziona 3 correttamente ma ne fa schiacciare un altro per uscire
+                        for (GodCard g : selectedGods) System.out.println(g.name());
+
+                    }
                 }
+
             });
+
+            buttonGroup.add(buttonGod[i]);
+
+            mainPanel.add(buttonGod[i]);
+
         }
 
-        for(int i=0; i<14; i++) {
-            mainPanel.add(buttonGod[i]);
-        }
         mainFrame.add(mainPanel,BorderLayout.CENTER);
 
         mainFrame.pack();
         mainFrame.setVisible(true);
+        mainFrame.setLocationRelativeTo(null);
+
         //Frame che dice al giocatore cosa fare (cioè che dovrà scegliere tre god)
-        JOptionPane.showMessageDialog(new JFrame(), "You have to select 3 gods", "GodCard", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(new JFrame(), "You have to select "+n+" gods", "GodCard", JOptionPane.INFORMATION_MESSAGE);
     }
 
 
@@ -127,20 +105,23 @@ public class ChooseFirstGodCardsWindow {
 
         for(GodCard g : godInGame) {
             switch (g){
-                case APOLLO:{ textToDisplay.add(godcards[14]); break;}
-                case ARTEMIS:{ textToDisplay.add(godcards[15]); break;}
-                case ATHENA:{ textToDisplay.add(godcards[16]); break;}
-                case ATLAS:{ textToDisplay.add(godcards[17]); break;}
-                case CHRONUS:{ textToDisplay.add(godcards[18]); break;}
-                case DEMETER:{ textToDisplay.add(godcards[19]); break;}
-                case HEPHAESTUS:{ textToDisplay.add(godcards[20]); break;}
-                case HERA:{ textToDisplay.add(godcards[21]); break;}
-                case HESTIA:{ textToDisplay.add(godcards[22]); break;}
-                case LIMUS: {textToDisplay.add(godcards[23]);break;}
-                case MINOTAUR:{ textToDisplay.add(godcards[24]); break;}
-                case PAN:{ textToDisplay.add(godcards[25]); break;}
-                case PROMETHEUS:{ textToDisplay.add(godcards[26]); break;}
-                case ZEUS:{ textToDisplay.add(godcards[27]); break;}
+                case APOLLO:{ textToDisplay.add(Pics.APOLLOTEXT.getImage()); break;}
+                case ARTEMIS:{ textToDisplay.add(Pics.ARTEMISTEXT.getImage()); break;}
+                case ATHENA:{ textToDisplay.add(Pics.ATHENATEXT.getImage()); break;}
+                case ATLAS:{ textToDisplay.add(Pics.ATLASTEXT.getImage()); break;}
+                case CHRONUS:{ textToDisplay.add(Pics.CHRONUSTEXT.getImage()); break;}
+                case DEMETER:{ textToDisplay.add(Pics.DEMETERTEXT.getImage()); break;}
+                case HEPHAESTUS:{ textToDisplay.add(Pics.HEPHAESTUSTEXT.getImage()); break;}
+                case HERA:{ textToDisplay.add(Pics.HERATEXT.getImage()); break;}
+                case HESTIA:{ textToDisplay.add(Pics.HESTIATEXT.getImage()); break;}
+                case LIMUS: {textToDisplay.add(Pics.LIMUSTEXT.getImage());break;}
+                case MINOTAUR:{ textToDisplay.add(Pics.MINOTAURTEXT.getImage()); break;}
+                case PAN:{ textToDisplay.add(Pics.PANTEXT.getImage()); break;}
+                case PROMETHEUS:{ textToDisplay.add(Pics.PROMETHEUSTEXT.getImage()); break;}
+                case ZEUS:{
+                    textToDisplay.add(Pics.ZEUSTEXT.getImage());
+                    break;
+                }
             }
         }
         return textToDisplay;
@@ -158,20 +139,20 @@ public class ChooseFirstGodCardsWindow {
 
         for(GodCard g : godInGame) {
             switch (g){
-                case APOLLO:{ godsToDisplay.add(godcards[0]); break;}
-                case ARTEMIS:{ godsToDisplay.add(godcards[1]); break;}
-                case ATHENA:{godsToDisplay.add(godcards[2]); break;}
-                case ATLAS:{ godsToDisplay.add(godcards[3]); break;}
-                case CHRONUS:{ godsToDisplay.add(godcards[4]); break;}
-                case DEMETER:{ godsToDisplay.add(godcards[5]); break;}
-                case HEPHAESTUS:{ godsToDisplay.add(godcards[6]); break;}
-                case HERA:{ godsToDisplay.add(godcards[7]); break;}
-                case HESTIA:{ godsToDisplay.add(godcards[8]); break;}
-                case LIMUS: {godsToDisplay.add(godcards[9]);break;}
-                case MINOTAUR:{ godsToDisplay.add(godcards[10]); break;}
-                case PAN: {godsToDisplay.add(godcards[11]); break;}
-                case PROMETHEUS:{ godsToDisplay.add(godcards[12]); break;}
-                case ZEUS: {godsToDisplay.add(godcards[13]); break;}
+                case APOLLO:{ godsToDisplay.add(Pics.APOLLO.getImage()); break;}
+                case ARTEMIS:{ godsToDisplay.add(Pics.ARTEMIS.getImage()); break;}
+                case ATHENA:{ godsToDisplay.add(Pics.ATHENA.getImage()); break;}
+                case ATLAS:{ godsToDisplay.add(Pics.ATLAS.getImage()); break;}
+                case CHRONUS:{ godsToDisplay.add(Pics.CHRONUS.getImage()); break;}
+                case DEMETER:{ godsToDisplay.add(Pics.DEMETER.getImage()); break;}
+                case HEPHAESTUS:{ godsToDisplay.add(Pics.HEPHAESTUS.getImage()); break;}
+                case HERA:{ godsToDisplay.add(Pics.HERA.getImage()); break;}
+                case HESTIA:{ godsToDisplay.add(Pics.HESTIA.getImage()); break;}
+                case LIMUS: {godsToDisplay.add(Pics.LIMUS.getImage());break;}
+                case MINOTAUR:{ godsToDisplay.add(Pics.MINOTAUR.getImage()); break;}
+                case PAN:{ godsToDisplay.add(Pics.PAN.getImage()); break;}
+                case PROMETHEUS:{ godsToDisplay.add(Pics.PROMETHEUS.getImage()); break;}
+                case ZEUS:{ godsToDisplay.add(Pics.ZEUS.getImage()); break;}
             }
         }
         return godsToDisplay;

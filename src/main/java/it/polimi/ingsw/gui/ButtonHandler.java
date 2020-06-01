@@ -19,15 +19,13 @@ public class ButtonHandler implements ActionListener {
     final private CellButton cellButton;
     private CellButton prevButton;
     private Action action;
-    private ImageIcon[] pics;
 
-    public ButtonHandler(CellButton cellButton, ImageIcon[] pics, ModelUtils modelUtils, Action action /*, ServerResponse serverResponse*/) {
+    public ButtonHandler(CellButton cellButton, ModelUtils modelUtils, Action action /*, ServerResponse serverResponse*/) {
         //this.serverResponse = serverResponse;
         this.cellButton = cellButton;
        // this.prevButton = prevButton;
         this.modelUtils = modelUtils;
         this.action = action;
-        this.pics = pics;
     }
 
     /*     GETTER     */
@@ -62,6 +60,15 @@ public class ButtonHandler implements ActionListener {
                 }
 
             }
+            case PLAYER_LOST:
+            case ASK_FOR_SELECT_TOKEN:
+            case TOKEN_NOT_MOVABLE:{
+
+               // if(getCellButton().getCell().getThereIsPlayer() && ) {
+
+                //}
+                    break;
+            }
             case ASK_FOR_BUILD: {
                 try {
                     prevButton = (CellButton) clickedButtonEvent.getSource(); //dubbio
@@ -91,24 +98,24 @@ public class ButtonHandler implements ActionListener {
 
         switch (tc){
             case RED:{
-                if(height==0) prevButton.setIcon(pics[5]);
-                if(height==1) prevButton.setIcon(pics[6]);
-                if(height==2) prevButton.setIcon(pics[7]);
-                if(height==3) prevButton.setIcon(pics[8]);
+                if(height==0) prevButton.setIcon(Pics.LEVEL0TOKENRED.getImage());
+                if(height==1) prevButton.setIcon(Pics.LEVEL1TOKENRED.getImage());
+                if(height==2) prevButton.setIcon(Pics.LEVEL2TOKENRED.getImage());
+                if(height==3) prevButton.setIcon(Pics.LEVEL3TOKENRED.getImage());
                 break;
             }
             case BLUE:{
-                if(height==0) prevButton.setIcon(pics[9]);
-                if(height==1) prevButton.setIcon(pics[10]);
-                if(height==2) prevButton.setIcon(pics[11]);
-                if(height==3) prevButton.setIcon(pics[12]);
+                if(height==0) prevButton.setIcon(Pics.LEVEL0TOKENBLUE.getImage());
+                if(height==1) prevButton.setIcon(Pics.LEVEL1TOKENBLUE.getImage());
+                if(height==2) prevButton.setIcon(Pics.LEVEL2TOKENBLUE.getImage());
+                if(height==3) prevButton.setIcon(Pics.LEVEL3TOKENBLUE.getImage());
                 break;
             }
             case YELLOW:{
-                if(height==0) prevButton.setIcon(pics[13]);
-                if(height==1) prevButton.setIcon(pics[14]);
-                if(height==2) prevButton.setIcon(pics[15]);
-                if(height==3) prevButton.setIcon(pics[16]);
+                if(height==0) prevButton.setIcon(Pics.LEVEL0TOKENYELLOW.getImage());
+                if(height==1) prevButton.setIcon(Pics.LEVEL1TOKENYELLOW.getImage());
+                if(height==2) prevButton.setIcon(Pics.LEVEL2TOKENYELLOW.getImage());
+                if(height==3) prevButton.setIcon(Pics.LEVEL3TOKENYELLOW.getImage());
                 break;
             }
             default: break;
@@ -180,25 +187,25 @@ public class ButtonHandler implements ActionListener {
                 //    else  JOptionPane.showMessageDialog(new JFrame(),"You can't build here!","Error", JOptionPane.ERROR_MESSAGE);
             } else{
                 if (cellButton.getCell().getHeight() == 0) {
-                    cellButton.setIcon(pics[1]);
+                    cellButton.setIcon(Pics.LEVEL1.getImage());
                     cellButton.getCell().incrementHeight();
-                    cellButton.setRolloverIcon(pics[18]);
+                    cellButton.setRolloverIcon(Pics.LEVEL1.getImage());
                     //button.setPressedIcon(pics[1]);
                     //button.setDisabledIcon(pics[1]);
                 }
                 else if (cellButton.getCell().getHeight() == 1) {
-                    cellButton.setIcon(pics[2]);
-                    cellButton.setRolloverIcon(pics[19]);
+                    cellButton.setIcon(Pics.LEVEL2.getImage());
+                    cellButton.setRolloverIcon(Pics.LEVEL2TEXT.getImage());
                     cellButton.getCell().incrementHeight();
                 }
                 else if (cellButton.getCell().getHeight() == 2) {
-                    cellButton.setIcon(pics[3]);
-                    cellButton.setRolloverIcon(pics[20]);
+                    cellButton.setIcon(Pics.LEVEL3.getImage());
+                    cellButton.setRolloverIcon(Pics.LEVEL3TEXT.getImage());
                     cellButton.getCell().incrementHeight();
                 }
                 else if (cellButton.getCell().getHeight() == 3) {
-                    cellButton.setIcon(pics[4]);
-                    cellButton.setRolloverIcon(pics[21]);
+                    cellButton.setIcon(Pics.LEVEL3DOME.getImage());
+                    cellButton.setRolloverIcon(Pics.LEVELDOMETEXT.getImage());
                     cellButton.getCell().incrementHeight();
                 }
             }
