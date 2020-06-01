@@ -4,13 +4,12 @@ import it.polimi.ingsw.cli.*;
 import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.PlayerAction;
-import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-public class FullGameTest {
+public class FullGame1ApolloArtemisTest {
 
     Model model;
     Controller controller;
@@ -34,7 +33,6 @@ public class FullGameTest {
         model.addPlayer(player2);
 
         view = new View();
-
     }
 
 
