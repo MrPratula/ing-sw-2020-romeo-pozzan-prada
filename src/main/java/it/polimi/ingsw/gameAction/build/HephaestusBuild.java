@@ -25,7 +25,7 @@ public class HephaestusBuild implements BuildBehavior {
                 provY = selectedToken.getTokenPosition().getPosY()+j;
 
                 if ( (provX>=0 && provX <5) && (provY>=0 && provY<5) &&                       // la cella provv è dentro le dimensioni del battlefield
-                        (battlefield.getCell(provX,provY).getHeight()<2 && !battlefield.getCell(provX,provY).getIsDome()) ) {                         // non deve essere una cupola
+                        (battlefield.getCell(provX,provY).getHeight()<=3 && !battlefield.getCell(provX,provY).getIsDome()) ) {                         // non deve essere una cupola
 
                     buildableCells.add(battlefield.getCell(provX, provY));
                 }

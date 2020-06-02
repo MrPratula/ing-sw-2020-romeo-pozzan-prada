@@ -2,8 +2,6 @@ package it.polimi.ingsw.server;
 
 
 import it.polimi.ingsw.controller.Controller;
-import it.polimi.ingsw.controller.ImpossibleTurnException;
-import it.polimi.ingsw.controller.WrongNumberPlayerException;
 import it.polimi.ingsw.cli.GodCard;
 import it.polimi.ingsw.cli.Model;
 import it.polimi.ingsw.cli.Player;
@@ -104,6 +102,7 @@ public class Server  {
 
             } catch (IOException e){
                 System.err.println("Connection error!");
+                break;
             }
         }
     }

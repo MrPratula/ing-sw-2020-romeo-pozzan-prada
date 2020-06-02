@@ -13,34 +13,26 @@ import java.io.IOException;
 
 public class NickNameWindow extends JDialog{
 
-    //private static final long serialVersionUID = 1L;
-    private JPanel nicknamePanel;
-    private JLabel nicknameLabel;                   //2.0
-    private JTextField nicknameTextField;           //2.1
-    private JButton confirmButton;                  //4.0
-    private SwingView view;
+    private final JTextField nicknameTextField;
+    private final SwingView view;
 
-
-
-    public JTextField getNicknameTextField() {
-        return nicknameTextField;
-    }
 
     /**
      * Dialog windows that opens when a player click on PLAY
-     * and here he has to put his name and number(FIXME)
+     * and here he has to put his name
      */
     public NickNameWindow(SwingView swingView) {
         this.view = swingView;
 
         //Nickname's panel
-        nicknamePanel = new JPanel();
+        //private static final long serialVersionUID = 1L;
+        JPanel nicknamePanel = new JPanel();
         nicknamePanel.setSize(350,200);
         nicknamePanel.setLayout(new BorderLayout(10,10));
         nicknamePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         //label for asking nickname
-        nicknameLabel = new JLabel("Nickname:");
+        JLabel nicknameLabel = new JLabel("Nickname:");
         nicknameLabel.setBounds(10,20,80,25);
         nicknamePanel.add(nicknameLabel,BorderLayout.PAGE_START);
 
@@ -52,7 +44,7 @@ public class NickNameWindow extends JDialog{
         add(nicknamePanel,BorderLayout.PAGE_START);
 
         //the button to confirm the selection
-        confirmButton = new JButton("Confirm");
+        JButton confirmButton = new JButton("Confirm");
         confirmButton.setBounds(10,20,80,25);
         add(confirmButton, BorderLayout.PAGE_END);
 

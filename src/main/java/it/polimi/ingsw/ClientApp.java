@@ -22,6 +22,7 @@ public class ClientApp {
         new GameFrame(godsInGame);
 
       //  new test();
+        //new GameFrame();
         try{
             client.run();
         }catch (IOException e){

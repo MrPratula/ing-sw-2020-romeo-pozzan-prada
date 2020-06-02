@@ -270,6 +270,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                 break;
             }
 
+
             case PLAYER_LOST:
             case TOKEN_NOT_MOVABLE:
             case ASK_FOR_SELECT_TOKEN: {
@@ -423,7 +424,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                     switch (player.getMyGodCard()) {
 
 
-                        // If i have demeter i have to pick 2 different cell for build
+                        // Pick 2 different cells
                         case DEMETER: {
 
                             Cell selectedCell = null;
@@ -481,7 +482,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                         }
 
 
-                        // If i have Hestia i have to pick one cell and another not perimeter cell
+                        // Pick 2 cells. One and one not on to the perimeter
                         case HESTIA: {
 
                             Cell selectedCell = null;
@@ -539,7 +540,13 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                             break;
                         }
 
+
+                        // Ask if they want to use they're power
+                        case HEPHAESTUS:
                         case ATLAS: {
+
+                            String atlasMessage = "Do you want to build a dome here? [yes,any]";
+                            String hephaestusMessage = "Do you want to build two times here? [yes,any]";
 
                             Cell selectedCell = null;
 
@@ -569,7 +576,10 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
                                 while (needToLoop) {
 
-                                    System.out.println("Do you want to build a dome here? [yes,any]");
+                                    if (player.getMyGodCard().equals(GodCard.ATLAS))
+                                        System.out.println(atlasMessage);
+                                    if (player.getMyGodCard().equals(GodCard.HEPHAESTUS))
+                                        System.out.println(hephaestusMessage);
 
                                     try {
 

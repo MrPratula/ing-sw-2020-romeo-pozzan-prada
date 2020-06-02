@@ -2,7 +2,6 @@ package it.polimi.ingsw.gui;
 
 import it.polimi.ingsw.cli.GodCard;
 import it.polimi.ingsw.cli.Model;
-import it.polimi.ingsw.cli.Player;
 import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.PlayerAction;
@@ -14,16 +13,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
 public class ChooseGodCardToPlayWindow {
-    Player player;
     SwingView swingView;
 
     Model model = new Model();
-    List<GodCard> godInGame = new ArrayList<>(Arrays.asList(GodCard.values()).subList(0, 14));
+    List<GodCard> godInGame;
     List<GodCard> selectedGods = new ArrayList<>();
 
     int n;
@@ -32,7 +29,6 @@ public class ChooseGodCardToPlayWindow {
     public ChooseGodCardToPlayWindow(final SwingView swingView, ServerResponse serverResponse) {
 
         this.swingView = swingView;
-        this.player = serverResponse.getPack().getPlayer();
         godInGame = serverResponse.getPack().getGodCards();
         n= serverResponse.getPack().getNumberOfPlayers();
         cont=n;
@@ -108,7 +104,7 @@ public class ChooseGodCardToPlayWindow {
         mainFrame.setVisible(true);
         mainFrame.setLocationRelativeTo(null);
 
-        //Frame che dice al giocatore cosa fare (cioè che dovrà scegliere tre god)
+        //Frame che dice al giocatore cosa fare (cioè che dovrà scegliere 2 o 3 god)
         JOptionPane.showMessageDialog(new JFrame(), "Select the "+n+" GodCards for this game", "GodCard", JOptionPane.INFORMATION_MESSAGE);
     }
 
