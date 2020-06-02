@@ -7,10 +7,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 
 public class WelcomeFrame {
-    private JFrame mainFrame;        //1
-    private JPanel mainPanel;        //2
-    private JButton playButton;      //3.1
-    private JLabel logoImage;
+    private final JFrame mainFrame;
     SwingView swingView;
 
     public WelcomeFrame(final SwingView swingView) {
@@ -19,12 +16,12 @@ public class WelcomeFrame {
         mainFrame.setResizable(true);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        mainPanel = new JPanel();
+        JPanel mainPanel = new JPanel();
         mainPanel.setBackground(Color.WHITE);
 
-        logoImage = new JLabel(new ImageIcon(new File("./src/main/images/utils/Santorini.png").getAbsolutePath()));
+        JLabel logoImage = new JLabel(new ImageIcon(new File("./src/main/images/utils/Santorini.png").getAbsolutePath()));
 
-        playButton = new JButton(new ImageIcon(new File("./src/main/images/utils/buttonPlay.png").getAbsolutePath()));
+        JButton playButton = new JButton(new ImageIcon(new File("./src/main/images/utils/buttonPlay.png").getAbsolutePath()));
         playButton.setContentAreaFilled(false);
         playButton.setBorderPainted(false);
         playButton.addActionListener(new ActionListener() {

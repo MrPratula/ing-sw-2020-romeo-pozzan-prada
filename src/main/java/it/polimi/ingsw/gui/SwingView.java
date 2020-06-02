@@ -166,6 +166,7 @@ public class SwingView extends View {
             //The first choice is send by the server and contains player data
             case CHOOSE_GOD_CARD_TO_PLAY: {
 
+                this.player = serverResponse.getPack().getPlayer();
                 new ChooseGodCardToPlayWindow(this,serverResponse);
                 break;
             }

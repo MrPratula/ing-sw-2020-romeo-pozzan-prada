@@ -13,36 +13,21 @@ import java.io.IOException;
 public class NumberOfPlayersWindow extends JDialog{
 
 
-    private JPanel numberOfPlayerPanel;
-    private JLabel numberOfPlayersLabel;            //3.0
-    private JComboBox<Integer> numberOfPlayersBox;  //3.1
-    private JButton confirmButton;                  //4.0
-    private SwingView view;
-
-
-    /**
-     * Inner class that handle the first action
-     */
-    private class ConfirmListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e){
-            NumberOfPlayersWindow.this.dispose(); //graphic standard
-        }
-    }
-
+    private final JComboBox<Integer> numberOfPlayersBox;
+    private final SwingView view;
 
     public NumberOfPlayersWindow(SwingView swingView) {
 
         this.view = swingView;
 
         //numberOfPlayerPanel's panel
-        numberOfPlayerPanel = new JPanel();
+        JPanel numberOfPlayerPanel = new JPanel();
         numberOfPlayerPanel.setSize(350,200);
         numberOfPlayerPanel.setLayout(new BorderLayout(10,10));
         numberOfPlayerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         //label for asking how many players does he want to play with
-        numberOfPlayersLabel = new JLabel("How many players do you want to play with? ");
+        JLabel numberOfPlayersLabel = new JLabel("How many players do you want to play with? ");
         numberOfPlayersLabel.setBounds(10,20,80,25);
         numberOfPlayerPanel.add(numberOfPlayersLabel, BorderLayout.PAGE_START);
 
@@ -55,9 +40,8 @@ public class NumberOfPlayersWindow extends JDialog{
         add(numberOfPlayerPanel,BorderLayout.PAGE_START);
 
         //the button to confirm the selection
-        confirmButton = new JButton("Confirm");
+        JButton confirmButton = new JButton("Confirm");
         confirmButton.setBounds(10,20,80,25);
-        confirmButton.addActionListener(new ConfirmListener());
         add(confirmButton, BorderLayout.PAGE_END);
 
         confirmButton.addActionListener(new ActionListener() {
@@ -66,6 +50,7 @@ public class NumberOfPlayersWindow extends JDialog{
                 PlayerAction playerAction = new PlayerAction(Action.NUMBER_OF_PLAYERS, null, null, null, (int)numberOfPlayersBox.getSelectedItem(), 0, null, null, false, null);
                 try {
                     view.notifyClient(playerAction);
+                    NumberOfPlayersWindow.this.dispose();
                 } catch (CellOutOfBattlefieldException | WrongNumberPlayerException | ImpossibleTurnException | IOException | CellHeightException | ReachHeightLimitException cellOutOfBattlefieldException) {
                     cellOutOfBattlefieldException.printStackTrace();
                 }
@@ -75,12 +60,5 @@ public class NumberOfPlayersWindow extends JDialog{
         setLocationRelativeTo(null);
         pack();
         setVisible(true);
-
     }
-
-    public JComboBox<Integer> getNumberOfPlayersBox() {
-        return numberOfPlayersBox;
-    }
-
-
 }

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.controller;
 
-;
+
 import it.polimi.ingsw.cli.*;
 import it.polimi.ingsw.utils.PlayerAction;
 import it.polimi.ingsw.utils.Observer;
@@ -16,7 +16,7 @@ import java.util.*;
  */
 public class Controller implements Observer<PlayerAction> {
 
-    private Model model;
+    private final Model model;
 
     public Controller (Model model) {
         this.model = model;
@@ -38,6 +38,7 @@ public class Controller implements Observer<PlayerAction> {
             switch(playerAction.getAction()){
 
                 case CHOSE_GOD_CARD: {
+                    System.out.println("iiiiii");
                     model.computeGodChoices(playerAction);
                     break;
                 }

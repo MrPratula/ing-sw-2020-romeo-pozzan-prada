@@ -2,8 +2,6 @@ package it.polimi.ingsw.server;
 
 
 import it.polimi.ingsw.controller.Controller;
-import it.polimi.ingsw.controller.ImpossibleTurnException;
-import it.polimi.ingsw.controller.WrongNumberPlayerException;
 import it.polimi.ingsw.cli.GodCard;
 import it.polimi.ingsw.cli.Model;
 import it.polimi.ingsw.cli.Player;
@@ -104,6 +102,7 @@ public class Server  {
 
             } catch (IOException e){
                 System.err.println("Connection error!");
+                break;
             }
         }
     }
@@ -302,8 +301,8 @@ public class Server  {
             Pack player1Pack = new Pack(Action.CHOOSE_GOD_CARD_TO_PLAY);
             Pack player2Pack = new Pack(Action.WAIT_AND_SAVE_PLAYER_FROM_SERVER);
 
-            player1Pack.setPlayer(allPlayers.get(0));
-            player2Pack.setPlayer(allPlayers.get(1));
+            player1Pack.setPlayer(allPlayers.get(1));
+            player2Pack.setPlayer(allPlayers.get(0));
 
             player1Pack.setGodCards(godsDeck);
             player1Pack.setMessageInTurn(text.toString());
@@ -324,9 +323,9 @@ public class Server  {
             Pack player2Pack = new Pack(Action.WAIT_AND_SAVE_PLAYER_FROM_SERVER);
             Pack player3Pack = new Pack(Action.WAIT_AND_SAVE_PLAYER_FROM_SERVER);
 
-            player1Pack.setPlayer(allPlayers.get(0));
+            player1Pack.setPlayer(allPlayers.get(2));
             player2Pack.setPlayer(allPlayers.get(1));
-            player3Pack.setPlayer(allPlayers.get(2));
+            player3Pack.setPlayer(allPlayers.get(0));
 
             player1Pack.setGodCards(godsDeck);
             player1Pack.setMessageInTurn(text.toString());

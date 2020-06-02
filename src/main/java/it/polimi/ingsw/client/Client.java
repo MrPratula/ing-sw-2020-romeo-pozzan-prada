@@ -93,7 +93,8 @@ public class Client extends Observable<ServerResponse> implements Observer<Playe
             @Override
             public void run() {
                 try {
-                    objectOutputStream.reset();
+                    //objectOutputStream.reset();
+                    //objectOutputStream.flush();
                     objectOutputStream.writeObject(playerAction);
                     objectOutputStream.flush();
                 } catch (IOException e) {
