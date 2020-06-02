@@ -622,11 +622,11 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                                     System.out.println("Your input wasn't correct!");
                                 }
                             }
-                            savedToken = 0;
+                            if (!player.getMyGodCard().equals(GodCard.PROMETHEUS))
+                                savedToken = 0;
                             notify(playerAction);
                         }
                     }
-
                 }
                 break;
             }
