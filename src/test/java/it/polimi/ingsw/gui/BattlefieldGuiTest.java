@@ -12,6 +12,7 @@ import java.util.List;
 public class BattlefieldGuiTest {
 
     Battlefield battlefield;
+    List<GodCard> godsInGame;
     Player p1,p2,p3;
     Token t1,t2,t3,t11,t22,t33;
     List<Player> players;
@@ -23,7 +24,12 @@ public class BattlefieldGuiTest {
     @Before
     public void setUp() throws Exception {
 
-        g = new GameFrame();
+        godsInGame = new ArrayList<>();
+        godsInGame.add(GodCard.CHRONUS);
+        godsInGame.add(GodCard.ATHENA);
+        godsInGame.add(GodCard.MINOTAUR);
+
+        g = new GameFrame(godsInGame);;
 
         battlefield = new Battlefield();
         model = new Model();

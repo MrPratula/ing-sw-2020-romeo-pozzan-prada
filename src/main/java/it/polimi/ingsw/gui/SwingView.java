@@ -31,6 +31,8 @@ public class SwingView extends View {
 
     private Player player;
     private int savedToken;
+    private String godcardsForTheGame;
+    private List<GodCard> godsInGame = new ArrayList<>();
 
     public JFrame getMainFrame() {
         return mainFrame;
@@ -167,6 +169,8 @@ public class SwingView extends View {
             case CHOOSE_GOD_CARD_TO_PLAY: {
 
                 new ChooseGodCardToPlayWindow(this,serverResponse);
+
+                this.godsInGame = recognizeGodInGame(godcardsForTheGame);
                 break;
             }
 
@@ -203,7 +207,7 @@ public class SwingView extends View {
                 Pack pack = serverResponse.getPack();
 
                 //here the battlefieldGUI is set up
-                this.gameFrame = new GameFrame();
+                this.gameFrame = new GameFrame(godsInGame);
 
                 this.battlefieldGUI = gameFrame.getBattlefieldGUI();
 
@@ -449,6 +453,28 @@ public class SwingView extends View {
         }
     }
 
+    /**
+     * Links a string of god names into the real
+     * GodCards corresponding to them
+     * @param godcardsForTheGame: String of god names
+     * @return GodCards in game
+     */
+    private List<GodCard> recognizeGodInGame(String godcardsForTheGame) {
+
+        List<GodCard> godsSeparated = new ArrayList<>();
+        String[] godNamesInGame = godcardsForTheGame.split(" ");
+        int numberOfGodsInGame = godNamesInGame.length;
+        GodCard[] allGods = GodCard.values();
+        int i = 0, j = 0;
+        while(i < numberOfGodsInGame){
+            while(!godNamesInGame[i].equals(allGods[j].name())){
+                j++;
+            }
+            godsSeparated.add(allGods[j]);
+            i++;
+        }
+        return godsSeparated;
+    }
 
 
     /**
@@ -625,5 +651,7 @@ public class SwingView extends View {
         }
     }
 
-
+    public void setGodCardsForTheGame(String g) {
+        this.godcardsForTheGame = g;
+    }
 }
