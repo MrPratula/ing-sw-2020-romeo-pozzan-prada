@@ -85,6 +85,11 @@ public class Controller implements Observer<PlayerAction> {
                             model.notifyWrongInput(playerAction);
                         }
                     }
+
+                    // Not sure if this is the best place for this, but it works here. Don't touch plz
+                    if (Model.isDidPrometheusUsePower())
+                        Model.prometheusUsePower(false);
+
                     break;
                 }
 
@@ -98,15 +103,14 @@ public class Controller implements Observer<PlayerAction> {
 
                             // Check for demeter power condition
                             if (model.getPlayerInTurn().getMyGodCard().equals(GodCard.DEMETER)){
-                                if (playerAction.getDoWantUsePower()){
-                                    if (model.differentCell(targetCell, playerAction.getSecondCell())){
-                                        model.performBuild(playerAction);
-                                    }
-                                    else {
-                                        model.notifyWrongInput(playerAction);
-                                    }
-                                    break;
+                                if (model.differentCell(targetCell, playerAction.getSecondCell())){
+                                    model.performBuild(playerAction);
                                 }
+                                else {
+                                    model.notifyWrongInput(playerAction);
+                                }
+                                break;
+
                             }
 
                             // Check for hestia power condition

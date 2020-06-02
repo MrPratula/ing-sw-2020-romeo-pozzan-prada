@@ -25,7 +25,7 @@ import java.util.*;
 public class Model extends Observable<ServerResponse> implements Cloneable {
 
     private static boolean didAthenaMovedUp;
-    private boolean didPrometheusUsePower;
+    private static boolean didPrometheusUsePower;
     private Battlefield battlefield;
     private TokenColor turn;
     private List<Player> allPlayers = new ArrayList<>();
@@ -86,7 +86,13 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         this.prometheusToken = token;
     }
 
+    public static boolean isDidPrometheusUsePower() {
+        return didPrometheusUsePower;
+    }
 
+    public static void prometheusUsePower (Boolean trueOrFalse) {
+        didPrometheusUsePower = trueOrFalse;
+    }
 
     //Test use only
     private List<Cell> validCells;
@@ -473,6 +479,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
             serverResponse = new ServerResponse(getTurn(), pack);
         }
+
         validCells = validMoves;
         notify(serverResponse);
     }
@@ -510,7 +517,8 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         pack.setMessageOpponents(getPlayerInTurn().getUsername()+" has used his power!\nHe is placing his first build!");
         pack.setModelCopy(getCopy());
 
-        Token token2 = getPlayerInTurn().getToken2();
+        Token token2 = getOtherToken(prometheusToken.getId());
+
         List<Token> enemyTokens = getTokens(getOpponents(getPlayerInTurn()));
         GodCard myGodCard = getPlayerInTurn().getMyGodCard();
         List<GodCard> enemyGodCards = getGodCards(getOpponents(getPlayerInTurn()));
@@ -520,6 +528,8 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         pack.setValidBuilds(validBuilds);
 
         ServerResponse serverResponse = new ServerResponse(getTurn(), pack);
+
+        validCells = validBuilds;
         notify(serverResponse);
     }
 
@@ -596,8 +606,8 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                 validMoves = thisMove.executeValidMoves(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, battlefield, null);
                 break;
             }
-            case PROMETHEUS:{  //in this case the user does not want to use the godpower  ==> uneuseful, it will be a default case
-                MoveContext thisMove = new MoveContext(( new SimpleMoves()));
+            case PROMETHEUS:{
+                MoveContext thisMove = new MoveContext(( new PrometheusMove()));
                 validMoves = thisMove.executeValidMoves(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, battlefield, null);
                 break;
             }

@@ -1,10 +1,7 @@
 package it.polimi.ingsw.gameAction.move;
 
+import it.polimi.ingsw.cli.*;
 import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
-import it.polimi.ingsw.cli.Battlefield;
-import it.polimi.ingsw.cli.Cell;
-import it.polimi.ingsw.cli.GodCard;
-import it.polimi.ingsw.cli.Token;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,36 +24,53 @@ public class PrometheusMove implements MoveBehavior {
 
         List<Cell> allMoves = new ArrayList<Cell>();
 
+        boolean canIMoveUp = !Model.isDidPrometheusUsePower();
+
         int provX, provY;
 
         for (int i=-1; i<2; i++) {                                                                                       // ciclo di +-1 intorno alla posizione del token
             provX = selectedToken.getTokenPosition().getPosX() + i;                                                      // per poter ottenere le 8 caselle in cui
             for (int j = -1; j < 2; j++) {                                                                               // posso muovere
                 provY = selectedToken.getTokenPosition().getPosY() + j;
-                if ((provX >= 0 && provX < 5) && (provY >= 0 && provY < 5) &&                                            // la cella provv è dentro le dimensioni del battlefield
-                        ( battlefield.getCell(provX, provY).getHeight()<=selectedToken.getTokenPosition().getHeight() ) &&            // NON PUO' SALIRE; QUINDI L'ALTEZZA DEVE ESSERE UGUALE O MINORE
-                        (!battlefield.getCell(provX, provY).getIsDome())) {                                              // non deve essere una cupola
-                    allMoves.add(battlefield.getCell(provX, provY));
+
+                // if the cell is inside the battlefield
+                if ((provX >= 0 && provX < 5) && (provY >= 0 && provY < 5)) {
+
+                    // If the cell is not a dome
+                    if (!battlefield.getCell(provX, provY).getIsDome()) {
+
+                        // If i can not move up
+                        if (!canIMoveUp) {
+
+                            // if i am not moving up
+                            if ((battlefield.getCell(provX, provY).getHeight() <= selectedToken.getTokenPosition().getHeight())) {
+                                allMoves.add(battlefield.getCell(provX, provY));
+                            }
+                        }
+                        else {
+                            allMoves.add(battlefield.getCell(provX, provY));
+                        }
+                    }
                 }
             }
         }
 
         List<Cell> allMovesToReturn = new ArrayList<>(allMoves);
 
-        for (Cell validCell: allMoves) {
-            try{
-                allMovesToReturn.remove(battlefield.getCell(selectedToken.getTokenPosition()));     // rimuovo le posizioni dei miei token
-            } catch (NullPointerException ignore){}
-            try{
-                allMovesToReturn.remove(battlefield.getCell(otherToken.getTokenPosition()));
-            } catch (NullPointerException ignore){}
-            try{
-                for (Token enemyToken : enemyTokens) {
-                    allMovesToReturn.remove(battlefield.getCell(enemyToken.getTokenPosition()));        // rimuovo la posizione dei token dei miei nemici
-                }
-            } catch (NullPointerException ignore){}
-        }
-        return allMoves;
+        try{
+            allMovesToReturn.remove(battlefield.getCell(selectedToken.getTokenPosition()));     // rimuovo le posizioni dei miei token
+        } catch (NullPointerException ignore){}
+        try{
+            allMovesToReturn.remove(battlefield.getCell(otherToken.getTokenPosition()));
+        } catch (NullPointerException ignore){}
+        try{
+            for (Token enemyToken : enemyTokens) {
+                allMovesToReturn.remove(battlefield.getCell(enemyToken.getTokenPosition()));        // rimuovo la posizione dei token dei miei nemici
+            }
+        } catch (NullPointerException ignore){}
+
+
+        return allMovesToReturn;
     }
 
 

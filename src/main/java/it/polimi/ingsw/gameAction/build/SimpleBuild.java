@@ -45,7 +45,6 @@ public class SimpleBuild implements BuildBehavior{
         }
 
         // Then all the cells where is present a token will be removed
-
         List<Cell> cellsToReturn = new ArrayList<>(buildableCells);
 
         for (Cell c: buildableCells){
@@ -53,7 +52,7 @@ public class SimpleBuild implements BuildBehavior{
                 cellsToReturn.remove(c);
             }
             if (otherToken!=null) {
-                if (c.equals(selectedToken.getTokenPosition())){
+                if (c.equals(otherToken.getTokenPosition())){
                     cellsToReturn.remove(c);
                 }
             }
@@ -63,7 +62,6 @@ public class SimpleBuild implements BuildBehavior{
                 }
             }
         }
-
         return cellsToReturn;
     }
 
