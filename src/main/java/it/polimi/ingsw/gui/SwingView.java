@@ -171,7 +171,7 @@ public class SwingView extends View {
                 this.player = serverResponse.getPack().getPlayer();
                 new ChooseGodCardToPlayWindow(this,serverResponse);
 
-                this.godsInGame = recognizeGodInGame(godcardsForTheGame);
+                //inutile this.godsInGame = recognizeGodInGame(godcardsForTheGame);
                 break;
             }
 

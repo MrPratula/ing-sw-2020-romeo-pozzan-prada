@@ -13,16 +13,17 @@ public class ClientApp {
     public static void main(String[] args) {
 
         Client client = new Client("127.0.0.1", 12345);
-
+/*
         List<GodCard> godsInGame = new ArrayList<>();
         godsInGame.add(GodCard.CHRONUS);
         godsInGame.add(GodCard.ATHENA);
         godsInGame.add(GodCard.MINOTAUR);
 
         new GameFrame(godsInGame);
+*/
+        //new test();
 
-      //  new test();
-        //new GameFrame();
+
         try{
             client.run();
         }catch (IOException e){

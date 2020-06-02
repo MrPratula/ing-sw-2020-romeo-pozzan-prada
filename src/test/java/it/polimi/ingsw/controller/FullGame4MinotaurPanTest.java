@@ -142,7 +142,7 @@ public class FullGame4MinotaurPanTest {
 
         view.printCLI(model.getCopy(), model.getValidCells());
 
-        // Player 1 select where to move
+        // Player 1 select where to move ( PUSH !!!)
 
         savedToken = 1;
         selectedCell = model.getBattlefield().getCell(2,1);
@@ -158,19 +158,6 @@ public class FullGame4MinotaurPanTest {
         controller.update(playerAction);
 
         view.printCLI(model.getCopy(), model.getValidCells());
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     }
 

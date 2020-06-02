@@ -726,6 +726,11 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                 thisMove.executeMove(selectedToken, otherToken, enemyTokens, targetCell, enemyGodCards, battlefield);
                 break;
             }
+            case MINOTAUR:{ ///addeddddddddd
+                MoveContext thisMove = new MoveContext(new MinotaurMoves());
+                thisMove.executeMove(selectedToken, otherToken, enemyTokens, targetCell, enemyGodCards, battlefield);
+                break;
+            }
 
             default:{
                 MoveContext thisMove = new MoveContext(new SimpleMoves());
