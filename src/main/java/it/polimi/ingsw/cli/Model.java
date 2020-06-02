@@ -362,12 +362,11 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
                 // If someone need to place his token, he has to do it before the game start
                 if (p.getToken1().getTokenPosition()==null || p.getToken2().getTokenPosition()==null){
+                    gameCanStart = false;
                     break;
                 }
                 // If all the tokens of all players have a position the game can start
-                else{
-                    gameCanStart=true;
-                }
+                gameCanStart=true;
             }
 
             Pack pack;

@@ -229,8 +229,11 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                 Pack pack = serverResponse.getPack();
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
+                    if (pack.getMessageInTurn()!=null)
+                        System.out.println(pack.getMessageInTurn());
                     printCLI(pack.getModelCopy(), null);
                     System.out.println(pack.getMessageOpponents());
+
                 }
                 else {
                     boolean needToLoop = true;
