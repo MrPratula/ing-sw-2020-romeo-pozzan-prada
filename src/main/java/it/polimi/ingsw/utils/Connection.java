@@ -114,8 +114,6 @@ public class Connection extends Observable<PlayerAction> implements Runnable{
     }
 
 
-
-
     /**
      * The override for the runnable interface.
      * It ask a client for his name, add him to the lobby
