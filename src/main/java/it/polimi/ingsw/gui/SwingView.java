@@ -190,6 +190,7 @@ public class SwingView extends View {
             case SELECT_YOUR_GOD_CARD:{
 
                 Pack pack = serverResponse.getPack();
+                //pack.getMessageInTurn();
 
                 // If the player is not in turn he is just notified to wait
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){

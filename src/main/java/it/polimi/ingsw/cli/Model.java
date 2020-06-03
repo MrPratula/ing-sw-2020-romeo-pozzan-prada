@@ -216,14 +216,15 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         if (firstTime){
             firstTime=false;
 
-            String[] godNames = playerAction.getArgs().split(",");
+            String[] godNames = playerAction.getArgs().split(" ");
 
             List<GodCard> godsDeck = new ArrayList<>(Arrays.asList(GodCard.values()).subList(0, 14));
 
             for (GodCard god: godsDeck){
                 for (String name: godNames) {
-                    if (god.name().equals(name.toUpperCase())){
+                    if (god.name().toUpperCase().equals(name)){
                         allGodCards.add(god);
+                        break; //aggiunto ora 03/06
                     }
                 }
             }

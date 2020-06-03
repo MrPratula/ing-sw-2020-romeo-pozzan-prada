@@ -19,7 +19,9 @@ public class ChooseGodCardWindow extends JDialog {
 
     final static String startPath = "./src/main/images/godcards/";
     private final JPanel mainPanel;
-    private final GodButton buttonGod1, buttonGod2;
+    private final GodButton buttonGod1;
+    private final GodButton buttonGod2;
+    private final GodButton buttonGod3;
     private ButtonGroup buttonGroup;
     private SwingView view;
 
@@ -53,27 +55,58 @@ public class ChooseGodCardWindow extends JDialog {
         final JFrame mainFrame = new JFrame("Which one of these GodCards do you want to use in this game?");
 
         mainPanel = new JPanel();
-        mainPanel.setLayout(new GridLayout(1,2));
 
-        buttonGroup = new ButtonGroup();
+        //poco elegante, ma poi rimedio dopo
+        buttonGod3 = new GodButton(GodCard.MINOTAUR);
+
+        if(godInGame.size()==2){
+            mainPanel.setLayout(new GridLayout(1,2));
+        }
+        if(godInGame.size()==3){
+            mainPanel.setLayout(new GridLayout(1,3));
+        }
+
+        //buttonGroup = new ButtonGroup();
         buttonGod1 = new GodButton(godInGame.get(0));
         buttonGod2 = new GodButton(godInGame.get(1));
+        if(godInGame.size()==3){
+            buttonGod3.setGodCard(godInGame.get(2));
+        }
+
         buttonGod1.setSize(400,700);
         buttonGod2.setSize(400,700);
+        if(godInGame.size()==3){
+            assert buttonGod3 != null;
+            buttonGod3.setSize(400,700);
+        }
+
         buttonGod1.setBorderPainted(false);
         buttonGod2.setBorderPainted(false);
         buttonGod1.setContentAreaFilled(false);
         buttonGod2.setContentAreaFilled(false);
-        buttonGroup.add(buttonGod1);
-        buttonGroup.add(buttonGod2);
+        if(godInGame.size()==3){
+            assert buttonGod3 != null;
+            buttonGod3.setBorderPainted(false);
+            buttonGod3.setContentAreaFilled(false);
+        }
+        //buttonGroup.add(buttonGod1);
+        //buttonGroup.add(buttonGod2);
 
         final List<ImageIcon> godsToDisplay = selectGodsToDisplay(godInGame);
         buttonGod1.setIcon(godsToDisplay.get(0));
         buttonGod2.setIcon(godsToDisplay.get(1));
+        if(godInGame.size()==3) {
+            assert buttonGod3 != null;
+            buttonGod3.setIcon(godsToDisplay.get(2));
+        }
 
         List<ImageIcon> textToDisplay = selectTextToDisplay(godInGame);
         buttonGod1.setRolloverIcon(textToDisplay.get(0));
         buttonGod2.setRolloverIcon(textToDisplay.get(1));
+        if(godInGame.size()==3) {
+            assert buttonGod3 != null;
+            buttonGod3.setRolloverIcon(textToDisplay.get(2));
+        }
 
         buttonGod1.addActionListener(new ActionListener() {
             @Override
@@ -96,9 +129,9 @@ public class ChooseGodCardWindow extends JDialog {
             public void actionPerformed(ActionEvent e) {
 
                 //buttonGod2.setActionCommand(buttonGod1.getGodCard().name());
-                PlayerAction playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, swingView.getPlayer(), null, null, 0, 0, null, null, false,buttonGod2.getGodCard().name());
+                PlayerAction playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, swingView.getPlayer(), null, null, 0, 0, null, null, false, buttonGod2.getGodCard().name());
                 try {
-                    JOptionPane.showMessageDialog(mainFrame,new ImageIcon(new File(startPath +((GodButton) e.getSource()).getGodCard().name().toLowerCase()+ ".png").getAbsolutePath()),"You Selected: "+((GodButton) e.getSource()).getGodCard().name(), JOptionPane.INFORMATION_MESSAGE,new ImageIcon(new File("./src/main/images/utils/done.png").getAbsolutePath()));
+                    JOptionPane.showMessageDialog(mainFrame,new ImageIcon(new File(startPath +((GodButton) e.getSource()).getGodCard().name().toLowerCase()+ ".png").getAbsolutePath()),"You Selected: "+((GodButton) e.getSource()).getGodCard().name(), JOptionPane.INFORMATION_MESSAGE,Pics.DONE.getImageIcon());
                     swingView.notifyClient(playerAction);
                 } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException cellOutOfBattlefieldException) {
                     cellOutOfBattlefieldException.printStackTrace();
@@ -108,8 +141,32 @@ public class ChooseGodCardWindow extends JDialog {
             }
         });
 
+        if(godInGame.size()==3) {
+            assert buttonGod3 != null;
+            buttonGod3.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+
+                    //buttonGod1.setActionCommand(buttonGod1.getGodCard().name());
+                    PlayerAction playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, swingView.getPlayer(), null, null, 0, 0, null, null, false, buttonGod3.getGodCard().name());
+                    try {
+                        JOptionPane.showMessageDialog(mainFrame, new ImageIcon(new File(startPath + ((GodButton) e.getSource()).getGodCard().name().toLowerCase() + ".png").getAbsolutePath()), "You Selected: " + ((GodButton) e.getSource()).getGodCard().name(), JOptionPane.INFORMATION_MESSAGE, Pics.DONE.getImageIcon());
+                        swingView.notifyClient(playerAction);
+                    } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException cellOutOfBattlefieldException) {
+                        cellOutOfBattlefieldException.printStackTrace();
+                    }
+
+                    dispose();
+                }
+            });
+        }
+
         mainPanel.add(buttonGod1);
         mainPanel.add(buttonGod2);
+        if(godInGame.size()==3) {
+            mainPanel.add(buttonGod3);
+        }
+
         mainFrame.add(mainPanel,BorderLayout.CENTER);
 
         mainFrame.pack();
