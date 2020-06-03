@@ -142,7 +142,7 @@ public class FullGame4MinotaurPanTest {
 
         view.printCLI(model.getCopy(), model.getValidCells());
 
-        // Player 1 select where to move ( PUSH !!!)
+        // Player 1 select where to move
 
         savedToken = 1;
         selectedCell = model.getBattlefield().getCell(2,1);
@@ -158,6 +158,125 @@ public class FullGame4MinotaurPanTest {
         controller.update(playerAction);
 
         view.printCLI(model.getCopy(), model.getValidCells());
+
+        // Player 2 select token
+
+        selectedToken = 2;
+        playerAction = new PlayerAction(Action.TOKEN_SELECTED, player2, null, null, selectedToken, 0, null, null, false, null);
+        controller.update(playerAction);
+
+        view.printCLI(model.getCopy(), model.getValidCells());
+
+        // Player 2 select where to move
+
+        savedToken = 2;
+        selectedCell = model.getBattlefield().getCell(3,1);
+        playerAction = new PlayerAction(Action.WHERE_TO_MOVE_SELECTED, player2, null, null, savedToken, 0, selectedCell, null, false, null);
+        controller.update(playerAction);
+
+        view.printCLI(model.getCopy(), model.getValidCells());
+
+        // Player 2 select where to build
+
+        selectedCell = model.getBattlefield().getCell(4,1);
+        playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, player2, null, null, savedToken, 0, selectedCell, null, false, null);
+        controller.update(playerAction);
+
+        view.printCLI(model.getCopy(), model.getValidCells());
+
+        // Player 1 select token
+
+        selectedToken = 1;
+        playerAction = new PlayerAction(Action.TOKEN_SELECTED, player1, null, null, selectedToken, 0, null, null, false, null);
+        controller.update(playerAction);
+
+        view.printCLI(model.getCopy(), model.getValidCells());
+
+        // Player 1 select where to move
+
+        savedToken = 1;
+        selectedCell = model.getBattlefield().getCell(3,1);
+        playerAction = new PlayerAction(Action.WHERE_TO_MOVE_SELECTED, player1, null, null, savedToken, 0, selectedCell, null, false, null);
+        controller.update(playerAction);
+
+        view.printCLI(model.getCopy(), model.getValidCells());
+
+        // Player 1 select where to build
+
+        selectedCell = model.getBattlefield().getCell(2,2);
+        playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, player1, null, null, savedToken, 0, selectedCell, null, false, null);
+        controller.update(playerAction);
+
+        view.printCLI(model.getCopy(), model.getValidCells());
+
+        // Player 2 select token
+
+        selectedToken = 2;
+        playerAction = new PlayerAction(Action.TOKEN_SELECTED, player2, null, null, selectedToken, 0, null, null, false, null);
+        controller.update(playerAction);
+
+        view.printCLI(model.getCopy(), model.getValidCells());
+
+        // Player 2 select where to move
+
+        savedToken = 2;
+        selectedCell = model.getBattlefield().getCell(3,2);
+        playerAction = new PlayerAction(Action.WHERE_TO_MOVE_SELECTED, player2, null, null, savedToken, 0, selectedCell, null, false, null);
+        controller.update(playerAction);
+
+        view.printCLI(model.getCopy(), model.getValidCells());
+
+        // Player 2 select where to build
+
+        selectedCell = model.getBattlefield().getCell(2,2);
+        playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, player2, null, null, savedToken, 0, selectedCell, null, false, null);
+        controller.update(playerAction);
+
+        view.printCLI(model.getCopy(), model.getValidCells());
+
+        // Player 1 select token
+
+        selectedToken = 11;
+        playerAction = new PlayerAction(Action.TOKEN_SELECTED, player1, null, null, selectedToken, 0, null, null, false, null);
+        controller.update(playerAction);
+
+        view.printCLI(model.getCopy(), model.getValidCells());
+
+        // Player 1 select where to move
+
+        savedToken = 11;
+        selectedCell = model.getBattlefield().getCell(2,3);
+        playerAction = new PlayerAction(Action.WHERE_TO_MOVE_SELECTED, player1, null, null, savedToken, 0, selectedCell, null, false, null);
+        controller.update(playerAction);
+
+        view.printCLI(model.getCopy(), model.getValidCells());
+
+        // Player 1 select where to build
+
+        selectedCell = model.getBattlefield().getCell(3,3);
+        playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, player1, null, null, savedToken, 0, selectedCell, null, false, null);
+        controller.update(playerAction);
+
+        view.printCLI(model.getCopy(), model.getValidCells());
+
+        // Player 2 select token
+
+        selectedToken = 2;
+        playerAction = new PlayerAction(Action.TOKEN_SELECTED, player2, null, null, selectedToken, 0, null, null, false, null);
+        controller.update(playerAction);
+
+        view.printCLI(model.getCopy(), model.getValidCells());
+
+        // Player 2 select where to move and win
+
+        savedToken = 2;
+        selectedCell = model.getBattlefield().getCell(4,2);
+        playerAction = new PlayerAction(Action.WHERE_TO_MOVE_SELECTED, player2, null, null, savedToken, 0, selectedCell, null, false, null);
+        controller.update(playerAction);
+
+        view.printCLI(model.getCopy(), model.getValidCells());
+
+
 
     }
 

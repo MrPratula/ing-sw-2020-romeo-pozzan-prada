@@ -77,14 +77,17 @@ public class Controller implements Observer<PlayerAction> {
 
                     List<Cell> validMoves = model.askValidMoves(playerAction);
                     Cell targetCell = playerAction.getFirstCell();
+                    boolean isItCorrect = false;
                     for (Cell c: validMoves) {
                         if (c.getPosX() == targetCell.getPosX() && c.getPosY() == targetCell.getPosY()){
                             model.performMove(playerAction);
-                        }
-                        else{
-                            model.notifyWrongInput(playerAction);
+                            isItCorrect = true;
+                            break;
                         }
                     }
+
+                    if (!isItCorrect)
+                        model.notifyWrongInput(playerAction);
 
                     // Not sure if this is the best place for this, but it works here. Don't touch plz
                     if (Model.isDidPrometheusUsePower())

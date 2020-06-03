@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-public class FullGame5PrometheusZeusTest {
+public class FullGame7LimusHeraTest {
 
     Model model;
     Controller controller;
@@ -35,15 +35,16 @@ public class FullGame5PrometheusZeusTest {
         view = new View();
     }
 
+
     /**
-     * Player 1 -> ZEUS
-     * Player 2 -> PROMETHEUS
+     * Player 1 -> HERA
+     * Player 2 -> LIMUS
      */
     @Test
-    void test5 () throws CellOutOfBattlefieldException, ImpossibleTurnException, ReachHeightLimitException, CellHeightException, WrongNumberPlayerException, IOException {
+    void test7 () throws CellOutOfBattlefieldException, ImpossibleTurnException, ReachHeightLimitException, CellHeightException, WrongNumberPlayerException, IOException {
 
-        player1God = GodCard.ZEUS;
-        player2God = GodCard.PROMETHEUS;
+        player1God = GodCard.HERA;
+        player2God = GodCard.LIMUS;
 
         player1.setMyGodCard(player1God);
         player2.setMyGodCard(player2God);
@@ -65,7 +66,7 @@ public class FullGame5PrometheusZeusTest {
         playerAction = new PlayerAction(Action.TOKEN_PLACED, player1, null, null, 0, 0, targetCell, null, false, null);
         controller.update(playerAction);
 
-        targetCell = model.getBattlefield().getCell(1,2);
+        targetCell = model.getBattlefield().getCell(4,4);
         playerAction = new PlayerAction(Action.TOKEN_PLACED, player1, null, null, 0, 0, targetCell, null, false, null);
         controller.update(playerAction);
 
@@ -77,77 +78,17 @@ public class FullGame5PrometheusZeusTest {
         playerAction = new PlayerAction(Action.TOKEN_PLACED, player2, null, null, 0, 0, targetCell, null, false, null);
         controller.update(playerAction);
 
-        targetCell = model.getBattlefield().getCell(3,2);
+        targetCell = model.getBattlefield().getCell(3,4);
         playerAction = new PlayerAction(Action.TOKEN_PLACED, player2, null, null, 0, 0, targetCell, null, false, null);
         controller.update(playerAction);
 
         view.printCLI(model.getCopy(), null);
 
-        // Player 1 select token
+        // Speed the game up a bit
 
-        selectedToken = 1;
-        playerAction = new PlayerAction(Action.TOKEN_SELECTED, player1, null, null, selectedToken, 0, null, null, false, null);
-        controller.update(playerAction);
-
-        view.printCLI(model.getCopy(), model.getValidCells());
-
-        // Player 1 select where to move
-
-        savedToken = 1;
-        selectedCell = model.getBattlefield().getCell(2,1);
-        playerAction = new PlayerAction(Action.WHERE_TO_MOVE_SELECTED, player1, null, null, savedToken, 0, selectedCell, null, false, null);
-        controller.update(playerAction);
-
-        view.printCLI(model.getCopy(), model.getValidCells());
-
-        // Player 1 select where to build
-
-        selectedCell = model.getBattlefield().getCell(2,1);
-        playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, player1, null, null, savedToken, 0, selectedCell, null, false, null);
-        controller.update(playerAction);
-
-        view.printCLI(model.getCopy(), model.getValidCells());
-
-        // Player 2 select token
-
-        selectedToken = 2;
-        playerAction = new PlayerAction(Action.TOKEN_SELECTED, player2, null, null, selectedToken, 0, null, null, false, null);
-        controller.update(playerAction);
-
-        System.out.println("Ask if want to use power or not");
-
-        // Player 2 answer YES
-
-        playerAction = new PlayerAction(Action.PROMETHEUS_ANSWER, player2, null, null, 0, 0, null, null, true, null);
-        controller.update(playerAction);
-
-        view.printCLI(model.getCopy(), model.getValidCells());
-
-        // Player 2 select his first build
-
-        savedToken = 2;
-        selectedCell = model.getBattlefield().getCell(2,0);
-        playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, player2, null, null, savedToken, 0, selectedCell, null, false, null);
-        controller.update(playerAction);
-
-        view.printCLI(model.getCopy(), model.getValidCells());
-
-        // Player 2 select where to move
-
-        savedToken = 2;
-        selectedCell = model.getBattlefield().getCell(3,0);
-        playerAction = new PlayerAction(Action.WHERE_TO_MOVE_SELECTED, player2, null, null, savedToken, 0, selectedCell, null, false, null);
-        controller.update(playerAction);
-
-        view.printCLI(model.getCopy(), model.getValidCells());
-
-        // Player 2 select where to build
-
-        selectedCell = model.getBattlefield().getCell(2,0);
-        playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, player2, null, null, savedToken, 0, selectedCell, null, false, null);
-        controller.update(playerAction);
-
-        view.printCLI(model.getCopy(), model.getValidCells());
+        model.getBattlefield().getCell(1,0).setHeight(3);
+        model.getBattlefield().getCell(3,0).setHeight(3);
+        model.getBattlefield().getCell(3,1).setHeight(2);
 
         // Player 1 select token
 
@@ -168,7 +109,7 @@ public class FullGame5PrometheusZeusTest {
 
         // Player 1 select where to build
 
-        selectedCell = model.getBattlefield().getCell(2,0);
+        selectedCell = model.getBattlefield().getCell(3,0);
         playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, player1, null, null, savedToken, 0, selectedCell, null, false, null);
         controller.update(playerAction);
 
@@ -178,13 +119,6 @@ public class FullGame5PrometheusZeusTest {
 
         selectedToken = 2;
         playerAction = new PlayerAction(Action.TOKEN_SELECTED, player2, null, null, selectedToken, 0, null, null, false, null);
-        controller.update(playerAction);
-
-        System.out.println("Ask if want to use power or not");
-
-        // Player 2 answer NO
-
-        playerAction = new PlayerAction(Action.PROMETHEUS_ANSWER, player2, null, null, 0, 0, null, null, false, null);
         controller.update(playerAction);
 
         view.printCLI(model.getCopy(), model.getValidCells());
@@ -200,12 +134,65 @@ public class FullGame5PrometheusZeusTest {
 
         // Player 2 select where to build
 
-        selectedCell = model.getBattlefield().getCell(3,0);
+        selectedCell = model.getBattlefield().getCell(3,1);
+        playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, player2, null, null, savedToken, 0, selectedCell, null, false, null);
+        controller.update(playerAction);
+
+        view.printCLI(model.getCopy(), model.getValidCells());
+
+        // Player 1 select token
+
+        selectedToken = 1;
+        playerAction = new PlayerAction(Action.TOKEN_SELECTED, player1, null, null, selectedToken, 0, null, null, false, null);
+        controller.update(playerAction);
+
+        view.printCLI(model.getCopy(), model.getValidCells());
+
+        // Player 1 select where to move
+
+        savedToken = 1;
+        selectedCell = model.getBattlefield().getCell(1,1);
+        playerAction = new PlayerAction(Action.WHERE_TO_MOVE_SELECTED, player1, null, null, savedToken, 0, selectedCell, null, false, null);
+        controller.update(playerAction);
+
+        view.printCLI(model.getCopy(), model.getValidCells());
+
+        // Player 1 select where to build
+
+        selectedCell = model.getBattlefield().getCell(0,0);
+        playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, player1, null, null, savedToken, 0, selectedCell, null, false, null);
+        controller.update(playerAction);
+
+        view.printCLI(model.getCopy(), model.getValidCells());
+
+        // Speed up again to let limus try to win
+
+        model.getBattlefield().getCell(2,1).setHeight(2);
+
+        // Player 2 select token
+
+        selectedToken = 2;
+        playerAction = new PlayerAction(Action.TOKEN_SELECTED, player2, null, null, selectedToken, 0, null, null, false, null);
+        controller.update(playerAction);
+
+        view.printCLI(model.getCopy(), model.getValidCells());
+
+        // Player 2 select where to move and should not win
+
+        savedToken = 2;
+        selectedCell = model.getBattlefield().getCell(1,0);
+        playerAction = new PlayerAction(Action.WHERE_TO_MOVE_SELECTED, player2, null, null, savedToken, 0, selectedCell, null, false, null);
+        controller.update(playerAction);
+
+        view.printCLI(model.getCopy(), model.getValidCells());
+
+
+        // Player 2 select where to build
+
+        selectedCell = model.getBattlefield().getCell(2,0);
         playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, player2, null, null, savedToken, 0, selectedCell, null, false, null);
         controller.update(playerAction);
 
         view.printCLI(model.getCopy(), model.getValidCells());
     }
 }
-
-

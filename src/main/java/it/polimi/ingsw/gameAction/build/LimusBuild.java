@@ -36,8 +36,10 @@ public class LimusBuild implements BuildBehavior {
                         provX = c.getPosX()+i;
                         for(j=-1; j<2; j++){
                             provY = c.getPosY()+j;
-                            if(battlefield.getCell(provX,provY).getHeight()!=3){
-                                toRemove.add(battlefield.getCell(provX, provY));
+                            if (0<=provX && provX<5 && 0<=provY && provY<5) {
+                                if (battlefield.getCell(provX, provY).getHeight() != 3) {
+                                    toRemove.add(battlefield.getCell(provX, provY));
+                                }
                             }
                         }
                     }
