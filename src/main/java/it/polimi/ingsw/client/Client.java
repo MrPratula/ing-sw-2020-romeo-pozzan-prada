@@ -59,6 +59,22 @@ public class Client extends Observable<ServerResponse> implements Observer<Playe
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
+                while (isActive()){
+                    try{
+                        Object serverResponse = objectInputStream.readObject();
+
+                        if (serverResponse instanceof ServerResponse) {
+                            notifyView((ServerResponse)serverResponse);
+                        } else {
+                            throw new IllegalArgumentException();
+                        }
+                    }catch (IOException | ClassNotFoundException e){
+                        break;
+                    } catch (WrongNumberPlayerException | CellHeightException | CellOutOfBattlefieldException | ImpossibleTurnException | ReachHeightLimitException e) {
+                        e.printStackTrace();
+                    }
+                }
+                /*
                 try {
 
                     while (isActive()) {
@@ -75,7 +91,7 @@ public class Client extends Observable<ServerResponse> implements Observer<Playe
                     System.out.println("qualche tipo di errore strano mi fa chiudere il socket"+e.getMessage());
                     e.printStackTrace();
                     setActive(false);
-                }
+                }*/
             }
         });
         thread.start();

@@ -177,8 +177,8 @@ public class SwingView extends View {
 
             // The second player receive the god choice message, the 2nd and 3rd receive this with player data
             case WAIT_AND_SAVE_PLAYER_FROM_SERVER:{
-                player = serverResponse.getPack().getPlayer();
 
+                player = serverResponse.getPack().getPlayer();
                 JOptionPane.showMessageDialog(new JFrame(),serverResponse.getPack().getAction().toString(),"WAIT_AND_SAVE_PLAYER_FROM_SERVER", JOptionPane.INFORMATION_MESSAGE);  //posso anche mettere un'immagine error
 
                 break;

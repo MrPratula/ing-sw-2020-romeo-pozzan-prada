@@ -67,7 +67,6 @@ public class Connection extends Observable<PlayerAction> implements Runnable{
      */
     public void send(ServerResponse serverResponse) throws IOException {
         //objectOutputStream.reset();
-        //objectOutputStream.flush();
         objectOutputStream.writeObject(serverResponse);
         objectOutputStream.flush();
     }

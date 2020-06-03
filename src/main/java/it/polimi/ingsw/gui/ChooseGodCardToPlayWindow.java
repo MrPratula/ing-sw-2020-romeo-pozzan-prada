@@ -19,7 +19,6 @@ import java.util.List;
 public class ChooseGodCardToPlayWindow {
     SwingView swingView;
 
-    Model model = new Model();
     List<GodCard> godInGame;
     List<GodCard> selectedGods = new ArrayList<>();
 
@@ -33,10 +32,7 @@ public class ChooseGodCardToPlayWindow {
         n= serverResponse.getPack().getNumberOfPlayers();
         cont=n;
 
-        // And add them to the model
-        for (GodCard god : godInGame) {
-            model.addGod(god);
-        }
+        List<GodCard> godInGame = serverResponse.getPack().getGodCards();
 
         final JFrame mainFrame = new JFrame("Gods");
 
