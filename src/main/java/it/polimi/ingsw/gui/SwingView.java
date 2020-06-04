@@ -177,7 +177,7 @@ public class SwingView extends View {
             case CHOOSE_GOD_CARD_TO_PLAY: {
 
                 this.player = serverResponse.getPack().getPlayer();
-                new ChooseGodCardToPlayWindow(this,serverResponse);
+                new ChooseGodCardToPlayWindow(this, serverResponse);
 
                 //inutile this.godsInGame = recognizeGodInGame(godcardsForTheGame);
                 break;
@@ -188,7 +188,6 @@ public class SwingView extends View {
 
                 player = serverResponse.getPack().getPlayer();
                 JOptionPane.showMessageDialog(new JFrame(),serverResponse.getPack().getAction().toString(),"WAIT_AND_SAVE_PLAYER_FROM_SERVER", JOptionPane.INFORMATION_MESSAGE);  //posso anche mettere un'immagine error
-
                 break;
             }
 

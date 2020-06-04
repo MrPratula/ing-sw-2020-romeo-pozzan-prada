@@ -59,12 +59,12 @@ public class ClientApp {
 
 
             //PROVA test CON GODS
-        List<GodCard> godsInGame = new ArrayList<>();
+        /*List<GodCard> godsInGame = new ArrayList<>();
         godsInGame.add(GodCard.CHRONUS);
         godsInGame.add(GodCard.ATHENA);
         godsInGame.add(GodCard.MINOTAUR);
         new test(godsInGame,new ServerResponse(TokenColor.RED, new Pack(Action.ASK_FOR_BUILD)));
-
+        */
 
         try{
             client.run();
