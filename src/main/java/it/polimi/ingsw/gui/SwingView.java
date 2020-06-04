@@ -149,6 +149,7 @@ public class SwingView extends View {
                 new WelcomeFrame(this);
                 break;
             }
+
             case INVALID_NAME: {
 
                 JOptionPane.showMessageDialog(new JFrame(),"Your name is invalid","Error", JOptionPane.ERROR_MESSAGE);  //posso anche mettere un'immagine error
@@ -169,6 +170,7 @@ public class SwingView extends View {
             // When the first player answer how much players there will be, waiting for the players to connect
             case WAIT_OTHER_PLAYERS_TO_CONNECT:
             case NUMBER_RECEIVED: {
+
                 JOptionPane.showMessageDialog(new JFrame(),serverResponse.getPack().getAction().toString(),"NUMBER_RECEIVED", JOptionPane.INFORMATION_MESSAGE);  //posso anche mettere un'immagine error
                 break;
             }
@@ -183,7 +185,7 @@ public class SwingView extends View {
                 break;
             }
 
-            // The second player receive the god choice message, the 2nd and 3rd receive this with player data
+            // The second player receives the god choice message, the 2nd and 3rd receive this with player data
             case WAIT_AND_SAVE_PLAYER_FROM_SERVER:{
 
                 player = serverResponse.getPack().getPlayer();

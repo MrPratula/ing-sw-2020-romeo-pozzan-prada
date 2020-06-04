@@ -94,6 +94,12 @@ public enum Pics {
         SANTORINI("./src/main/images/utils/" + "Santorini.png"),
         PLAYBUTTON("./src/main/images/utils/" + "buttonPlay.png"),
 
+        // MESSAGES
+        ASK_FOR_BUILD("./src/main/images/messages/" + "ASK_FOR_BUILD.png"),
+        ASK_FOR_SELECT_TOKEN("./src/main/images/messages/" + "ASK_FOR_SELECT_TOKEN.png"),
+        ASK_FOR_WHERE_TO_MOVE("./src/main/images/messages/" + "ASK_FOR_WHERE_TO_MOVE.png"),
+        PLACE_YOUR_TOKEN("./src/main/images/messages/" + "PLACE_YOUR_TOKEN.png"),
+
         // BACKGROUNDS
         DIALOGBG("./src/main/images/backgrounds/" + "dialogBg.png"),
         COLUMNS("./src/main/images/backgrounds/" + "columns.png"),

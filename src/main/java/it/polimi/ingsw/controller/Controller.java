@@ -1,18 +1,16 @@
 package it.polimi.ingsw.controller;
 
-
 import it.polimi.ingsw.cli.*;
 import it.polimi.ingsw.utils.PlayerAction;
 import it.polimi.ingsw.utils.Observer;
-
 import java.io.IOException;
 import java.util.*;
 
 
 /**
- * The Controller is the game logic.
- * It receive a PlayerMove from the Server.
- * The Controller modify the Model via ad-hoc method selected by the playerAction.
+ * The Controller contains the game logic.
+ * It receives a PlayerMove from the Server.
+ * The Controller modifies the Model via ad-hoc method selected by the playerAction.
  */
 public class Controller implements Observer<PlayerAction> {
 
@@ -25,10 +23,10 @@ public class Controller implements Observer<PlayerAction> {
 
     /**
      * It gets a PlayerAction and parse it.
-     * The switch select the Action a player intend to perform and call the appropriate
-     * method in the model.
-     * The controller need to check the correct format of the input and always pass valid arguments to the model.
-     * @param playerAction the message from the observer that contain all the information.
+     * The switch selects the Action that a player intends to perform and calls
+     * the appropriate method in the model.
+     * The controller needs to check the correct format of the input and always pass valid arguments to the model.
+     * @param playerAction the message from the observer that contains all the information.
      */
     @Override
     public void update(PlayerAction playerAction) throws CellOutOfBattlefieldException, CellHeightException, ReachHeightLimitException, WrongNumberPlayerException, ImpossibleTurnException, IOException {

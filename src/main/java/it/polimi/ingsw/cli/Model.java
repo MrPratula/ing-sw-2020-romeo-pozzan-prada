@@ -96,6 +96,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
     //Test use only
     private List<Cell> validCells;
+
     public List<Cell> getValidCells(){
         List<Cell> returnCell = validCells;
         validCells = null;
@@ -737,19 +738,18 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                 thisMove.executeMove(selectedToken, otherToken, enemyTokens, targetCell, enemyGodCards, battlefield);
                 break;
             }
-            case MINOTAUR:{ ///addeddddddddd
+            case MINOTAUR:{     //added lately
                 MoveContext thisMove = new MoveContext(new MinotaurMoves());
                 thisMove.executeMove(selectedToken, otherToken, enemyTokens, targetCell, enemyGodCards, battlefield);
                 break;
             }
-
             default:{
                 MoveContext thisMove = new MoveContext(new SimpleMoves());
                 thisMove.executeMove(selectedToken, otherToken, enemyTokens, targetCell, enemyGodCards, battlefield);
             }
         }
 
-        // check for a win move
+        // Check for a win move
         if (this.checkWin(selectedToken, myGodCard, enemyGodCards)) {
             String winner = playerAction.getPlayer().getUsername();
             gameOver(winner);
@@ -1041,14 +1041,14 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
 
     /**
-     * This method create a GAME OVER message because someone has won the game.
+     * This method creates a GAME OVER message because someone has won the game.
      * @param winner the player who win.
      * @return the correct ServerResponse.
      */
     public ServerResponse gameOver (String winner) {
 
         Pack pack = new Pack(Action.GAME_OVER);
-        String message = winner.toUpperCase()+" has win the game!";
+        String message = winner.toUpperCase()+" won the game!";
         pack.setMessageInTurn(message);
         pack.setModelCopy(getCopy());
 
@@ -1057,15 +1057,15 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
 
     /**
-     * This method remove a player from the game because there are 3 player and one lost.
-     * @param looser the player who lost.
+     * This method removes a player from the game because there are 3 player and one lost.
+     * @param looser is the player who lost.
      * @return the correct ServerResponse.
      */
     public ServerResponse playerLost (Player looser) throws WrongNumberPlayerException, ImpossibleTurnException {
 
 
         Pack pack = new Pack(Action.PLAYER_LOST);
-        String message = looser.getUsername().toUpperCase()+" has lost the game!";
+        String message = looser.getUsername().toUpperCase()+" lost the game!";
         pack.setMessageInTurn(message);
         pack.setMessageOpponents(message);
         pack.setModelCopy(getCopy());
@@ -1161,21 +1161,21 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         pack.setPlayer(getPlayerInTurn());
         pack.setModelCopy(getCopy());
         pack.setMessageInTurn(whatAction);
-        pack.setMessageOpponents(getPlayerInTurn().getUsername()+" has insert a non valid choice...");
+        pack.setMessageOpponents(getPlayerInTurn().getUsername()+" inserted a non valid choice...");
 
         ServerResponse serverResponse = new ServerResponse(getTurn(), pack);
         notify(serverResponse);
     }
 
     /**
-     * The two cell has to have different coordinates.
+     * Check if the two cells have different coordinates.
      */
     public boolean differentCell(Cell firstCell, Cell secondCell){
         return !(firstCell.getPosX()==secondCell.getPosX() && firstCell.getPosY()==secondCell.getPosY());
     }
 
     /**
-     * The targetCell can't be a perimeter cell.
+     * Check if the targetCell is a perimeter cell.
      */
     public boolean notPerimeterCell(Cell targetCell){
         return ((targetCell.getPosX()!=4 && targetCell.getPosY()!=4) && (targetCell.getPosX()!=0 && targetCell.getPosY()!=0));

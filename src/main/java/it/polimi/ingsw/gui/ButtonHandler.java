@@ -191,7 +191,7 @@ public class ButtonHandler implements ActionListener {
                 if (cellButton.getCell().getHeight() == 0) {
                     cellButton.setIcon(Pics.LEVEL1.getImageIcon());
                     cellButton.getCell().incrementHeight();
-                    cellButton.setRolloverIcon(Pics.LEVEL1.getImageIcon());
+                    cellButton.setRolloverIcon(Pics.LEVEL1TEXT.getImageIcon());
                     //button.setPressedIcon(pics[1]);
                     //button.setDisabledIcon(pics[1]);
                 }

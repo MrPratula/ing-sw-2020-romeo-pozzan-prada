@@ -31,9 +31,3 @@ public enum TokenColor implements Serializable {
     }
 
 }
-
-
-/*
-    Color.RESET;
-    System.out.println(redMessage);
-*/
