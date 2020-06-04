@@ -36,7 +36,6 @@ public class Controller implements Observer<PlayerAction> {
             switch(playerAction.getAction()){
 
                 case CHOSE_GOD_CARD: {
-                    System.out.println("iiiiii");
                     model.computeGodChoices(playerAction);
                     break;
                 }

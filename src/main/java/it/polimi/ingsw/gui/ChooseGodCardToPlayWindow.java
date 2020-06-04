@@ -17,16 +17,17 @@ import java.util.List;
 
 public class ChooseGodCardToPlayWindow {
 
-    SwingView swingView;
+    final SwingView view;
 
     List<GodCard> godInGame;
     List<GodCard> selectedGods = new ArrayList<>();
 
     int n, cont;
 
-    public ChooseGodCardToPlayWindow(final SwingView swingView, ServerResponse serverResponse) {
+    public ChooseGodCardToPlayWindow(SwingView swingView, ServerResponse serverResponse) {
 
-        this.swingView = swingView;
+        this.view = swingView;
+        final SwingView view = swingView;
         godInGame = serverResponse.getPack().getGodCards();
         n = serverResponse.getPack().getNumberOfPlayers();
         cont = n;
@@ -68,9 +69,9 @@ public class ChooseGodCardToPlayWindow {
                                 //inutile swingView.setGodCardsForTheGame(godStringToSplit.toString());
                                 JOptionPane.showMessageDialog(new JFrame(), "Ok! Thanks for the selections. The GodCards in game will be: "+godStringToSplit, "Selection confirmed", JOptionPane.INFORMATION_MESSAGE);
                                 //System.out.println(godStringToSplit);
-                                PlayerAction playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, null, null, null, 0, 0, null, null, false, godStringToSplit.toString());
+                                PlayerAction playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, view.getPlayer(), null, null, 0, 0, null, null, false, godStringToSplit.toString());
                                 try {
-                                    swingView.notifyClient(playerAction);
+                                    view.notifyClient(playerAction);
                                     mainFrame.dispose();
                                 } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | WrongNumberPlayerException | ImpossibleTurnException cellOutOfBattlefieldException) {
                                     cellOutOfBattlefieldException.printStackTrace();

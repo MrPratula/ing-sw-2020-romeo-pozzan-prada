@@ -1,5 +1,6 @@
 package it.polimi.ingsw.utils;
 
+import it.polimi.ingsw.cli.Player;
 import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.server.Server;
 
@@ -175,9 +176,9 @@ public class Connection extends Observable<PlayerAction> implements Runnable{
             while(isActive()){
 
                 PlayerAction playerAction = (PlayerAction) objectInputStream.readObject();
-
                 // notify the RemoteView(messageReceiver)
                 System.out.println(playerAction.getAction().getName().toUpperCase()+" from "+thisConnection.name);
+
                 notify(playerAction);
             }
 
