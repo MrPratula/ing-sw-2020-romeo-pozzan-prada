@@ -203,7 +203,7 @@ public class SwingView extends View {
 
                 // If the player is not in turn he is just notified to wait
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
-                    JOptionPane.showMessageDialog(new JFrame(),pack.getMessageOpponents(),"NOT YOUR TURN, "+pack.getPlayer().getUsername().toUpperCase()+"!, PLEASE WAIT", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(new JFrame(),pack.getMessageOpponents(),"NOT YOUR TURN!! PLEASE WAIT!", JOptionPane.WARNING_MESSAGE);
                 }
                 // else he has to pick his god card
                 else {
@@ -220,11 +220,11 @@ public class SwingView extends View {
                 //printCLI(pack.getModelCopy(), null);
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){  //forse while
-                    JOptionPane.showMessageDialog(new JFrame(),pack.getMessageOpponents(),"NOT YOUR TURN, "+pack.getPlayer().getUsername().toUpperCase()+"!, PLEASE WAIT", JOptionPane.WARNING_MESSAGE);  //posso anche mettere un'immagine error
+                    JOptionPane.showMessageDialog(new JFrame(),pack.getMessageOpponents(),"NOT YOUR TURN!! PLEASE WAIT", JOptionPane.WARNING_MESSAGE);
                     //gameFrame.getBattlefieldButtons().get(0).getCellButton().
                 }
                 else {
-                    JOptionPane.showMessageDialog(new JFrame(),pack.getAction().toString(),"YOUR TURN, "+pack.getPlayer().getUsername().toUpperCase(), JOptionPane.WARNING_MESSAGE);  //posso anche mettere un'immagine
+                    JOptionPane.showMessageDialog(new JFrame(),pack.getAction().getName().toUpperCase(),"YOUR TURN, ", JOptionPane.WARNING_MESSAGE);  //posso anche mettere un'immagine
 
                     //here the battlefieldGUI is set up
                     this.gameFrame = new GameFrame(godsInGame,serverResponse);
