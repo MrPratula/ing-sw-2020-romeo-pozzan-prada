@@ -1,5 +1,7 @@
 package it.polimi.ingsw.gui;
 
+import it.polimi.ingsw.cli.Cell;
+import it.polimi.ingsw.cli.Player;
 import it.polimi.ingsw.controller.CellHeightException;
 import it.polimi.ingsw.controller.ReachHeightLimitException;
 import it.polimi.ingsw.cli.ModelUtils;
@@ -17,15 +19,19 @@ public class ButtonHandler implements ActionListener {
 
     private ModelUtils modelUtils;
     final private CellButton cellButton;
+    private ServerResponse serverResponse;
     private CellButton prevButton;
     private Action action;
+    private Player playerInTurn;
 
-    public ButtonHandler(CellButton cellButton, ModelUtils modelUtils, Action action /*, ServerResponse serverResponse*/) {
-        //this.serverResponse = serverResponse;
+
+    public ButtonHandler(CellButton cellButton, ModelUtils modelUtils, Action action, ServerResponse serverResponse, Player playerInTurn) {
+        this.serverResponse = serverResponse;
         this.cellButton = cellButton;
        // this.prevButton = prevButton;
         this.modelUtils = modelUtils;
         this.action = action;
+        this.playerInTurn = playerInTurn;
     }
 
     /*     GETTER     */
@@ -46,18 +52,14 @@ public class ButtonHandler implements ActionListener {
 
         //  solo per compilare
         ServerResponse s = new ServerResponse(null,null);
-        PlayerAction playerAction = new PlayerAction(null,null,null,null,0,0,null,null,false,"");
+        //PlayerAction playerAction = new PlayerAction(null,null,null,null,0,0,null,null,false,"");
 
-        switch(this.action) {
+//        switch(this.action) {
+    /*
             case PLACE_YOUR_TOKEN:{
-                //(CellButton) clickedButtonEvent.getSource().
-                if(getCellButton().getCell().getThereIsPlayer() || getCellButton().getCell().getIsDome()){
-                    //impossible move
-                }
-                else{
-                    //getCellButton().setIcon(swingView.selectIcon(pack.getPlayer(),getCellButton().getCell(),false));
-                    //getCellButton().setRolloverIcon(swingView.selectRolloverIcon(pack.getPlayer(),getCellButton().getCell(),false));
-                }
+                Cell targetCell = ((CellButton) clickedButtonEvent.getSource()).getCell();
+                PlayerAction playerAction = new PlayerAction(Action.TOKEN_PLACED, playerInTurn, null, null, 0, 0, targetCell, null, false, null);
+                //notifyClient(playerAction);
 
             }
             case PLAYER_LOST:
@@ -69,19 +71,19 @@ public class ButtonHandler implements ActionListener {
                 //}
                     break;
             }
-            case ASK_FOR_BUILD: {
+     */    //   case ASK_FOR_BUILD: {
                 try {
                     prevButton = (CellButton) clickedButtonEvent.getSource(); //dubbio
                     incrementHeight();
                 } catch (CellHeightException | ReachHeightLimitException exception) {
                     exception.printStackTrace();
                 }
-            }
-            case ASK_FOR_WHERE_TO_MOVE:{
+          //  }
+           /* case ASK_FOR_WHERE_TO_MOVE:{
                 takeCareOfStartingPosition(prevButton);
                 moveToken(); //System.out.println(clickedButtonEvent.getActionCommand());
-            }
-        }
+            }*/
+  //      }
     }
 
 
@@ -175,7 +177,7 @@ public class ButtonHandler implements ActionListener {
     public void incrementHeight() throws CellHeightException, ReachHeightLimitException {
 
         if(cellButton.getCell().getIsDome()){
-            JOptionPane.showMessageDialog(new JFrame(),"You can't build over a dome!","Error", JOptionPane.ERROR_MESSAGE);  //posso anche mettere un'immagine error
+            JOptionPane.showMessageDialog(new JFrame(),"You can't build over a dome!","Error", JOptionPane.ERROR_MESSAGE,Pics.ERRORICON.getImageIcon());  //posso anche mettere un'immagine error
         }
 
         else {

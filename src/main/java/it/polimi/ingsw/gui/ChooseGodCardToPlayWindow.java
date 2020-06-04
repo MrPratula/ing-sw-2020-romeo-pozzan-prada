@@ -1,7 +1,6 @@
 package it.polimi.ingsw.gui;
 
 import it.polimi.ingsw.cli.GodCard;
-import it.polimi.ingsw.cli.Model;
 import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.PlayerAction;
@@ -17,29 +16,30 @@ import java.util.List;
 
 
 public class ChooseGodCardToPlayWindow {
+
     SwingView swingView;
 
     List<GodCard> godInGame;
     List<GodCard> selectedGods = new ArrayList<>();
 
-    int n;
-    int cont;
+    int n, cont;
 
     public ChooseGodCardToPlayWindow(final SwingView swingView, ServerResponse serverResponse) {
 
         this.swingView = swingView;
         godInGame = serverResponse.getPack().getGodCards();
-        n= serverResponse.getPack().getNumberOfPlayers();
-        cont=n;
+        n = serverResponse.getPack().getNumberOfPlayers();
+        cont = n;
 
         List<GodCard> godInGame = serverResponse.getPack().getGodCards();
 
         final JFrame mainFrame = new JFrame("Gods");
+        mainFrame.setIconImage(Pics.GODICON.getImageIcon().getImage());
 
         GodButton[] buttonGod = new GodButton[14];
         ButtonGroup buttonGroup = new ButtonGroup();
 
-        JPanel mainPanel = new JPanel(new GridLayout(2,7));
+        GodPanel mainPanel = new GodPanel();
 
         final List<ImageIcon> godsToDisplay = selectGodsToDisplay(godInGame);
         final List<ImageIcon> textToDisplay = selectTextToDisplay(godInGame);
@@ -56,6 +56,7 @@ public class ChooseGodCardToPlayWindow {
                 public void actionPerformed(ActionEvent e) {
                     if(cont!=0) {
                         GodButton selectedGod = (GodButton) e.getSource();
+                        selectedGod.setBackground(Color.green);
                         if(!selectedGods.contains(selectedGod.getGodCard())) {
                             selectedGods.add(selectedGod.getGodCard());
                             cont--;

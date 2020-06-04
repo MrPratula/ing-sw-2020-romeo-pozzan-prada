@@ -18,7 +18,7 @@ import java.util.List;
 public class ChooseGodCardWindow extends JDialog {
 
     final static String startPath = "./src/main/images/godcards/";
-    private final JPanel mainPanel;
+    private final GodPanel mainPanel;
     private final GodButton buttonGod1;
     private final GodButton buttonGod2;
     private final GodButton buttonGod3;
@@ -53,8 +53,9 @@ public class ChooseGodCardWindow extends JDialog {
         List<GodCard> godInGame = serverResponse.getPack().getGodCards();
 
         final JFrame mainFrame = new JFrame("Which one of these GodCards do you want to use in this game?");
+        mainFrame.setIconImage(Pics.GODICON.getImageIcon().getImage());
 
-        mainPanel = new JPanel();
+        mainPanel = new GodPanel(false);
 
         //poco elegante, ma poi rimedio dopo
         buttonGod3 = new GodButton(GodCard.MINOTAUR);
@@ -76,7 +77,6 @@ public class ChooseGodCardWindow extends JDialog {
         buttonGod1.setSize(400,700);
         buttonGod2.setSize(400,700);
         if(godInGame.size()==3){
-            assert buttonGod3 != null;
             buttonGod3.setSize(400,700);
         }
 
@@ -85,18 +85,14 @@ public class ChooseGodCardWindow extends JDialog {
         buttonGod1.setContentAreaFilled(false);
         buttonGod2.setContentAreaFilled(false);
         if(godInGame.size()==3){
-            assert buttonGod3 != null;
             buttonGod3.setBorderPainted(false);
             buttonGod3.setContentAreaFilled(false);
         }
-        //buttonGroup.add(buttonGod1);
-        //buttonGroup.add(buttonGod2);
 
         final List<ImageIcon> godsToDisplay = selectGodsToDisplay(godInGame);
         buttonGod1.setIcon(godsToDisplay.get(0));
         buttonGod2.setIcon(godsToDisplay.get(1));
         if(godInGame.size()==3) {
-            assert buttonGod3 != null;
             buttonGod3.setIcon(godsToDisplay.get(2));
         }
 
@@ -142,7 +138,6 @@ public class ChooseGodCardWindow extends JDialog {
         });
 
         if(godInGame.size()==3) {
-            assert buttonGod3 != null;
             buttonGod3.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {

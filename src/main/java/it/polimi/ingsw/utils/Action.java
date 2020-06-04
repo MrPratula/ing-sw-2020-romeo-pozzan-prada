@@ -51,13 +51,8 @@ public enum Action implements Serializable {
     ASK_FOR_BUILD("Where do you want to build? (x,y)"),
 
     // ERROR MESSAGES
-    CONNECTION_CLOSE("Connection closed from SERVER side!"),
+    CONNECTION_CLOSE("Connection closed from SERVER side!");
 
-    /*************GUI**************/
-
-    /*    FROM CLIENT TO SERVER     */
-
-    INITIALISED("User typed his username and number_of_players");
 
     private String info;
 

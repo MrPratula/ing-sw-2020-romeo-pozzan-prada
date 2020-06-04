@@ -8,14 +8,10 @@ import it.polimi.ingsw.utils.*;
 import it.polimi.ingsw.utils.Action;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 
 
@@ -34,6 +30,20 @@ public class SwingView extends View {
     private String godcardsForTheGame;
     private List<GodCard> godsInGame = new ArrayList<>();
 
+
+    /**
+     * Constructor of the client view with Swing GUI
+     */
+    public SwingView(){
+    }
+
+
+    /*     GETTER      */
+
+    protected Player getPlayer(){
+        return player;
+    }
+
     public JFrame getMainFrame() {
         return mainFrame;
     }
@@ -44,17 +54,6 @@ public class SwingView extends View {
 
     public void setBattlefieldGUI(CellButton[][] battlefieldGUI) {
         this.battlefieldGUI = battlefieldGUI;
-    }
-
-    /**
-     * Constructor of the client view with Swing GUI
-     */
-    public SwingView(){
-    }
-
-
-    protected Player getPlayer(){
-        return player;
     }
 
 
@@ -118,7 +117,16 @@ public class SwingView extends View {
         return opponents;
     }
 
-
+    /**
+     * Calls the notify to make update the observers
+     * @param playerAction
+     * @throws CellOutOfBattlefieldException
+     * @throws ReachHeightLimitException
+     * @throws CellHeightException
+     * @throws IOException
+     * @throws ImpossibleTurnException
+     * @throws WrongNumberPlayerException
+     */
     public void notifyClient(PlayerAction playerAction) throws CellOutOfBattlefieldException, ReachHeightLimitException, CellHeightException, IOException, ImpossibleTurnException, WrongNumberPlayerException {
         notify(playerAction);
     }
@@ -208,11 +216,6 @@ public class SwingView extends View {
 
                 Pack pack = serverResponse.getPack();
 
-                //here the battlefieldGUI is set up
-                this.gameFrame = new GameFrame(godsInGame);
-
-                this.battlefieldGUI = gameFrame.getBattlefieldGUI();
-
                 //printCLI(pack.getModelCopy(), null);
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){  //forse while
@@ -222,7 +225,13 @@ public class SwingView extends View {
                 else {
                     JOptionPane.showMessageDialog(new JFrame(),pack.getAction().toString(),"YOUR TURN, "+pack.getPlayer().getUsername().toUpperCase(), JOptionPane.WARNING_MESSAGE);  //posso anche mettere un'immagine
 
+                    //here the battlefieldGUI is set up
+                    this.gameFrame = new GameFrame(godsInGame,serverResponse);
+
+                    this.battlefieldGUI = gameFrame.getBattlefieldGUI();
+
                     gameFrame.setAction(pack.getAction());
+                    gameFrame.setPlayerInTurn(player);
 
                     //display the text of the action that the user should do
                     gameFrame.getMessageLabel().setText("NOW "+pack.getPlayer().getUsername().toUpperCase()+", SELECT A CELL TO "+Action.PLACE_YOUR_TOKEN.toString());
@@ -230,7 +239,6 @@ public class SwingView extends View {
                     //get selected cell on the gameframe
 
                     //displayGui(pack.getModelCopy(), null);
-
 
                    // PlayerAction playerAction = new PlayerAction(Action.TOKEN_PLACED, this.player, null, null, 0, 0, targetCell, null, false, null);
                    // notifyClient(playerAction);
@@ -245,36 +253,29 @@ public class SwingView extends View {
                 PlayerAction playerAction = null;
                 Pack pack = serverResponse.getPack();
 
-                // Update the player
-                this.player = pack.getPlayer();
-
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
                     displayGui(pack.getModelCopy(), null);
                     gameFrame.getMessageLabel().setText(pack.getMessageOpponents());
                 }
                 else {
-
+                    // Update the player
+                    this.player = pack.getPlayer();
                     if (pack.getMessageInTurn() != null){
                         gameFrame.getMessageLabel().setText(pack.getMessageInTurn());
                     }
 
+                    //while needToLoop
+                    displayGui(pack.getModelCopy(), null); //updategui()
+                    System.out.print(serverResponse.getPack().getAction().getInfo());
 
-                    boolean needToLoop = true;
+                    try{
+                        gameFrame.setAction(pack.getAction());
 
-                    while (needToLoop){
-                        displayGui(pack.getModelCopy(), null); //updategui()
-                        System.out.print(serverResponse.getPack().getAction().getInfo());
+                        //display the text of the action that the user should do
+                        gameFrame.getMessageLabel().setText("NOW "+pack.getPlayer().getUsername().toUpperCase()+", SELECT A CELL TO "+Action.PLACE_YOUR_TOKEN.toString());
 
-                        try{
-                            gameFrame.setAction(pack.getAction());
-
-                            //display the text of the action that the user should do
-                            gameFrame.getMessageLabel().setText("NOW "+pack.getPlayer().getUsername().toUpperCase()+", SELECT A CELL TO "+Action.PLACE_YOUR_TOKEN.toString());
-
-
-                        } catch (Exception e){
-                            System.out.println("Your input wasn't correct!");
-                        }
+                    } catch (Exception e){
+                        System.out.println("Your input wasn't correct!");
                     }
                     notifyClient(playerAction);
                 }
@@ -422,7 +423,7 @@ public class SwingView extends View {
                                 }
                             } catch (Exception e) {
                                 printCLI(pack.getModelCopy(), pack.getValidBuilds());
-                                System.out.println("Your input wasn't correct!");
+                                JOptionPane.showMessageDialog(new JFrame("error"), pack.getAction().toString(),"Your input wasn't correct!", JOptionPane.ERROR_MESSAGE);
                             }
                         }
                     }
@@ -478,6 +479,8 @@ public class SwingView extends View {
         return godsSeparated;
     }
 
+
+    //public void updateGui(ModelUtils modelCopy, List<Cell> validMoves){ }
 
     /**
      * Here i print the GUI for the user, depending on the parameter validMoves;

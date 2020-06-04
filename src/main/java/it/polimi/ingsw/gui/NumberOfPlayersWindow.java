@@ -21,7 +21,7 @@ public class NumberOfPlayersWindow extends JDialog{
         this.view = swingView;
 
         //numberOfPlayerPanel's panel
-        JPanel numberOfPlayerPanel = new JPanel();
+        NickNamePanel numberOfPlayerPanel = new NickNamePanel(false);
         numberOfPlayerPanel.setSize(350,200);
         numberOfPlayerPanel.setLayout(new BorderLayout(10,10));
         numberOfPlayerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -33,6 +33,7 @@ public class NumberOfPlayersWindow extends JDialog{
 
         //box to let the user select 2 or 3
         numberOfPlayersBox = new JComboBox<>();
+        numberOfPlayersBox.setBorder(BorderFactory.createEmptyBorder());
         numberOfPlayersBox.addItem(2);
         numberOfPlayersBox.addItem(3);
         numberOfPlayerPanel.add(numberOfPlayersBox);
@@ -40,7 +41,7 @@ public class NumberOfPlayersWindow extends JDialog{
         add(numberOfPlayerPanel,BorderLayout.PAGE_START);
 
         //the button to confirm the selection
-        JButton confirmButton = new JButton("Confirm");
+        ConfirmButton confirmButton = new ConfirmButton("Confirm");
         confirmButton.setBounds(10,20,80,25);
         add(confirmButton, BorderLayout.PAGE_END);
 

@@ -3,6 +3,8 @@ package it.polimi.ingsw.gui;
 import it.polimi.ingsw.cli.*;
 import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
 import it.polimi.ingsw.controller.ReachHeightLimitException;
+import it.polimi.ingsw.utils.Pack;
+import it.polimi.ingsw.utils.ServerResponse;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,7 +31,7 @@ public class BattlefieldGuiTest {
         godsInGame.add(GodCard.ATHENA);
         godsInGame.add(GodCard.MINOTAUR);
 
-        g = new GameFrame(godsInGame);;
+        g = new GameFrame(godsInGame, new ServerResponse(TokenColor.RED,new Pack(null)));;
 
         battlefield = new Battlefield();
         model = new Model();

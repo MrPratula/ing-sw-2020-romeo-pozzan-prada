@@ -35,9 +35,21 @@ public enum Pics {
         LEVEL3TEXT("./src/main/images/buildings/" + "level3Text.png"), //20
         LEVELDOMETEXT("./src/main/images/buildings/" + "levelDomeText.png"), //21
         LEVEL0VALIDMOVE("./src/main/images/buildings/" + "level0ValidMove.png"), //22
+        LEVEL0TOKENREDVALIDMOVE("./src/main/images/buildings/" + "level0tokenRedValidMove.png"), //22
+        LEVEL0TOKENBLUEVALIDMOVE("./src/main/images/buildings/" + "level0tokenBlueValidMove.png"), //22
+        LEVEL0TOKENYELLOWVALIDMOVE("./src/main/images/buildings/" + "level0tokenYellowValidMove.png"), //22
         LEVEL1VALIDMOVE("./src/main/images/buildings/" + "level1ValidMove.png"), //23
+        LEVEL1TOKENREDVALIDMOVE("./src/main/images/buildings/" + "level1TokenRedValidMove.png"), //23
+        LEVEL1TOKENBLUEVALIDMOVE("./src/main/images/buildings/" + "level1tokenBlueValidMove.png"), //23
+        LEVEL1TOKENYELLOWVALIDMOVE("./src/main/images/buildings/" + "level1tokenYellowValidMove.png"), //23
         LEVEL2VALIDMOVE("./src/main/images/buildings/" + "level2ValidMove.png"), //24
+        LEVEL2TOKENREDVALIDMOVE("./src/main/images/buildings/" + "level2tokenRedValidMove.png"), //24
+        LEVEL2TOKENBLUEVALIDMOVE("./src/main/images/buildings/" + "level2tokenBlueValidMove.png"), //24
+        LEVEL2TOKENYELLOWVALIDMOVE("./src/main/images/buildings/" + "level2tokenYellowValidMove.png"), //24
         LEVEL3VALIDMOVE("./src/main/images/buildings/" + "level3ValidMove.png"), //24
+        LEVEL3TOKENREDVALIDMOVE("./src/main/images/buildings/" + "level3tokenRedValidMove.png"), //24
+        LEVEL3TOKENBLUEVALIDMOVE("./src/main/images/buildings/" + "level3tokenBlueValidMove.png"), //24
+        LEVEL3TOKENYELLOWVALIDMOVE("./src/main/images/buildings/" + "level3tokenYellowValidMove.png"), //24
 
         // GODCARDS
         APOLLO("./src/main/images/godcards/" + "apollo.png"),  //0
@@ -74,7 +86,18 @@ public enum Pics {
         LEVEL0MOD("./src/main/images/buildings/" + "level0mod.png"),
         DONE("./src/main/images/utils/" + "done.png"),
         MESSAGEBG2("./src/main/images/utils/" + "bgMessage2.png"),
-        BATTLEFIELDICON("./src/main/images/utils/" + "battlefieldIcon.png");
+        BATTLEFIELDICON("./src/main/images/utils/" + "battlefieldIcon.png"),
+        GODICON("./src/main/images/utils/" + "godIcon.png"),
+        ERRORICON("./src/main/images/utils/" + "errorIcon.png"),
+        PLAYERICON("./src/main/images/utils/" + "playerIcon.png"),
+        BUTTON("./src/main/images/utils/" + "button.png"),
+        SANTORINI("./src/main/images/utils/" + "Santorini.png"),
+        PLAYBUTTON("./src/main/images/utils/" + "buttonPlay.png"),
+
+        // BACKGROUNDS
+        DIALOGBG("./src/main/images/backgrounds/" + "dialogBg.png"),
+        COLUMNS("./src/main/images/backgrounds/" + "columns.png"),
+        OLYMPUS("./src/main/images/backgrounds/" + "olympus.png");
 
 
     private String path;

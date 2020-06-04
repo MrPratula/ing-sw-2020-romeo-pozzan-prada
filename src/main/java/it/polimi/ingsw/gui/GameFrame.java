@@ -3,6 +3,7 @@ package it.polimi.ingsw.gui;
 import it.polimi.ingsw.cli.Cell;
 import it.polimi.ingsw.cli.GodCard;
 import it.polimi.ingsw.cli.ModelUtils;
+import it.polimi.ingsw.cli.Player;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.ServerResponse;
 
@@ -38,11 +39,13 @@ public class GameFrame extends JFrame {
 
     private ModelUtils modelUtils; ///////////////////////////////////
 
+    private Player playerInTurn;
+
 
     /**
      * Constructor of the main frame where the user will see the battlefield and can play on it
      */
-    public GameFrame(List<GodCard> godsInGame/*ServerResponse serverResponse*/) {
+    public GameFrame(List<GodCard> godsInGame, ServerResponse serverResponse) {
 
         // handling the frame
         super("Battlefield");
@@ -73,7 +76,6 @@ public class GameFrame extends JFrame {
         }
 
 
-
         // handling the battlefield panel
         battlefieldPanel = new BattlefieldPanel();
         battlefieldPanel.setLayout(new GridLayout(5,5,0,0));
@@ -84,12 +86,12 @@ public class GameFrame extends JFrame {
                 battlefieldGUI[i][j].setBorderPainted(false);
                 battlefieldGUI[i][j].setContentAreaFilled(false);
                 //battlefieldGUI[i][j].setSize(200,200);
-                //battlefieldGUI[i][j].setIcon(Pics.LEVEL0.getImageIcon());
+                battlefieldGUI[i][j].setIcon(Pics.LEVEL0.getImageIcon());
                 //battlefieldGUI[i][j].setBackground(Color.BLACK);
                 battlefieldGUI[i][j].getCell().setHeight(0);
                 battlefieldPanel.add(battlefieldGUI[i][j]);
                 //here i add a listener to this button (owning a Cell)
-                ButtonHandler bh = new ButtonHandler(battlefieldGUI[i][j],modelUtils, action /*,serverResponse*/);
+                ButtonHandler bh = new ButtonHandler(battlefieldGUI[i][j],modelUtils, action, serverResponse, playerInTurn);
                 battlefieldButtons.add(bh);
                 battlefieldGUI[i][j].addActionListener(bh);
             }
@@ -126,4 +128,7 @@ public class GameFrame extends JFrame {
         this.action = action;
     }
 
+    public void setPlayerInTurn(Player player) {
+        this.playerInTurn = player;
+    }
 }

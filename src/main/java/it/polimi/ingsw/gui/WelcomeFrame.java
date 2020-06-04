@@ -7,19 +7,23 @@ import java.awt.event.ActionListener;
 import java.io.File;
 
 public class WelcomeFrame {
+
     private final JFrame mainFrame;
     SwingView swingView;
 
+
     public WelcomeFrame(final SwingView swingView) {
+
         this.swingView = swingView;
         mainFrame = new JFrame("Santorini");
         mainFrame.setResizable(true);
+        mainFrame.setIconImage(Pics.PLAYBUTTON.getImageIcon().getImage());
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel mainPanel = new JPanel();
         mainPanel.setBackground(Color.WHITE);
 
-        JLabel logoImage = new JLabel(new ImageIcon(new File("./src/main/images/utils/Santorini.png").getAbsolutePath()));
+        JLabel logoImage = new JLabel(Pics.SANTORINI.getImageIcon());
 
         JButton playButton = new JButton(new ImageIcon(new File("./src/main/images/utils/buttonPlay.png").getAbsolutePath()));
         playButton.setContentAreaFilled(false);

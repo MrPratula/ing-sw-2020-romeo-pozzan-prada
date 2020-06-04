@@ -1,11 +1,15 @@
 package it.polimi.ingsw.gui;
 
-import it.polimi.ingsw.cli.Battlefield;
-import it.polimi.ingsw.cli.ModelUtils;
+import it.polimi.ingsw.cli.*;
 import it.polimi.ingsw.utils.Action;
+import it.polimi.ingsw.utils.Pack;
+import it.polimi.ingsw.utils.ServerResponse;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,9 +18,11 @@ public class test extends JFrame {
 
     private ModelUtils modelUtils; ///////////////////////////////////
 
-    private JLabel messageLabel = new JLabel("WELCOME! Messages will be displayed here");
+    private JLabel messageLabel = new JLabel(Pics.MESSAGEBG2.getImageIcon());
 
     private CellButton[][] battlefieldGUI = new CellButton[5][5];
+
+    private JPanel godPanel = new JPanel();
 
     private Action action;
 
@@ -24,9 +30,9 @@ public class test extends JFrame {
     private List<ButtonHandler> battlefieldButtons = new ArrayList<>();
 
 
-    public test() throws HeadlessException {
+    public test(List<GodCard> godsInGame, ServerResponse serverResponse) throws HeadlessException {
 
-        setSize(1000,1000);
+        setPreferredSize(new Dimension(950,1000));
 
         setLayout(new BorderLayout());
 
@@ -47,23 +53,29 @@ public class test extends JFrame {
                 b.add(battlefieldGUI[i][j]);
 
                 //here i add a listener to this button (owning a Cell)
-                ButtonHandler bh = new ButtonHandler(battlefieldGUI[i][j],modelUtils, action /*,serverResponse*/);
+                ButtonHandler bh = new ButtonHandler(battlefieldGUI[i][j],modelUtils, action ,new ServerResponse(TokenColor.RED,new Pack(Action.ASK_FOR_BUILD)),new Player("aaa", TokenColor.RED));
                 battlefieldButtons.add(bh);
                 battlefieldGUI[i][j].addActionListener(bh);
             }
         }
 
-        JPanel godPanel = new JPanel(new BorderLayout(3,1));
+        // handling the godcard panel
         godPanel.setLayout(new GridLayout(3,1));
-        JLabel player1 = new JLabel(Pics.APOLLO.getImageIcon());
-        JLabel player2 = new JLabel(Pics.HERA.getImageIcon());
-        JLabel player3 = new JLabel(Pics.LIMUS.getImageIcon());
-        player1.setText("Player1");
-        player2.setText("Player2");
-        player3.setText("Player3");
-        godPanel.add(player1);
-        godPanel.add(player2);
-        godPanel.add(player3);
+        for(int i = 0; i<godsInGame.size(); i++){
+            final int j = i + 1;
+            final JLabel player = new JLabel(new ImageIcon(new File("./src/main/images/godcards/" + godsInGame.get(i).name().toLowerCase() + ".png").getAbsolutePath()));
+            player.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    player.setText("Player"+j);
+                }
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    player.setText(" ");
+                }
+            });
+            godPanel.add(player);
+        }
 
         add(b,BorderLayout.CENTER);
         add(godPanel,BorderLayout.WEST);

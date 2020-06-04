@@ -49,8 +49,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
     @Override
     public void update(ServerResponse serverResponse) throws ImpossibleTurnException, IOException, CellHeightException, WrongNumberPlayerException, ReachHeightLimitException, CellOutOfBattlefieldException {
 
-        System.out.println();
-        System.out.println("Executing "+serverResponse.getPack().getAction().getName().toUpperCase());
+        System.out.println("\nExecuting "+serverResponse.getPack().getAction().getName().toUpperCase());
 
         switch (serverResponse.getPack().getAction()) {
 
