@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 
 public class WelcomeFrame {
 
@@ -39,7 +38,6 @@ public class WelcomeFrame {
         mainPanel.add(playButton, BorderLayout.PAGE_END);
         mainFrame.add(mainPanel);
 
-        mainFrame.setLocationRelativeTo(null);
         mainFrame.pack();
         mainFrame.setVisible(true);
     }

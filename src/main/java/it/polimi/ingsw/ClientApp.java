@@ -22,7 +22,7 @@ public class ClientApp {
 
         //todo: non cancellare
 
-
+        /*
               //  PROVA FINESTRA SCELTA SINGOLO GOD
         List<GodCard> allGodCards = new ArrayList<>();
         allGodCards.add(GodCard.CHRONUS);
@@ -32,7 +32,7 @@ public class ClientApp {
         pack.setGodCards(allGodCards);
         ServerResponse serverResponse = new ServerResponse(TokenColor.RED, pack);
         new ChooseGodCardWindow(new SwingView(),serverResponse);
-        
+        */
 
         /*   //  PROVA FINESTRA SCELTA dei GOD
         List<GodCard> godsDeck = new ArrayList<>(Arrays.asList(GodCard.values()).subList(0, 14));

@@ -217,32 +217,19 @@ public class SwingView extends View {
 
                 Pack pack = serverResponse.getPack();
 
-                //printCLI(pack.getModelCopy(), null);
-
-                if (!player.getTokenColor().equals(serverResponse.getTurn())){  //forse while
+                if (!player.getTokenColor().equals(serverResponse.getTurn())){
                     JOptionPane.showMessageDialog(new JFrame(),pack.getMessageOpponents(),"NOT YOUR TURN!! PLEASE WAIT", JOptionPane.WARNING_MESSAGE);
-                    //gameFrame.getBattlefieldButtons().get(0).getCellButton().
                 }
                 else {
-                    JOptionPane.showMessageDialog(new JFrame(),pack.getAction().getName().toUpperCase(),"YOUR TURN, ", JOptionPane.WARNING_MESSAGE);  //posso anche mettere un'immagine
+                    JOptionPane.showMessageDialog(new JFrame(),pack.getAction().getName().toUpperCase(),"YOUR TURN, ", JOptionPane.WARNING_MESSAGE);
 
                     //here the battlefieldGUI is set up
-                    this.gameFrame = new GameFrame(godsInGame,serverResponse);
+                    this.gameFrame = new GameFrame(godsInGame,serverResponse,this);
 
                     this.battlefieldGUI = gameFrame.getBattlefieldGUI();
 
-                    gameFrame.setAction(pack.getAction());
-                    gameFrame.setPlayerInTurn(player);
-
                     //display the text of the action that the user should do
                     gameFrame.getMessageLabel().setText("NOW "+pack.getPlayer().getUsername().toUpperCase()+", SELECT A CELL TO "+Action.PLACE_YOUR_TOKEN.toString());
-
-                    //get selected cell on the gameframe
-
-                    //displayGui(pack.getModelCopy(), null);
-
-                   // PlayerAction playerAction = new PlayerAction(Action.TOKEN_PLACED, this.player, null, null, 0, 0, targetCell, null, false, null);
-                   // notifyClient(playerAction);
                 }
                 break;
             }
@@ -270,7 +257,7 @@ public class SwingView extends View {
                     System.out.print(serverResponse.getPack().getAction().getInfo());
 
                     try{
-                        gameFrame.setAction(pack.getAction());
+                        //gameFrame.setAction(pack.getAction());
 
                         //display the text of the action that the user should do
                         gameFrame.getMessageLabel().setText("NOW "+pack.getPlayer().getUsername().toUpperCase()+", SELECT A CELL TO "+Action.PLACE_YOUR_TOKEN.toString());
@@ -653,5 +640,29 @@ public class SwingView extends View {
 
     public void setGodCardsForTheGame(String g) {
         this.godcardsForTheGame = g;
+    }
+
+    public boolean isFree(Cell targetCell, ModelUtils modelCopy){
+
+        List<Player> allPlayers = modelCopy.getAllPlayers();
+
+        for (Player p: allPlayers) {
+            if (p.getToken1() != null) {
+                if (p.getToken1().getTokenPosition() != null) {
+                    if (targetCell.equals(p.getToken1().getTokenPosition()))
+                        return false;
+                }
+            }
+            if (p.getToken2() != null) {
+                if (p.getToken1().getTokenPosition() != null) {
+                    if (targetCell.equals(p.getToken1().getTokenPosition()))
+                        return false;
+                }
+            }
+        }
+
+        Battlefield battlefield = modelCopy.getBattlefield();
+
+        return !battlefield.getCell(targetCell).getIsDome();
     }
 }
