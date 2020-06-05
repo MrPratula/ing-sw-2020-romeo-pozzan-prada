@@ -54,8 +54,8 @@ public class ButtonHandler implements ActionListener {
         ServerResponse s = new ServerResponse(null,null);
         //PlayerAction playerAction = new PlayerAction(null,null,null,null,0,0,null,null,false,"");
 
-//        switch(this.action) {
-    /*
+        switch(this.action) {
+
             case PLACE_YOUR_TOKEN:{
                 Cell targetCell = ((CellButton) clickedButtonEvent.getSource()).getCell();
                 PlayerAction playerAction = new PlayerAction(Action.TOKEN_PLACED, playerInTurn, null, null, 0, 0, targetCell, null, false, null);
@@ -67,23 +67,22 @@ public class ButtonHandler implements ActionListener {
             case TOKEN_NOT_MOVABLE:{
 
                // if(getCellButton().getCell().getThereIsPlayer() && ) {
-
-                //}
+                // }
                     break;
             }
-     */    //   case ASK_FOR_BUILD: {
+            case ASK_FOR_BUILD: {
                 try {
                     prevButton = (CellButton) clickedButtonEvent.getSource(); //dubbio
                     incrementHeight();
                 } catch (CellHeightException | ReachHeightLimitException exception) {
                     exception.printStackTrace();
                 }
-          //  }
-           /* case ASK_FOR_WHERE_TO_MOVE:{
+            }
+            case ASK_FOR_WHERE_TO_MOVE:{
                 takeCareOfStartingPosition(prevButton);
                 moveToken(); //System.out.println(clickedButtonEvent.getActionCommand());
-            }*/
-  //      }
+            }
+        }
     }
 
 

@@ -27,7 +27,7 @@ public class GameFrame extends JFrame {
     private JPanel godPanel = new JPanel();
 
     //label where the server tell the player what he has to do
-    private JLabel messageLabel = new JLabel(Pics.MESSAGEBG2.getImageIcon());
+    private JLabel messageLabel = new JLabel(Pics.ASK_FOR_WHERE_TO_MOVE.getImageIcon());
 
     //button for every cell
     private CellButton[][] battlefieldGUI = new CellButton[5][5];

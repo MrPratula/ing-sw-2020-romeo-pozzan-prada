@@ -276,7 +276,7 @@ public class SwingView extends View {
                         gameFrame.getMessageLabel().setText("NOW "+pack.getPlayer().getUsername().toUpperCase()+", SELECT A CELL TO "+Action.PLACE_YOUR_TOKEN.toString());
 
                     } catch (Exception e){
-                        System.out.println("Your input wasn't correct!");
+                        JOptionPane.showMessageDialog(new JFrame("error"), pack.getAction().toString(),"Your input wasn't correct!", JOptionPane.ERROR_MESSAGE);
                     }
                     notifyClient(playerAction);
                 }
@@ -339,10 +339,11 @@ public class SwingView extends View {
             case ASK_FOR_WHERE_TO_MOVE:{
 
                 Pack pack = serverResponse.getPack();
-                printCLI(pack.getModelCopy(), pack.getValidMoves());
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
-                    System.out.println(pack.getMessageOpponents());
+                    JOptionPane.showMessageDialog(new JFrame(), pack.getMessageOpponents(), "NOT YOUR TURN",JOptionPane.INFORMATION_MESSAGE);
+                    displayGui(pack.getModelCopy(), pack.getValidMoves());
+                    gameFrame.getMessageLabel().setIcon(Pics.NOT_YOUR_TURN.getImageIcon());
                 }
                 else{
 
@@ -351,20 +352,13 @@ public class SwingView extends View {
 
                     while (needToLoop){
 
-                        printCLI(pack.getModelCopy(), pack.getValidMoves());
-                        System.out.println(pack.getAction().toString());
+                        displayGui(pack.getModelCopy(), pack.getValidMoves());
+                        gameFrame.getMessageLabel().setIcon(Pics.ASK_FOR_WHERE_TO_MOVE.getImageIcon());
 
                         try{
-                            String[] inputs = getUserInput();
-
-                            Cell selectedCell = getCell(inputs, pack.getModelCopy().getBattlefield());
-
-                            if (selectedCell != null){
-                                playerAction = new PlayerAction(Action.WHERE_TO_MOVE_SELECTED, getPlayer(), null, null, savedToken, 0, selectedCell, null, false, null);
-                                needToLoop = false;
-                            }
+                            //GET CEL ON THE FRAME
                         } catch (Exception e){
-                            System.out.println("Your input wasn't correct!");
+                            JOptionPane.showMessageDialog(new JFrame("error"), pack.getAction().toString(),"Your input wasn't correct!", JOptionPane.ERROR_MESSAGE);
                         }
                     }
                     notify(playerAction);
