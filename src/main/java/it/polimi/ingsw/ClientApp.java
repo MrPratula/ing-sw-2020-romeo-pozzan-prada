@@ -49,7 +49,7 @@ public class ClientApp {
         godsInGame.add(GodCard.CHRONUS);
         godsInGame.add(GodCard.ATHENA);
         godsInGame.add(GodCard.MINOTAUR);
-        new GameFrame(godsInGame);
+        new GameFrame(godsInGame,new ServerResponse(TokenColor.RED, new Pack(Action.CHOOSE_GOD_CARD_TO_PLAY)));
         */
 
 
@@ -57,6 +57,7 @@ public class ClientApp {
 
         //new NumberOfPlayersWindow(new SwingView());
 
+        new WelcomeFrame(new SwingView());
 
             //PROVA test CON GODS
         /*List<GodCard> godsInGame = new ArrayList<>();
