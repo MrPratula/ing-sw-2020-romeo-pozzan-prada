@@ -103,11 +103,15 @@ public class Controller implements Observer<PlayerAction> {
 
                             // Check for demeter power condition
                             if (model.getPlayerInTurn().getMyGodCard().equals(GodCard.DEMETER)){
-                                if (model.differentCell(targetCell, playerAction.getSecondCell())){
-                                    model.performBuild(playerAction);
+                                if (playerAction.getDoWantUsePower()) {
+                                    if (model.differentCell(targetCell, playerAction.getSecondCell())) {
+                                        model.performBuild(playerAction);
+                                    } else {
+                                        model.notifyWrongInput(playerAction);
+                                    }
                                 }
                                 else {
-                                    model.notifyWrongInput(playerAction);
+                                    model.performBuild(playerAction);
                                 }
                                 break;
 

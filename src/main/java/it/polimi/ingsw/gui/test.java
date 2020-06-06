@@ -53,7 +53,7 @@ public class test extends JFrame {
                 b.add(battlefieldGUI[i][j]);
 
                 //here i add a listener to this button (owning a Cell)
-                ButtonHandler bh = new ButtonHandler(battlefieldGUI[i][j],modelUtils, action ,new ServerResponse(TokenColor.RED,new Pack(Action.ASK_FOR_BUILD)),new Player("aaa", TokenColor.RED));
+                ButtonHandler bh = new ButtonHandler(battlefieldGUI[i][j], serverResponse ,new SwingView());
                 battlefieldButtons.add(bh);
                 battlefieldGUI[i][j].addActionListener(bh);
             }

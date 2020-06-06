@@ -32,8 +32,6 @@ public class ChooseGodCardToPlayWindow {
         n = serverResponse.getPack().getNumberOfPlayers();
         cont = n;
 
-        List<GodCard> godInGame = serverResponse.getPack().getGodCards();
-
         final JFrame mainFrame = new JFrame("Gods");
         mainFrame.setIconImage(Pics.GODICON.getImageIcon().getImage());
 

@@ -1,10 +1,7 @@
 package it.polimi.ingsw.gui;
 
 import it.polimi.ingsw.cli.Cell;
-import it.polimi.ingsw.cli.Player;
-import it.polimi.ingsw.controller.CellHeightException;
-import it.polimi.ingsw.controller.ReachHeightLimitException;
-import it.polimi.ingsw.cli.ModelUtils;
+import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.cli.TokenColor;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.PlayerAction;
@@ -13,55 +10,53 @@ import it.polimi.ingsw.utils.ServerResponse;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 
 public class ButtonHandler implements ActionListener {
 
-    private ModelUtils modelUtils;
     final private CellButton cellButton;
     private ServerResponse serverResponse;
-    private CellButton prevButton;
-    private Action action;
-    private Player playerInTurn;
+    private final SwingView view;
 
 
-    public ButtonHandler(CellButton cellButton, ModelUtils modelUtils, Action action, ServerResponse serverResponse, Player playerInTurn) {
+
+    public ButtonHandler(CellButton cellButton,ServerResponse serverResponse, SwingView swingView) {
         this.serverResponse = serverResponse;
         this.cellButton = cellButton;
-       // this.prevButton = prevButton;
-        this.modelUtils = modelUtils;
-        this.action = action;
-        this.playerInTurn = playerInTurn;
+        this.view = swingView;
     }
 
-    /*     GETTER     */
-    public CellButton getCellButton() {
-        return cellButton;
-    }
-
-    public CellButton getPrevButton() {
-        return prevButton;
-    }
-
-    public void setAction(Action action) {
-        this.action = action;
-    }
 
     @Override
     public void actionPerformed(ActionEvent clickedButtonEvent) {
 
-        //  solo per compilare
-        ServerResponse s = new ServerResponse(null,null);
-        //PlayerAction playerAction = new PlayerAction(null,null,null,null,0,0,null,null,false,"");
 
-        switch(this.action) {
+        switch(serverResponse.getPack().getAction()) {
 
             case PLACE_YOUR_TOKEN:{
                 Cell targetCell = ((CellButton) clickedButtonEvent.getSource()).getCell();
-                PlayerAction playerAction = new PlayerAction(Action.TOKEN_PLACED, playerInTurn, null, null, 0, 0, targetCell, null, false, null);
-                //notifyClient(playerAction);
-
+                if(view.isFree(targetCell,serverResponse.getPack().getModelCopy())){
+                    try {
+                        incrementHeight();
+                    } catch (CellHeightException | ReachHeightLimitException e) {
+                        e.printStackTrace();
+                    }
+                    /*
+                    PlayerAction playerAction = new PlayerAction(Action.TOKEN_PLACED, serverResponse.getPack().getPlayer(), null, null, 0, 0, targetCell, null, false, null);
+                    try {
+                        view.notifyClient(playerAction);
+                    } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException e) {
+                        e.printStackTrace();
+                    }*/
+                }
+                else {
+                    JOptionPane.showMessageDialog(new JFrame(), "You can't place your token here! Already occcupied!", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                break;
             }
+
+
             case PLAYER_LOST:
             case ASK_FOR_SELECT_TOKEN:
             case TOKEN_NOT_MOVABLE:{
@@ -70,16 +65,20 @@ public class ButtonHandler implements ActionListener {
                 // }
                     break;
             }
+
+
             case ASK_FOR_BUILD: {
                 try {
-                    prevButton = (CellButton) clickedButtonEvent.getSource(); //dubbio
+                    //prevButton = (CellButton) clickedButtonEvent.getSource(); //dubbio
                     incrementHeight();
                 } catch (CellHeightException | ReachHeightLimitException exception) {
                     exception.printStackTrace();
                 }
             }
+
+
             case ASK_FOR_WHERE_TO_MOVE:{
-                takeCareOfStartingPosition(prevButton);
+                //takeCareOfStartingPosition(prevButton);
                 moveToken(); //System.out.println(clickedButtonEvent.getActionCommand());
             }
         }

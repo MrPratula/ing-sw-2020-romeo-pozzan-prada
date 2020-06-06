@@ -69,9 +69,11 @@ class HephaestusBuildTest {
         BuildContext thisBuild = new BuildContext(new HephaestusBuild());
         validBuilds = thisBuild.executeValidBuilds(selectedToken, null, enemyTokens, null, battlefield, null);
 
-        Assert.assertEquals(3,validBuilds.size());
+        Assert.assertEquals(5,validBuilds.size());
         Assert.assertTrue(validBuilds.contains(battlefield.getCell(3,1)));
         Assert.assertTrue(validBuilds.contains(battlefield.getCell(1,2)));
         Assert.assertTrue(validBuilds.contains(battlefield.getCell(3,3)));
+        Assert.assertTrue(validBuilds.contains(battlefield.getCell(1,3)));
+        Assert.assertTrue(validBuilds.contains(battlefield.getCell(2,3)));
     }
 }

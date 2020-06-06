@@ -31,7 +31,7 @@ public class BattlefieldGuiTest {
         godsInGame.add(GodCard.ATHENA);
         godsInGame.add(GodCard.MINOTAUR);
 
-        g = new GameFrame(godsInGame, new ServerResponse(TokenColor.RED,new Pack(null)));;
+        g = new GameFrame(new ServerResponse(TokenColor.RED,new Pack(null)), new SwingView());
 
         battlefield = new Battlefield();
         model = new Model();
