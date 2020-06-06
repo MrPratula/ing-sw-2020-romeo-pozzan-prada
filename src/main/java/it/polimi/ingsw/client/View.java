@@ -653,7 +653,6 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
     }
 
 
-
     public Cell getCell(String[] inputs, Battlefield battlefield){
 
         int selectX, selectY;
@@ -666,7 +665,6 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
             return null;
         }
     }
-
 
 
     public boolean isFree(Cell targetCell, ModelUtils modelCopy){
@@ -697,6 +695,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
     public boolean notPerimeterCell(Cell targetCell){
         return ((targetCell.getPosX()!=4 && targetCell.getPosY()!=4) && (targetCell.getPosX()!=0 && targetCell.getPosY()!=0));
     }
+
 
     public boolean askYesOrNot(){
 

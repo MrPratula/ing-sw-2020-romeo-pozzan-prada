@@ -346,14 +346,14 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
             // If the first token has a position and the second not, it is assigned
             if (getPlayerInTurn().getToken1().getTokenPosition()!=null && getPlayerInTurn().getToken2().getTokenPosition()==null) {
-                getPlayerInTurn().getToken2().setTokenPosition(targetCell);
                 battlefield.getCell(targetCell).setOccupied();
+                getPlayerInTurn().getToken2().setTokenPosition(battlefield.getCell(targetCell));
             }
 
             // If the first token has no position, it is assigned
             if (getPlayerInTurn().getToken1().getTokenPosition()==null) {
-                getPlayerInTurn().getToken1().setTokenPosition(targetCell);
                 battlefield.getCell(targetCell).setOccupied();
+                getPlayerInTurn().getToken1().setTokenPosition(battlefield.getCell(targetCell));
             }
 
             if (getPlayerInTurn().getToken1().getTokenPosition()!=null && getPlayerInTurn().getToken2().getTokenPosition()!=null)
@@ -369,7 +369,8 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                     break;
                 }
                 // If all the tokens of all players have a position the game can start
-                gameCanStart=true;
+                else
+                    gameCanStart=true;
             }
 
             Pack pack;
@@ -710,7 +711,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
         Player playerActive = getPlayerInTurn();
         GodCard myGodCard = playerActive.getMyGodCard();
-        Cell targetCell = playerAction.getFirstCell();
+        Cell targetCell = battlefield.getCell(playerAction.getFirstCell());
 
         int selectedTokenId = playerAction.getTokenMain();
         Token selectedToken = parseToken(selectedTokenId);
@@ -733,7 +734,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                 thisMove.executeMove(selectedToken, otherToken, enemyTokens, targetCell, enemyGodCards, battlefield);
                 break;
             }
-            case MINOTAUR:{     //added lately
+            case MINOTAUR:{
                 MoveContext thisMove = new MoveContext(new MinotaurMoves());
                 thisMove.executeMove(selectedToken, otherToken, enemyTokens, targetCell, enemyGodCards, battlefield);
                 break;
@@ -920,8 +921,14 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
         Player playerActive = getPlayerInTurn();
         GodCard myGodCard = playerActive.getMyGodCard();
-        Cell targetCell = playerAction.getFirstCell();
-        Cell second_cell = playerAction.getSecondCell();
+        Cell targetCell = battlefield.getCell(playerAction.getFirstCell());
+        Cell secondCell;
+        try{
+            secondCell = battlefield.getCell(playerAction.getSecondCell());
+        } catch (Exception e){
+            secondCell = null;
+        }
+
         boolean wantToUsePower = playerAction.getDoWantUsePower();
 
         switch (myGodCard) {
@@ -939,7 +946,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             case DEMETER:{
                 BuildContext thisBuild;
                 thisBuild = new BuildContext(new DemeterBuild());
-                thisBuild.executePerformBuild(targetCell, second_cell, getBattlefield());
+                thisBuild.executePerformBuild(targetCell, secondCell, getBattlefield());
                 break;
             }
             case HEPHAESTUS:{
@@ -956,7 +963,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             case HESTIA:{
                 BuildContext thisBuild;
                 thisBuild = new BuildContext(new HestiaBuild());
-                thisBuild.executePerformBuild(targetCell,second_cell,getBattlefield());
+                thisBuild.executePerformBuild(targetCell,secondCell,getBattlefield());
                 break;
             }
             default:{
@@ -1057,7 +1064,6 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * @return the correct ServerResponse.
      */
     public ServerResponse playerLost (Player looser) throws WrongNumberPlayerException, ImpossibleTurnException {
-
 
         Pack pack = new Pack(Action.PLAYER_LOST);
         String message = looser.getUsername().toUpperCase()+" lost the game!";
@@ -1175,6 +1181,4 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     public boolean notPerimeterCell(Cell targetCell){
         return ((targetCell.getPosX()!=4 && targetCell.getPosY()!=4) && (targetCell.getPosX()!=0 && targetCell.getPosY()!=0));
     }
-
-
 }
