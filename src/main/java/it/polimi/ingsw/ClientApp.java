@@ -54,10 +54,11 @@ public class ClientApp {
         new GameFrame(godsInGame,new ServerResponse(TokenColor.RED, new Pack(Action.CHOOSE_GOD_CARD_TO_PLAY)),new SwingView());
         */
 
-
+        /*
         new NickNameWindow(new SwingView());
 
         new NumberOfPlayersWindow(new SwingView());
+        */
 
         //new WelcomeFrame(new SwingView());
 

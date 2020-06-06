@@ -24,8 +24,8 @@ public class ChooseGodCardWindow extends JDialog {
     private final GodButton buttonGod3;
     private ButtonGroup buttonGroup;
     private SwingView view;
-
-    ServerResponse serverResponse;
+    private ServerResponse serverResponse;
+    private List<GodCard> godInGame;
 
 
     /*       GETTER       */
@@ -50,7 +50,7 @@ public class ChooseGodCardWindow extends JDialog {
 
         this.view = swingView;
         this.serverResponse = serverResponse;
-        List<GodCard> godInGame = serverResponse.getPack().getGodCards();
+        godInGame = serverResponse.getPack().getGodCards();
 
         final JFrame mainFrame = new JFrame("Which one of these GodCards do you want to use in this game?");
         mainFrame.setIconImage(Pics.GODICON.getImageIcon().getImage());

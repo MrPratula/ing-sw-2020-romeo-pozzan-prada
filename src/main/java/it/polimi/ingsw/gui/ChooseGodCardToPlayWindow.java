@@ -62,7 +62,7 @@ public class ChooseGodCardToPlayWindow {
                             if(cont==0){
                                 StringBuilder godStringToSplit = new StringBuilder();
                                 for (GodCard g : selectedGods) {
-                                    godStringToSplit.append(g.name().toUpperCase()).append(" ");
+                                    godStringToSplit.append(g.name().toUpperCase()).append(",");
                                 }
                                 //inutile swingView.setGodCardsForTheGame(godStringToSplit.toString());
                                 JOptionPane.showMessageDialog(new JFrame(), "Ok! Thanks for the selections. The GodCards in game will be: "+godStringToSplit, "Selection confirmed", JOptionPane.INFORMATION_MESSAGE);
