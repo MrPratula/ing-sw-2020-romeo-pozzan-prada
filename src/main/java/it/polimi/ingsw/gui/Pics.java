@@ -93,6 +93,7 @@ public enum Pics {
         BUTTON("./src/main/images/utils/" + "button.png"),
         SANTORINI("./src/main/images/utils/" + "Santorini.png"),
         PLAYBUTTON("./src/main/images/utils/" + "buttonPlay.png"),
+        NICKNAME("./src/main/images/utils/" + "nickname.png"),
 
         // MESSAGES
         ASK_FOR_BUILD("./src/main/images/messages/" + "ASK_FOR_BUILD.png"),

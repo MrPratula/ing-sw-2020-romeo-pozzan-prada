@@ -23,7 +23,7 @@ public class ClientApp {
         //todo: non cancellare
 
 
-              //  PROVA FINESTRA SCELTA SINGOLO GOD
+        /*      //  PROVA FINESTRA SCELTA SINGOLO GOD
         List<GodCard> allGodCards = new ArrayList<>();
         allGodCards.add(GodCard.CHRONUS);
         allGodCards.add(GodCard.LIMUS);
@@ -32,7 +32,7 @@ public class ClientApp {
         pack.setGodCards(allGodCards);
         ServerResponse serverResponse = new ServerResponse(TokenColor.RED, pack);
         new ChooseGodCardWindow(new SwingView(),serverResponse);
-        
+        */
 
         /*   //  PROVA FINESTRA SCELTA dei GOD
         List<GodCard> godsDeck = new ArrayList<>(Arrays.asList(GodCard.values()).subList(0, 14));
@@ -53,9 +53,9 @@ public class ClientApp {
         */
 
 
-        //new NickNameWindow(new SwingView());
+        new NickNameWindow(new SwingView());
 
-        //new NumberOfPlayersWindow(new SwingView());
+        new NumberOfPlayersWindow(new SwingView());
 
         //new WelcomeFrame(new SwingView());
 

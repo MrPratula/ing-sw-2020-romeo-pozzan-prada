@@ -28,28 +28,26 @@ public class NickNameWindow extends JDialog{
         setTitle("Select your nickname for this game");
         setResizable(false);
         setPreferredSize(new Dimension(600,300));
+        setLocationRelativeTo(null);
         setIconImage(Pics.PLAYERICON.getImageIcon().getImage());
         setBackground(Color.BLACK);
 
         this.view = swingView;
 
-        //JFrame jf = new JFrame("Select your nickname for this game");
-        //jf.setIconImage(Pics.PLAYERICON.getImageIcon().getImage());
-
         //Nickname's panel
         nicknamePanel = new NickNamePanel();
 
         //label for asking nickname
-        JLabel nicknameLabel = new JLabel("<html><div style='text-align: center;'>" + "\nNickname:" + "</div></html>");
-        nicknameLabel.setFont(new Font("Arial",Font.PLAIN,30));
-        nicknameLabel.setBounds(10,20,80,25);
+        JLabel nicknameLabel = new JLabel();
+        nicknameLabel.setFont(new Font("Arial",Font.PLAIN,15));
+        nicknameLabel.setBounds(10,20,30,20);
         nicknamePanel.add(nicknameLabel,BorderLayout.PAGE_START);
 
         //textfield for let the user type his nickname
-        nicknameTextField = new JTextField(25);
+        nicknameTextField = new JTextField(10);
         nicknameTextField.setBorder(BorderFactory.createEmptyBorder());
-        nicknameTextField.setBounds(10,20,80,10);
-        nicknameTextField.setOpaque(false);
+        nicknameTextField.setBounds(10,20,10,10);
+        //nicknameTextField.setOpaque(false);
         nicknameTextField.setSelectedTextColor(Color.BLACK);
         nicknamePanel.add(nicknameTextField);
 

@@ -6,7 +6,7 @@ import java.awt.*;
 public class NickNamePanel extends JPanel {
 
     public NickNamePanel(boolean b){
-
+        //maybe
     }
 
     public NickNamePanel() {
@@ -18,7 +18,7 @@ public class NickNamePanel extends JPanel {
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        g.drawImage(Pics.DIALOGBG.getImageIcon().getImage(),0,0,this.getWidth(),this.getHeight(),this);
+        g.drawImage(Pics.NICKNAME.getImageIcon().getImage(),0,0,this.getWidth(),this.getHeight(),this);
     }
 
 }
