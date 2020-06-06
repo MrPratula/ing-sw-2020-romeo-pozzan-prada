@@ -681,8 +681,8 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                 }
             }
             if (p.getToken2() != null) {
-                if (p.getToken1().getTokenPosition() != null) {
-                    if (targetCell.equals(p.getToken1().getTokenPosition()))
+                if (p.getToken2().getTokenPosition() != null) {
+                    if (targetCell.equals(p.getToken2().getTokenPosition()))
                         return false;
                 }
             }

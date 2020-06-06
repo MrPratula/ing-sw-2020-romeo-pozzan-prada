@@ -281,8 +281,6 @@ public class Server  {
 
         List<GodCard> godsDeck = new ArrayList<>(Arrays.asList(GodCard.values()).subList(0, 14));
 
-        List<String> keys = new ArrayList<>(waitingConnection.keySet());
-
         // Build a string with all the god cards
         StringBuilder text= new StringBuilder("There are the following Gods available:");
         for (GodCard god: godsDeck) {
@@ -290,13 +288,15 @@ public class Server  {
             text.append("\n").append(god.toString());
         }
 
-        // Remember the hash map do not enqueue the value, but it is put on top
-        // That's the reason for strange values in keys.get(n)
         if (waitingConnection.size()==2) {
-            Connection c1 = waitingConnection.get(keys.get(1));
-            Connection c2 = waitingConnection.get(keys.get(0));
 
             List<Player> allPlayers = model.getAllPlayers();
+
+            String player1Name = allPlayers.get(0).getUsername();
+            String player2Name = allPlayers.get(1).getUsername();
+
+            Connection c1 = waitingConnection.get(player1Name);
+            Connection c2 = waitingConnection.get(player2Name);
 
             Pack player1Pack = new Pack(Action.CHOOSE_GOD_CARD_TO_PLAY);
             Pack player2Pack = new Pack(Action.WAIT_AND_SAVE_PLAYER_FROM_SERVER);
@@ -308,16 +308,20 @@ public class Server  {
             player1Pack.setMessageInTurn(text.toString());
             player1Pack.setNumberOfPlayers(2);
 
-
             c1.asyncSend(new ServerResponse(null, player1Pack));
             c2.asyncSend(new ServerResponse(null, player2Pack));
         }
         else{
-            Connection c1 = waitingConnection.get(keys.get(2));
-            Connection c2 = waitingConnection.get(keys.get(1));
-            Connection c3 = waitingConnection.get(keys.get(0));
 
             List<Player> allPlayers = model.getAllPlayers();
+
+            String player1Name = allPlayers.get(0).getUsername();
+            String player2Name = allPlayers.get(1).getUsername();
+            String player3Name = allPlayers.get(2).getUsername();
+
+            Connection c1 = waitingConnection.get(player1Name);
+            Connection c2 = waitingConnection.get(player2Name);
+            Connection c3 = waitingConnection.get(player3Name);
 
             Pack player1Pack = new Pack(Action.CHOOSE_GOD_CARD_TO_PLAY);
             Pack player2Pack = new Pack(Action.WAIT_AND_SAVE_PLAYER_FROM_SERVER);
@@ -352,7 +356,6 @@ public class Server  {
         godInGame.add(randomGod);
         godsDeck.remove(randomGod);
     }
-
 }
 
 
