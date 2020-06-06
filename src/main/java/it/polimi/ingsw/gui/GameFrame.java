@@ -93,6 +93,7 @@ public class GameFrame extends JFrame {
                 ButtonHandler bh = new ButtonHandler(battlefieldGUI[i][j],serverResponse,view);
                 battlefieldButtons.add(bh);
                 battlefieldGUI[i][j].addActionListener(bh);
+                battlefieldPanel.add(battlefieldGUI[i][j]);
             }
         }
 

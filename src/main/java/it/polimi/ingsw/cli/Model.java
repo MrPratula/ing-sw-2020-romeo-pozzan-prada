@@ -30,7 +30,6 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     private TokenColor turn;
     private List<Player> allPlayers = new ArrayList<>();
     private List<GodCard> allGodCards = new ArrayList<>();
-    private List<GodCard> godsInGame = new ArrayList<>(); //lista di gods in game per la gui
     private boolean firstTime = true;
 
     private Token prometheusToken;
@@ -226,7 +225,6 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                 for (String name: godNames) {
                     if (god.name().toUpperCase().equals(name)){
                         allGodCards.add(god);
-                        godsInGame.add(god);
                         break; //aggiunto ora 03/06
                     }
                 }
@@ -287,7 +285,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                     }
 
                     Pack pack = new Pack(Action.PLACE_YOUR_TOKEN);
-                    pack.setGodCards(godsInGame);
+                    pack.setGodCards(getGodCards(allPlayers));
                     pack.setModelCopy(getCopy());
                     pack.setMessageInTurn(text.toString());
                     pack.setMessageOpponents("Another player is placing his tokens on the battlefield. Be patient please...");
