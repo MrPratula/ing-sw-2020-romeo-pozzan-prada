@@ -222,14 +222,18 @@ public class SwingView extends View {
                 }
                 else {
                     JOptionPane.showMessageDialog(new JFrame(),pack.getAction().getName().toUpperCase(),"YOUR TURN, ", JOptionPane.WARNING_MESSAGE);
+                    new GameFrame(serverResponse,this);
 
+                    /*
                     //here the battlefieldGUI is set up
-                    this.gameFrame = new GameFrame(godsInGame,serverResponse,this);
+                    //this.gameFrame = new GameFrame(godsInGame,serverResponse,this);
+                    new GameFrame(serverResponse,this);
 
                     this.battlefieldGUI = gameFrame.getBattlefieldGUI();
 
                     //display the text of the action that the user should do
                     gameFrame.getMessageLabel().setText("NOW "+pack.getPlayer().getUsername().toUpperCase()+", SELECT A CELL TO "+Action.PLACE_YOUR_TOKEN.toString());
+                    */
                 }
                 break;
             }

@@ -1,10 +1,6 @@
 package it.polimi.ingsw.gui;
 
-import it.polimi.ingsw.cli.Cell;
 import it.polimi.ingsw.cli.GodCard;
-import it.polimi.ingsw.cli.ModelUtils;
-import it.polimi.ingsw.cli.Player;
-import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.ServerResponse;
 
@@ -38,12 +34,13 @@ public class GameFrame extends JFrame {
 
     private final SwingView view;
     private final ServerResponse serverResponse;
+    List<GodCard> godsInGame;
 
 
     /**
      * Constructor of the main frame where the user will see the battlefield and can play on it
      */
-    public GameFrame(List<GodCard> godsInGame, ServerResponse serverResponse, SwingView swingView) {
+    public GameFrame(ServerResponse serverResponse, SwingView swingView) {
 
         // handling the frame
         super("Battlefield");
@@ -56,6 +53,7 @@ public class GameFrame extends JFrame {
 
         this.view = swingView;
         this.serverResponse = serverResponse;
+        this.godsInGame = serverResponse.getPack().getGodCards();
 
         // handling the godcard panel
         godPanel.setLayout(new GridLayout(3,1));
@@ -80,6 +78,7 @@ public class GameFrame extends JFrame {
         battlefieldPanel = new BattlefieldPanel();
         battlefieldPanel.setLayout(new GridLayout(5,5,0,0));
         for(int j=4; j>-1 ; j--){
+        //for(int j=0; j<5; j++){
             for(int i=0; i<5; i++){
                 //here i create a button for every cell
                 battlefieldGUI[i][j] = new CellButton(i,j);
@@ -94,6 +93,7 @@ public class GameFrame extends JFrame {
                 ButtonHandler bh = new ButtonHandler(battlefieldGUI[i][j],serverResponse,view);
                 battlefieldButtons.add(bh);
                 battlefieldGUI[i][j].addActionListener(bh);
+                battlefieldPanel.add(battlefieldGUI[i][j]);
             }
         }
 
@@ -101,6 +101,7 @@ public class GameFrame extends JFrame {
         add(messageLabel, BorderLayout.SOUTH);
         add(godPanel,BorderLayout.WEST);
         setVisible(true);
+        getMessageLabel().setText("NOW "+serverResponse.getPack().getPlayer().getUsername().toUpperCase()+", SELECT A CELL TO "+Action.PLACE_YOUR_TOKEN.toString());
     }
 
 
@@ -113,7 +114,4 @@ public class GameFrame extends JFrame {
     public JLabel getMessageLabel() {
         return messageLabel;
     }
-
-    /*      SETTER       */
-
 }

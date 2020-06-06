@@ -279,6 +279,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
                     Pack pack = new Pack(Action.PLACE_YOUR_TOKEN);
                     pack.setPlayer(getPlayerInTurn());
+                    pack.setGodCards(getGodCards(allPlayers));
                     pack.setModelCopy(getCopy());
                     pack.setMessageInTurn(text.toString());
                     pack.setMessageOpponents("Another player is placing his tokens on the battlefield. Be patient please...");

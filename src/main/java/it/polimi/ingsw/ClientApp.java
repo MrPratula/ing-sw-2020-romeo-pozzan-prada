@@ -43,13 +43,13 @@ public class ClientApp {
         new ChooseGodCardToPlayWindow(new SwingView(),serverResponse);
         */
 
-
-        /*    //PROVA GAMEFRAME CON GODS
+        /*
+           //PROVA GAMEFRAME CON GODS
         List<GodCard> godsInGame = new ArrayList<>();
         godsInGame.add(GodCard.CHRONUS);
         godsInGame.add(GodCard.ATHENA);
         godsInGame.add(GodCard.MINOTAUR);
-        new GameFrame(godsInGame,new ServerResponse(TokenColor.RED, new Pack(Action.CHOOSE_GOD_CARD_TO_PLAY)));
+        new GameFrame(godsInGame,new ServerResponse(TokenColor.RED, new Pack(Action.CHOOSE_GOD_CARD_TO_PLAY)),new SwingView());
         */
 
 
