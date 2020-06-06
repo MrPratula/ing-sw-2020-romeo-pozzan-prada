@@ -20,6 +20,7 @@ public class Server  {
     // This is for the Singleton pattern
     private static Server singleServer = null;
     private static int numberOfPlayers;
+    private List<String> names = new ArrayList<>();
 
     private boolean firstTime;
     private static final int PORT = 12345;
@@ -139,6 +140,7 @@ public class Server  {
 
         System.out.println(name.toUpperCase()+ " entered into the lobby");
 
+        names.add(name);
         waitingConnection.put(name, connection);
 
         // Player 1 is always instantiated
@@ -158,25 +160,15 @@ public class Server  {
         // When the players are 2 or 3, based on the first player choice
         if (waitingConnection.size() == numberOfPlayers){
 
-            // Get the name of the players and create their personal connections
-            List<String> keys = new ArrayList<>(waitingConnection.keySet());
-
             Connection c2;
             Connection c3;
             Player player3;
             RemoteView remoteView3;
 
-            // Remember the hash map do not enqueue the value, but it is put on top
-            // That's the reason for strange values in keys.get(n)
-            if (waitingConnection.size()==2) {
-                c2 = waitingConnection.get(keys.get(0));
-            }
-            else {
-                c2 = waitingConnection.get(keys.get(1));
-            }
+            c2 = waitingConnection.get(names.get(1));
 
             // Create the players with a name and a color
-            Player player2 = new Player(c2.getName(), TokenColor.BLUE);
+            Player player2 = new Player(names.get(1), TokenColor.BLUE);
 
             // Create the remote view with a connection and a player
             RemoteView remoteView2 = new RemoteView(c2, player2);
@@ -195,8 +187,8 @@ public class Server  {
 
             // Set up all of this for a 3rd eventual player
             if (numberOfPlayers == 3) {
-                c3 = waitingConnection.get(keys.get(0));
-                player3 = new Player(c3.getName(), TokenColor.YELLOW);
+                c3 = waitingConnection.get(names.get(2));
+                player3 = new Player(names.get(2), TokenColor.YELLOW);
                 remoteView3 = new RemoteView(c3, player3);
                 model.addPlayer(player3);
                 model.addObserver(remoteView3);
@@ -217,12 +209,11 @@ public class Server  {
      * When he answer other players can join the lobby.
      * Here are created the model, the controller and the remote view and all are linked up.
      */
-    public void setUpFirstPlayer () throws IOException {
+    public void setUpFirstPlayer () {
 
-        List<String> keys = new ArrayList<>(waitingConnection.keySet());
-        Connection c1 = waitingConnection.get(keys.get(0));
+        Connection c1 = waitingConnection.get(names.get(0));
 
-        Player player1 = new Player(c1.getName(), TokenColor.RED);
+        Player player1 = new Player(names.get(0), TokenColor.RED);
         RemoteView remoteView1 = new RemoteView(c1, player1);
         remoteView1.setServer(this);
 
