@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gui;
 
-import it.polimi.ingsw.cli.GodCard;
+import it.polimi.ingsw.cli.*;
+import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.ServerResponse;
 
@@ -35,12 +36,15 @@ public class GameFrame extends JFrame {
     private final SwingView view;
     private final ServerResponse serverResponse;
     List<GodCard> godsInGame;
+    List<Player> allPlayers;
+    Player player;
+    Battlefield battlefield;
 
 
     /**
      * Constructor of the main frame where the user will see the battlefield and can play on it
      */
-    public GameFrame(ServerResponse serverResponse, SwingView swingView) {
+    public GameFrame(ServerResponse serverResponse, SwingView swingView) throws CellOutOfBattlefieldException {
 
         // handling the frame
         super("Battlefield");
@@ -54,6 +58,8 @@ public class GameFrame extends JFrame {
         this.view = swingView;
         this.serverResponse = serverResponse;
         this.godsInGame = serverResponse.getPack().getGodCards();
+        this.allPlayers = serverResponse.getPack().getModelCopy().getAllPlayers();
+        this.battlefield = serverResponse.getPack().getModelCopy().getBattlefield();
 
         // handling the godcard panel
         godPanel.setLayout(new GridLayout(3,1));
@@ -73,27 +79,41 @@ public class GameFrame extends JFrame {
             godPanel.add(player);
         }
 
-
         // handling the battlefield panel
         battlefieldPanel = new BattlefieldPanel();
         battlefieldPanel.setLayout(new GridLayout(5,5,0,0));
-        for(int j=4; j>-1 ; j--){
-        //for(int j=0; j<5; j++){
-            for(int i=0; i<5; i++){
-                //here i create a button for every cell
+        for(int i=0; i<5; i++){
+            for(int j=0; j<5; j++){
+                int height = battlefield.getCell(i,j).getHeight();
+                boolean dome = battlefield.getCell(i,j).getIsDome();
+                if(battlefield.getCell(i,j).getThereIsPlayer()){
+                    for (Player p : allPlayers) {
+                        if (p.getToken1() != null && p.getToken1().getTokenPosition()!=null) {
+                            if (p.getToken1().getTokenPosition().equals(battlefield.getCell(i,j))) {
+                                player = p;
+                            }
+                        }
+                        if (p.getToken2().getTokenPosition() != null && p.getToken2().getTokenPosition()!=null) {                                 //if he has the first token
+                            if (p.getToken2().getTokenPosition().equals(battlefield.getCell(i,j))) {   //i print his background correctly
+                                player = p;
+                            }
+                        }
+                    }
+                }
+                else{
+                    player = null; }
+                //I create a button for every cell
                 battlefieldGUI[i][j] = new CellButton(i,j);
                 battlefieldGUI[i][j].setBorderPainted(false);
                 battlefieldGUI[i][j].setContentAreaFilled(false);
-                //battlefieldGUI[i][j].setSize(200,200);
-                battlefieldGUI[i][j].setIcon(Pics.LEVEL0.getImageIcon());
-                //battlefieldGUI[i][j].setBackground(Color.BLACK);
-                battlefieldGUI[i][j].getCell().setHeight(0);
+                battlefieldGUI[i][j].getCell().setHeight(height);
                 battlefieldPanel.add(battlefieldGUI[i][j]);
-                //here i add a listener to this button (owning a Cell)
+                //I add a listener to this button (owning a Cell)
                 ButtonHandler bh = new ButtonHandler(battlefieldGUI[i][j],serverResponse,view);
                 battlefieldButtons.add(bh);
                 battlefieldGUI[i][j].addActionListener(bh);
                 battlefieldPanel.add(battlefieldGUI[i][j]);
+                setIconCell(battlefieldGUI[i][j],height,dome,player);
             }
         }
 
@@ -102,6 +122,95 @@ public class GameFrame extends JFrame {
         add(godPanel,BorderLayout.WEST);
         setVisible(true);
         getMessageLabel().setText("NOW "+serverResponse.getPack().getPlayer().getUsername().toUpperCase()+", SELECT A CELL TO "+Action.PLACE_YOUR_TOKEN.toString());
+    }
+
+    public void setIconCell(CellButton cell, int height, boolean dome, Player player){
+        if(player == null) {
+            if (!dome) {
+                switch (height) {
+                    case 0: {
+                        cell.setIcon(Pics.LEVEL0.getImageIcon());
+                        break; }
+                    case 1: {
+                        cell.setIcon(Pics.LEVEL1.getImageIcon());
+                        break; }
+                    case 2: {
+                        cell.setIcon(Pics.LEVEL2.getImageIcon());
+                        break; }
+                    case 3: {
+                        cell.setIcon(Pics.LEVEL3.getImageIcon());
+                        break; }
+                }
+            } else {
+                switch (height) {
+                    case 0: {
+                        cell.setIcon(Pics.LEVEL0DOME.getImageIcon());
+                        break; }
+                    case 1: {
+                        cell.setIcon(Pics.LEVEL1DOME.getImageIcon());
+                        break; }
+                    case 2: {
+                        cell.setIcon(Pics.LEVEL2DOME.getImageIcon());
+                        break; }
+                    case 3: {
+                        cell.setIcon(Pics.LEVEL3DOME.getImageIcon());
+                        break; }
+                }
+            }
+        }
+        else{
+            TokenColor color = player.getTokenColor();
+            switch (color){
+                case RED:{
+                    switch (height) {
+                        case 0: {
+                            cell.setIcon(Pics.LEVEL0TOKENRED.getImageIcon());
+                            break; }
+                        case 1: {
+                            cell.setIcon(Pics.LEVEL1TOKENRED.getImageIcon());
+                            break; }
+                        case 2: {
+                            cell.setIcon(Pics.LEVEL2TOKENRED.getImageIcon());
+                            break; }
+                        case 3: {
+                            cell.setIcon(Pics.LEVEL3TOKENRED.getImageIcon());
+                            break; }
+                    }
+                }
+                case BLUE:{
+                    switch (height) {
+                        case 0: {
+                            cell.setIcon(Pics.LEVEL0TOKENBLUE.getImageIcon());
+                            break; }
+                        case 1: {
+                            cell.setIcon(Pics.LEVEL1TOKENBLUE.getImageIcon());
+                            break; }
+                        case 2: {
+                            cell.setIcon(Pics.LEVEL2TOKENBLUE.getImageIcon());
+                            break; }
+                        case 3: {
+                            cell.setIcon(Pics.LEVEL3TOKENBLUE.getImageIcon());
+                            break; }
+                    }
+                }
+                case YELLOW:{
+                    switch (height) {
+                        case 0: {
+                            cell.setIcon(Pics.LEVEL0TOKENYELLOW.getImageIcon());
+                            break; }
+                        case 1: {
+                            cell.setIcon(Pics.LEVEL1TOKENYELLOW.getImageIcon());
+                            break; }
+                        case 2: {
+                            cell.setIcon(Pics.LEVEL2TOKENYELLOW.getImageIcon());
+                            break; }
+                        case 3: {
+                            cell.setIcon(Pics.LEVEL3TOKENYELLOW.getImageIcon());
+                            break; }
+                    }
+                }
+            }
+        }
     }
 
 
