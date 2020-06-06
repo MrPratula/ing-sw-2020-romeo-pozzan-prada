@@ -109,7 +109,7 @@ public class GameFrame extends JFrame {
                 battlefieldGUI[i][j].getCell().setHeight(height);
                 battlefieldPanel.add(battlefieldGUI[i][j]);
                 //I add a listener to this button (owning a Cell)
-                ButtonHandler bh = new ButtonHandler(battlefieldGUI[i][j],serverResponse,view);
+                ButtonHandler bh = new ButtonHandler(battlefieldGUI[i][j],serverResponse,view,this);
                 battlefieldButtons.add(bh);
                 battlefieldGUI[i][j].addActionListener(bh);
                 battlefieldPanel.add(battlefieldGUI[i][j]);

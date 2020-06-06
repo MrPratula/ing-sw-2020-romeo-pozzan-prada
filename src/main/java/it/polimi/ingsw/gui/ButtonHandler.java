@@ -18,13 +18,15 @@ public class ButtonHandler implements ActionListener {
     final private CellButton cellButton;
     private ServerResponse serverResponse;
     private final SwingView view;
+    private JFrame mainframe;
 
 
 
-    public ButtonHandler(CellButton cellButton,ServerResponse serverResponse, SwingView swingView) {
+    public ButtonHandler(CellButton cellButton,ServerResponse serverResponse, SwingView swingView, JFrame jframe) {
         this.serverResponse = serverResponse;
         this.cellButton = cellButton;
         this.view = swingView;
+        this.mainframe = jframe;
     }
 
 
@@ -37,18 +39,14 @@ public class ButtonHandler implements ActionListener {
             case PLACE_YOUR_TOKEN:{
                 Cell targetCell = ((CellButton) clickedButtonEvent.getSource()).getCell();
                 if(view.isFree(targetCell,serverResponse.getPack().getModelCopy())){
-                    try {
-                        incrementHeight();
-                    } catch (CellHeightException | ReachHeightLimitException e) {
-                        e.printStackTrace();
-                    }
-                    /*
+
                     PlayerAction playerAction = new PlayerAction(Action.TOKEN_PLACED, serverResponse.getPack().getPlayer(), null, null, 0, 0, targetCell, null, false, null);
                     try {
                         view.notifyClient(playerAction);
+                        mainframe.dispose();
                     } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException e) {
                         e.printStackTrace();
-                    }*/
+                    }
                 }
                 else {
                     JOptionPane.showMessageDialog(new JFrame(), "You can't place your token here! Already occcupied!", "Error", JOptionPane.ERROR_MESSAGE);
