@@ -49,6 +49,8 @@ public class PrometheusTest {
         targetCell.setHeight(3);
         targetCell.setFree();
 
+        Model.prometheusUsePower(true);
+
         MoveContext thisMove = new MoveContext(new PrometheusMove());
         validMoves = thisMove.executeValidMoves(myToken, null, null, GodCard.PROMETHEUS, null, battlefield, null);
 

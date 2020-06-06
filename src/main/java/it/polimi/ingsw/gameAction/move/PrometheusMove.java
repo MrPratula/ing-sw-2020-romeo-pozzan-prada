@@ -28,9 +28,9 @@ public class PrometheusMove implements MoveBehavior {
 
         int provX, provY;
 
-        for (int i=-1; i<2; i++) {                                                                                       // ciclo di +-1 intorno alla posizione del token
-            provX = selectedToken.getTokenPosition().getPosX() + i;                                                      // per poter ottenere le 8 caselle in cui
-            for (int j = -1; j < 2; j++) {                                                                               // posso muovere
+        for (int i=-1; i<2; i++) {
+            provX = selectedToken.getTokenPosition().getPosX() + i;
+            for (int j = -1; j < 2; j++) {
                 provY = selectedToken.getTokenPosition().getPosY() + j;
 
                 // if the cell is inside the battlefield

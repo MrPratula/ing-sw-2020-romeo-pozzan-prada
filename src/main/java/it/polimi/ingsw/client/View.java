@@ -235,6 +235,10 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
                 }
                 else {
+
+                    if (pack.getPlayer()!=null)
+                        this.player = pack.getPlayer();
+
                     boolean needToLoop = true;
                     Scanner scanner = new Scanner(System.in);
                     String message;

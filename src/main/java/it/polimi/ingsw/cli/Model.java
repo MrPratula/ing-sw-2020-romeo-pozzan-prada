@@ -35,8 +35,6 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     private Token prometheusToken;
 
 
-
-
     public Model() {
         this.battlefield = new Battlefield();
     }
@@ -102,10 +100,6 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         validCells = null;
         return returnCell;
     }
-
-
-
-
 
 
     /**
@@ -197,7 +191,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      */
     public ModelUtils getCopy() {
         Battlefield battlefieldCopy = battlefield.getCopy();
-        ModelUtils modelCopy = new ModelUtils(battlefieldCopy);  //added players and turn
+        ModelUtils modelCopy = new ModelUtils(battlefieldCopy);
         modelCopy.setAllPlayers((this.getAllPlayers()));
         modelCopy.setTurn(this.getTurn());
         return modelCopy;
@@ -217,7 +211,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         if (firstTime){
             firstTime=false;
 
-            String[] godNames = playerAction.getArgs().split(" ");
+            String[] godNames = playerAction.getArgs().split(",");
 
             List<GodCard> godsDeck = new ArrayList<>(Arrays.asList(GodCard.values()).subList(0, 14));
 
@@ -225,7 +219,6 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                 for (String name: godNames) {
                     if (god.name().toUpperCase().equals(name)){
                         allGodCards.add(god);
-                        break; //aggiunto ora 03/06
                     }
                 }
             }
@@ -285,6 +278,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                     }
 
                     Pack pack = new Pack(Action.PLACE_YOUR_TOKEN);
+                    pack.setPlayer(getPlayerInTurn());
                     pack.setModelCopy(getCopy());
                     pack.setMessageInTurn(text.toString());
                     pack.setMessageOpponents("Another player is placing his tokens on the battlefield. Be patient please...");

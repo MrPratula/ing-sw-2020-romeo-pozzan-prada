@@ -71,6 +71,8 @@ public class ActionTest {
         // First time the deck has 2 cards and one is removed
         PlayerAction playerAction1 = new PlayerAction(Action.CHOSE_GOD_CARD, player1, null, null, 0, 0, null, null, false, choice.toUpperCase());
         controller.update(playerAction1);
+        model.updateTurn();
+        controller.update(playerAction1);
 
         Assert.assertFalse(allGodCards.contains(GodCard.APOLLO));
         Assert.assertEquals(player1.getMyGodCard(), GodCard.APOLLO);
