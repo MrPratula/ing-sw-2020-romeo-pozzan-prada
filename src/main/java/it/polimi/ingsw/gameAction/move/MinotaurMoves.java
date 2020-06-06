@@ -76,24 +76,23 @@ public class MinotaurMoves implements MoveBehavior{
     public void performMove(Token selectedToken, Token otherToken, List<Token> enemyTokens, Cell targetCell, List<GodCard> enemyGodCards, Battlefield battlefield) throws CellOutOfBattlefieldException {
 
         int deltaX = 0, deltaY = 0;
-        Cell copy = targetCell;
+        Cell copy = selectedToken.getTokenPosition();
         if (targetCell.getThereIsPlayer()) {
 
             for(Token t: enemyTokens) {
                 if (t.getTokenPosition().getPosX()==targetCell.getPosX() && t.getTokenPosition().getPosY()==targetCell.getPosY() ){
                     deltaX = targetCell.getPosX() - selectedToken.getTokenPosition().getPosX();
                     deltaY = targetCell.getPosY() - selectedToken.getTokenPosition().getPosY();
-                    battlefield.getCell(t.getTokenPosition()).setFree();
                     t.setTokenPosition(battlefield.getCell(targetCell.getPosX()+deltaX,targetCell.getPosY()+deltaY));
                     battlefield.getCell(targetCell.getPosX()+deltaX,targetCell.getPosY()+deltaY).setOccupied();
-                    //targetCell.setFree();
+                    battlefield.getCell(targetCell).setFree();
                     break;
                 }
             }
         }
-        selectedToken.getTokenPosition().setFree();
-        selectedToken.setTokenPosition(copy);
-        copy.setOccupied();
+        selectedToken.setTokenPosition(targetCell);
+        battlefield.getCell(targetCell).setOccupied();
+        battlefield.getCell(copy.getPosX(),copy.getPosY()).setFree();
         //battlefield.getCell(targetCell.getPosX()-deltaX,targetCell.getPosY()-deltaY).setFree();
     }
 

@@ -88,9 +88,9 @@ public class PrometheusMove implements MoveBehavior {
     @Override
     public void performMove(Token selectedToken, Token otherToken, List<Token> enemyTokens, Cell targetCell, List<GodCard> enemyGodCards, Battlefield battlefield) {
 
-        selectedToken.getTokenPosition().setFree();
-        selectedToken.setTokenPosition(targetCell);
-        selectedToken.getTokenPosition().setOccupied();
+        battlefield.getCell(selectedToken.getTokenPosition()).setFree();
+        selectedToken.setTokenPosition(battlefield.getCell(targetCell));
+        battlefield.getCell(selectedToken.getTokenPosition()).setOccupied();
 
     }
 
