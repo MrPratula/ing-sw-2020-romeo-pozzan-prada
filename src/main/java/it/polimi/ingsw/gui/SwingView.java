@@ -30,6 +30,9 @@ public class SwingView extends View {
     private String godcardsForTheGame;
     private List<GodCard> godsInGame = new ArrayList<>();
 
+    private int count = 2;
+    private Cell first_cell;
+
 
     /**
      * Constructor of the client view with Swing GUI
@@ -498,6 +501,10 @@ public class SwingView extends View {
         }
     }
 
+    public boolean notPerimeterCell(Cell targetCell){
+        return ((targetCell.getPosX()!=4 && targetCell.getPosY()!=4) && (targetCell.getPosX()!=0 && targetCell.getPosY()!=0));
+    }
+
     public void setGodCardsForTheGame(String g) {
         this.godcardsForTheGame = g;
     }
@@ -534,10 +541,38 @@ public class SwingView extends View {
         return savedToken;
     }
 
-    public void BuildGod(){
-        switch (player.getMyGodCard()){
-            case DEMETER:
-                
+    public void BuildGod(Cell targetcell, JFrame frame) throws ImpossibleTurnException, IOException, CellHeightException, WrongNumberPlayerException, ReachHeightLimitException, CellOutOfBattlefieldException {
+        count --;
+        switch (player.getMyGodCard()) {
+            case DEMETER: {
+                if (count == 1) {
+                    first_cell = targetcell;
+                    break;
+                }
+                if (count == 0) {
+                    count = 2;
+                    PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, player, null, null, savedToken, 0, first_cell, targetcell, true, null);
+                    notifyClient(playerAction);
+                    frame.dispose();
+                    first_cell = null;
+                    break;
+                }
+                break;
+            }
+            case HESTIA:{
+                if(count == 1){
+                    first_cell = targetcell;
+                    break;
+                }
+                if(count == 0){
+                    count = 2;
+                    PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, player, null, null, savedToken, 0, first_cell, targetcell, true, null);
+                    notifyClient(playerAction);
+                    frame.dispose();
+                    first_cell = null;
+                    break;
+                }
+            }
         }
     }
 }
