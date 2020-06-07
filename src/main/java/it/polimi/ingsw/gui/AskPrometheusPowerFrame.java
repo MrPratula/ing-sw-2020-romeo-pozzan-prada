@@ -37,8 +37,8 @@ public class AskPrometheusPowerFrame extends JDialog {
                 try {
                     view.notifyClient(playerAction);
                     AskPrometheusPowerFrame.this.dispose();
-                } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException e) {
-                    e.printStackTrace();
+                } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException cellOutOfBattlefieldException) {
+                    cellOutOfBattlefieldException.printStackTrace();
                 }
             }
         });
@@ -50,8 +50,8 @@ public class AskPrometheusPowerFrame extends JDialog {
                 try {
                     view.notifyClient(playerAction);
                     AskPrometheusPowerFrame.this.dispose();
-                } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException e) {
-                    e.printStackTrace();
+                } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException cellOutOfBattlefieldException) {
+                    cellOutOfBattlefieldException.printStackTrace();
                 }
             }
         });

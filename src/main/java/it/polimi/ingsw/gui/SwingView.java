@@ -237,24 +237,6 @@ public class SwingView extends View {
                 }
                 else {
                     this.player = pack.getPlayer();
-                    if (pack.getMessageInTurn() != null){
-                        gameFrame.getMessageLabel().setText(pack.getMessageInTurn());
-                    }
-
-                    //while needToLoop
-                    displayGui(pack.getModelCopy(), null); //updategui()
-                    System.out.print(serverResponse.getPack().getAction().getInfo());
-
-                    try{
-                        //gameFrame.setAction(pack.getAction());
-
-                        //display the text of the action that the user should do
-                        gameFrame.getMessageLabel().setText("NOW "+pack.getPlayer().getUsername().toUpperCase()+", SELECT A CELL TO "+Action.PLACE_YOUR_TOKEN.toString());
-
-                    } catch (Exception e){
-                        JOptionPane.showMessageDialog(new JFrame("Error"), pack.getAction().toString(),"Your input wasn't correct!", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());
-                    }
-                    notifyClient(playerAction);
                     JOptionPane.showMessageDialog(new JFrame(), pack.getAction().getName().toUpperCase(), "YOUR TURN, ", JOptionPane.WARNING_MESSAGE);
                     new GameFrame(serverResponse, this);
                 }
