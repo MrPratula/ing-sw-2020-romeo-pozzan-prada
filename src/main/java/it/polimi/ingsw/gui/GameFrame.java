@@ -57,6 +57,8 @@ public class GameFrame extends JFrame {
 
         this.view = swingView;
         this.serverResponse = serverResponse;
+
+        //to be deleted
         this.godsInGame = serverResponse.getPack().getGodCards();
         this.allPlayers = serverResponse.getPack().getModelCopy().getAllPlayers();
         this.battlefield = serverResponse.getPack().getModelCopy().getBattlefield();
@@ -97,6 +99,36 @@ public class GameFrame extends JFrame {
                 battlefieldButtons.add(bh);
                 battlefieldGUI[i][j].addActionListener(bh);
                 battlefieldPanel.add(battlefieldGUI[i][j]);
+
+
+
+
+                //to be deleted
+                int height = battlefield.getCell(i,j).getHeight();
+                boolean dome = battlefield.getCell(i,j).getIsDome();
+
+                if(battlefield.getCell(i,j).getThereIsPlayer()){
+                    for (Player p : allPlayers) {
+                        if (p.getToken1() != null && p.getToken1().getTokenPosition()!=null) {
+                            if (p.getToken1().getTokenPosition().equals(battlefield.getCell(i,j))) {
+                                setIconCell(battlefieldGUI[i][j],height,dome,p);
+                            }
+                        }
+                        if (p.getToken2() != null && p.getToken2().getTokenPosition()!=null) {
+                            if (p.getToken2().getTokenPosition().equals(battlefield.getCell(i,j))) {
+                                setIconCell(battlefieldGUI[i][j],height,dome,p);
+                            }
+                        }
+                    }
+                }
+                else{
+                    setIconCell(battlefieldGUI[i][j],height,dome, null);
+                }
+                setRolloverIconCell(battlefieldGUI[i][j],height,dome);
+
+
+
+
 
             }
         }

@@ -17,11 +17,11 @@ public class CellButton extends JButton {
         return cell;
     }
 
-    /*
+/*tolgoooooooooooooo
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(Pics.LEVEL0.getImageIcon().getImage(),0,0,this.getWidth(), this.getHeight(),this);
     }
-     */
+*/
 }

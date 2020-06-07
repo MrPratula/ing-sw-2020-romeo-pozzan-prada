@@ -47,7 +47,7 @@ public class ButtonHandler implements ActionListener {
                         PlayerAction playerAction = new PlayerAction(Action.TOKEN_PLACED, view.getPlayer(), null, null, 0, 0, cellButton.getCell(), null, false, null);
                         try {
                             view.notifyClient(playerAction);
-                            mainframe.dispose();
+                            mainframe.dispose();// non dovrei disposarlo
                         } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException e) {
                             e.printStackTrace();
                         }
@@ -120,12 +120,12 @@ public class ButtonHandler implements ActionListener {
                     else {
                         switch (view.getPlayer().getMyGodCard()){
                             case DEMETER:{
-                                view.BuildGod(targetCell,mainframe);
+                                view.buildGod(targetCell,mainframe);
                                 break;
                             }
                             case HESTIA:{
                                 if(view.notPerimeterCell(targetCell)) {
-                                    view.BuildGod(targetCell,mainframe);
+                                    view.buildGod(targetCell,mainframe);
                                     break;
                                 }
                             }

@@ -5,6 +5,8 @@ import it.polimi.ingsw.cli.Player;
 import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.cli.*;
 import it.polimi.ingsw.utils.*;
+import it.polimi.ingsw.utils.Action;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -202,6 +204,7 @@ public class SwingView extends View {
             }
 
             // A player has to place his token, other wait
+            // Here the gameframe is initalised
             case PLACE_YOUR_TOKEN:{
 
                 Pack pack = serverResponse.getPack();
@@ -213,7 +216,9 @@ public class SwingView extends View {
                     this.player = serverResponse.getPack().getPlayer();
                     JOptionPane.showMessageDialog(new JFrame(),pack.getAction().getName().toUpperCase(),"IT'S YOUR TURN, ", JOptionPane.WARNING_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
                     // here i initialise the Game Frame that will last till the end of the game
-                    this.gameFrame = new GameFrame(serverResponse,this,null);
+                    new GameFrame(serverResponse,this,null);
+                    //this.gameFrame = new GameFrame(serverResponse,this,null);
+                    //this.battlefieldGUI = gameFrame.getBattlefieldGUI();
                 }
                 break;
             }
@@ -225,14 +230,16 @@ public class SwingView extends View {
                 Pack pack = serverResponse.getPack();
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
-                    JOptionPane.showMessageDialog(new JFrame(),pack.getMessageOpponents(),"NOT YOUR TURN!! PLEASE WAIT!", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(new JFrame(),pack.getMessageOpponents(),"NOT YOUR TURN!! PLEASE WAIT!", JOptionPane.WARNING_MESSAGE, Pics.ERRORICON.getImageIcon());
                 }
                 else {
                     this.player = pack.getPlayer();
-                    JOptionPane.showMessageDialog(new JFrame(), pack.getAction().getName().toUpperCase(), "YOUR TURN, ", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(new JFrame(), pack.getAction().getName().toUpperCase(), "YOUR TURN, ", JOptionPane.WARNING_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
 
-                    this.gameFrame.updateGui(serverResponse, false);
+                    new GameFrame(serverResponse,this,null);
 
+                    //this.gameFrame = displayGui(this.gameFrame, serverResponse.getPack().getModelCopy(), null);
+                    //this.gameFrame.updateGui(serverResponse, false);
                     //new GameFrame(serverResponse, this, null);
                 }
                 break;
@@ -255,7 +262,7 @@ public class SwingView extends View {
 
             case GAME_OVER:{
                 Pack pack = serverResponse.getPack();
-                JOptionPane.showMessageDialog(new JFrame(), pack.getAction().getName().toUpperCase(), "GAME OVER ", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(new JFrame(), pack.getAction().getName().toUpperCase(), "GAME OVER ", JOptionPane.WARNING_MESSAGE, Pics.GAMEOVERICON.getImageIcon());
                 System.out.print(serverResponse.getPack().getAction().getInfo());
                 System.out.println(pack.getMessageInTurn());
                 break;
@@ -270,9 +277,9 @@ public class SwingView extends View {
                     JOptionPane.showMessageDialog(new JFrame(), pack.getMessageOpponents(), "NOT YOUR TURN",JOptionPane.INFORMATION_MESSAGE, Pics.ERRORICON.getImageIcon());
                 }
                 else{
-                    JOptionPane.showMessageDialog(new JFrame(), pack.getAction().getName().toUpperCase(), "YOUR TURN, ", JOptionPane.WARNING_MESSAGE);
-                    this.gameFrame.updateGui(serverResponse, false);
-                    //new GameFrame(serverResponse,this,null);
+                    JOptionPane.showMessageDialog(new JFrame(), pack.getAction().getName().toUpperCase(), "YOUR TURN, ", JOptionPane.WARNING_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
+                    //this.gameFrame.updateGui(serverResponse, false);
+                    new GameFrame(serverResponse,this,null);
                 }
                 break;
             }
@@ -294,13 +301,13 @@ public class SwingView extends View {
         }
     }
 
-    /**
+    /*
      * Links a string of god names into the real
      * GodCards corresponding to them
      * @param godcardsForTheGame: String of god names
      * @return GodCards in game
      */
-    private List<GodCard> recognizeGodInGame(String godcardsForTheGame) {
+    /*private List<GodCard> recognizeGodInGame(String godcardsForTheGame) {
 
         List<GodCard> godsSeparated = new ArrayList<>();
         String[] godNamesInGame = godcardsForTheGame.split(" ");
@@ -315,7 +322,7 @@ public class SwingView extends View {
             i++;
         }
         return godsSeparated;
-    }
+    }*/
 
 
 
@@ -326,10 +333,11 @@ public class SwingView extends View {
      * @param validMoves: cells that have to be printed on a green background (can be null)
      * @param modelCopy: contains the the board of the game and the players in the game
      */
-    public void displayGui(ModelUtils modelCopy, List<Cell> validMoves) throws CellOutOfBattlefieldException {
+    public GameFrame displayGui(GameFrame gameFrame, ModelUtils modelCopy, List<Cell> validMoves) throws CellOutOfBattlefieldException {
 
         Battlefield battlefield = modelCopy.getBattlefield();
         List<Player> allPlayers = modelCopy.getAllPlayers();
+        CellButton[][] newOne = gameFrame.getBattlefieldGUI();
 
         for (int y = 4; y > -1; y--) {
 
@@ -337,9 +345,9 @@ public class SwingView extends View {
 
                 if (validMoves != null) {
                     if (validMoves.contains(battlefield.getCell(x, y))) {
-                        battlefieldGUI[x][y].getCell().setHeight(battlefield.getCell(x, y).getHeight());
-                        battlefieldGUI[x][y].setIcon(selectIcon(null, battlefield.getCell(x, y),true));
-                        battlefieldGUI[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x,y)));
+                        gameFrame.getBattlefieldGUI()[x][y].getCell().setHeight(battlefield.getCell(x, y).getHeight());
+                        gameFrame.getBattlefieldGUI()[x][y].setIcon(selectIcon(null, battlefield.getCell(x, y),true));
+                        gameFrame.getBattlefieldGUI()[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x,y)));
                     }
                     else{
                         displayInnerGui(battlefield, allPlayers, y, x);
@@ -350,6 +358,7 @@ public class SwingView extends View {
                 }
             }
         }
+        return gameFrame;
     }
 
     /**
@@ -363,24 +372,24 @@ public class SwingView extends View {
 
         // we check if exists a token of any player in this position
         if(!battlefield.getCell(x, y).getThereIsPlayer()){
-            battlefieldGUI[x][y].getCell().setHeight(battlefield.getCell(x,y).getHeight());
-            battlefieldGUI[x][y].setIcon(selectIcon(null,battlefield.getCell(x,y),false));
-            battlefieldGUI[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x,y)));
+            gameFrame.getBattlefieldGUI()[x][y].getCell().setHeight(battlefield.getCell(x,y).getHeight());
+            gameFrame.getBattlefieldGUI()[x][y].setIcon(selectIcon(null,battlefield.getCell(x,y),false));
+            gameFrame.getBattlefieldGUI()[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x,y)));
         }
         else{
             for(Player p : allPlayers) {
                 if (p.getToken1().getTokenPosition() != null && p.getToken1().getTokenPosition()!=null) {                                  //if he has the first token
                     if (p.getToken1().getTokenPosition().equals(battlefield.getCell(x, y))) {
-                        battlefieldGUI[x][y].getCell().setHeight(battlefield.getCell(x, y).getHeight());
-                        battlefieldGUI[x][y].setIcon(selectIcon(p, battlefield.getCell(x, y),false));
-                        battlefieldGUI[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x,y)));
+                        gameFrame.getBattlefieldGUI()[x][y].getCell().setHeight(battlefield.getCell(x, y).getHeight());
+                        gameFrame.getBattlefieldGUI()[x][y].setIcon(selectIcon(p, battlefield.getCell(x, y),false));
+                        gameFrame.getBattlefieldGUI()[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x,y)));
                     }
                 }
                 if (p.getToken2().getTokenPosition() != null && p.getToken2().getTokenPosition()!=null) {                                  //if he has the first token
                     if (p.getToken2().getTokenPosition().equals(battlefield.getCell(x, y))) {
-                        battlefieldGUI[x][y].getCell().setHeight(battlefield.getCell(x, y).getHeight());
-                        battlefieldGUI[x][y].setIcon(selectIcon(p, battlefield.getCell(x, y),false));
-                        battlefieldGUI[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x,y)));
+                        gameFrame.getBattlefieldGUI()[x][y].getCell().setHeight(battlefield.getCell(x, y).getHeight());
+                        gameFrame.getBattlefieldGUI()[x][y].setIcon(selectIcon(p, battlefield.getCell(x, y),false));
+                        gameFrame.getBattlefieldGUI()[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x,y)));
                     }
                 }
             }
@@ -533,7 +542,8 @@ public class SwingView extends View {
         return savedToken;
     }
 
-    public void BuildGod(Cell targetcell, JFrame frame) throws ImpossibleTurnException, IOException, CellHeightException, WrongNumberPlayerException, ReachHeightLimitException, CellOutOfBattlefieldException {
+    public void buildGod(Cell targetcell, JFrame frame) throws ImpossibleTurnException, IOException, CellHeightException, WrongNumberPlayerException, ReachHeightLimitException, CellOutOfBattlefieldException {
+
         count --;
         switch (player.getMyGodCard()) {
             case DEMETER: {

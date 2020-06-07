@@ -93,6 +93,7 @@ public enum Pics {
         ERRORICON("./src/main/images/utils/" + "errorIcon.png"),
         INFORMATIONICON("./src/main/images/utils/" + "informationIcon.png"),
         PLAYERICON("./src/main/images/utils/" + "playerIcon.png"),
+        GAMEOVERICON("./src/main/images/utils/" + "gameover.png"),
         BUTTON("./src/main/images/utils/" + "btn_purple.png"),
         SANTORINI("./src/main/images/utils/" + "Santorini.png"),
         PLAYBUTTON("./src/main/images/utils/" + "buttonPlay.png"),
