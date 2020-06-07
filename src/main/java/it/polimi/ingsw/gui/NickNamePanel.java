@@ -5,10 +5,6 @@ import java.awt.*;
 
 public class NickNamePanel extends JPanel {
 
-    public NickNamePanel(boolean b){
-        //maybe
-    }
-
     public NickNamePanel() {
         setPreferredSize(new Dimension(600,200));
         setLayout(new BorderLayout(10,10));

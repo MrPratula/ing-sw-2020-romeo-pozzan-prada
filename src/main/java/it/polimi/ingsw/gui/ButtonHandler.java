@@ -203,7 +203,7 @@ public class ButtonHandler implements ActionListener {
                 }
                 else if (cellButton.getCell().getHeight() == 3) {
                     cellButton.setIcon(Pics.LEVEL3DOME.getImageIcon());
-                    cellButton.setRolloverIcon(Pics.LEVELDOMETEXT.getImageIcon());
+                    cellButton.setRolloverIcon(Pics.LEVEL3DOMETEXT.getImageIcon());
                     cellButton.getCell().incrementHeight();
                 }
             }

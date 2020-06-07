@@ -33,7 +33,10 @@ public enum Pics {
         LEVEL1TEXT("./src/main/images/buildings/" + "level1Text.png"), //18
         LEVEL2TEXT("./src/main/images/buildings/" + "level2Text.png"),//19
         LEVEL3TEXT("./src/main/images/buildings/" + "level3Text.png"), //20
-        LEVELDOMETEXT("./src/main/images/buildings/" + "levelDomeText.png"), //21
+        LEVEL0DOMETEXT("./src/main/images/buildings/" + "level0DomeText.png"), //21
+        LEVEL1DOMETEXT("./src/main/images/buildings/" + "level1DomeText.png"), //21
+        LEVEL2DOMETEXT("./src/main/images/buildings/" + "level2DomeText.png"), //21
+        LEVEL3DOMETEXT("./src/main/images/buildings/" + "level3DomeText.png"), //21
         LEVEL0VALIDMOVE("./src/main/images/buildings/" + "level0ValidMove.png"), //22
         LEVEL0TOKENREDVALIDMOVE("./src/main/images/buildings/" + "level0tokenRedValidMove.png"), //22
         LEVEL0TOKENBLUEVALIDMOVE("./src/main/images/buildings/" + "level0tokenBlueValidMove.png"), //22
@@ -94,6 +97,7 @@ public enum Pics {
         SANTORINI("./src/main/images/utils/" + "Santorini.png"),
         PLAYBUTTON("./src/main/images/utils/" + "buttonPlay.png"),
         NICKNAME("./src/main/images/utils/" + "nickname.png"),
+        NUMBEROFPLAYERS("./src/main/images/utils/" + "howmanyplayers.png"),
 
         // MESSAGES
         ASK_FOR_BUILD("./src/main/images/messages/" + "ASK_FOR_BUILD.png"),

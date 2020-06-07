@@ -20,25 +20,18 @@ public class NumberOfPlayersWindow extends JDialog{
 
         this.view = swingView;
 
-        //numberOfPlayerPanel's panel
-        NickNamePanel numberOfPlayerPanel = new NickNamePanel(false);
-        numberOfPlayerPanel.setSize(350,200);
-        numberOfPlayerPanel.setLayout(new BorderLayout(10,10));
-        numberOfPlayerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-        //label for asking how many players does he want to play with
-        JLabel numberOfPlayersLabel = new JLabel("How many players do you want to play with? ");
-        numberOfPlayersLabel.setBounds(10,20,80,25);
-        numberOfPlayerPanel.add(numberOfPlayersLabel, BorderLayout.PAGE_START);
+        setPreferredSize(new Dimension(600,400));
+        //numberOfPlayersPanel's panel
+        NumberOfPlayersPanel numberOfPlayersPanel = new NumberOfPlayersPanel();
 
         //box to let the user select 2 or 3
         numberOfPlayersBox = new JComboBox<>();
         numberOfPlayersBox.setBorder(BorderFactory.createEmptyBorder());
         numberOfPlayersBox.addItem(2);
         numberOfPlayersBox.addItem(3);
-        numberOfPlayerPanel.add(numberOfPlayersBox);
+        numberOfPlayersPanel.add(numberOfPlayersBox,BorderLayout.PAGE_END);
 
-        add(numberOfPlayerPanel,BorderLayout.PAGE_START);
+        add(numberOfPlayersPanel,BorderLayout.CENTER);
 
         //the button to confirm the selection
         ConfirmButton confirmButton = new ConfirmButton("Confirm");
@@ -52,8 +45,8 @@ public class NumberOfPlayersWindow extends JDialog{
                 try {
                     view.notifyClient(playerAction);
                     NumberOfPlayersWindow.this.dispose();
-                } catch (CellOutOfBattlefieldException | WrongNumberPlayerException | ImpossibleTurnException | IOException | CellHeightException | ReachHeightLimitException cellOutOfBattlefieldException) {
-                    cellOutOfBattlefieldException.printStackTrace();
+                } catch (CellOutOfBattlefieldException | WrongNumberPlayerException | ImpossibleTurnException | IOException | CellHeightException | ReachHeightLimitException ex) {
+                    ex.printStackTrace();
                 }
             }
         });

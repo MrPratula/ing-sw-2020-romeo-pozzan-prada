@@ -3,6 +3,7 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.cli.GodCard;
 import it.polimi.ingsw.cli.TokenColor;
 import it.polimi.ingsw.client.Client;
+import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
 import it.polimi.ingsw.gui.*;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.Pack;
@@ -15,7 +16,7 @@ import java.util.List;
 
 public class ClientApp {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws CellOutOfBattlefieldException {
 
         Client client = new Client("127.0.0.1", 12345);
 
@@ -45,13 +46,13 @@ public class ClientApp {
         new ChooseGodCardToPlayWindow(new SwingView(),serverResponse);
         */
 
-        /*
-           //PROVA GAMEFRAME CON GODS
+
+        /*   //PROVA GAMEFRAME CON GODS
         List<GodCard> godsInGame = new ArrayList<>();
         godsInGame.add(GodCard.CHRONUS);
         godsInGame.add(GodCard.ATHENA);
         godsInGame.add(GodCard.MINOTAUR);
-        new GameFrame(godsInGame,new ServerResponse(TokenColor.RED, new Pack(Action.CHOOSE_GOD_CARD_TO_PLAY)),new SwingView());
+        new GameFrame(new ServerResponse(TokenColor.RED, new Pack(Action.CHOOSE_GOD_CARD_TO_PLAY)),new SwingView());
         */
 
         /*

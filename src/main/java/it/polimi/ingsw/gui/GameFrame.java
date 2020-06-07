@@ -114,6 +114,7 @@ public class GameFrame extends JFrame {
                 battlefieldGUI[i][j].addActionListener(bh);
                 battlefieldPanel.add(battlefieldGUI[i][j]);
                 setIconCell(battlefieldGUI[i][j],height,dome,player);
+                setRolloverIconCell(battlefieldGUI[i][j],height,dome,player);
             }
         }
 
@@ -123,6 +124,45 @@ public class GameFrame extends JFrame {
         setVisible(true);
         getMessageLabel().setText("NOW "+serverResponse.getPack().getPlayer().getUsername().toUpperCase()+", SELECT A CELL TO "+Action.PLACE_YOUR_TOKEN.toString());
     }
+
+
+    private void setRolloverIconCell(CellButton cell, int height, boolean dome, Player player) {
+
+        if (!dome) {
+            switch (height) {
+                case 0: {
+                    cell.setRolloverIcon(Pics.LEVEL0TEXT.getImageIcon());
+                    break; }
+                case 1: {
+                    cell.setRolloverIcon(Pics.LEVEL1TEXT.getImageIcon());
+                    break; }
+                case 2: {
+                    cell.setRolloverIcon(Pics.LEVEL2TEXT.getImageIcon());
+                    break; }
+                case 3: {
+                    cell.setRolloverIcon(Pics.LEVEL3TEXT.getImageIcon());
+                    break; }
+            }
+        } else {
+            switch (height) {
+                case 0: {
+                    cell.setRolloverIcon(Pics.LEVEL0DOMETEXT.getImageIcon());
+                    break; }
+                case 1: {
+                    cell.setRolloverIcon(Pics.LEVEL1DOMETEXT.getImageIcon());
+                    break; }
+                case 2: {
+                    cell.setRolloverIcon(Pics.LEVEL2DOMETEXT.getImageIcon());
+                    break; }
+                case 3: {
+                    cell.setRolloverIcon(Pics.LEVEL3DOMETEXT.getImageIcon());
+                    break; }
+            }
+        }
+    }
+
+
+    /*      SETTER       */
 
     public void setIconCell(CellButton cell, int height, boolean dome, Player player){
         if(player == null) {
@@ -212,7 +252,6 @@ public class GameFrame extends JFrame {
             }
         }
     }
-
 
     /*      GETTER       */
 
