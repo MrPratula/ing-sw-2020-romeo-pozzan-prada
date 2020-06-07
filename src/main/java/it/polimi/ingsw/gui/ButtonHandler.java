@@ -61,13 +61,22 @@ public class ButtonHandler implements ActionListener {
             }
 
 
-            case PLAYER_LOST:
-            case ASK_FOR_SELECT_TOKEN:
-            case TOKEN_NOT_MOVABLE:{
-
-               // if(getCellButton().getCell().getThereIsPlayer() && ) {
-                // }
-                    break;
+            case ASK_FOR_SELECT_TOKEN:{
+                int selectedToken = view.getToken(posx,posy,view.getPlayer());
+                if(selectedToken != 0){
+                    view.SavedToken(selectedToken);
+                    PlayerAction playerAction = new PlayerAction(Action.TOKEN_SELECTED, view.getPlayer(), null, null, selectedToken, 0, null, null, false, null);
+                    try {
+                        view.notifyClient(playerAction);
+                        mainframe.dispose();
+                    } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else{
+                    JOptionPane.showMessageDialog(new JFrame(), "You have to select a your token!", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                break;
             }
 
 
