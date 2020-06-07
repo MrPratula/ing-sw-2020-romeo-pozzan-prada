@@ -38,12 +38,13 @@ public class GameFrame extends JFrame {
     List<GodCard> godsInGame;
     List<Player> allPlayers;
     Battlefield battlefield;
+    private Boolean power;
 
 
     /**
      * Constructor of the main frame where the user will see the battlefield and can play on it
      */
-    public GameFrame(ServerResponse serverResponse, SwingView swingView) throws CellOutOfBattlefieldException {
+    public GameFrame(ServerResponse serverResponse, SwingView swingView, Boolean wantPower) throws CellOutOfBattlefieldException {
 
         // handling the frame
         super("Battlefield");
@@ -59,7 +60,7 @@ public class GameFrame extends JFrame {
         this.godsInGame = serverResponse.getPack().getGodCards();
         this.allPlayers = serverResponse.getPack().getModelCopy().getAllPlayers();
         this.battlefield = serverResponse.getPack().getModelCopy().getBattlefield();
-
+        this.power = wantPower;
 
         // handling the godcard panel
         godPanel.setLayout(new GridLayout(3,1));
@@ -92,8 +93,7 @@ public class GameFrame extends JFrame {
                 battlefieldGUI[i][j].setContentAreaFilled(false);
                 battlefieldGUI[i][j].getCell().setHeight(height);
                 battlefieldPanel.add(battlefieldGUI[i][j]);
-                //I add a listener to this button (owning a Cell)
-                ButtonHandler bh = new ButtonHandler(battlefieldGUI[i][j],serverResponse,view,this,i,j);
+                ButtonHandler bh = new ButtonHandler(battlefieldGUI[i][j],serverResponse,view,this,i,j,power);
                 battlefieldButtons.add(bh);
                 battlefieldGUI[i][j].addActionListener(bh);
                 battlefieldPanel.add(battlefieldGUI[i][j]);

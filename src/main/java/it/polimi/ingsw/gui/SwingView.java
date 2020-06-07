@@ -221,7 +221,7 @@ public class SwingView extends View {
                 else {
                     this.player = serverResponse.getPack().getPlayer();
                     JOptionPane.showMessageDialog(new JFrame(),pack.getAction().getName().toUpperCase(),"YOUR TURN, ", JOptionPane.WARNING_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
-                    new GameFrame(serverResponse,this);
+                    new GameFrame(serverResponse,this,null);
                 }
                 break;
             }
@@ -238,7 +238,7 @@ public class SwingView extends View {
                 else {
                     this.player = pack.getPlayer();
                     JOptionPane.showMessageDialog(new JFrame(), pack.getAction().getName().toUpperCase(), "YOUR TURN, ", JOptionPane.WARNING_MESSAGE);
-                    new GameFrame(serverResponse, this);
+                    new GameFrame(serverResponse, this,null);
                 }
                 break;
             }
@@ -276,7 +276,7 @@ public class SwingView extends View {
                 }
                 else{
                     JOptionPane.showMessageDialog(new JFrame(), pack.getAction().getName().toUpperCase(), "YOUR TURN, ", JOptionPane.WARNING_MESSAGE);
-                    new GameFrame(serverResponse,this);
+                    new GameFrame(serverResponse,this,null);
                 }
                 break;
             }
@@ -285,81 +285,13 @@ public class SwingView extends View {
             case ASK_FOR_BUILD:{
 
                 Pack pack = serverResponse.getPack();
-                printCLI(pack.getModelCopy(), pack.getValidBuilds());
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
-                    System.out.println(pack.getMessageOpponents());
+                    JOptionPane.showMessageDialog(new JFrame(), pack.getMessageOpponents(), "NOT YOUR TURN",JOptionPane.INFORMATION_MESSAGE, Pics.ERRORICON.getImageIcon());
                 }
                 else{
-
-                    boolean needToLoop = true;
-                    PlayerAction playerAction = null;
-
-                    // If i have demeter i have to pick 2 cell for build
-                    if (player.getMyGodCard().equals(GodCard.DEMETER)){
-
-                        Cell selectedCell = null;
-                        Cell otherCell = null;
-
-                        printCLI(pack.getModelCopy(), pack.getValidBuilds());
-                        System.out.println(pack.getAction().toString());
-
-                        while (needToLoop) {
-
-                            try {
-                                String[] inputs = getUserInput();
-
-                                if (inputs==null && selectedCell!=null){
-                                    playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, getPlayer(), null, null, savedToken, 0, selectedCell, null, false, null);
-                                    savedToken = 0;
-                                    needToLoop = false;
-                                    break;
-                                }
-
-                                else if (otherCell==null && selectedCell!=null)
-                                    otherCell=getCell(inputs, pack.getModelCopy().getBattlefield());
-
-                                else if (selectedCell==null)
-                                    selectedCell = getCell(inputs, pack.getModelCopy().getBattlefield());
-
-                                if (selectedCell != null && otherCell!=null) {
-                                    playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, getPlayer(), null, null, savedToken, 0, selectedCell, otherCell, true, null);
-                                    savedToken = 0;
-                                    needToLoop = false;
-                                }
-                                else {
-                                    printCLI(pack.getModelCopy(), pack.getValidBuilds());
-                                    System.out.println("Select where do you want to place your second build... (x,y)\nType 'no' if you don't want to build a second time!");
-                                }
-                            } catch (Exception e) {
-                                printCLI(pack.getModelCopy(), pack.getValidBuilds());
-                                JOptionPane.showMessageDialog(new JFrame("Error"), pack.getAction().toString(),"Your input wasn't correct!", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());
-                            }
-                        }
-                    }
-                    // If not demeter only one build
-                    else {
-                        while (needToLoop) {
-
-                            printCLI(pack.getModelCopy(), pack.getValidBuilds());
-                            System.out.println(pack.getAction().toString());
-
-                            try {
-                                String[] inputs = getUserInput();
-
-                                Cell selectedCell = getCell(inputs, pack.getModelCopy().getBattlefield());
-
-                                if (selectedCell != null) {
-                                    playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, getPlayer(), null, null, savedToken, 0, selectedCell, null, false, null);
-                                    savedToken = 0;
-                                    needToLoop = false;
-                                }
-                            } catch (Exception e) {
-                                JOptionPane.showMessageDialog(new JFrame("Error"), pack.getAction().toString(),"Your input wasn't correct!", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());
-                            }
-                        }
-                    }
-                    notify(playerAction);
+                    this.player = pack.getPlayer();
+                    new AskToUseTheGodsPower(this, serverResponse);
                 }
                 break;
             }
@@ -600,5 +532,12 @@ public class SwingView extends View {
 
     public int GetSavedToken(){
         return savedToken;
+    }
+
+    public void BuildGod(){
+        switch (player.getMyGodCard()){
+            case DEMETER:
+                
+        }
     }
 }

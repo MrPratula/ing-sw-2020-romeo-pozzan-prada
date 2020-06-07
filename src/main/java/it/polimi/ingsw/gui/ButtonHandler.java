@@ -21,15 +21,16 @@ public class ButtonHandler implements ActionListener {
     private final JFrame mainframe;
     private final int posx;
     private final int posy;
+    private Boolean power;
 
-
-    public ButtonHandler(CellButton cellButton,ServerResponse serverResponse, SwingView swingView, JFrame jframe, int posx, int posy) {
+    public ButtonHandler(CellButton cellButton,ServerResponse serverResponse, SwingView swingView, JFrame jframe, int posx, int posy, Boolean wantpower) {
         this.serverResponse = serverResponse;
         this.cellButton = cellButton;
         this.view = swingView;
         this.mainframe = jframe;
         this.posx = posx;
         this.posy = posy;
+        this.power = wantpower;
     }
 
 
@@ -97,11 +98,34 @@ public class ButtonHandler implements ActionListener {
             }
 
             case ASK_FOR_BUILD: {
-                try {
-                    //prevButton = (CellButton) clickedButtonEvent.getSource(); //dubbio
-                    incrementHeight();
-                } catch (CellHeightException | ReachHeightLimitException exception) {
-                    exception.printStackTrace();
+                //Simple Build
+                if(!power){
+                    try {
+                        Cell targetCell = serverResponse.getPack().getModelCopy().getBattlefield().getCell(posx,posy);
+                        if(targetCell != null){
+                            PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, view.getPlayer(), null, null, view.GetSavedToken(), 0, targetCell, null, false, null);
+                            try {
+                                view.notifyClient(playerAction);
+                                mainframe.dispose();
+                            } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        else {
+                            JOptionPane.showMessageDialog(new JFrame(), "You can't place your token here! Already occupied!", "Error", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());
+                        }
+                    } catch (CellOutOfBattlefieldException e) {
+                        e.printStackTrace();
+                    }
+                break;
+                }
+                else {
+                    switch (view.getPlayer().getMyGodCard()){
+                        case DEMETER:{
+                            view.BuildGod();
+                            break;
+                        }
+                    }
                 }
             }
         }

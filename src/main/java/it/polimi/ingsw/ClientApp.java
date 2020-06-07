@@ -62,7 +62,7 @@ public class ClientApp {
 
         //new WelcomeFrame(new SwingView());
 
-        new AskPrometheusPowerFrame(new SwingView());
+        //new AskPrometheusPowerFrame(new SwingView());
             //PROVA test CON GODS
         /*List<GodCard> godsInGame = new ArrayList<>();
         godsInGame.add(GodCard.CHRONUS);
