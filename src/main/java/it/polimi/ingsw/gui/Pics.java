@@ -98,6 +98,7 @@ public enum Pics {
         PLAYBUTTON("./src/main/images/utils/" + "buttonPlay.png"),
         NICKNAME("./src/main/images/utils/" + "nickname.png"),
         NUMBEROFPLAYERS("./src/main/images/utils/" + "howmanyplayers.png"),
+        ASKFORPROMETHEUSPOWER("./src/main/images/utils/" + "prometheus.png"),
 
         // MESSAGES
         ASK_FOR_BUILD("./src/main/images/messages/" + "ASK_FOR_BUILD.png"),

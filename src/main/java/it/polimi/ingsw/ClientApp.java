@@ -26,8 +26,6 @@ public class ClientApp {
 
 
         /*      //  PROVA FINESTRA SCELTA SINGOLO GOD
-        /*
-              //  PROVA FINESTRA SCELTA SINGOLO GOD
         List<GodCard> allGodCards = new ArrayList<>();
         allGodCards.add(GodCard.CHRONUS);
         allGodCards.add(GodCard.LIMUS);
@@ -64,6 +62,7 @@ public class ClientApp {
 
         //new WelcomeFrame(new SwingView());
 
+        new AskPrometheusPowerFrame(new SwingView());
             //PROVA test CON GODS
         /*List<GodCard> godsInGame = new ArrayList<>();
         godsInGame.add(GodCard.CHRONUS);

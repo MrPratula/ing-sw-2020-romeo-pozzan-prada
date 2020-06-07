@@ -21,6 +21,7 @@ public class NumberOfPlayersWindow extends JDialog{
         this.view = swingView;
 
         setPreferredSize(new Dimension(600,300));
+
         //numberOfPlayersPanel's panel
         NumberOfPlayersPanel numberOfPlayersPanel = new NumberOfPlayersPanel();
 

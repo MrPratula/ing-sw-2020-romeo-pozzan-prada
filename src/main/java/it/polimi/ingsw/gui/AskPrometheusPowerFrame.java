@@ -18,17 +18,20 @@ public class AskPrometheusPowerFrame extends JDialog {
 
         this.view = swingView;
 
-        setTitle("Do you want to use the power of prometheus?");
+        setTitle("Prometheus Power");
         setResizable(false);
+        setIconImage(Pics.PLAYERICON.getImageIcon().getImage());
         setPreferredSize(new Dimension(600,300));
-        setBackground(Color.BLACK);
 
+        PrometheusPanel main = new PrometheusPanel();
 
-        JButton yes_button = new JButton("YES!");
-        JButton no_button = new JButton("NO!");
+        JButton yes_button = new JButton("YES");
+        yes_button.setContentAreaFilled(false);
+        yes_button.setBorderPainted(false);
+        JButton no_button = new JButton("NO");
+        no_button.setContentAreaFilled(false);
+        no_button.setBorderPainted(false);
 
-        add(yes_button,BorderLayout.WEST);
-        add(no_button, BorderLayout.EAST);
 
         yes_button.addActionListener(new ActionListener() {
             @Override
@@ -37,8 +40,8 @@ public class AskPrometheusPowerFrame extends JDialog {
                 try {
                     view.notifyClient(playerAction);
                     AskPrometheusPowerFrame.this.dispose();
-                } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException cellOutOfBattlefieldException) {
-                    cellOutOfBattlefieldException.printStackTrace();
+                } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException ex) {
+                    ex.printStackTrace();
                 }
             }
         });
@@ -50,12 +53,22 @@ public class AskPrometheusPowerFrame extends JDialog {
                 try {
                     view.notifyClient(playerAction);
                     AskPrometheusPowerFrame.this.dispose();
-                } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException cellOutOfBattlefieldException) {
-                    cellOutOfBattlefieldException.printStackTrace();
+                } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException ex) {
+                    ex.printStackTrace();
                 }
             }
         });
+
+        main.add(yes_button);
+        main.add(no_button);
+
+        add(main, BorderLayout.CENTER);
+
         pack();
         setVisible(true);
     }
+
+
+
+
 }
