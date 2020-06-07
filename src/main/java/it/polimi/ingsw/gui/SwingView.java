@@ -5,22 +5,15 @@ import it.polimi.ingsw.cli.Player;
 import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.cli.*;
 import it.polimi.ingsw.utils.*;
-import it.polimi.ingsw.utils.Action;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import javax.swing.*;
 import java.io.File;
 
 
 public class SwingView extends View {
-
-    private JFrame mainFrame;        //1
-    private JPanel mainPanel;        //2
-    private JButton playButton;      //3.1
-    private JLabel logoImage;
 
     private GameFrame gameFrame;
     private CellButton[][] battlefieldGUI;
@@ -42,10 +35,6 @@ public class SwingView extends View {
 
     protected Player getPlayer(){
         return player;
-    }
-
-    public JFrame getMainFrame() {
-        return mainFrame;
     }
 
     public CellButton[][] getBattlefieldGUI() {
@@ -152,7 +141,7 @@ public class SwingView extends View {
 
             case INVALID_NAME: {
 
-                JOptionPane.showMessageDialog(new JFrame(),"Your name is invalid","Error", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());  //posso anche mettere un'immagine error
+                JOptionPane.showMessageDialog(new JFrame(),"Your name is invalid","Error", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());
                 new NickNameWindow(this);
                 break;
             }
@@ -171,7 +160,7 @@ public class SwingView extends View {
             case WAIT_OTHER_PLAYERS_TO_CONNECT:
             case NUMBER_RECEIVED: {
 
-                JOptionPane.showMessageDialog(new JFrame(),serverResponse.getPack().getAction().toString(),"NUMBER_RECEIVED", JOptionPane.INFORMATION_MESSAGE, Pics.INFORMATIONICON.getImageIcon());  //posso anche mettere un'immagine error
+                JOptionPane.showMessageDialog(new JFrame(),serverResponse.getPack().getAction().toString(),"NUMBER_RECEIVED", JOptionPane.INFORMATION_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
                 break;
             }
 
@@ -180,7 +169,6 @@ public class SwingView extends View {
 
                 this.player = serverResponse.getPack().getPlayer();
                 new ChooseGodCardToPlayWindow(this, serverResponse);
-
                 break;
             }
 
@@ -188,12 +176,12 @@ public class SwingView extends View {
             case WAIT_AND_SAVE_PLAYER_FROM_SERVER:{
 
                 player = serverResponse.getPack().getPlayer();
-                JOptionPane.showMessageDialog(new JFrame(),serverResponse.getPack().getAction().toString(),"WAIT_AND_SAVE_PLAYER_FROM_SERVER", JOptionPane.INFORMATION_MESSAGE, Pics.INFORMATIONICON.getImageIcon());  //posso anche mettere un'immagine error
+                JOptionPane.showMessageDialog(new JFrame(),serverResponse.getPack().getAction().toString(),"WAIT_AND_SAVE_PLAYER_FROM_SERVER", JOptionPane.INFORMATION_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
                 break;
             }
 
 
-            // TILL NOW ALL THE MESSAGES ARE BROADCAST-RECEIVED
+            // SINCE NOW ALL THE MESSAGES ARE BROADCAST-RECEIVED
 
             case SELECT_YOUR_GOD_CARD:{
 
@@ -216,12 +204,13 @@ public class SwingView extends View {
                 Pack pack = serverResponse.getPack();
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
-                    JOptionPane.showMessageDialog(new JFrame(),pack.getMessageOpponents(),"NOT YOUR TURN!! PLEASE WAIT", JOptionPane.WARNING_MESSAGE, Pics.ERRORICON.getImageIcon());
+                    JOptionPane.showMessageDialog(new JFrame(),pack.getMessageOpponents(),"NOT YOUR TURN! PLEASE WAIT", JOptionPane.WARNING_MESSAGE, Pics.ERRORICON.getImageIcon());
                 }
                 else {
                     this.player = serverResponse.getPack().getPlayer();
-                    JOptionPane.showMessageDialog(new JFrame(),pack.getAction().getName().toUpperCase(),"YOUR TURN, ", JOptionPane.WARNING_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
-                    new GameFrame(serverResponse,this,null);
+                    JOptionPane.showMessageDialog(new JFrame(),pack.getAction().getName().toUpperCase(),"IT'S YOUR TURN, ", JOptionPane.WARNING_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
+                    // here i initialise the Game Frame that will last till the end of the game
+                    this.gameFrame = new GameFrame(serverResponse,this,null);
                 }
                 break;
             }
@@ -238,7 +227,10 @@ public class SwingView extends View {
                 else {
                     this.player = pack.getPlayer();
                     JOptionPane.showMessageDialog(new JFrame(), pack.getAction().getName().toUpperCase(), "YOUR TURN, ", JOptionPane.WARNING_MESSAGE);
-                    new GameFrame(serverResponse, this,null);
+
+                    this.gameFrame.updateGui(serverResponse, false);
+
+                    //new GameFrame(serverResponse, this, null);
                 }
                 break;
             }
@@ -276,7 +268,8 @@ public class SwingView extends View {
                 }
                 else{
                     JOptionPane.showMessageDialog(new JFrame(), pack.getAction().getName().toUpperCase(), "YOUR TURN, ", JOptionPane.WARNING_MESSAGE);
-                    new GameFrame(serverResponse,this,null);
+                    this.gameFrame.updateGui(serverResponse, false);
+                    //new GameFrame(serverResponse,this,null);
                 }
                 break;
             }
@@ -322,7 +315,6 @@ public class SwingView extends View {
     }
 
 
-    //public void updateGui(ModelUtils modelCopy, List<Cell> validMoves){ }
 
     /**
      * Here i print the GUI for the user, depending on the parameter validMoves;
@@ -447,7 +439,7 @@ public class SwingView extends View {
      * @param str2 in case of level 2
      * @param str3 in case of level 3
      * @param str4 in case of level dome
-     * @return
+     * @return the right imageicon
      */
     public ImageIcon switchOnHeight(int height, String startPath, String str0, String str1, String str2, String str3, String str4) {
 

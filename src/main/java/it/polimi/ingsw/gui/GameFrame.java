@@ -83,20 +83,53 @@ public class GameFrame extends JFrame {
         // handling the battlefield panel
         battlefieldPanel = new BattlefieldPanel();
         battlefieldPanel.setLayout(new GridLayout(5,5,0,0));
+
         for(int i=0; i<5; i++){
             for(int j=0; j<5; j++){
-                int height = battlefield.getCell(i,j).getHeight();
-                boolean dome = battlefield.getCell(i,j).getIsDome();
+
                 //I create a button for every cell
                 battlefieldGUI[i][j] = new CellButton(i,j);
                 battlefieldGUI[i][j].setBorderPainted(false);
                 battlefieldGUI[i][j].setContentAreaFilled(false);
-                battlefieldGUI[i][j].getCell().setHeight(height);
+                battlefieldGUI[i][j].getCell().setHeight(0);
                 battlefieldPanel.add(battlefieldGUI[i][j]);
                 ButtonHandler bh = new ButtonHandler(battlefieldGUI[i][j],serverResponse,view,this,i,j,power);
                 battlefieldButtons.add(bh);
                 battlefieldGUI[i][j].addActionListener(bh);
                 battlefieldPanel.add(battlefieldGUI[i][j]);
+
+            }
+        }
+
+        add(battlefieldPanel, BorderLayout.CENTER);
+        add(messageLabel, BorderLayout.SOUTH);
+        add(godPanel,BorderLayout.WEST);
+        setVisible(true);
+        getMessageLabel().setText("NOW "+serverResponse.getPack().getPlayer().getUsername().toUpperCase()+", SELECT A CELL TO "+serverResponse.getPack().getAction().toString());
+    }
+
+
+    /**
+     * Updates the GUI updating che changed cells
+     * @param serverResponse response from the server
+     * @param wantPower boolean autoexplcative
+     * @throws CellOutOfBattlefieldException
+     */
+    public void updateGui(ServerResponse serverResponse , boolean wantPower) throws CellOutOfBattlefieldException {
+
+        this.godsInGame = serverResponse.getPack().getGodCards();
+        this.allPlayers = serverResponse.getPack().getModelCopy().getAllPlayers();
+        this.battlefield = serverResponse.getPack().getModelCopy().getBattlefield();
+        this.power = wantPower;
+
+        // Compare every cell to update new modified ones
+
+        for(int i=0; i<5; i++) {
+            for (int j = 0; j < 5; j++) {
+
+                int height = battlefield.getCell(i,j).getHeight();
+                boolean dome = battlefield.getCell(i,j).getIsDome();
+
                 if(battlefield.getCell(i,j).getThereIsPlayer()){
                     for (Player p : allPlayers) {
                         if (p.getToken1() != null && p.getToken1().getTokenPosition()!=null) {
@@ -104,9 +137,8 @@ public class GameFrame extends JFrame {
                                 setIconCell(battlefieldGUI[i][j],height,dome,p);
                             }
                         }
-                        if (p.getToken2() != null && p.getToken2().getTokenPosition()!=null) {                                 //if he has the first token
-                            if (p.getToken2().getTokenPosition().equals(battlefield.getCell(i,j))) {   //i print his background correctly
-
+                        if (p.getToken2() != null && p.getToken2().getTokenPosition()!=null) {
+                            if (p.getToken2().getTokenPosition().equals(battlefield.getCell(i,j))) {
                                 setIconCell(battlefieldGUI[i][j],height,dome,p);
                             }
                         }
@@ -116,14 +148,9 @@ public class GameFrame extends JFrame {
                     setIconCell(battlefieldGUI[i][j],height,dome, null);
                 }
                 setRolloverIconCell(battlefieldGUI[i][j],height,dome);
+
             }
         }
-
-        add(battlefieldPanel, BorderLayout.CENTER);
-        add(messageLabel, BorderLayout.SOUTH);
-        add(godPanel,BorderLayout.WEST);
-        setVisible(true);
-        getMessageLabel().setText("NOW "+serverResponse.getPack().getPlayer().getUsername().toUpperCase()+", SELECT A CELL TO "+serverResponse.getPack().getAction().toString());
     }
 
 
@@ -139,71 +166,71 @@ public class GameFrame extends JFrame {
 
 
 
-    private void setRolloverIconCell(CellButton cell, int height, boolean dome) {
+    private void setRolloverIconCell(CellButton cellButton, int height, boolean dome) {
 
         if (!dome) {
             switch (height) {
                 case 0: {
-                    cell.setRolloverIcon(Pics.LEVEL0TEXT.getImageIcon());
+                    cellButton.setRolloverIcon(Pics.LEVEL0TEXT.getImageIcon());
                     break; }
                 case 1: {
-                    cell.setRolloverIcon(Pics.LEVEL1TEXT.getImageIcon());
+                    cellButton.setRolloverIcon(Pics.LEVEL1TEXT.getImageIcon());
                     break; }
                 case 2: {
-                    cell.setRolloverIcon(Pics.LEVEL2TEXT.getImageIcon());
+                    cellButton.setRolloverIcon(Pics.LEVEL2TEXT.getImageIcon());
                     break; }
                 case 3: {
-                    cell.setRolloverIcon(Pics.LEVEL3TEXT.getImageIcon());
+                    cellButton.setRolloverIcon(Pics.LEVEL3TEXT.getImageIcon());
                     break; }
             }
         } else {
             switch (height) {
                 case 0: {
-                    cell.setRolloverIcon(Pics.LEVEL0DOMETEXT.getImageIcon());
+                    cellButton.setRolloverIcon(Pics.LEVEL0DOMETEXT.getImageIcon());
                     break; }
                 case 1: {
-                    cell.setRolloverIcon(Pics.LEVEL1DOMETEXT.getImageIcon());
+                    cellButton.setRolloverIcon(Pics.LEVEL1DOMETEXT.getImageIcon());
                     break; }
                 case 2: {
-                    cell.setRolloverIcon(Pics.LEVEL2DOMETEXT.getImageIcon());
+                    cellButton.setRolloverIcon(Pics.LEVEL2DOMETEXT.getImageIcon());
                     break; }
                 case 3: {
-                    cell.setRolloverIcon(Pics.LEVEL3DOMETEXT.getImageIcon());
+                    cellButton.setRolloverIcon(Pics.LEVEL3DOMETEXT.getImageIcon());
                     break; }
             }
         }
     }
 
-    public void setIconCell(CellButton cell, int height, boolean dome, Player player){
+    public void setIconCell(CellButton cellButton, int height, boolean dome, Player player){
         if(player == null) {
             if (!dome) {
                 switch (height) {
                     case 0: {
-                        cell.setIcon(Pics.LEVEL0.getImageIcon());
+                        cellButton.setIcon(Pics.LEVEL0.getImageIcon());
                         break; }
                     case 1: {
-                        cell.setIcon(Pics.LEVEL1.getImageIcon());
+                        cellButton.setIcon(Pics.LEVEL1.getImageIcon());
                         break; }
                     case 2: {
-                        cell.setIcon(Pics.LEVEL2.getImageIcon());
+                        cellButton.setIcon(Pics.LEVEL2.getImageIcon());
                         break; }
                     case 3: {
-                        cell.setIcon(Pics.LEVEL3.getImageIcon());
+                        cellButton.setIcon(Pics.LEVEL3.getImageIcon());
                         break; }
                 }
             } else {
                 switch (height) {
                     case 0: {
-                        cell.setIcon(Pics.LEVEL0DOME.getImageIcon());
+                        cellButton.setIcon(Pics.LEVEL0DOME.getImageIcon());
                         break; }
                     case 1: {
-                        cell.setIcon(Pics.LEVEL1DOME.getImageIcon());
+                        cellButton.setIcon(Pics.LEVEL1DOME.getImageIcon());
                         break; }
                     case 2: {
-                        cell.setIcon(Pics.LEVEL2DOME.getImageIcon());
+                        cellButton.setIcon(Pics.LEVEL2DOME.getImageIcon());
                         break; }
                     case 3: {
-                        cell.setIcon(Pics.LEVEL3DOME.getImageIcon());
+                        cellButton.setIcon(Pics.LEVEL3DOME.getImageIcon());
                         break; }
                 }
             }
@@ -214,16 +241,16 @@ public class GameFrame extends JFrame {
                 case RED:{
                     switch (height) {
                         case 0: {
-                            cell.setIcon(Pics.LEVEL0TOKENRED.getImageIcon());
+                            cellButton.setIcon(Pics.LEVEL0TOKENRED.getImageIcon());
                             break; }
                         case 1: {
-                            cell.setIcon(Pics.LEVEL1TOKENRED.getImageIcon());
+                            cellButton.setIcon(Pics.LEVEL1TOKENRED.getImageIcon());
                             break; }
                         case 2: {
-                            cell.setIcon(Pics.LEVEL2TOKENRED.getImageIcon());
+                            cellButton.setIcon(Pics.LEVEL2TOKENRED.getImageIcon());
                             break; }
                         case 3: {
-                            cell.setIcon(Pics.LEVEL3TOKENRED.getImageIcon());
+                            cellButton.setIcon(Pics.LEVEL3TOKENRED.getImageIcon());
                             break; }
                     }
                     break;
@@ -231,16 +258,16 @@ public class GameFrame extends JFrame {
                 case BLUE:{
                     switch (height) {
                         case 0: {
-                            cell.setIcon(Pics.LEVEL0TOKENBLUE.getImageIcon());
+                            cellButton.setIcon(Pics.LEVEL0TOKENBLUE.getImageIcon());
                             break; }
                         case 1: {
-                            cell.setIcon(Pics.LEVEL1TOKENBLUE.getImageIcon());
+                            cellButton.setIcon(Pics.LEVEL1TOKENBLUE.getImageIcon());
                             break; }
                         case 2: {
-                            cell.setIcon(Pics.LEVEL2TOKENBLUE.getImageIcon());
+                            cellButton.setIcon(Pics.LEVEL2TOKENBLUE.getImageIcon());
                             break; }
                         case 3: {
-                            cell.setIcon(Pics.LEVEL3TOKENBLUE.getImageIcon());
+                            cellButton.setIcon(Pics.LEVEL3TOKENBLUE.getImageIcon());
                             break; }
                     }
                     break;
@@ -248,16 +275,16 @@ public class GameFrame extends JFrame {
                 case YELLOW:{
                     switch (height) {
                         case 0: {
-                            cell.setIcon(Pics.LEVEL0TOKENYELLOW.getImageIcon());
+                            cellButton.setIcon(Pics.LEVEL0TOKENYELLOW.getImageIcon());
                             break; }
                         case 1: {
-                            cell.setIcon(Pics.LEVEL1TOKENYELLOW.getImageIcon());
+                            cellButton.setIcon(Pics.LEVEL1TOKENYELLOW.getImageIcon());
                             break; }
                         case 2: {
-                            cell.setIcon(Pics.LEVEL2TOKENYELLOW.getImageIcon());
+                            cellButton.setIcon(Pics.LEVEL2TOKENYELLOW.getImageIcon());
                             break; }
                         case 3: {
-                            cell.setIcon(Pics.LEVEL3TOKENYELLOW.getImageIcon());
+                            cellButton.setIcon(Pics.LEVEL3TOKENYELLOW.getImageIcon());
                             break; }
                     }
                     break;
