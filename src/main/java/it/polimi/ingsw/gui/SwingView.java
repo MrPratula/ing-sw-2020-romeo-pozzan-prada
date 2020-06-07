@@ -247,41 +247,12 @@ public class SwingView extends View {
             case ASK_FOR_PROMETHEUS_POWER:{
 
                 Pack pack = serverResponse.getPack();
-                printCLI(pack.getModelCopy(), null);
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
                     System.out.println(pack.getMessageOpponents());
                 }
                 else {
-
-                    boolean needToLoop = true;
-                    PlayerAction playerAction = null;
-                    System.out.print(serverResponse.getPack().getAction().getInfo());
-
-                    while (needToLoop){
-                        try {
-
-                            Scanner scanner = new Scanner(System.in);
-                            String answer = scanner.nextLine().toUpperCase();
-
-                            if (answer.equals("YES")) {
-                                playerAction = new PlayerAction(Action.PROMETHEUS_ANSWER, player, null, null, 0, 0, null, null, true, null);
-                                needToLoop = false;
-                            }
-                            else if (answer.equals("NO")) {
-                                playerAction = new PlayerAction(Action.PROMETHEUS_ANSWER, player, null, null, 0, 0, null, null, false, null);
-                                needToLoop = false;
-                            }
-                            else {
-                                System.out.println("Please write yes or no...");
-                            }
-
-                        }catch (Exception e){
-                            System.out.println("Please write yes or no...");
-                            needToLoop = true;
-                        }
-                    }
-                    notifyClient(playerAction);
+                    new AskPrometheusPowerFrame(this);
                 }
                 break;
             }

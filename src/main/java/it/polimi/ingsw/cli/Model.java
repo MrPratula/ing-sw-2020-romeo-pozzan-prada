@@ -500,6 +500,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         Pack pack = new Pack(Action.ASK_FOR_PROMETHEUS_POWER);
         pack.setPlayer(getPlayerInTurn());
         pack.setModelCopy(getCopy());
+        pack.setGodCards(getGodCards(allPlayers));
         pack.setMessageOpponents("Another player is choosing if use Prometheus power or not...");
 
         prometheusToken = parseToken(playerAction.getTokenMain());
