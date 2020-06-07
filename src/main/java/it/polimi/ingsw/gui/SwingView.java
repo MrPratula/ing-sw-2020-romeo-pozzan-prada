@@ -222,17 +222,6 @@ public class SwingView extends View {
                     this.player = serverResponse.getPack().getPlayer();
                     JOptionPane.showMessageDialog(new JFrame(),pack.getAction().getName().toUpperCase(),"YOUR TURN, ", JOptionPane.WARNING_MESSAGE);
                     new GameFrame(serverResponse,this);
-
-                    /*
-                    //here the battlefieldGUI is set up
-                    //this.gameFrame = new GameFrame(godsInGame,serverResponse,this);
-                    new GameFrame(serverResponse,this);
-
-                    this.battlefieldGUI = gameFrame.getBattlefieldGUI();
-
-                    //display the text of the action that the user should do
-                    gameFrame.getMessageLabel().setText("NOW "+pack.getPlayer().getUsername().toUpperCase()+", SELECT A CELL TO "+Action.PLACE_YOUR_TOKEN.toString());
-                    */
                 }
                 break;
             }
@@ -241,34 +230,15 @@ public class SwingView extends View {
             case TOKEN_NOT_MOVABLE:
             case ASK_FOR_SELECT_TOKEN: {
 
-                PlayerAction playerAction = null;
                 Pack pack = serverResponse.getPack();
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
-                    displayGui(pack.getModelCopy(), null);
-                    gameFrame.getMessageLabel().setText(pack.getMessageOpponents());
+                    JOptionPane.showMessageDialog(new JFrame(),pack.getMessageOpponents(),"NOT YOUR TURN!! PLEASE WAIT!", JOptionPane.WARNING_MESSAGE);
                 }
                 else {
-                    // Update the player
                     this.player = pack.getPlayer();
-                    if (pack.getMessageInTurn() != null){
-                        gameFrame.getMessageLabel().setText(pack.getMessageInTurn());
-                    }
-
-                    //while needToLoop
-                    displayGui(pack.getModelCopy(), null); //updategui()
-                    System.out.print(serverResponse.getPack().getAction().getInfo());
-
-                    try{
-                        //gameFrame.setAction(pack.getAction());
-
-                        //display the text of the action that the user should do
-                        gameFrame.getMessageLabel().setText("NOW "+pack.getPlayer().getUsername().toUpperCase()+", SELECT A CELL TO "+Action.PLACE_YOUR_TOKEN.toString());
-
-                    } catch (Exception e){
-                        JOptionPane.showMessageDialog(new JFrame("error"), pack.getAction().toString(),"Your input wasn't correct!", JOptionPane.ERROR_MESSAGE);
-                    }
-                    notifyClient(playerAction);
+                    JOptionPane.showMessageDialog(new JFrame(), pack.getAction().getName().toUpperCase(), "YOUR TURN, ", JOptionPane.WARNING_MESSAGE);
+                    new GameFrame(serverResponse, this);
                 }
                 break;
             }
@@ -613,11 +583,11 @@ public class SwingView extends View {
         }
     }
 
-    public int getToken(String[] inputs, Player player){
+    public int getToken(int posx, int posy, Player player){
 
         int selectX, selectY;
-        selectX = Integer.parseInt(inputs[0]);
-        selectY = Integer.parseInt(inputs[1]);
+        selectX = posx;
+        selectY = posy;
 
         if (player.getToken1().getTokenPosition().getPosX() == selectX && player.getToken1().getTokenPosition().getPosY() == selectY){
             return player.getToken1().getId();
@@ -667,5 +637,9 @@ public class SwingView extends View {
         Battlefield battlefield = modelCopy.getBattlefield();
 
         return !battlefield.getCell(targetCell).getIsDome();
+    }
+
+    public void SavedToken(int selectedToken){
+        savedToken = selectedToken;
     }
 }
