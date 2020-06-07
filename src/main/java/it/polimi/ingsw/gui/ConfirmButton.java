@@ -14,7 +14,7 @@ public class ConfirmButton extends JButton {
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        g.drawImage(Pics.BUTTON.getImageIcon().getImage(),0,0,this.getWidth(),this.getHeight(),this);
+        g.drawImage(Pics.BUTTON.getImageIcon().getImage(),0,0,this.getWidth(),20,this);
     }
 
 }

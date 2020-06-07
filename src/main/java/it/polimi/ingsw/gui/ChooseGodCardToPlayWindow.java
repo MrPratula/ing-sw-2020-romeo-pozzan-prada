@@ -65,24 +65,24 @@ public class ChooseGodCardToPlayWindow {
                                     godStringToSplit.append(g.name().toUpperCase()).append(",");
                                 }
                                 //inutile swingView.setGodCardsForTheGame(godStringToSplit.toString());
-                                JOptionPane.showMessageDialog(new JFrame(), "Ok! Thanks for the selections. The GodCards in game will be: "+godStringToSplit, "Selection confirmed", JOptionPane.INFORMATION_MESSAGE);
+                                JOptionPane.showMessageDialog(new JFrame(), "Ok! Thanks for the selections. The GodCards in game will be: "+godStringToSplit, "Selection confirmed", JOptionPane.INFORMATION_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
                                 //System.out.println(godStringToSplit);
                                 PlayerAction playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, view.getPlayer(), null, null, 0, 0, null, null, false, godStringToSplit.toString());
                                 try {
                                     view.notifyClient(playerAction);
                                     mainFrame.dispose();
-                                } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | WrongNumberPlayerException | ImpossibleTurnException cellOutOfBattlefieldException) {
-                                    cellOutOfBattlefieldException.printStackTrace();
+                                } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | WrongNumberPlayerException | ImpossibleTurnException ex) {
+                                    ex.printStackTrace();
                                 }
                             }
                         }
                         else{
-                            JOptionPane.showMessageDialog(new JFrame(),"God already selected!","Error",JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(new JFrame(),"God already selected!","Error",JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());
                         }
                     }
                     //non dovrebbe mai finire qua
                     else{
-                        JOptionPane.showMessageDialog(new JFrame(),"Something went wrong!","Error",JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(new JFrame(),"Something went wrong!","Error",JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());
                     }
                 }
 
@@ -101,7 +101,7 @@ public class ChooseGodCardToPlayWindow {
         mainFrame.setLocationRelativeTo(null);
 
         //Frame che dice al giocatore cosa fare (cioè che dovrà scegliere 2 o 3 god)
-        JOptionPane.showMessageDialog(new JFrame(), "Select the "+n+" GodCards for this game", "GodCard", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(new JFrame(), "Select the "+n+" GodCards for this game", "GodCard", JOptionPane.INFORMATION_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
     }
 
 

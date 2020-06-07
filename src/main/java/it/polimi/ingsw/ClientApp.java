@@ -9,6 +9,7 @@ import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.Pack;
 import it.polimi.ingsw.utils.ServerResponse;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;

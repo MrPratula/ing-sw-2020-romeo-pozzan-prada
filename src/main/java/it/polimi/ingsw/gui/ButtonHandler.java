@@ -52,7 +52,7 @@ public class ButtonHandler implements ActionListener {
                         }
                     }
                     else {
-                        JOptionPane.showMessageDialog(new JFrame(), "You can't place your token here! Already occcupied!", "Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(new JFrame(), "You can't place your token here! Already occupied!", "Error", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());
                     }
                 } catch (CellOutOfBattlefieldException e) {
                     e.printStackTrace();
@@ -179,7 +179,7 @@ public class ButtonHandler implements ActionListener {
     public void incrementHeight() throws CellHeightException, ReachHeightLimitException {
 
         if(cellButton.getCell().getIsDome()){
-            JOptionPane.showMessageDialog(new JFrame(),"You can't build over a dome!","Error", JOptionPane.ERROR_MESSAGE,Pics.ERRORICON.getImageIcon());  //posso anche mettere un'immagine error
+            JOptionPane.showMessageDialog(new JFrame(),"You can't build over a dome!","Error", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());  //posso anche mettere un'immagine error
         }
 
         else {

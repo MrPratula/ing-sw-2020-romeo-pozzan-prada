@@ -127,6 +127,18 @@ public class GameFrame extends JFrame {
     }
 
 
+    /*      GETTER       */
+
+    public CellButton[][] getBattlefieldGUI() {
+        return battlefieldGUI;
+    }
+
+    public JLabel getMessageLabel() {
+        return messageLabel;
+    }
+
+
+
     private void setRolloverIconCell(CellButton cell, int height, boolean dome) {
 
         if (!dome) {
@@ -161,9 +173,6 @@ public class GameFrame extends JFrame {
             }
         }
     }
-
-
-    /*      SETTER       */
 
     public void setIconCell(CellButton cell, int height, boolean dome, Player player){
         if(player == null) {
@@ -257,13 +266,4 @@ public class GameFrame extends JFrame {
         }
     }
 
-    /*      GETTER       */
-
-    public CellButton[][] getBattlefieldGUI() {
-        return battlefieldGUI;
-    }
-
-    public JLabel getMessageLabel() {
-        return messageLabel;
-    }
 }
