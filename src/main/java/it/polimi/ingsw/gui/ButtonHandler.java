@@ -79,6 +79,22 @@ public class ButtonHandler implements ActionListener {
                 break;
             }
 
+            case ASK_FOR_WHERE_TO_MOVE:{
+                Cell targetCell = view.getCell(posx,posy,serverResponse.getPack().getModelCopy().getBattlefield());
+                if(targetCell != null){
+                    PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_MOVE_SELECTED, view.getPlayer(), null, null, view.GetSavedToken(), 0, targetCell, null, false, null);
+                    try {
+                        view.notifyClient(playerAction);
+                        mainframe.dispose();
+                    } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else {
+                    JOptionPane.showMessageDialog(new JFrame(), "You can't place your token here! Already occupied!", "Error", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());
+                }
+                break;
+            }
 
             case ASK_FOR_BUILD: {
                 try {
@@ -88,15 +104,8 @@ public class ButtonHandler implements ActionListener {
                     exception.printStackTrace();
                 }
             }
-
-
-            case ASK_FOR_WHERE_TO_MOVE:{
-                //takeCareOfStartingPosition(prevButton);
-                moveToken(); //System.out.println(clickedButtonEvent.getActionCommand());
-            }
         }
     }
-
 
     /**
      * It calculates which image to display, based on the params:
@@ -165,19 +174,6 @@ public class ButtonHandler implements ActionListener {
             }
         }
     }
-
-
-
-    /**
-     * It moves the image of the token on the selected
-     * position, modifing even the old one
-     */
-    private void moveToken() {
-
-        //continuo
-
-    }
-
 
     /**
      * It sets che correct image of the height level,

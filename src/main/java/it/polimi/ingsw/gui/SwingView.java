@@ -273,26 +273,10 @@ public class SwingView extends View {
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
                     JOptionPane.showMessageDialog(new JFrame(), pack.getMessageOpponents(), "NOT YOUR TURN",JOptionPane.INFORMATION_MESSAGE, Pics.ERRORICON.getImageIcon());
-                    displayGui(pack.getModelCopy(), pack.getValidMoves());
-                    gameFrame.getMessageLabel().setIcon(Pics.NOT_YOUR_TURN.getImageIcon());
                 }
                 else{
-
-                    boolean needToLoop = true;
-                    PlayerAction playerAction = null;
-
-                    while (needToLoop){
-
-                        displayGui(pack.getModelCopy(), pack.getValidMoves());
-                        gameFrame.getMessageLabel().setIcon(Pics.ASK_FOR_WHERE_TO_MOVE.getImageIcon());
-
-                        try{
-                            //GET CEL ON THE FRAME
-                        } catch (Exception e){
-                            JOptionPane.showMessageDialog(new JFrame("Error"), pack.getAction().toString(),"Your input wasn't correct!", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());
-                        }
-                    }
-                    notify(playerAction);
+                    JOptionPane.showMessageDialog(new JFrame(), pack.getAction().getName().toUpperCase(), "YOUR TURN, ", JOptionPane.WARNING_MESSAGE);
+                    new GameFrame(serverResponse,this);
                 }
                 break;
             }
@@ -569,11 +553,11 @@ public class SwingView extends View {
         else return 0;
     }
 
-    public Cell getCell(String[] inputs, Battlefield battlefield){
+    public Cell getCell(int posx, int posy, Battlefield battlefield){
 
         int selectX, selectY;
-        selectX = Integer.parseInt(inputs[0]);
-        selectY = Integer.parseInt(inputs[1]);
+        selectX = posx;
+        selectY = posy;
 
         try {
             return battlefield.getCell(selectX, selectY);
@@ -612,5 +596,9 @@ public class SwingView extends View {
 
     public void SavedToken(int selectedToken){
         savedToken = selectedToken;
+    }
+
+    public int GetSavedToken(){
+        return savedToken;
     }
 }
