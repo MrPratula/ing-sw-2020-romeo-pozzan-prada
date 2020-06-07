@@ -27,8 +27,8 @@ public class AskPrometheusPowerFrame extends JDialog {
         JButton yes_button = new JButton("YES!");
         JButton no_button = new JButton("NO!");
 
-        add(yes_button,BorderLayout.EAST);
-        add(no_button, BorderLayout.WEST);
+        add(yes_button,BorderLayout.WEST);
+        add(no_button, BorderLayout.EAST);
 
         yes_button.addActionListener(new ActionListener() {
             @Override
@@ -55,6 +55,7 @@ public class AskPrometheusPowerFrame extends JDialog {
                 }
             }
         });
-
+        pack();
+        setVisible(true);
     }
 }

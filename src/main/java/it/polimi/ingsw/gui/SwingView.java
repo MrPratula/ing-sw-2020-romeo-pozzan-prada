@@ -260,7 +260,7 @@ public class SwingView extends View {
 
             case GAME_OVER:{
                 Pack pack = serverResponse.getPack();
-                printCLI(pack.getModelCopy(), null);
+                JOptionPane.showMessageDialog(new JFrame(), pack.getAction().getName().toUpperCase(), "GAME OVER ", JOptionPane.WARNING_MESSAGE);
                 System.out.print(serverResponse.getPack().getAction().getInfo());
                 System.out.println(pack.getMessageInTurn());
                 break;

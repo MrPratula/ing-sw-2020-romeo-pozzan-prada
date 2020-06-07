@@ -476,6 +476,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             Pack pack = new Pack(Action.ASK_FOR_WHERE_TO_MOVE);
             pack.setModelCopy(getCopy());
             pack.setValidMoves(validMoves);
+            pack.setGodCards(getGodCards(allPlayers));
             pack.setMessageOpponents(getPlayerInTurn().getUsername()+" is selecting where to move his token...");
 
             serverResponse = new ServerResponse(getTurn(), pack);
@@ -516,6 +517,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
         Pack pack = new Pack(Action.ASK_FOR_BUILD);
         pack.setPlayer(getPlayerInTurn());
+        pack.setGodCards(getGodCards(allPlayers));
         pack.setMessageOpponents(getPlayerInTurn().getUsername()+" has used his power!\nHe is placing his first build!");
         pack.setModelCopy(getCopy());
 
@@ -773,6 +775,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             Pack pack = new Pack(Action.ASK_FOR_BUILD);
             pack.setPlayer(getPlayerInTurn());
             pack.setModelCopy(getCopy());
+            pack.setGodCards(getGodCards(allPlayers));
             pack.setValidBuilds(validBuilds);
             pack.setMessageOpponents(getPlayerInTurn().getUsername()+" is choosing where to build...");
 
@@ -1005,6 +1008,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             String inTurnMessage = String.format("%s is now your turn!",getPlayerInTurn().getUsername().toUpperCase());
             String opponentMessage = String.format("Is now %s turn!",getPlayerInTurn().getUsername().toUpperCase());
             Pack pack = new Pack(Action.ASK_FOR_SELECT_TOKEN);
+            pack.setGodCards(getGodCards(allPlayers));
             pack.setMessageOpponents(opponentMessage);
             pack.setMessageInTurn(inTurnMessage);
             pack.setModelCopy(getCopy());
@@ -1165,6 +1169,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         Pack pack = new Pack(playerAction.getAction());
         pack.setPlayer(getPlayerInTurn());
         pack.setModelCopy(getCopy());
+        pack.setGodCards(getGodCards(allPlayers));
         pack.setMessageInTurn(whatAction);
         pack.setMessageOpponents(getPlayerInTurn().getUsername()+" inserted a non valid choice...");
 
