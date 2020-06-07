@@ -152,7 +152,7 @@ public class SwingView extends View {
 
             case INVALID_NAME: {
 
-                JOptionPane.showMessageDialog(new JFrame(),"Your name is invalid","Error", JOptionPane.ERROR_MESSAGE);  //posso anche mettere un'immagine error
+                JOptionPane.showMessageDialog(new JFrame(),"Your name is invalid","Error", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());  //posso anche mettere un'immagine error
                 new NickNameWindow(this);
                 break;
             }
@@ -171,7 +171,7 @@ public class SwingView extends View {
             case WAIT_OTHER_PLAYERS_TO_CONNECT:
             case NUMBER_RECEIVED: {
 
-                JOptionPane.showMessageDialog(new JFrame(),serverResponse.getPack().getAction().toString(),"NUMBER_RECEIVED", JOptionPane.INFORMATION_MESSAGE);  //posso anche mettere un'immagine error
+                JOptionPane.showMessageDialog(new JFrame(),serverResponse.getPack().getAction().toString(),"NUMBER_RECEIVED", JOptionPane.INFORMATION_MESSAGE, Pics.INFORMATIONICON.getImageIcon());  //posso anche mettere un'immagine error
                 break;
             }
 
@@ -188,7 +188,7 @@ public class SwingView extends View {
             case WAIT_AND_SAVE_PLAYER_FROM_SERVER:{
 
                 player = serverResponse.getPack().getPlayer();
-                JOptionPane.showMessageDialog(new JFrame(),serverResponse.getPack().getAction().toString(),"WAIT_AND_SAVE_PLAYER_FROM_SERVER", JOptionPane.INFORMATION_MESSAGE);  //posso anche mettere un'immagine error
+                JOptionPane.showMessageDialog(new JFrame(),serverResponse.getPack().getAction().toString(),"WAIT_AND_SAVE_PLAYER_FROM_SERVER", JOptionPane.INFORMATION_MESSAGE, Pics.INFORMATIONICON.getImageIcon());  //posso anche mettere un'immagine error
                 break;
             }
 
@@ -201,7 +201,7 @@ public class SwingView extends View {
 
                 // If the player is not in turn he is just notified to wait
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
-                    JOptionPane.showMessageDialog(new JFrame(),pack.getMessageOpponents(),"NOT YOUR TURN!! PLEASE WAIT!", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(new JFrame(),pack.getMessageOpponents(),"NOT YOUR TURN!! PLEASE WAIT!", JOptionPane.WARNING_MESSAGE, Pics.ERRORICON.getImageIcon());
                 }
                 // else he has to pick his god card
                 else {
@@ -216,11 +216,11 @@ public class SwingView extends View {
                 Pack pack = serverResponse.getPack();
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
-                    JOptionPane.showMessageDialog(new JFrame(),pack.getMessageOpponents(),"NOT YOUR TURN!! PLEASE WAIT", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(new JFrame(),pack.getMessageOpponents(),"NOT YOUR TURN!! PLEASE WAIT", JOptionPane.WARNING_MESSAGE, Pics.ERRORICON.getImageIcon());
                 }
                 else {
                     this.player = serverResponse.getPack().getPlayer();
-                    JOptionPane.showMessageDialog(new JFrame(),pack.getAction().getName().toUpperCase(),"YOUR TURN, ", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(new JFrame(),pack.getAction().getName().toUpperCase(),"YOUR TURN, ", JOptionPane.WARNING_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
                     new GameFrame(serverResponse,this);
                 }
                 break;
@@ -237,6 +237,24 @@ public class SwingView extends View {
                 }
                 else {
                     this.player = pack.getPlayer();
+                    if (pack.getMessageInTurn() != null){
+                        gameFrame.getMessageLabel().setText(pack.getMessageInTurn());
+                    }
+
+                    //while needToLoop
+                    displayGui(pack.getModelCopy(), null); //updategui()
+                    System.out.print(serverResponse.getPack().getAction().getInfo());
+
+                    try{
+                        //gameFrame.setAction(pack.getAction());
+
+                        //display the text of the action that the user should do
+                        gameFrame.getMessageLabel().setText("NOW "+pack.getPlayer().getUsername().toUpperCase()+", SELECT A CELL TO "+Action.PLACE_YOUR_TOKEN.toString());
+
+                    } catch (Exception e){
+                        JOptionPane.showMessageDialog(new JFrame("Error"), pack.getAction().toString(),"Your input wasn't correct!", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());
+                    }
+                    notifyClient(playerAction);
                     JOptionPane.showMessageDialog(new JFrame(), pack.getAction().getName().toUpperCase(), "YOUR TURN, ", JOptionPane.WARNING_MESSAGE);
                     new GameFrame(serverResponse, this);
                 }
@@ -272,7 +290,7 @@ public class SwingView extends View {
                 Pack pack = serverResponse.getPack();
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
-                    JOptionPane.showMessageDialog(new JFrame(), pack.getMessageOpponents(), "NOT YOUR TURN",JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(new JFrame(), pack.getMessageOpponents(), "NOT YOUR TURN",JOptionPane.INFORMATION_MESSAGE, Pics.ERRORICON.getImageIcon());
                     displayGui(pack.getModelCopy(), pack.getValidMoves());
                     gameFrame.getMessageLabel().setIcon(Pics.NOT_YOUR_TURN.getImageIcon());
                 }
@@ -289,7 +307,7 @@ public class SwingView extends View {
                         try{
                             //GET CEL ON THE FRAME
                         } catch (Exception e){
-                            JOptionPane.showMessageDialog(new JFrame("error"), pack.getAction().toString(),"Your input wasn't correct!", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(new JFrame("Error"), pack.getAction().toString(),"Your input wasn't correct!", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());
                         }
                     }
                     notify(playerAction);
@@ -349,7 +367,7 @@ public class SwingView extends View {
                                 }
                             } catch (Exception e) {
                                 printCLI(pack.getModelCopy(), pack.getValidBuilds());
-                                JOptionPane.showMessageDialog(new JFrame("error"), pack.getAction().toString(),"Your input wasn't correct!", JOptionPane.ERROR_MESSAGE);
+                                JOptionPane.showMessageDialog(new JFrame("Error"), pack.getAction().toString(),"Your input wasn't correct!", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());
                             }
                         }
                     }
@@ -371,7 +389,7 @@ public class SwingView extends View {
                                     needToLoop = false;
                                 }
                             } catch (Exception e) {
-                                System.out.println("Your input wasn't correct!");
+                                JOptionPane.showMessageDialog(new JFrame("Error"), pack.getAction().toString(),"Your input wasn't correct!", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());
                             }
                         }
                     }

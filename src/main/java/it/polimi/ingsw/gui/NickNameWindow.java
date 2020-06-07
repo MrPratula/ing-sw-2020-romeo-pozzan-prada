@@ -25,37 +25,34 @@ public class NickNameWindow extends JDialog{
      */
     public NickNameWindow(SwingView swingView) {
 
+        this.view = swingView;
+
         setTitle("Select your nickname for this game");
-        setResizable(false);
+        setResizable(true);
         setPreferredSize(new Dimension(600,300));
+        setLocationRelativeTo(null);
         setIconImage(Pics.PLAYERICON.getImageIcon().getImage());
         setBackground(Color.BLACK);
-
-        this.view = swingView;
 
         //Nickname's panel
         nicknamePanel = new NickNamePanel();
 
-        //label for asking nickname
-        JLabel nicknameLabel = new JLabel();
-        nicknameLabel.setFont(new Font("Arial",Font.PLAIN,15));
-        nicknameLabel.setBounds(10,20,30,20);
-        nicknamePanel.add(nicknameLabel,BorderLayout.PAGE_START);
-
-        //textfield for let the user type his nickname
-        nicknameTextField = new JTextField(10);
-        nicknameTextField.setBorder(BorderFactory.createEmptyBorder());
-        nicknameTextField.setBounds(10,20,10,10);
+        //textfield to let the user type his nickname
+        nicknameTextField = new JTextField(15);
+        //nicknameTextField.setBorder(BorderFactory.createEmptyBorder());
+        nicknameTextField.setHorizontalAlignment(JTextField.CENTER);
+        nicknameTextField.setBounds(130,130,60,50);
+        nicknameTextField.setPreferredSize(new Dimension(250,50));
+        nicknameTextField.setMaximumSize(new Dimension(70,10));
+        nicknameTextField.setMinimumSize(new Dimension(50,10));
         //nicknameTextField.setOpaque(false);
         nicknameTextField.setSelectedTextColor(Color.BLACK);
-        nicknamePanel.add(nicknameTextField);
 
-        add(nicknamePanel,BorderLayout.CENTER);
+        nicknamePanel.add(nicknameTextField, BorderLayout.SOUTH);
 
         //the button to confirm the selection
         ConfirmButton confirmButton = new ConfirmButton("Confirm");
-        confirmButton.setBounds(10,20,80,10);
-        add(confirmButton, BorderLayout.PAGE_END);
+        confirmButton.setBounds(10,20,30,10);
 
         confirmButton.addActionListener(new ActionListener() {
             @Override
@@ -71,18 +68,19 @@ public class NickNameWindow extends JDialog{
                     }
                 }
                 else {
-                    JOptionPane.showMessageDialog(new JFrame(), "You have to type a name!", "Error", JOptionPane.ERROR_MESSAGE);  //posso anche mettere un'immagine error
+                    JOptionPane.showMessageDialog(new JFrame(), "You have to type a name!", "Error", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());
                 }
             }
         });
+
+        add(nicknamePanel,BorderLayout.CENTER);
+        add(confirmButton, BorderLayout.PAGE_END);
+
 
         validate();
         pack();
         setVisible(true);
 
-        //jf.setLocationRelativeTo(null);
-        //jf.pack();
-        //jf.setVisible(true);
     }
 
 

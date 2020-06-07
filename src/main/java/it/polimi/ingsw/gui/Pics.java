@@ -86,14 +86,14 @@ public enum Pics {
 
         // UTILS
         BOARD("./src/main/images/utils/" + "board.png"),
-        LEVEL0MOD("./src/main/images/buildings/" + "level0mod.png"),
         DONE("./src/main/images/utils/" + "done.png"),
         MESSAGEBG2("./src/main/images/utils/" + "bgMessage2.png"),
         BATTLEFIELDICON("./src/main/images/utils/" + "battlefieldIcon.png"),
         GODICON("./src/main/images/utils/" + "godIcon.png"),
         ERRORICON("./src/main/images/utils/" + "errorIcon.png"),
+        INFORMATIONICON("./src/main/images/utils/" + "informationIcon.png"),
         PLAYERICON("./src/main/images/utils/" + "playerIcon.png"),
-        BUTTON("./src/main/images/utils/" + "button.png"),
+        BUTTON("./src/main/images/utils/" + "btn_purple.png"),
         SANTORINI("./src/main/images/utils/" + "Santorini.png"),
         PLAYBUTTON("./src/main/images/utils/" + "buttonPlay.png"),
         NICKNAME("./src/main/images/utils/" + "nickname.png"),

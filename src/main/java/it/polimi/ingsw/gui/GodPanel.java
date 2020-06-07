@@ -7,6 +7,7 @@ public class GodPanel extends JPanel {
 
     public GodPanel() {
         setLayout((new GridLayout(2,7)));
+        setPreferredSize(new Dimension(1800,1000));
     }
 
     public GodPanel(boolean bool) {

@@ -6,8 +6,7 @@ import java.awt.*;
 public class NickNamePanel extends JPanel {
 
     public NickNamePanel() {
-        setPreferredSize(new Dimension(600,200));
-        setLayout(new BorderLayout(10,10));
+        setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     }
 
