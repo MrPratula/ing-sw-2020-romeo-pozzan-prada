@@ -1,3 +1,4 @@
+/*
 package it.polimi.ingsw.gui;
 
 import it.polimi.ingsw.cli.*;
@@ -99,6 +100,7 @@ public class BattlefieldGuiTest {
      * Test that prints the GUI, i.e. the battlefield
      * with some different heights and tokens
      */
+/*
     @Test
     public void displayGuiTest() throws ReachHeightLimitException, CellOutOfBattlefieldException {
         swingView.displayGui(model.getCopy(), null);
@@ -111,9 +113,10 @@ public class BattlefieldGuiTest {
      * Test that prints the GUI, this time with the
      * valid moves (ORANGE CELLS) for the selected token
      */
+/*
     @Test
-    public void displayGuiTestWithValidMoves(/* List<Cell> validMoves */) throws CellOutOfBattlefieldException, ReachHeightLimitException {
-
+    public void displayGuiTestWithValidMoves(/* List<Cell> validMoves *///) throws CellOutOfBattlefieldException, ReachHeightLimitException {
+/*
         List<Cell> validMoves = new ArrayList<>(); //saranno passate come parametro
         validMoves.add(battlefield.getCell(3,1));
         validMoves.add(battlefield.getCell(2,1));
@@ -131,3 +134,4 @@ public class BattlefieldGuiTest {
 
 
 }
+*/
