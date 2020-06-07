@@ -181,7 +181,6 @@ public class SwingView extends View {
                 this.player = serverResponse.getPack().getPlayer();
                 new ChooseGodCardToPlayWindow(this, serverResponse);
 
-                //inutile this.godsInGame = recognizeGodInGame(godcardsForTheGame);
                 break;
             }
 
@@ -199,7 +198,6 @@ public class SwingView extends View {
             case SELECT_YOUR_GOD_CARD:{
 
                 Pack pack = serverResponse.getPack();
-                //pack.getMessageInTurn();
 
                 // If the player is not in turn he is just notified to wait
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
@@ -221,6 +219,7 @@ public class SwingView extends View {
                     JOptionPane.showMessageDialog(new JFrame(),pack.getMessageOpponents(),"NOT YOUR TURN!! PLEASE WAIT", JOptionPane.WARNING_MESSAGE);
                 }
                 else {
+                    this.player = serverResponse.getPack().getPlayer();
                     JOptionPane.showMessageDialog(new JFrame(),pack.getAction().getName().toUpperCase(),"YOUR TURN, ", JOptionPane.WARNING_MESSAGE);
                     new GameFrame(serverResponse,this);
 
@@ -658,8 +657,8 @@ public class SwingView extends View {
                 }
             }
             if (p.getToken2() != null) {
-                if (p.getToken1().getTokenPosition() != null) {
-                    if (targetCell.equals(p.getToken1().getTokenPosition()))
+                if (p.getToken2().getTokenPosition() != null) {
+                    if (targetCell.equals(p.getToken2().getTokenPosition()))
                         return false;
                 }
             }

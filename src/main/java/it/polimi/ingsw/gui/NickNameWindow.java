@@ -28,7 +28,6 @@ public class NickNameWindow extends JDialog{
         setTitle("Select your nickname for this game");
         setResizable(false);
         setPreferredSize(new Dimension(600,300));
-        setLocationRelativeTo(null);
         setIconImage(Pics.PLAYERICON.getImageIcon().getImage());
         setBackground(Color.BLACK);
 

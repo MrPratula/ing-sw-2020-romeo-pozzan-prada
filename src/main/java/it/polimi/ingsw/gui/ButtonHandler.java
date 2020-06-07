@@ -16,17 +16,20 @@ import java.io.IOException;
 public class ButtonHandler implements ActionListener {
 
     final private CellButton cellButton;
-    private ServerResponse serverResponse;
+    private final ServerResponse serverResponse;
     private final SwingView view;
-    private JFrame mainframe;
+    private final JFrame mainframe;
+    private final int posx;
+    private final int posy;
 
 
-
-    public ButtonHandler(CellButton cellButton,ServerResponse serverResponse, SwingView swingView, JFrame jframe) {
+    public ButtonHandler(CellButton cellButton,ServerResponse serverResponse, SwingView swingView, JFrame jframe, int posx, int posy) {
         this.serverResponse = serverResponse;
         this.cellButton = cellButton;
         this.view = swingView;
         this.mainframe = jframe;
+        this.posx = posx;
+        this.posy = posy;
     }
 
 
@@ -37,19 +40,22 @@ public class ButtonHandler implements ActionListener {
         switch(serverResponse.getPack().getAction()) {
 
             case PLACE_YOUR_TOKEN:{
-                Cell targetCell = ((CellButton) clickedButtonEvent.getSource()).getCell();
-                if(view.isFree(targetCell,serverResponse.getPack().getModelCopy())){
-
-                    PlayerAction playerAction = new PlayerAction(Action.TOKEN_PLACED, serverResponse.getPack().getPlayer(), null, null, 0, 0, targetCell, null, false, null);
-                    try {
-                        view.notifyClient(playerAction);
-                        mainframe.dispose();
-                    } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException e) {
-                        e.printStackTrace();
+                try {
+                    Cell targetCell = serverResponse.getPack().getModelCopy().getBattlefield().getCell(posx,posy);
+                    if(view.isFree(targetCell,serverResponse.getPack().getModelCopy())){
+                        PlayerAction playerAction = new PlayerAction(Action.TOKEN_PLACED, view.getPlayer(), null, null, 0, 0, cellButton.getCell(), null, false, null);
+                        try {
+                            view.notifyClient(playerAction);
+                            mainframe.dispose();
+                        } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException e) {
+                            e.printStackTrace();
+                        }
                     }
-                }
-                else {
-                    JOptionPane.showMessageDialog(new JFrame(), "You can't place your token here! Already occcupied!", "Error", JOptionPane.ERROR_MESSAGE);
+                    else {
+                        JOptionPane.showMessageDialog(new JFrame(), "You can't place your token here! Already occcupied!", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (CellOutOfBattlefieldException e) {
+                    e.printStackTrace();
                 }
                 break;
             }

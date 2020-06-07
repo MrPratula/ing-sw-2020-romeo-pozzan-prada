@@ -37,7 +37,6 @@ public class GameFrame extends JFrame {
     private final ServerResponse serverResponse;
     List<GodCard> godsInGame;
     List<Player> allPlayers;
-    Player player;
     Battlefield battlefield;
 
 
@@ -61,22 +60,23 @@ public class GameFrame extends JFrame {
         this.allPlayers = serverResponse.getPack().getModelCopy().getAllPlayers();
         this.battlefield = serverResponse.getPack().getModelCopy().getBattlefield();
 
+
         // handling the godcard panel
         godPanel.setLayout(new GridLayout(3,1));
         for(int i = 0; i<godsInGame.size(); i++){
             final int j = i + 1;
-            final JLabel player = new JLabel(new ImageIcon(new File("./src/main/images/godcards/" + godsInGame.get(i).name().toLowerCase() + ".png").getAbsolutePath()));
-            player.addMouseListener(new MouseAdapter() {
+            final JLabel playertext = new JLabel(new ImageIcon(new File("./src/main/images/godcards/" + godsInGame.get(i).name().toLowerCase() + ".png").getAbsolutePath()));
+            playertext.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
-                    player.setText("Player"+j);
+                    playertext.setText("Player"+j);
                 }
                 @Override
                 public void mouseExited(MouseEvent e) {
-                    player.setText(" ");
+                    playertext.setText(" ");
                 }
             });
-            godPanel.add(player);
+            godPanel.add(playertext);
         }
 
         // handling the battlefield panel
@@ -86,22 +86,6 @@ public class GameFrame extends JFrame {
             for(int j=0; j<5; j++){
                 int height = battlefield.getCell(i,j).getHeight();
                 boolean dome = battlefield.getCell(i,j).getIsDome();
-                if(battlefield.getCell(i,j).getThereIsPlayer()){
-                    for (Player p : allPlayers) {
-                        if (p.getToken1() != null && p.getToken1().getTokenPosition()!=null) {
-                            if (p.getToken1().getTokenPosition().equals(battlefield.getCell(i,j))) {
-                                player = p;
-                            }
-                        }
-                        if (p.getToken2().getTokenPosition() != null && p.getToken2().getTokenPosition()!=null) {                                 //if he has the first token
-                            if (p.getToken2().getTokenPosition().equals(battlefield.getCell(i,j))) {   //i print his background correctly
-                                player = p;
-                            }
-                        }
-                    }
-                }
-                else{
-                    player = null; }
                 //I create a button for every cell
                 battlefieldGUI[i][j] = new CellButton(i,j);
                 battlefieldGUI[i][j].setBorderPainted(false);
@@ -109,12 +93,29 @@ public class GameFrame extends JFrame {
                 battlefieldGUI[i][j].getCell().setHeight(height);
                 battlefieldPanel.add(battlefieldGUI[i][j]);
                 //I add a listener to this button (owning a Cell)
-                ButtonHandler bh = new ButtonHandler(battlefieldGUI[i][j],serverResponse,view,this);
+                ButtonHandler bh = new ButtonHandler(battlefieldGUI[i][j],serverResponse,view,this,i,j);
                 battlefieldButtons.add(bh);
                 battlefieldGUI[i][j].addActionListener(bh);
                 battlefieldPanel.add(battlefieldGUI[i][j]);
-                setIconCell(battlefieldGUI[i][j],height,dome,player);
-                setRolloverIconCell(battlefieldGUI[i][j],height,dome,player);
+                if(battlefield.getCell(i,j).getThereIsPlayer()){
+                    for (Player p : allPlayers) {
+                        if (p.getToken1() != null && p.getToken1().getTokenPosition()!=null) {
+                            if (p.getToken1().getTokenPosition().equals(battlefield.getCell(i,j))) {
+                                setIconCell(battlefieldGUI[i][j],height,dome,p);
+                            }
+                        }
+                        if (p.getToken2() != null && p.getToken2().getTokenPosition()!=null) {                                 //if he has the first token
+                            if (p.getToken2().getTokenPosition().equals(battlefield.getCell(i,j))) {   //i print his background correctly
+
+                                setIconCell(battlefieldGUI[i][j],height,dome,p);
+                            }
+                        }
+                    }
+                }
+                else{
+                    setIconCell(battlefieldGUI[i][j],height,dome, null);
+                }
+                setRolloverIconCell(battlefieldGUI[i][j],height,dome);
             }
         }
 
@@ -126,7 +127,7 @@ public class GameFrame extends JFrame {
     }
 
 
-    private void setRolloverIconCell(CellButton cell, int height, boolean dome, Player player) {
+    private void setRolloverIconCell(CellButton cell, int height, boolean dome) {
 
         if (!dome) {
             switch (height) {
@@ -216,6 +217,7 @@ public class GameFrame extends JFrame {
                             cell.setIcon(Pics.LEVEL3TOKENRED.getImageIcon());
                             break; }
                     }
+                    break;
                 }
                 case BLUE:{
                     switch (height) {
@@ -232,6 +234,7 @@ public class GameFrame extends JFrame {
                             cell.setIcon(Pics.LEVEL3TOKENBLUE.getImageIcon());
                             break; }
                     }
+                    break;
                 }
                 case YELLOW:{
                     switch (height) {
@@ -248,6 +251,7 @@ public class GameFrame extends JFrame {
                             cell.setIcon(Pics.LEVEL3TOKENYELLOW.getImageIcon());
                             break; }
                     }
+                    break;
                 }
             }
         }

@@ -1,3 +1,4 @@
+/*
 package it.polimi.ingsw.gui;
 
 import it.polimi.ingsw.cli.*;
@@ -87,3 +88,4 @@ public class test extends JFrame {
 
     }
 }
+*/

@@ -232,10 +232,8 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                         System.out.println(pack.getMessageInTurn());
                     printCLI(pack.getModelCopy(), null);
                     System.out.println(pack.getMessageOpponents());
-
                 }
                 else {
-
                     if (pack.getPlayer()!=null)
                         this.player = pack.getPlayer();
 

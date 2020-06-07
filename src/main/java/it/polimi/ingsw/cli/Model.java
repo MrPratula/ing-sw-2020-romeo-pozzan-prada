@@ -379,6 +379,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                 pack = new Pack(Action.ASK_FOR_SELECT_TOKEN);
                 pack.setModelCopy(getCopy());
                 pack.setPlayer(getPlayerInTurn());
+                pack.setGodCards(getGodCards(allPlayers));
                 pack.setMessageOpponents("Another player is choosing which token to move, wait please...");
 
             } else {
@@ -386,6 +387,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                 pack = new Pack(Action.PLACE_YOUR_TOKEN);
                 pack.setPlayer(getPlayerInTurn());
                 pack.setModelCopy(getCopy());
+                pack.setGodCards(getGodCards(allPlayers));
                 pack.setMessageOpponents("Another player is placing his tokens onto the battlefield, wait please...");
 
             }
@@ -396,6 +398,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             Pack pack = new Pack(Action.PLACE_YOUR_TOKEN);
             pack.setPlayer(getPlayerInTurn());
             pack.setModelCopy(getCopy());
+            pack.setGodCards(getGodCards(allPlayers));
             pack.setMessageOpponents("Another player is placing his tokens onto the battlefield, wait please...");
 
             serverResponse = new ServerResponse(getTurn(), pack);
