@@ -98,11 +98,13 @@ public class ButtonHandler implements ActionListener {
             }
 
             case ASK_FOR_BUILD: {
-                //Simple Build
-                if(!power){
-                    try {
-                        Cell targetCell = serverResponse.getPack().getModelCopy().getBattlefield().getCell(posx,posy);
-                        if(targetCell != null){
+                Cell targetCell = null;
+                try {
+                    targetCell = serverResponse.getPack().getModelCopy().getBattlefield().getCell(posx,posy);
+
+                    //Simple Build
+                    if(!power) {
+                        if (targetCell != null) {
                             PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, view.getPlayer(), null, null, view.GetSavedToken(), 0, targetCell, null, false, null);
                             try {
                                 view.notifyClient(playerAction);
@@ -110,22 +112,37 @@ public class ButtonHandler implements ActionListener {
                             } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException e) {
                                 e.printStackTrace();
                             }
-                        }
-                        else {
+                        } else {
                             JOptionPane.showMessageDialog(new JFrame(), "You can't place your token here! Already occupied!", "Error", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());
                         }
-                    } catch (CellOutOfBattlefieldException e) {
-                        e.printStackTrace();
+                        break;
                     }
-                break;
-                }
-                else {
-                    switch (view.getPlayer().getMyGodCard()){
-                        case DEMETER:{
-                            view.BuildGod();
-                            break;
+                    else {
+                        switch (view.getPlayer().getMyGodCard()){
+                            case DEMETER:{
+                                view.BuildGod(targetCell,mainframe);
+                                break;
+                            }
+                            case HESTIA:{
+                                if(view.notPerimeterCell(targetCell)) {
+                                    view.BuildGod(targetCell,mainframe);
+                                    break;
+                                }
+                            }
+                            case ATLAS:
+                            case HEPHAESTUS:{
+                                PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, view.getPlayer(), null, null, view.GetSavedToken(), 0, targetCell, null, true, null);
+                                try {
+                                    view.notifyClient(playerAction);
+                                    mainframe.dispose();
+                                } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException e) {
+                                    e.printStackTrace();
+                                }
+                            }
                         }
                     }
+                } catch (CellOutOfBattlefieldException | IOException | WrongNumberPlayerException | CellHeightException | ImpossibleTurnException | ReachHeightLimitException e) {
+                    e.printStackTrace();
                 }
             }
         }
