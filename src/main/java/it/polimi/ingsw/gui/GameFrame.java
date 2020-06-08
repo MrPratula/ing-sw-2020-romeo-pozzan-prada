@@ -137,7 +137,7 @@ public class GameFrame extends JFrame {
         add(messageLabel, BorderLayout.SOUTH);
         add(godPanel,BorderLayout.WEST);
         setVisible(true);
-        getMessageLabel().setText("NOW "+serverResponse.getPack().getPlayer().getUsername().toUpperCase()+", SELECT A CELL TO "+serverResponse.getPack().getAction().toString());
+        //getMessageLabel().setText("NOW "+serverResponse.getPack().getPlayer().getUsername().toUpperCase()+", SELECT A CELL TO "+serverResponse.getPack().getAction().toString());
     }
 
 
