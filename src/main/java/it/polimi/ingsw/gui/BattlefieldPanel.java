@@ -9,10 +9,10 @@ public class BattlefieldPanel extends JPanel {
     }
 
     // TODO: DELETE THIS
-    @Override
+ /*   @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(Pics.BOARD.getImageIcon().getImage(), 0,0, this.getWidth(), this.getHeight(), this);
     }
-
+*/
 }

@@ -60,10 +60,10 @@ public class GameFrame extends JFrame {
 
         //to be deleted
         this.godsInGame = serverResponse.getPack().getGodCards();
-        this.allPlayers = serverResponse.getPack().getModelCopy().getAllPlayers();
+        /*this.allPlayers = serverResponse.getPack().getModelCopy().getAllPlayers();
         this.battlefield = serverResponse.getPack().getModelCopy().getBattlefield();
         this.power = wantPower;
-
+*/
         // handling the godcard panel
         godPanel.setLayout(new GridLayout(3,1));
         for(int i = 0; i<godsInGame.size(); i++){
@@ -94,6 +94,7 @@ public class GameFrame extends JFrame {
                 battlefieldGUI[i][j].setBorderPainted(false);
                 battlefieldGUI[i][j].setContentAreaFilled(false);
                 battlefieldGUI[i][j].getCell().setHeight(0);
+                battlefieldGUI[i][j].setRolloverIcon(Pics.LEVEL0TEXT.getImageIcon());
                 battlefieldPanel.add(battlefieldGUI[i][j]);
                 ButtonHandler bh = new ButtonHandler(battlefieldGUI[i][j],serverResponse,view,this,i,j,power);
                 battlefieldButtons.add(bh);
@@ -104,7 +105,7 @@ public class GameFrame extends JFrame {
 
 
                 //to be deleted
-                int height = battlefield.getCell(i,j).getHeight();
+     /*           int height = battlefield.getCell(i,j).getHeight();
                 boolean dome = battlefield.getCell(i,j).getIsDome();
 
                 if(battlefield.getCell(i,j).getThereIsPlayer()){
@@ -125,7 +126,7 @@ public class GameFrame extends JFrame {
                     setIconCell(battlefieldGUI[i][j],height,dome, null);
                 }
                 setRolloverIconCell(battlefieldGUI[i][j],height,dome);
-
+*/
 
 
 

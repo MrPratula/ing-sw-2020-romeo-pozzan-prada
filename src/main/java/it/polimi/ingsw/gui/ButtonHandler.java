@@ -47,7 +47,7 @@ public class ButtonHandler implements ActionListener {
                         PlayerAction playerAction = new PlayerAction(Action.TOKEN_PLACED, view.getPlayer(), null, null, 0, 0, cellButton.getCell(), null, false, null);
                         try {
                             view.notifyClient(playerAction);
-                            mainframe.dispose();// non dovrei disposarlo
+                            //mainframe.dispose();// non dovrei disposarlo
                         } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException e) {
                             e.printStackTrace();
                         }
@@ -69,7 +69,7 @@ public class ButtonHandler implements ActionListener {
                     PlayerAction playerAction = new PlayerAction(Action.TOKEN_SELECTED, view.getPlayer(), null, null, selectedToken, 0, null, null, false, null);
                     try {
                         view.notifyClient(playerAction);
-                        mainframe.dispose();
+                        //mainframe.dispose();
                     } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException e) {
                         e.printStackTrace();
                     }

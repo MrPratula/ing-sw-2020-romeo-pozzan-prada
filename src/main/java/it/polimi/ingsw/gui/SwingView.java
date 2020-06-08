@@ -215,9 +215,9 @@ public class SwingView extends View {
                     this.player = serverResponse.getPack().getPlayer();
                     JOptionPane.showMessageDialog(new JFrame(),pack.getAction().getName().toUpperCase(),"IT'S YOUR TURN, ", JOptionPane.WARNING_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
                     // here i initialise the Game Frame that will last till the end of the game
-                    new GameFrame(serverResponse,this,null);
-                    //this.gameFrame = new GameFrame(serverResponse,this,null);
-                    //this.battlefieldGUI = gameFrame.getBattlefieldGUI();
+                    //new GameFrame(serverResponse,this,null);
+                    this.gameFrame = new GameFrame(serverResponse,this,null);
+                    this.battlefieldGUI = gameFrame.getBattlefieldGUI();
                 }
                 break;
             }
@@ -235,9 +235,9 @@ public class SwingView extends View {
                     this.player = pack.getPlayer();
                     JOptionPane.showMessageDialog(new JFrame(), pack.getAction().getName().toUpperCase(), "YOUR TURN, ", JOptionPane.WARNING_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
 
-                    new GameFrame(serverResponse,this,null);
+                    //new GameFrame(serverResponse,this,null);
 
-                    //this.gameFrame = displayGui(this.gameFrame, serverResponse.getPack().getModelCopy(), null);
+                    displayGui(this.gameFrame.getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
                     //gameFrame.setVisible(true);
 
                     //this.gameFrame.updateGui(serverResponse, false);
@@ -334,7 +334,7 @@ public class SwingView extends View {
      * @param validMoves: cells that have to be printed on a green background (can be null)
      * @param modelCopy: contains the the board of the game and the players in the game
      */
-    public GameFrame displayGui(GameFrame gameFrame, ModelUtils modelCopy, List<Cell> validMoves) throws CellOutOfBattlefieldException {
+    public void displayGui(CellButton[][] battlefieldGUI, ModelUtils modelCopy, List<Cell> validMoves) throws CellOutOfBattlefieldException {
 
         Battlefield newBattlefield = modelCopy.getBattlefield();
         List<Player> allPlayers = modelCopy.getAllPlayers();
@@ -345,21 +345,20 @@ public class SwingView extends View {
 
                 if (validMoves != null) {
                     if (validMoves.contains(newBattlefield.getCell(x, y))) {
-                        gameFrame.getBattlefieldGUI()[x][y].getCell().setHeight(newBattlefield.getCell(x, y).getHeight());
-                        gameFrame.getBattlefieldGUI()[x][y].setIcon(selectIcon(null, newBattlefield.getCell(x, y),false, true));
-                        gameFrame.getBattlefieldGUI()[x][y].setRolloverIcon(selectRolloverIcon(newBattlefield.getCell(x,y),false));
+                        battlefieldGUI[x][y].getCell().setHeight(newBattlefield.getCell(x, y).getHeight());
+                        battlefieldGUI[x][y].setIcon(selectIcon(null, newBattlefield.getCell(x, y),false, true));
+                        battlefieldGUI[x][y].setRolloverIcon(selectRolloverIcon(newBattlefield.getCell(x,y),false));
                     }
                     else{
-                        displayInnerGui(gameFrame, newBattlefield, allPlayers, y, x);
+                        displayInnerGui(battlefieldGUI, newBattlefield, allPlayers, y, x);
                     }
                 }
                 else{
-                    displayInnerGui(gameFrame, newBattlefield, allPlayers, y, x);
+                    displayInnerGui(battlefieldGUI, newBattlefield, allPlayers, y, x);
                 }
             }
         }
 
-        return gameFrame;
     }
 
     /**
@@ -369,38 +368,38 @@ public class SwingView extends View {
      * @param x: position x of the battlefield
      * @param y: position y of the battlefield
      */
-    public void displayInnerGui(GameFrame g, Battlefield battlefield, List<Player> allPlayers, int y, int x) throws CellOutOfBattlefieldException {
+    public void displayInnerGui(CellButton[][] battlefieldGUI, Battlefield battlefield, List<Player> allPlayers, int y, int x) throws CellOutOfBattlefieldException {
 
         // we check if exists a token of any player in this position
         if(!battlefield.getCell(x, y).getThereIsPlayer()){
             // we check if it is dome
             if(battlefield.getCell(x, y).getIsDome()){
 
-                g.getBattlefieldGUI()[x][y].getCell().setHeight(battlefield.getCell(x, y).getHeight());
-                g.getBattlefieldGUI()[x][y].getCell().setIsDome();
-                g.getBattlefieldGUI()[x][y].setIcon(selectIcon(null, battlefield.getCell(x, y), true,false));
-                g.getBattlefieldGUI()[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x, y), true));
+                battlefieldGUI[x][y].getCell().setHeight(battlefield.getCell(x, y).getHeight());
+                battlefieldGUI[x][y].getCell().setIsDome();
+                battlefieldGUI[x][y].setIcon(selectIcon(null, battlefield.getCell(x, y), true,false));
+                battlefieldGUI[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x, y), true));
             }
             else {
-                g.getBattlefieldGUI()[x][y].getCell().setHeight(battlefield.getCell(x, y).getHeight());
-                g.getBattlefieldGUI()[x][y].setIcon(selectIcon(null, battlefield.getCell(x, y), false,false));
-                g.getBattlefieldGUI()[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x, y),false));
+                battlefieldGUI[x][y].getCell().setHeight(battlefield.getCell(x, y).getHeight());
+                battlefieldGUI[x][y].setIcon(selectIcon(null, battlefield.getCell(x, y), false,false));
+                battlefieldGUI[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x, y),false));
             }
         }
         else{
             for(Player p : allPlayers) {
                 if (p.getToken1().getTokenPosition() != null && p.getToken1().getTokenPosition()!=null) {                                  //if he has the first token
                     if (p.getToken1().getTokenPosition().equals(battlefield.getCell(x, y))) {
-                        g.getBattlefieldGUI()[x][y].getCell().setHeight(battlefield.getCell(x, y).getHeight());
-                        g.getBattlefieldGUI()[x][y].setIcon(selectIcon(p, battlefield.getCell(x, y),false, false));
-                        g.getBattlefieldGUI()[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x,y),false));
+                        battlefieldGUI[x][y].getCell().setHeight(battlefield.getCell(x, y).getHeight());
+                        battlefieldGUI[x][y].setIcon(selectIcon(p, battlefield.getCell(x, y),false, false));
+                        battlefieldGUI[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x,y),false));
                     }
                 }
                 if (p.getToken2().getTokenPosition() != null && p.getToken2().getTokenPosition()!=null) {                                  //if he has the first token
                     if (p.getToken2().getTokenPosition().equals(battlefield.getCell(x, y))) {
-                        g.getBattlefieldGUI()[x][y].getCell().setHeight(battlefield.getCell(x, y).getHeight());
-                        g.getBattlefieldGUI()[x][y].setIcon(selectIcon(p, battlefield.getCell(x, y),false, false));
-                        g.getBattlefieldGUI()[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x,y),false));
+                        battlefieldGUI[x][y].getCell().setHeight(battlefield.getCell(x, y).getHeight());
+                        battlefieldGUI[x][y].setIcon(selectIcon(p, battlefield.getCell(x, y),false, false));
+                        battlefieldGUI[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x,y),false));
                     }
                 }
             }
