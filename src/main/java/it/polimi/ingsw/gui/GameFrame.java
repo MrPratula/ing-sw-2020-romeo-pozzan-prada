@@ -25,7 +25,7 @@ public class GameFrame extends JFrame {
     private JPanel godPanel = new JPanel();
 
     //label where the server tell the player what he has to do
-    private JLabel messageLabel = new JLabel(Pics.ASK_FOR_WHERE_TO_MOVE.getImageIcon());
+    private JLabel messageLabel = new JLabel(Pics.PLACE_YOUR_TOKEN.getImageIcon());
 
     //button for every cell
     private CellButton[][] battlefieldGUI = new CellButton[5][5];
@@ -60,10 +60,10 @@ public class GameFrame extends JFrame {
 
         //to be deleted
         this.godsInGame = serverResponse.getPack().getGodCards();
-        this.allPlayers = serverResponse.getPack().getModelCopy().getAllPlayers();
+ /*       this.allPlayers = serverResponse.getPack().getModelCopy().getAllPlayers();
         this.battlefield = serverResponse.getPack().getModelCopy().getBattlefield();
         this.power = wantPower;
-
+*/
         // handling the godcard panel
         godPanel.setLayout(new GridLayout(3,1));
         for(int i = 0; i<godsInGame.size(); i++){
@@ -102,7 +102,7 @@ public class GameFrame extends JFrame {
 
 
 
-
+/*
                 //to be deleted
                 int height = battlefield.getCell(i,j).getHeight();
                 boolean dome = battlefield.getCell(i,j).getIsDome();
@@ -125,7 +125,7 @@ public class GameFrame extends JFrame {
                     setIconCell(battlefieldGUI[i][j],height,dome, null);
                 }
                 setRolloverIconCell(battlefieldGUI[i][j],height,dome);
-
+*/
 
 
 

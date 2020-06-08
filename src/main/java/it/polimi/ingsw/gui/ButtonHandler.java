@@ -75,7 +75,7 @@ public class ButtonHandler implements ActionListener {
                     }
                 }
                 else{
-                    JOptionPane.showMessageDialog(new JFrame(), "You have to select a your token!", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(new JFrame(), "You have to select one of your token!", "Error", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());
                 }
                 break;
             }
