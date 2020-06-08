@@ -111,6 +111,7 @@ public enum Pics {
 
         // BACKGROUNDS
         DIALOGBG("./src/main/images/backgrounds/" + "dialogBg.png"),
+        MAINBG("./src/main/images/backgrounds/" + "mainBg.png"),
         COLUMNS("./src/main/images/backgrounds/" + "columns.png"),
         OLYMPUS("./src/main/images/backgrounds/" + "olympus.png");
 

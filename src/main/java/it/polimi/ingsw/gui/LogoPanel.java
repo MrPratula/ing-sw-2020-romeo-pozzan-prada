@@ -12,6 +12,6 @@ public class LogoPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(Pics.SANTORINI.getImageIcon().getImage(),0,0, this.getWidth(), this.getHeight(),this);
+        g.drawImage(Pics.MAINBG.getImageIcon().getImage(),0,0, this.getWidth(), this.getHeight(),this);
     }
 }

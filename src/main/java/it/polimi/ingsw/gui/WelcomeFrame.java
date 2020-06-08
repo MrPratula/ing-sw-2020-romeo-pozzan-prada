@@ -18,7 +18,7 @@ public class WelcomeFrame {
         mainFrame = new JFrame("Santorini");
         mainFrame.setResizable(true);
         mainFrame.setIconImage(Pics.PLAYBUTTON.getImageIcon().getImage());
-        mainFrame.setPreferredSize(new Dimension(800,800));
+        mainFrame.setPreferredSize(new Dimension(1100,800));
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         LogoPanel mainPanel = new LogoPanel();
@@ -41,4 +41,6 @@ public class WelcomeFrame {
         mainFrame.pack();
         mainFrame.setVisible(true);
     }
+
+
 }
