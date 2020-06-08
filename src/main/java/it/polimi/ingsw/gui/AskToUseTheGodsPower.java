@@ -8,28 +8,42 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class AskToUseTheGodsPower {
+public class AskToUseTheGodsPower extends JDialog{
 
     private final ServerResponse serverResponse;
     private final SwingView view;
 
+    /**
+     * JDialog thats asks if the player wants to use his god's power
+     * @param swingView
+     * @param serverResponse
+     */
     public AskToUseTheGodsPower(SwingView swingView, final ServerResponse serverResponse){
 
         this.serverResponse = serverResponse;
         this.view = swingView;
 
-        final JFrame mainframe = new JFrame("GOD'S POWER");
-        JPanel panel = new JPanel();
-        JLabel label = new JLabel("Do you want to use your god's power?");
-        JButton yes_buttton = new JButton("YES!");
-        JButton no_button = new JButton("NO!");
+        setTitle("GOD'S POWER");
+        setLocationRelativeTo(null);
+        setResizable(false);
+        setIconImage(Pics.PLAYERICON.getImageIcon().getImage());
+        setPreferredSize(new Dimension(600,300));
 
-        yes_buttton.addActionListener(new ActionListener() {
+        PowerPanel panel = new PowerPanel();
+
+        JButton yes_button = new JButton("YES!");
+        JButton no_button = new JButton("NO!");
+        yes_button.setBorderPainted(false);
+        yes_button.setContentAreaFilled(false);
+        no_button.setBorderPainted(false);
+        no_button.setContentAreaFilled(false);
+
+        yes_button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
                     new GameFrame(serverResponse,view,true);
-                    mainframe.dispose();
+                    dispose();
                 } catch (CellOutOfBattlefieldException cellOutOfBattlefieldException) {
                     cellOutOfBattlefieldException.printStackTrace();
                 }
@@ -40,18 +54,18 @@ public class AskToUseTheGodsPower {
             public void actionPerformed(ActionEvent e) {
                 try {
                     new GameFrame(serverResponse,view,false);
-                    mainframe.dispose();
+                    dispose();
                 } catch (CellOutOfBattlefieldException cellOutOfBattlefieldException) {
                     cellOutOfBattlefieldException.printStackTrace();
                 }
             }
         });
 
-        mainframe.add(label, BorderLayout.PAGE_START);
-        panel.add(yes_buttton,BorderLayout.WEST);
-        panel.add(no_button,BorderLayout.EAST);
-        mainframe.add(panel,BorderLayout.PAGE_END);
-        mainframe.pack();
-        mainframe.setVisible(true);
+        panel.add(yes_button);
+        panel.add(no_button);
+        add(panel,BorderLayout.CENTER);
+
+        pack();
+        setVisible(true);
     }
 }

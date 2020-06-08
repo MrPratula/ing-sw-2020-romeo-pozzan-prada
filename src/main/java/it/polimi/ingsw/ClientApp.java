@@ -54,22 +54,27 @@ public class ClientApp {
         new GameFrame(new ServerResponse(TokenColor.RED, new Pack(Action.CHOOSE_GOD_CARD_TO_PLAY)),new SwingView());
         */
 
-        /*
-        new NickNameWindow(new SwingView());
 
-        new NumberOfPlayersWindow(new SwingView());
-        */
+        //new NickNameWindow(new SwingView());
+
+        //new NumberOfPlayersWindow(new SwingView());
+
 
         //new WelcomeFrame(new SwingView());
 
         //new AskPrometheusPowerFrame(new SwingView());
+
+
             //PROVA test CON GODS
-        /*List<GodCard> godsInGame = new ArrayList<>();
+        /*
+        List<GodCard> godsInGame = new ArrayList<>();
         godsInGame.add(GodCard.CHRONUS);
         godsInGame.add(GodCard.ATHENA);
         godsInGame.add(GodCard.MINOTAUR);
         new test(godsInGame,new ServerResponse(TokenColor.RED, new Pack(Action.ASK_FOR_BUILD)));
         */
+
+        //new AskToUseTheGodsPower(new SwingView(),new ServerResponse(TokenColor.RED, new Pack(Action.CHOOSE_GOD_CARD_TO_PLAY)));
 
         try{
             client.run();

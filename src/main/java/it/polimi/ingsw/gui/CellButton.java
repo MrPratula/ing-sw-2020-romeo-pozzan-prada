@@ -17,7 +17,7 @@ public class CellButton extends JButton {
         return cell;
     }
 
-/*tolgoooooooooooooo
+/*
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

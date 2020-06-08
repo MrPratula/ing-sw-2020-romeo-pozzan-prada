@@ -99,6 +99,7 @@ public enum Pics {
         PLAYBUTTON("./src/main/images/utils/" + "buttonPlay.png"),
         NICKNAME("./src/main/images/utils/" + "nickname.png"),
         NUMBEROFPLAYERS("./src/main/images/utils/" + "howmanyplayers.png"),
+        GODPOWER("./src/main/images/utils/" + "godpower.png"),
         ASKFORPROMETHEUSPOWER("./src/main/images/utils/" + "prometheus.png"),
 
         // MESSAGES

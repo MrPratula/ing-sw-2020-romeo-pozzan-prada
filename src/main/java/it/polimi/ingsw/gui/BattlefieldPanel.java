@@ -8,6 +8,7 @@ public class BattlefieldPanel extends JPanel {
     public BattlefieldPanel() {
     }
 
+    // TODO: DELETE THIS
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

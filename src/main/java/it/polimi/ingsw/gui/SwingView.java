@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.*;
-import java.io.File;
 
 
 public class SwingView extends View {
@@ -169,7 +168,7 @@ public class SwingView extends View {
                 break;
             }
 
-            //The first choice is send by the server and contains player data
+            //The first choice is sent by the server and contains player data
             case CHOOSE_GOD_CARD_TO_PLAY: {
 
                 this.player = serverResponse.getPack().getPlayer();
@@ -193,7 +192,7 @@ public class SwingView extends View {
                 Pack pack = serverResponse.getPack();
 
                 // If the player is not in turn he is just notified to wait
-                if (!player.getTokenColor().equals(serverResponse.getTurn())){
+                if (!this.player.getTokenColor().equals(serverResponse.getTurn())){
                     JOptionPane.showMessageDialog(new JFrame(),pack.getMessageOpponents(),"NOT YOUR TURN!! PLEASE WAIT!", JOptionPane.WARNING_MESSAGE, Pics.ERRORICON.getImageIcon());
                 }
                 // else he has to pick his god card
@@ -239,6 +238,8 @@ public class SwingView extends View {
                     new GameFrame(serverResponse,this,null);
 
                     //this.gameFrame = displayGui(this.gameFrame, serverResponse.getPack().getModelCopy(), null);
+                    //gameFrame.setVisible(true);
+
                     //this.gameFrame.updateGui(serverResponse, false);
                     //new GameFrame(serverResponse, this, null);
                 }
@@ -254,7 +255,7 @@ public class SwingView extends View {
                     System.out.println(pack.getMessageOpponents());
                 }
                 else {
-                    new AskPrometheusPowerFrame(this);
+                    new AskPrometheusPowerWindow(this);
                 }
                 break;
             }
@@ -335,29 +336,29 @@ public class SwingView extends View {
      */
     public GameFrame displayGui(GameFrame gameFrame, ModelUtils modelCopy, List<Cell> validMoves) throws CellOutOfBattlefieldException {
 
-        Battlefield battlefield = modelCopy.getBattlefield();
+        Battlefield newBattlefield = modelCopy.getBattlefield();
         List<Player> allPlayers = modelCopy.getAllPlayers();
-        CellButton[][] newOne = gameFrame.getBattlefieldGUI();
 
         for (int y = 4; y > -1; y--) {
 
             for (int x = 0; x < 5; x++) {
 
                 if (validMoves != null) {
-                    if (validMoves.contains(battlefield.getCell(x, y))) {
-                        gameFrame.getBattlefieldGUI()[x][y].getCell().setHeight(battlefield.getCell(x, y).getHeight());
-                        gameFrame.getBattlefieldGUI()[x][y].setIcon(selectIcon(null, battlefield.getCell(x, y),true));
-                        gameFrame.getBattlefieldGUI()[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x,y)));
+                    if (validMoves.contains(newBattlefield.getCell(x, y))) {
+                        gameFrame.getBattlefieldGUI()[x][y].getCell().setHeight(newBattlefield.getCell(x, y).getHeight());
+                        gameFrame.getBattlefieldGUI()[x][y].setIcon(selectIcon(null, newBattlefield.getCell(x, y),false, true));
+                        gameFrame.getBattlefieldGUI()[x][y].setRolloverIcon(selectRolloverIcon(newBattlefield.getCell(x,y),false));
                     }
                     else{
-                        displayInnerGui(battlefield, allPlayers, y, x);
+                        displayInnerGui(gameFrame, newBattlefield, allPlayers, y, x);
                     }
                 }
                 else{
-                    displayInnerGui(battlefield, allPlayers, y, x);
+                    displayInnerGui(gameFrame, newBattlefield, allPlayers, y, x);
                 }
             }
         }
+
         return gameFrame;
     }
 
@@ -368,28 +369,38 @@ public class SwingView extends View {
      * @param x: position x of the battlefield
      * @param y: position y of the battlefield
      */
-    public void displayInnerGui(Battlefield battlefield, List<Player> allPlayers, int y, int x) throws CellOutOfBattlefieldException {
+    public void displayInnerGui(GameFrame g, Battlefield battlefield, List<Player> allPlayers, int y, int x) throws CellOutOfBattlefieldException {
 
         // we check if exists a token of any player in this position
         if(!battlefield.getCell(x, y).getThereIsPlayer()){
-            gameFrame.getBattlefieldGUI()[x][y].getCell().setHeight(battlefield.getCell(x,y).getHeight());
-            gameFrame.getBattlefieldGUI()[x][y].setIcon(selectIcon(null,battlefield.getCell(x,y),false));
-            gameFrame.getBattlefieldGUI()[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x,y)));
+            // we check if it is dome
+            if(battlefield.getCell(x, y).getIsDome()){
+
+                g.getBattlefieldGUI()[x][y].getCell().setHeight(battlefield.getCell(x, y).getHeight());
+                g.getBattlefieldGUI()[x][y].getCell().setIsDome();
+                g.getBattlefieldGUI()[x][y].setIcon(selectIcon(null, battlefield.getCell(x, y), true,false));
+                g.getBattlefieldGUI()[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x, y), true));
+            }
+            else {
+                g.getBattlefieldGUI()[x][y].getCell().setHeight(battlefield.getCell(x, y).getHeight());
+                g.getBattlefieldGUI()[x][y].setIcon(selectIcon(null, battlefield.getCell(x, y), false,false));
+                g.getBattlefieldGUI()[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x, y),false));
+            }
         }
         else{
             for(Player p : allPlayers) {
                 if (p.getToken1().getTokenPosition() != null && p.getToken1().getTokenPosition()!=null) {                                  //if he has the first token
                     if (p.getToken1().getTokenPosition().equals(battlefield.getCell(x, y))) {
-                        gameFrame.getBattlefieldGUI()[x][y].getCell().setHeight(battlefield.getCell(x, y).getHeight());
-                        gameFrame.getBattlefieldGUI()[x][y].setIcon(selectIcon(p, battlefield.getCell(x, y),false));
-                        gameFrame.getBattlefieldGUI()[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x,y)));
+                        g.getBattlefieldGUI()[x][y].getCell().setHeight(battlefield.getCell(x, y).getHeight());
+                        g.getBattlefieldGUI()[x][y].setIcon(selectIcon(p, battlefield.getCell(x, y),false, false));
+                        g.getBattlefieldGUI()[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x,y),false));
                     }
                 }
                 if (p.getToken2().getTokenPosition() != null && p.getToken2().getTokenPosition()!=null) {                                  //if he has the first token
                     if (p.getToken2().getTokenPosition().equals(battlefield.getCell(x, y))) {
-                        gameFrame.getBattlefieldGUI()[x][y].getCell().setHeight(battlefield.getCell(x, y).getHeight());
-                        gameFrame.getBattlefieldGUI()[x][y].setIcon(selectIcon(p, battlefield.getCell(x, y),false));
-                        gameFrame.getBattlefieldGUI()[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x,y)));
+                        g.getBattlefieldGUI()[x][y].getCell().setHeight(battlefield.getCell(x, y).getHeight());
+                        g.getBattlefieldGUI()[x][y].setIcon(selectIcon(p, battlefield.getCell(x, y),false, false));
+                        g.getBattlefieldGUI()[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x,y),false));
                     }
                 }
             }
@@ -399,43 +410,63 @@ public class SwingView extends View {
     /**
      * It selects the right text image depending on the characteristic
      * @param cell: the cell in wich i have to put the icon
+     * @param isDome dome or not
      * @return ImageIcon of the cell to display
      */
-    public ImageIcon selectRolloverIcon(Cell cell) {
+    public ImageIcon selectRolloverIcon(Cell cell, boolean isDome) {
 
-        String startPath = "./src/main/images/buildings/";
+        //display dome text  height
+        if(isDome)
+            return switchOnHeight(cell.getHeight(), Pics.LEVEL0DOMETEXT, Pics.LEVEL1DOMETEXT, Pics.LEVEL2DOMETEXT, Pics.LEVEL3DOMETEXT);
         //display basic text  height
-        return switchOnHeight(cell.getHeight(),startPath,"level0Text.png","level1Text.png","level2Text.png","level3Text.png","levelDomeText.png");
+        else
+            return switchOnHeight(cell.getHeight(), Pics.LEVEL0TEXT, Pics.LEVEL1TEXT, Pics.LEVEL2TEXT, Pics.LEVEL3TEXT);
     }
 
     /**
      * It selects the right image depending on the characteristics
      * @param player: if it's not null, that one is the player on that cell
      * @param cell: the cell in wich i have to put the icon
+     * @param iHaveToDisplayValidMoves auto explicative
      * @return ImageIcon of the cell to display
      */
-    public ImageIcon selectIcon(Player player, Cell cell, boolean iHaveToDisplayValidMoves) {
+    public ImageIcon selectIcon(Player player, Cell cell, boolean isDome, boolean iHaveToDisplayValidMoves) {
 
-        String startPath = "./src/main/images/buildings/";
         ImageIcon toReturn = new ImageIcon();
 
-        //display basic height with no players on it
+        //player not present
         if(player == null) {
-            if(iHaveToDisplayValidMoves) return switchOnHeight(cell.getHeight(),startPath,"level0.png","level1.png","level2.png","level3.png","levelDome.png");
-            else return switchOnHeight(cell.getHeight(),startPath,"level0ValidMove.png","level1ValidMove.png","level2ValidMove.png","level3ValidMove.png","levelDome.png");
-
+            //valid moves to display
+            if(iHaveToDisplayValidMoves)
+                return switchOnHeight(cell.getHeight(), Pics.LEVEL0VALIDMOVE, Pics.LEVEL1VALIDMOVE, Pics.LEVEL2VALIDMOVE, Pics.LEVEL3VALIDMOVE);
+            else {
+                if(isDome)
+                    return switchOnHeight(cell.getHeight(), Pics.LEVEL0DOME, Pics.LEVEL1DOME, Pics.LEVEL2DOME, Pics.LEVEL3DOME);
+                else
+                    return switchOnHeight(cell.getHeight(), Pics.LEVEL0, Pics.LEVEL1, Pics.LEVEL2, Pics.LEVEL3);
+            }
         }
-        //display height with currespundant player on it
+
+        //player present
         else{
             switch(player.getTokenColor()){
                 case RED:{
-                    return switchOnHeight(cell.getHeight(),startPath,"level0tokenRed.png","level1tokenRed.png","level2tokenRed.png","level3tokenRed.png","levelDome.png");
+                    if(!iHaveToDisplayValidMoves)
+                        return switchOnHeight(cell.getHeight(), Pics.LEVEL0TOKENRED, Pics.LEVEL1TOKENRED, Pics.LEVEL2TOKENRED, Pics.LEVEL3TOKENRED);
+                    else
+                        return switchOnHeight(cell.getHeight(), Pics.LEVEL0TOKENREDVALIDMOVE, Pics.LEVEL1TOKENREDVALIDMOVE, Pics.LEVEL2TOKENREDVALIDMOVE, Pics.LEVEL3TOKENREDVALIDMOVE);
                 }
                 case BLUE:{
-                    return switchOnHeight(cell.getHeight(),startPath,"level0tokenBlue.png","level1tokenBlue.png","level2tokenBlue.png","level3tokenBlue.png","levelDome.png");
+                    if(!iHaveToDisplayValidMoves)
+                        return switchOnHeight(cell.getHeight(), Pics.LEVEL0TOKENBLUE, Pics.LEVEL1TOKENBLUE, Pics.LEVEL2TOKENBLUE, Pics.LEVEL3TOKENBLUE);
+                    else
+                        return switchOnHeight(cell.getHeight(), Pics.LEVEL0TOKENBLUEVALIDMOVE, Pics.LEVEL1TOKENBLUEVALIDMOVE, Pics.LEVEL2TOKENBLUEVALIDMOVE, Pics.LEVEL3TOKENBLUEVALIDMOVE);
                 }
                 case YELLOW:{
-                    return switchOnHeight(cell.getHeight(),startPath,"level0tokenYellow.png","level1tokenYellow.png","level2tokenYellow.png","level3tokenYellow.png","levelDome.png");
+                    if(!iHaveToDisplayValidMoves)
+                        return switchOnHeight(cell.getHeight(), Pics.LEVEL0TOKENYELLOW, Pics.LEVEL1TOKENYELLOW, Pics.LEVEL2TOKENYELLOW, Pics.LEVEL3TOKENYELLOW);
+                    else
+                        return switchOnHeight(cell.getHeight(), Pics.LEVEL0TOKENYELLOWVALIDMOVE, Pics.LEVEL1TOKENYELLOWVALIDMOVE, Pics.LEVEL2TOKENYELLOWVALIDMOVE, Pics.LEVEL3TOKENYELLOWVALIDMOVE);
                 }
             }
         }
@@ -445,33 +476,28 @@ public class SwingView extends View {
     /**
      * Switch on dynamic images to choose which one has to be displayed
      * @param height of this cell
-     * @param startPath starting path of images
-     * @param str0 in case of level 0
-     * @param str1 in case of level 1
-     * @param str2 in case of level 2
-     * @param str3 in case of level 3
-     * @param str4 in case of level dome
-     * @return the right imageicon
+     * @return the right imageicon, or error icon
      */
-    public ImageIcon switchOnHeight(int height, String startPath, String str0, String str1, String str2, String str3, String str4) {
+    public ImageIcon switchOnHeight(int height, Pics p1, Pics p2, Pics p3, Pics p4) {
 
-        switch (height) {
-            case 0: {
-               return new ImageIcon(new File(startPath + str0).getAbsolutePath());
+            switch (height) {
+                case 0: {
+                    return p1.getImageIcon();
+                }
+                case 1: {
+                    return p2.getImageIcon();
+                }
+                case 2: {
+                    return p3.getImageIcon();
+                }
+                case 3: {
+                    return p4.getImageIcon();
+                }
+                default: { //error
+                    return Pics.ERRORICON.getImageIcon();
+                }
             }
-            case 1: {
-                return new ImageIcon(new File(startPath + str1).getAbsolutePath());
-            }
-            case 2: {
-                return new ImageIcon(new File(startPath + str2).getAbsolutePath());
-            }
-            case 3: {
-                return new ImageIcon(new File(startPath + str3).getAbsolutePath());
-            }
-            default: { //dome
-                return new ImageIcon(new File(startPath + str4).getAbsolutePath());
-            }
-        }
+
     }
 
     public int getToken(int posx, int posy, Player player){
