@@ -90,6 +90,7 @@ public class ButtonHandler implements ActionListener {
 
             case ASK_FOR_BUILD: {
                 Cell targetCell = null;
+                power = swingView.wantToUsePower();
                 try {
                     targetCell = currentServerResponse.getPack().getModelCopy().getBattlefield().getCell(cellButton.getCell().getPosX(),cellButton.getCell().getPosY());
 

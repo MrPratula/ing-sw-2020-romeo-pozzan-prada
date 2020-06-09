@@ -12,16 +12,18 @@ public class AskToUseTheGodsPower extends JDialog{
 
     private final ServerResponse serverResponse;
     private final SwingView view;
+    private JFrame mainframe;
 
     /**
      * JDialog thats asks if the player wants to use his god's power
      * @param swingView
      * @param serverResponse
      */
-    public AskToUseTheGodsPower(SwingView swingView, final ServerResponse serverResponse){
+    public AskToUseTheGodsPower(SwingView swingView, final ServerResponse serverResponse, final JFrame mainframe){
 
         this.serverResponse = serverResponse;
         this.view = swingView;
+        this.mainframe = mainframe;
 
         setTitle("GOD'S POWER");
         setLocationRelativeTo(null);
@@ -41,15 +43,27 @@ public class AskToUseTheGodsPower extends JDialog{
         yes_button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new GameFrame(serverResponse,view);
-                dispose();
+                try {
+                    view.setWantToUsePower(true);
+                    view.displayGui(view.getBattlefieldGUI(),serverResponse.getPack().getModelCopy(), null);
+                    dispose();
+                } catch (CellOutOfBattlefieldException cellOutOfBattlefieldException) {
+                    cellOutOfBattlefieldException.printStackTrace();
+                }
+                //new GameFrame(serverResponse,view);
+                //dispose(mainframe.getInnerMainPanel().getBattlefieldGUI());
             }
         });
         no_button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new GameFrame(serverResponse,view);
-                dispose();
+                try {
+                    view.setWantToUsePower(false);
+                    view.displayGui(view.getBattlefieldGUI(),serverResponse.getPack().getModelCopy(), null);
+                    dispose();
+                } catch (CellOutOfBattlefieldException cellOutOfBattlefieldException) {
+                    cellOutOfBattlefieldException.printStackTrace();
+                }
             }
         });
 

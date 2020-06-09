@@ -17,7 +17,7 @@ import javax.swing.*;
 public class SwingView extends View {
 
     private int contPlaceToken = 0 , getContPlaceToken2 = 0;
-    private GameFrame gameFrame;
+    private GameFrame gameFrame = null;
     private CellButton[][] battlefieldGUI; //maybe delete
     private ServerResponse currentServerResponse;
 
@@ -28,6 +28,7 @@ public class SwingView extends View {
 
     private int count = 2;
     private Cell first_cell;
+    Boolean power = null;
 
 
     /**
@@ -36,6 +37,7 @@ public class SwingView extends View {
     public SwingView(){
     }
 
+    public void setWantToUsePower(Boolean power){this.power = power;}
 
 
     /*     GETTER      */
@@ -45,7 +47,7 @@ public class SwingView extends View {
     }
 
     public CellButton[][] getBattlefieldGUI() {
-        return battlefieldGUI;
+        return this.gameFrame.getInnerMainPanel().getBattlefieldGUI();
     }
 
     public ServerResponse getCurrentServerResponse() {
@@ -55,6 +57,8 @@ public class SwingView extends View {
     public void setBattlefieldGUI(CellButton[][] battlefieldGUI) {
         this.battlefieldGUI = battlefieldGUI;
     }
+
+    public Boolean wantToUsePower(){return power;}
 
 
     /**
@@ -218,7 +222,18 @@ public class SwingView extends View {
                 Pack pack = serverResponse.getPack();
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
-                        JOptionPane.showMessageDialog(new JFrame(), pack.getMessageOpponents(), "NOT YOUR TURN! PLEASE WAIT", JOptionPane.WARNING_MESSAGE, Pics.ERRORICON.getImageIcon());
+                    //se non è null quindi se ha già posizionato i token, si aggiorna la board
+                    if(this.gameFrame != null){
+                        displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
+                    }
+                    //altrimenti crea la board così può vedere dove l'altro posiziona i token
+                    //per fare una cosa fatta bene dobbiamo disabilitare i bottoni a questo player
+                    else{
+                        this.gameFrame = new GameFrame(serverResponse,this);
+                        this.battlefieldGUI = getBattlefieldGUI();
+                        contPlaceToken++;
+                    }
+                    JOptionPane.showMessageDialog(new JFrame(), pack.getMessageOpponents(), "NOT YOUR TURN! PLEASE WAIT", JOptionPane.WARNING_MESSAGE, Pics.ERRORICON.getImageIcon());
                 }
                 else {
                     this.player = serverResponse.getPack().getPlayer();
@@ -227,12 +242,12 @@ public class SwingView extends View {
                     if(contPlaceToken == 0){
                         JOptionPane.showMessageDialog(new JFrame(),pack.getAction().getName().toUpperCase(),"IT'S YOUR TURN, ", JOptionPane.WARNING_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
                         this.gameFrame = new GameFrame(serverResponse,this);
-                        this.battlefieldGUI = gameFrame.getInnerMainPanel().getBattlefieldGUI();
+                        this.battlefieldGUI = getBattlefieldGUI();
                         contPlaceToken++;
                     }
                     else{
                         JOptionPane.showMessageDialog(new JFrame(),pack.getAction().getName().toUpperCase(),"AGAIN YOUR TURN, ", JOptionPane.WARNING_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
-                        displayGui(this.gameFrame.getInnerMainPanel().getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
+                        displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
                     }
                 }
                 break;
@@ -246,6 +261,7 @@ public class SwingView extends View {
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
                     JOptionPane.showMessageDialog(new JFrame(),pack.getMessageOpponents(),"NOT YOUR TURN!! PLEASE WAIT!", JOptionPane.WARNING_MESSAGE, Pics.ERRORICON.getImageIcon());
+                    displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
                 }
                 else {
                     this.player = pack.getPlayer();
@@ -253,7 +269,7 @@ public class SwingView extends View {
 
                     //new GameFrame(serverResponse,this,null);
 
-                    displayGui(this.gameFrame.getInnerMainPanel().getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
+                    displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
                     //gameFrame.setVisible(true);
 
                     //this.gameFrame.updateGui(serverResponse, false);
@@ -292,11 +308,12 @@ public class SwingView extends View {
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
                     JOptionPane.showMessageDialog(new JFrame(), pack.getMessageOpponents(), "NOT YOUR TURN",JOptionPane.INFORMATION_MESSAGE, Pics.ERRORICON.getImageIcon());
+                    displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
                 }
                 else{
                     JOptionPane.showMessageDialog(new JFrame(), pack.getAction().getName().toUpperCase(), "YOUR TURN, ", JOptionPane.WARNING_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
                     //this.gameFrame.updateGui(serverResponse, false);
-                    displayGui(this.gameFrame.getInnerMainPanel().getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
+                    displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
                     //new GameFrame(serverResponse,this,null);
                 }
                 break;
@@ -308,11 +325,12 @@ public class SwingView extends View {
                 Pack pack = serverResponse.getPack();
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
+                    displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
                     JOptionPane.showMessageDialog(new JFrame(), pack.getMessageOpponents(), "NOT YOUR TURN",JOptionPane.INFORMATION_MESSAGE, Pics.ERRORICON.getImageIcon());
                 }
                 else{
                     this.player = pack.getPlayer();
-                    new AskToUseTheGodsPower(this, serverResponse);  //fixme
+                    new AskToUseTheGodsPower(this, serverResponse,this.gameFrame);
                 }
                 break;
             }
