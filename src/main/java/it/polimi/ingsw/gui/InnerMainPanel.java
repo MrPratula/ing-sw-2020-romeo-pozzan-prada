@@ -15,7 +15,7 @@ public class InnerMainPanel {
     private JPanel battlefieldPanel;
     private JPanel godPanel;
     //todo: delete
-    private JLabel messageLabel  = new JLabel("non serve a uun cazzo, mettiamo direttamente le scritte sulle immagini");
+    private JLabel messageLabel  = new JLabel(Pics.MESSAGEBG2.getImageIcon());
     private CellButton[][] battlefieldGUI = new CellButton[5][5];
     private List<ButtonHandler> battlefieldButtons = new ArrayList<>();
     private SwingView swingView;
@@ -100,9 +100,23 @@ public class InnerMainPanel {
             });
             godPanel.add(playerText);
         }
+        if(godsInGame.size()==2){
+            final JLabel playerText = new JLabel(Pics.NOTHIRDPLAYER.getImageIcon());
+            playerText.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                playerText.setText("No Player");
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                playerText.setText(" ");
+            }
+            });
+            godPanel.add(playerText);
+        }
+
         return godPanel;
     }
-
 
     public CellButton[][] getBattlefieldGUI() {
         return battlefieldGUI;

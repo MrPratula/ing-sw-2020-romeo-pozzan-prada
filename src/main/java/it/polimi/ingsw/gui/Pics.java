@@ -83,6 +83,7 @@ public enum Pics {
         PANTEXT("./src/main/images/godcards/" + "panText.png"),  //11
         PROMETHEUSTEXT("./src/main/images/godcards/" + "prometheusText.png"), //12
         ZEUSTEXT("./src/main/images/godcards/" + "zeusText.png"), //13
+        NOTHIRDPLAYER("./src/main/images/godcards/" + "nothirdplayer.png"), //13
 
         // UTILS
         BOARD("./src/main/images/utils/" + "board.png"),
