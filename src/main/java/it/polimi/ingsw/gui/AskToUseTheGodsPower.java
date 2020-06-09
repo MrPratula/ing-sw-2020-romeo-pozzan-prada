@@ -41,23 +41,15 @@ public class AskToUseTheGodsPower extends JDialog{
         yes_button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    new GameFrame(serverResponse,view,true);
-                    dispose();
-                } catch (CellOutOfBattlefieldException cellOutOfBattlefieldException) {
-                    cellOutOfBattlefieldException.printStackTrace();
-                }
+                new GameFrame(serverResponse,view);
+                dispose();
             }
         });
         no_button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    new GameFrame(serverResponse,view,false);
-                    dispose();
-                } catch (CellOutOfBattlefieldException cellOutOfBattlefieldException) {
-                    cellOutOfBattlefieldException.printStackTrace();
-                }
+                new GameFrame(serverResponse,view);
+                dispose();
             }
         });
 

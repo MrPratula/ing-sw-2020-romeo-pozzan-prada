@@ -16,37 +16,29 @@ import java.io.IOException;
 public class ButtonHandler implements ActionListener {
 
     final private CellButton cellButton;
-    private final ServerResponse serverResponse;
-    private final SwingView view;
-    private final JFrame mainframe;
-    private final int posx;
-    private final int posy;
+    private ServerResponse currentServerResponse; //todo fixme
+    private final SwingView swingView;
     private Boolean power;
 
-    public ButtonHandler(CellButton cellButton,ServerResponse serverResponse, SwingView swingView, JFrame jframe, int posx, int posy, Boolean wantpower) {
-        this.serverResponse = serverResponse;
-        this.cellButton = cellButton;
-        this.view = swingView;
-        this.mainframe = jframe;
-        this.posx = posx;
-        this.posy = posy;
-        this.power = wantpower;
-    }
 
+    public ButtonHandler(CellButton cellButton, SwingView swingView) {
+        this.cellButton = cellButton;
+        this.swingView = swingView;
+    }
 
     @Override
     public void actionPerformed(ActionEvent clickedButtonEvent) {
 
-
-        switch(serverResponse.getPack().getAction()) {
+        currentServerResponse = swingView.getCurrentServerResponse();
+        switch(currentServerResponse.getPack().getAction()) {
 
             case PLACE_YOUR_TOKEN:{
                 try {
-                    Cell targetCell = serverResponse.getPack().getModelCopy().getBattlefield().getCell(posx,posy);
-                    if(view.isFree(targetCell,serverResponse.getPack().getModelCopy())){
-                        PlayerAction playerAction = new PlayerAction(Action.TOKEN_PLACED, view.getPlayer(), null, null, 0, 0, cellButton.getCell(), null, false, null);
+                    Cell targetCell = currentServerResponse.getPack().getModelCopy().getBattlefield().getCell(cellButton.getCell().getPosX(),cellButton.getCell().getPosY());
+                    if(swingView.isFree(targetCell,currentServerResponse.getPack().getModelCopy())){
+                        PlayerAction playerAction = new PlayerAction(Action.TOKEN_PLACED, swingView.getPlayer(), null, null, 0, 0, cellButton.getCell(), null, false, null);
                         try {
-                            view.notifyClient(playerAction);
+                            swingView.notifyClient(playerAction);
                             //mainframe.dispose();// non dovrei disposarlo
                         } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException e) {
                             e.printStackTrace();
@@ -63,12 +55,12 @@ public class ButtonHandler implements ActionListener {
 
 
             case ASK_FOR_SELECT_TOKEN:{
-                int selectedToken = view.getToken(posx,posy,view.getPlayer());
+                int selectedToken = swingView.getToken(cellButton.getCell().getPosX(),cellButton.getCell().getPosY(), swingView.getPlayer());
                 if(selectedToken != 0){
-                    view.SavedToken(selectedToken);
-                    PlayerAction playerAction = new PlayerAction(Action.TOKEN_SELECTED, view.getPlayer(), null, null, selectedToken, 0, null, null, false, null);
+                    swingView.SavedToken(selectedToken);
+                    PlayerAction playerAction = new PlayerAction(Action.TOKEN_SELECTED, swingView.getPlayer(), null, null, selectedToken, 0, null, null, false, null);
                     try {
-                        view.notifyClient(playerAction);
+                        swingView.notifyClient(playerAction);
                         //mainframe.dispose();
                     } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException e) {
                         e.printStackTrace();
@@ -81,12 +73,11 @@ public class ButtonHandler implements ActionListener {
             }
 
             case ASK_FOR_WHERE_TO_MOVE:{
-                Cell targetCell = view.getCell(posx,posy,serverResponse.getPack().getModelCopy().getBattlefield());
+                Cell targetCell = swingView.getCell(cellButton.getCell().getPosX(), cellButton.getCell().getPosY(), currentServerResponse.getPack().getModelCopy().getBattlefield());
                 if(targetCell != null){
-                    PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_MOVE_SELECTED, view.getPlayer(), null, null, view.GetSavedToken(), 0, targetCell, null, false, null);
+                    PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_MOVE_SELECTED, swingView.getPlayer(), null, null, swingView.GetSavedToken(), 0, targetCell, null, false, null);
                     try {
-                        view.notifyClient(playerAction);
-                        mainframe.dispose();
+                        swingView.notifyClient(playerAction);
                     } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException e) {
                         e.printStackTrace();
                     }
@@ -100,15 +91,14 @@ public class ButtonHandler implements ActionListener {
             case ASK_FOR_BUILD: {
                 Cell targetCell = null;
                 try {
-                    targetCell = serverResponse.getPack().getModelCopy().getBattlefield().getCell(posx,posy);
+                    targetCell = currentServerResponse.getPack().getModelCopy().getBattlefield().getCell(cellButton.getCell().getPosX(),cellButton.getCell().getPosY());
 
                     //Simple Build
                     if(!power) {
                         if (targetCell != null) {
-                            PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, view.getPlayer(), null, null, view.GetSavedToken(), 0, targetCell, null, false, null);
+                            PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, swingView.getPlayer(), null, null, swingView.GetSavedToken(), 0, targetCell, null, false, null);
                             try {
-                                view.notifyClient(playerAction);
-                                mainframe.dispose();
+                                swingView.notifyClient(playerAction);
                             } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException e) {
                                 e.printStackTrace();
                             }
@@ -118,23 +108,22 @@ public class ButtonHandler implements ActionListener {
                         break;
                     }
                     else {
-                        switch (view.getPlayer().getMyGodCard()){
+                        switch (swingView.getPlayer().getMyGodCard()){
                             case DEMETER:{
-                                view.buildGod(targetCell,mainframe);
+                                swingView.buildGod(targetCell);
                                 break;
                             }
                             case HESTIA:{
-                                if(view.notPerimeterCell(targetCell)) {
-                                    view.buildGod(targetCell,mainframe);
+                                if(swingView.notPerimeterCell(targetCell)) {
+                                    swingView.buildGod(targetCell);
                                     break;
                                 }
                             }
                             case ATLAS:
                             case HEPHAESTUS:{
-                                PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, view.getPlayer(), null, null, view.GetSavedToken(), 0, targetCell, null, true, null);
+                                PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, swingView.getPlayer(), null, null, swingView.GetSavedToken(), 0, targetCell, null, true, null);
                                 try {
-                                    view.notifyClient(playerAction);
-                                    mainframe.dispose();
+                                    swingView.notifyClient(playerAction);
                                 } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException e) {
                                     e.printStackTrace();
                                 }

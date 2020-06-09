@@ -17,7 +17,8 @@ import javax.swing.*;
 public class SwingView extends View {
 
     private GameFrame gameFrame;
-    private CellButton[][] battlefieldGUI;
+    private CellButton[][] battlefieldGUI; //maybe delete
+    private ServerResponse currentServerResponse;
 
     private Player player;
     private int savedToken;
@@ -35,6 +36,7 @@ public class SwingView extends View {
     }
 
 
+
     /*     GETTER      */
 
     protected Player getPlayer(){
@@ -43,6 +45,10 @@ public class SwingView extends View {
 
     public CellButton[][] getBattlefieldGUI() {
         return battlefieldGUI;
+    }
+
+    public ServerResponse getCurrentServerResponse() {
+        return currentServerResponse;
     }
 
     public void setBattlefieldGUI(CellButton[][] battlefieldGUI) {
@@ -131,7 +137,9 @@ public class SwingView extends View {
      * @param serverResponse: response from the server containing al the necessary informations
      */
     @Override
-    public void update(ServerResponse serverResponse) throws ImpossibleTurnException, IOException, CellHeightException, WrongNumberPlayerException, ReachHeightLimitException, CellOutOfBattlefieldException {
+    public void update(ServerResponse serverResponse) throws CellOutOfBattlefieldException {
+
+        this.currentServerResponse = serverResponse;
 
         switch (serverResponse.getPack().getAction()) {
 
@@ -215,9 +223,9 @@ public class SwingView extends View {
                     this.player = serverResponse.getPack().getPlayer();
                     JOptionPane.showMessageDialog(new JFrame(),pack.getAction().getName().toUpperCase(),"IT'S YOUR TURN, ", JOptionPane.WARNING_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
                     // here i initialise the Game Frame that will last till the end of the game
-                    //new GameFrame(serverResponse,this,null);
-                    this.gameFrame = new GameFrame(serverResponse,this,null);
-                    this.battlefieldGUI = gameFrame.getBattlefieldGUI();
+                    //new GameFrame(serverResponse,this);
+                    this.gameFrame = new GameFrame(serverResponse,this);
+                    this.battlefieldGUI = gameFrame.getInnerMainPanel().getBattlefieldGUI();
                 }
                 break;
             }
@@ -237,7 +245,7 @@ public class SwingView extends View {
 
                     //new GameFrame(serverResponse,this,null);
 
-                    displayGui(this.gameFrame.getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
+                    displayGui(this.gameFrame.getInnerMainPanel().getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
                     //gameFrame.setVisible(true);
 
                     //this.gameFrame.updateGui(serverResponse, false);
@@ -280,7 +288,8 @@ public class SwingView extends View {
                 else{
                     JOptionPane.showMessageDialog(new JFrame(), pack.getAction().getName().toUpperCase(), "YOUR TURN, ", JOptionPane.WARNING_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
                     //this.gameFrame.updateGui(serverResponse, false);
-                    new GameFrame(serverResponse,this,null);
+                    displayGui(this.gameFrame.getInnerMainPanel().getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
+                    //new GameFrame(serverResponse,this,null);
                 }
                 break;
             }
@@ -295,7 +304,7 @@ public class SwingView extends View {
                 }
                 else{
                     this.player = pack.getPlayer();
-                    new AskToUseTheGodsPower(this, serverResponse);
+                    new AskToUseTheGodsPower(this, serverResponse);  //fixme
                 }
                 break;
             }
@@ -347,6 +356,8 @@ public class SwingView extends View {
                     if (validMoves.contains(newBattlefield.getCell(x, y))) {
                         battlefieldGUI[x][y].getCell().setHeight(newBattlefield.getCell(x, y).getHeight());
                         battlefieldGUI[x][y].setIcon(selectIcon(null, newBattlefield.getCell(x, y),false, true));
+                        battlefieldGUI[x][y].repaint();
+                        battlefieldGUI[x][y].revalidate();
                         battlefieldGUI[x][y].setRolloverIcon(selectRolloverIcon(newBattlefield.getCell(x,y),false));
                     }
                     else{
@@ -567,7 +578,7 @@ public class SwingView extends View {
         return savedToken;
     }
 
-    public void buildGod(Cell targetcell, JFrame frame) throws ImpossibleTurnException, IOException, CellHeightException, WrongNumberPlayerException, ReachHeightLimitException, CellOutOfBattlefieldException {
+    public void buildGod(Cell targetcell) throws ImpossibleTurnException, IOException, CellHeightException, WrongNumberPlayerException, ReachHeightLimitException, CellOutOfBattlefieldException {
 
         count --;
         switch (player.getMyGodCard()) {
@@ -580,7 +591,6 @@ public class SwingView extends View {
                     count = 2;
                     PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, player, null, null, savedToken, 0, first_cell, targetcell, true, null);
                     notifyClient(playerAction);
-                    frame.dispose();
                     first_cell = null;
                     break;
                 }
@@ -595,7 +605,6 @@ public class SwingView extends View {
                     count = 2;
                     PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, player, null, null, savedToken, 0, first_cell, targetcell, true, null);
                     notifyClient(playerAction);
-                    frame.dispose();
                     first_cell = null;
                     break;
                 }
