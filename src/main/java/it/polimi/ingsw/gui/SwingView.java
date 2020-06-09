@@ -16,6 +16,7 @@ import javax.swing.*;
 
 public class SwingView extends View {
 
+    private int contPlaceToken = 0 , getContPlaceToken2 = 0;
     private GameFrame gameFrame;
     private CellButton[][] battlefieldGUI; //maybe delete
     private ServerResponse currentServerResponse;
@@ -217,15 +218,22 @@ public class SwingView extends View {
                 Pack pack = serverResponse.getPack();
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
-                    JOptionPane.showMessageDialog(new JFrame(),pack.getMessageOpponents(),"NOT YOUR TURN! PLEASE WAIT", JOptionPane.WARNING_MESSAGE, Pics.ERRORICON.getImageIcon());
+                        JOptionPane.showMessageDialog(new JFrame(), pack.getMessageOpponents(), "NOT YOUR TURN! PLEASE WAIT", JOptionPane.WARNING_MESSAGE, Pics.ERRORICON.getImageIcon());
                 }
                 else {
                     this.player = serverResponse.getPack().getPlayer();
-                    JOptionPane.showMessageDialog(new JFrame(),pack.getAction().getName().toUpperCase(),"IT'S YOUR TURN, ", JOptionPane.WARNING_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
                     // here i initialise the Game Frame that will last till the end of the game
                     //new GameFrame(serverResponse,this);
-                    this.gameFrame = new GameFrame(serverResponse,this);
-                    this.battlefieldGUI = gameFrame.getInnerMainPanel().getBattlefieldGUI();
+                    if(contPlaceToken == 0){
+                        JOptionPane.showMessageDialog(new JFrame(),pack.getAction().getName().toUpperCase(),"IT'S YOUR TURN, ", JOptionPane.WARNING_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
+                        this.gameFrame = new GameFrame(serverResponse,this);
+                        this.battlefieldGUI = gameFrame.getInnerMainPanel().getBattlefieldGUI();
+                        contPlaceToken++;
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(new JFrame(),pack.getAction().getName().toUpperCase(),"AGAIN YOUR TURN, ", JOptionPane.WARNING_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
+                        displayGui(this.gameFrame.getInnerMainPanel().getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
+                    }
                 }
                 break;
             }
@@ -355,9 +363,7 @@ public class SwingView extends View {
                 if (validMoves != null) {
                     if (validMoves.contains(newBattlefield.getCell(x, y))) {
                         battlefieldGUI[x][y].getCell().setHeight(newBattlefield.getCell(x, y).getHeight());
-                        battlefieldGUI[x][y].setIcon(selectIcon(null, newBattlefield.getCell(x, y),false, true));
-                        battlefieldGUI[x][y].repaint();
-                        battlefieldGUI[x][y].revalidate();
+                        battlefieldGUI[x][y].changeImageIcon(selectIcon(null, newBattlefield.getCell(x, y),false, true));
                         battlefieldGUI[x][y].setRolloverIcon(selectRolloverIcon(newBattlefield.getCell(x,y),false));
                     }
                     else{
@@ -388,12 +394,12 @@ public class SwingView extends View {
 
                 battlefieldGUI[x][y].getCell().setHeight(battlefield.getCell(x, y).getHeight());
                 battlefieldGUI[x][y].getCell().setIsDome();
-                battlefieldGUI[x][y].setIcon(selectIcon(null, battlefield.getCell(x, y), true,false));
+                battlefieldGUI[x][y].changeImageIcon(selectIcon(null, battlefield.getCell(x, y), true,false));
                 battlefieldGUI[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x, y), true));
             }
             else {
                 battlefieldGUI[x][y].getCell().setHeight(battlefield.getCell(x, y).getHeight());
-                battlefieldGUI[x][y].setIcon(selectIcon(null, battlefield.getCell(x, y), false,false));
+                battlefieldGUI[x][y].changeImageIcon(selectIcon(null, battlefield.getCell(x, y), false,false));
                 battlefieldGUI[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x, y),false));
             }
         }
@@ -402,14 +408,14 @@ public class SwingView extends View {
                 if (p.getToken1().getTokenPosition() != null && p.getToken1().getTokenPosition()!=null) {                                  //if he has the first token
                     if (p.getToken1().getTokenPosition().equals(battlefield.getCell(x, y))) {
                         battlefieldGUI[x][y].getCell().setHeight(battlefield.getCell(x, y).getHeight());
-                        battlefieldGUI[x][y].setIcon(selectIcon(p, battlefield.getCell(x, y),false, false));
+                        battlefieldGUI[x][y].changeImageIcon(selectIcon(p, battlefield.getCell(x, y),false, false));
                         battlefieldGUI[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x,y),false));
                     }
                 }
                 if (p.getToken2().getTokenPosition() != null && p.getToken2().getTokenPosition()!=null) {                                  //if he has the first token
                     if (p.getToken2().getTokenPosition().equals(battlefield.getCell(x, y))) {
                         battlefieldGUI[x][y].getCell().setHeight(battlefield.getCell(x, y).getHeight());
-                        battlefieldGUI[x][y].setIcon(selectIcon(p, battlefield.getCell(x, y),false, false));
+                        battlefieldGUI[x][y].changeImageIcon(selectIcon(p, battlefield.getCell(x, y),false, false));
                         battlefieldGUI[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x,y),false));
                     }
                 }
