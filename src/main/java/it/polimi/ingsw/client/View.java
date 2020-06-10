@@ -23,22 +23,37 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
     }
 
     /**
-     * It gets a string from player and divide it in two element separated by a comma.
-     * @return a n-elements Array of Strings, where n is the number of comma+1 in the user input.
+     * Get a input from stdin and divide it when there is a comma.
+     * @return if the input are 2 numbers separated with a comma a String[2] with those numbers in it.
+     *         null else.
      */
     public String[] getUserInput(){
         Scanner in = new Scanner(System.in);
         String inputLine = in.nextLine();
-        if (inputLine.toUpperCase().equals("NO") || inputLine.equals(""))
+        try{
+
+            String[] arrayString = inputLine.split(",");
+            String[] cellCoords = new String[2];
+            if (Integer.parseInt(arrayString[0])>=0 && Integer.parseInt(arrayString[0])<5)
+                cellCoords[0] = arrayString[0];
+            else
+                return null;
+
+            if (Integer.parseInt(arrayString[1])>=0 && Integer.parseInt(arrayString[1])<5)
+                cellCoords[1] = arrayString[1];
+            else return null;
+
+            return cellCoords;
+
+        } catch (Exception e){
             return null;
-        return inputLine.split(",");
+        }
     }
 
 
     public void notifyClient(PlayerAction playerAction) throws CellOutOfBattlefieldException, ReachHeightLimitException, CellHeightException, IOException, ImpossibleTurnException, WrongNumberPlayerException {
         notify(playerAction);
     }
-
 
 
     /**
