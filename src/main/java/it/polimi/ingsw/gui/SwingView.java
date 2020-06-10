@@ -337,28 +337,6 @@ public class SwingView extends View {
         }
     }
 
-    /*
-     * Links a string of god names into the real
-     * GodCards corresponding to them
-     * @param godcardsForTheGame: String of god names
-     * @return GodCards in game
-     */
-    /*private List<GodCard> recognizeGodInGame(String godcardsForTheGame) {
-
-        List<GodCard> godsSeparated = new ArrayList<>();
-        String[] godNamesInGame = godcardsForTheGame.split(" ");
-        int numberOfGodsInGame = godNamesInGame.length;
-        GodCard[] allGods = GodCard.values();
-        int i = 0, j = 0;
-        while(i < numberOfGodsInGame){
-            while(!godNamesInGame[i].equals(allGods[j].name())){
-                j++;
-            }
-            godsSeparated.add(allGods[j]);
-            i++;
-        }
-        return godsSeparated;
-    }*/
 
 
 

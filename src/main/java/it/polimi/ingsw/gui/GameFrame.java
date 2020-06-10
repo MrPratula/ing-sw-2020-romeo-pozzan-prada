@@ -30,7 +30,7 @@ public class GameFrame extends JFrame {
      */
     public GameFrame(ServerResponse serverResponse, SwingView swingView) {
 
-        super( " Battlefield | " /*+ swingView.getPlayer().getUsername()*/);
+        super( " Battlefield | " + swingView.getPlayer().getUsername());
         setLayout(new BorderLayout());
         setIconImage(Pics.BATTLEFIELDICON.getImageIcon().getImage());
         setSize(1000,950);

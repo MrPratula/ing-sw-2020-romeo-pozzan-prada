@@ -66,6 +66,9 @@ public class ChooseGodCardToPlayWindow {
                                 }
                                 //inutile swingView.setGodCardsForTheGame(godStringToSplit.toString());
                                 JOptionPane.showMessageDialog(new JFrame(), "Ok! Thanks for the selections. The GodCards in game will be: "+godStringToSplit, "Selection confirmed", JOptionPane.INFORMATION_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
+
+                                new GodSelectedWindow(godStringToSplit.toString());
+
                                 //System.out.println(godStringToSplit);
                                 PlayerAction playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, view.getPlayer(), null, null, 0, 0, null, null, false, godStringToSplit.toString());
                                 try {
