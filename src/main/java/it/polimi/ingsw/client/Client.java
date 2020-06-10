@@ -130,12 +130,18 @@ public class Client extends Observable<ServerResponse> implements Observer<Playe
         //TEMPORANEO per decidere se cli o gui (solo inizialmente)
         System.out.println("1 to use Cli, 2 to use Gui");
         Scanner scanner = new Scanner(System.in);
-        int number = scanner.nextInt();
-        while(number != 1 && number != 2){
-            System.out.println("Wrong number, try again: ");
-            System.out.println("1 per Cli, 2 per Gui");
-            number = scanner.nextInt();
+        int number;
+        try{
+             number = scanner.nextInt();
+            while(number != 1 && number != 2){
+                System.out.println("Wrong number, try again: ");
+                System.out.println("1 per Cli, 2 per Gui");
+                number = scanner.nextInt();
+            }
+        } catch (Exception e){
+            number = 1;
         }
+        
 
         Socket socket = new Socket(ip, port);
         System.out.println("Connection established!");

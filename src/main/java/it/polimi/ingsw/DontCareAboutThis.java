@@ -1,6 +1,5 @@
 package it.polimi.ingsw;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class DontCareAboutThis {
@@ -8,9 +7,21 @@ public class DontCareAboutThis {
     public static void main(String[] args) {
 
 
-        boolean inputs = askYesOrNot();
+        System.out.println("1 to use Cli, 2 to use Gui");
+        Scanner scanner = new Scanner(System.in);
+        int number;
+        try{
+            number = scanner.nextInt();
+            while(number != 1 && number != 2){
+                System.out.println("Wrong number, try again: ");
+                System.out.println("1 per Cli, 2 per Gui");
+                number = scanner.nextInt();
+            }
+        } catch (Exception e){
+            number = 1;
+        }
 
-        System.out.println((inputs));
+        System.out.println(number);
 
 
     }
@@ -19,11 +30,5 @@ public class DontCareAboutThis {
 
 
 
-    public static boolean askYesOrNot(){
 
-        Scanner in = new Scanner(System.in);
-        String input = in.nextLine().toUpperCase();
-
-        return input.equals("Y") || input.equals("YE") || input.equals("YES") || input.equals("TRUE") || input.equals("SI");
-    }
 }
