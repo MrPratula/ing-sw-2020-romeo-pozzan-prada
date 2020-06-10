@@ -28,11 +28,11 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     private static boolean didPrometheusUsePower;
     private Battlefield battlefield;
     private TokenColor turn;
-    private List<Player> allPlayers = new ArrayList<>();
-    private List<GodCard> allGodCards = new ArrayList<>();
+    private final List<Player> allPlayers = new ArrayList<>();
+    private final List<GodCard> allGodCards = new ArrayList<>();
     private boolean firstTime = true;
-
     private Token prometheusToken;
+    private ServerResponse lastSentServerResponse;
 
 
     public Model() {
@@ -237,6 +237,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             pack.setMessageOpponents("Another player is picking his GodCard, wait please...");
 
             ServerResponse serverResponse = new ServerResponse(turn, pack);
+            lastSentServerResponse = serverResponse;
             notify(serverResponse);
 
         }
@@ -285,6 +286,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                     pack.setMessageOpponents("Another player is placing his tokens on the battlefield. Be patient please...");
 
                     ServerResponse serverResponse = new ServerResponse(getTurn(), pack);
+                    lastSentServerResponse = serverResponse;
                     notify(serverResponse);
                 }
 
@@ -306,6 +308,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                     pack.setMessageOpponents("Another player is picking his GodCard, wait please...");
 
                     ServerResponse serverResponse = new ServerResponse(turn, pack);
+                    lastSentServerResponse = serverResponse;
                     notify(serverResponse);
                 }
             }
@@ -323,6 +326,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                 pack.setMessageOpponents("Another player is picking his GodCard, wait please...");
 
                 ServerResponse serverResponse = new ServerResponse(turn, pack);
+                lastSentServerResponse = serverResponse;
                 notify(serverResponse);
             }
         }
@@ -403,6 +407,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
             serverResponse = new ServerResponse(getTurn(), pack);
         }
+        lastSentServerResponse = serverResponse;
         notify(serverResponse);
     }
 
@@ -483,6 +488,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         }
 
         validCells = validMoves;
+        lastSentServerResponse = serverResponse;
         notify(serverResponse);
     }
 
@@ -507,6 +513,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         prometheusToken = parseToken(playerAction.getTokenMain());
 
         ServerResponse serverResponse = new ServerResponse(getTurn(), pack);
+        lastSentServerResponse = serverResponse;
         notify(serverResponse);
     }
 
@@ -534,6 +541,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         ServerResponse serverResponse = new ServerResponse(getTurn(), pack);
 
         validCells = validBuilds;
+        lastSentServerResponse = serverResponse;
         notify(serverResponse);
     }
 
@@ -781,6 +789,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
             ServerResponse serverResponse = new ServerResponse(getTurn(), pack);
             validCells = validBuilds;
+            lastSentServerResponse = serverResponse;
             notify(serverResponse);
         }
     }
@@ -1015,6 +1024,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             pack.setPlayer(getPlayerInTurn());
 
             serverResponse = new ServerResponse(getTurn(), pack);
+            lastSentServerResponse = serverResponse;
             notify(serverResponse);
         }
     }
@@ -1146,34 +1156,41 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     /**
      * It is called by the controller to notify the player-in-turn that he has insert a wrong or
      * a non expected input.
-     * @param playerAction the message from the observer that contain all the information.
      */
-    public void notifyWrongInput(PlayerAction playerAction) throws ImpossibleTurnException, IOException, CellHeightException, WrongNumberPlayerException, ReachHeightLimitException, CellOutOfBattlefieldException {
+    public void notifyWrongInput() throws ImpossibleTurnException, IOException, CellHeightException, WrongNumberPlayerException, ReachHeightLimitException, CellOutOfBattlefieldException {
 
-        String whatAction;
+        System.out.println("WrongInput caught");
 
-        switch (playerAction.getAction()) {
-            case TOKEN_SELECTED: {
-                whatAction = "Please insert the position of a token you can move.";
-                break;
-            }
-            case WHERE_TO_MOVE_SELECTED: {
-                whatAction = "Please insert a valid position where you can move your token.";
-                break;
-            }
-            default: {
-                whatAction = null;
+        Pack oldPack = lastSentServerResponse.getPack();
+        Pack pack = new Pack(oldPack.getAction());
+
+        pack.setPlayer(oldPack.getPlayer());
+        pack.setNumberOfPlayers(oldPack.getNumberOfPlayers());
+        pack.setModelCopy(getCopy());
+        pack.setValidBuilds(oldPack.getValidBuilds());
+        pack.setValidMoves(oldPack.getValidBuilds());
+        pack.setGodCards(oldPack.getGodCards());
+
+        String oldMessageOpponents = oldPack.getMessageOpponents();
+        String oldMessageInTurn = oldPack.getMessageInTurn();
+
+        if (oldMessageOpponents != null){
+            if (oldMessageInTurn.contains("An error in your input was caught")){
+                oldMessageInTurn = "An error in your input was caught.\n"+oldMessageInTurn;
             }
         }
 
-        Pack pack = new Pack(playerAction.getAction());
-        pack.setPlayer(getPlayerInTurn());
-        pack.setModelCopy(getCopy());
-        pack.setGodCards(getGodCards(allPlayers));
-        pack.setMessageInTurn(whatAction);
-        pack.setMessageOpponents(getPlayerInTurn().getUsername()+" inserted a non valid choice...");
+        if (oldMessageOpponents != null){
+            if (oldMessageInTurn.contains("An error in your opponent's input was caught")){
+                oldMessageInTurn = "An error in your opponent's input was caught.\n"+oldMessageInTurn;
+            }
+        }
 
-        ServerResponse serverResponse = new ServerResponse(getTurn(), pack);
+        pack.setMessageInTurn(oldMessageInTurn);
+        pack.setMessageOpponents(oldMessageOpponents);
+
+        ServerResponse serverResponse = new ServerResponse(turn, pack);
+        lastSentServerResponse = serverResponse;
         notify(serverResponse);
     }
 
@@ -1181,6 +1198,8 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * Check if the two cells have different coordinates.
      */
     public boolean differentCell(Cell firstCell, Cell secondCell){
+        if (firstCell==null || secondCell == null)
+            return true;
         return !(firstCell.getPosX()==secondCell.getPosX() && firstCell.getPosY()==secondCell.getPosY());
     }
 
@@ -1188,6 +1207,8 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * Check if the targetCell is a perimeter cell.
      */
     public boolean notPerimeterCell(Cell targetCell){
+        if(targetCell == null)
+            return false;
         return ((targetCell.getPosX()!=4 && targetCell.getPosY()!=4) && (targetCell.getPosX()!=0 && targetCell.getPosY()!=0));
     }
 }

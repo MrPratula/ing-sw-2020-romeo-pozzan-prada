@@ -84,7 +84,7 @@ public class Controller implements Observer<PlayerAction> {
                     }
 
                     if (!isItCorrect)
-                        model.notifyWrongInput(playerAction);
+                        model.notifyWrongInput();
 
                     // Not sure if this is the best place for this, but it works here. Don't touch plz
                     if (Model.isDidPrometheusUsePower())
@@ -96,54 +96,67 @@ public class Controller implements Observer<PlayerAction> {
 
                 case WHERE_TO_BUILD_SELECTED:{
                     List<Cell> validBuilds = model.askForValidBuilds(playerAction);
-                    Cell targetCell = playerAction.getFirstCell();
 
+                    Cell targetCell = model.getBattlefield().getCell(playerAction.getFirstCell());
+                    Cell secondCell = null;
+                    if (playerAction.getSecondCell()!=null)
+                        secondCell = model.getBattlefield().getCell(playerAction.getSecondCell());
+
+                    boolean isTheCellCorrect = false;
                     for (Cell c: validBuilds) {
-                        if (c.getPosX() == targetCell.getPosX() && c.getPosY() == targetCell.getPosY()){
+                        if (c.getPosX() == targetCell.getPosX() && c.getPosY() == targetCell.getPosY()) {
+                            isTheCellCorrect = true;
+                            break;
+                        }
+                    }
 
-                            // Check for demeter power condition
-                            if (model.getPlayerInTurn().getMyGodCard().equals(GodCard.DEMETER)){
+                    if (isTheCellCorrect) {
+
+                        GodCard god = model.getPlayerInTurn().getMyGodCard();
+
+                        switch (god){
+
+
+                            case DEMETER:{
                                 if (playerAction.getDoWantUsePower()) {
-                                    if (model.differentCell(targetCell, playerAction.getSecondCell())) {
+                                    if (model.differentCell(targetCell, secondCell)) {
                                         model.performBuild(playerAction);
                                     } else {
-                                        model.notifyWrongInput(playerAction);
+                                        model.notifyWrongInput();
                                     }
-                                }
-                                else {
+                                } else {
                                     model.performBuild(playerAction);
                                 }
                                 break;
-
                             }
 
-                            // Check for hestia power condition
-                            if (model.getPlayerInTurn().getMyGodCard().equals(GodCard.HESTIA)){
-                                if (playerAction.getDoWantUsePower()){
-                                    if (model.notPerimeterCell(playerAction.getSecondCell())) {
+
+                            case HESTIA:{
+                                if (playerAction.getDoWantUsePower()) {
+                                    if (model.notPerimeterCell(secondCell)) {
                                         model.performBuild(playerAction);
-                                    }
-                                    else {
-                                        model.notifyWrongInput(playerAction);
+                                    } else {
+                                        model.notifyWrongInput();
                                     }
                                     break;
                                 }
                             }
 
-                            // Normal build else
-                            model.performBuild(playerAction);
-                        }
-                        else{
-                            model.notifyWrongInput(playerAction);
+
+                            default: {
+                                model.performBuild(playerAction);
+                            }
                         }
                     }
-                    break;
+                    else
+                        model.notifyWrongInput();
+                break;
                 }
             }
         }
         else {
             System.out.println("BAAAAAAAAAAAD");
-            model.notifyWrongInput(playerAction);
+            model.notifyWrongInput();
         }
     }
 }

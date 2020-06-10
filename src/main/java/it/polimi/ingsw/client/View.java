@@ -374,15 +374,6 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
             }
 
 
-            case GAME_OVER:{
-                Pack pack = serverResponse.getPack();
-                printCLI(pack.getModelCopy(), null);
-                System.out.print(serverResponse.getPack().getAction().getInfo());
-                System.out.println(pack.getMessageInTurn());
-                break;
-            }
-
-
             case ASK_FOR_WHERE_TO_MOVE:{
 
                 Pack pack = serverResponse.getPack();
@@ -643,6 +634,21 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                             notify(playerAction);
                         }
                     }
+                }
+                break;
+            }
+
+            case GAME_OVER:{
+
+                Pack pack = serverResponse.getPack();
+                printCLI(pack.getModelCopy(), pack.getValidBuilds());
+                System.out.println(pack.getMessageInTurn());
+
+                if (!player.getTokenColor().equals(serverResponse.getTurn())){
+                    System.out.println("YOU HAVE LOST");
+                }
+                else {
+                    System.out.println("YOU HAVE WIN");
                 }
                 break;
             }

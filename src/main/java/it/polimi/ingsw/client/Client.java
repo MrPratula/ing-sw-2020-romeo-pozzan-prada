@@ -141,7 +141,7 @@ public class Client extends Observable<ServerResponse> implements Observer<Playe
         } catch (Exception e){
             number = 1;
         }
-        
+
 
         Socket socket = new Socket(ip, port);
         System.out.println("Connection established!");
