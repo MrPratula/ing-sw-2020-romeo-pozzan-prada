@@ -115,7 +115,6 @@ public enum Pics {
         NOT_YOUR_TURN("./src/main/images/messages/" + "NOT_YOUR_TURN.png"),
 
         // BACKGROUNDS
-        BLACKBG("./src/main/images/backgrounds/" + "blackBg.png"),
         DIALOGBG("./src/main/images/backgrounds/" + "dialogBg.png"),
         MAINBG("./src/main/images/backgrounds/" + "mainBg.png"),
         COLUMNS("./src/main/images/backgrounds/" + "columns.png"),

@@ -24,6 +24,7 @@ public class ClientApp {
 
         //todo: non cancellare
 
+        JOptionPane.showMessageDialog(new JFrame(),new Pack(Action.SELECT_YOUR_GOD_CARD).getAction().getName().toUpperCase(),"AGAIN YOUR TURN, ", JOptionPane.WARNING_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
 
         /*      //  PROVA FINESTRA SCELTA SINGOLO GOD
         List<GodCard> allGodCards = new ArrayList<>();
