@@ -48,11 +48,13 @@ public class ClientApp {
 
         /*   //PROVA GAMEFRAME CON GODS
         List<GodCard> godsInGame = new ArrayList<>();
-        godsInGame.add(GodCard.CHRONUS);
         godsInGame.add(GodCard.ATHENA);
-        godsInGame.add(GodCard.MINOTAUR);
-        new GameFrame(new ServerResponse(TokenColor.RED, new Pack(Action.CHOOSE_GOD_CARD_TO_PLAY)),new SwingView());
-        */
+        godsInGame.add(GodCard.APOLLO);
+        godsInGame.add(GodCard.ARTEMIS);
+        Pack pa = new Pack(Action.CHOOSE_GOD_CARD_TO_PLAY);
+        pa.setGodCards(godsInGame);
+        new GameFrame(new ServerResponse(TokenColor.RED, pa),new SwingView());
+*/
 
 
         //new NickNameWindow(new SwingView());

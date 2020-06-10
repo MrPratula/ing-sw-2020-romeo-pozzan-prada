@@ -30,12 +30,13 @@ public class GameFrame extends JFrame {
      */
     public GameFrame(ServerResponse serverResponse, SwingView swingView) {
 
-        super( " Battlefield | " + swingView.getPlayer().getUsername());
+        super( " Battlefield | " /*+ swingView.getPlayer().getUsername()*/);
         setLayout(new BorderLayout());
         setIconImage(Pics.BATTLEFIELDICON.getImageIcon().getImage());
-        setSize(900,800);
+        setSize(1000,950);
         setPreferredSize(new Dimension(this.getWidth(),this.getHeight()));
         setResizable(true);
+        setBackground(Color.BLACK);
         setLocationRelativeTo(null);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent we) {

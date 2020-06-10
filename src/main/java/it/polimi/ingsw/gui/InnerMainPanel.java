@@ -15,7 +15,7 @@ public class InnerMainPanel {
     private JPanel battlefieldPanel;
     private JPanel godPanel;
     //todo: delete
-    private JLabel messageLabel  = new JLabel(Pics.MESSAGEBG2.getImageIcon());
+    private JLabel messageLabel  = new JLabel(Pics.WELCOMEMESSAGE.getImageIcon());
     private CellButton[][] battlefieldGUI = new CellButton[5][5];
     private List<ButtonHandler> battlefieldButtons = new ArrayList<>();
     private SwingView swingView;
@@ -83,11 +83,11 @@ public class InnerMainPanel {
     public JPanel createGodPanel(List<GodCard> godsInGame) {
 
         godPanel = new JPanel();
-        godPanel.setLayout(new GridLayout(3,1));
+        godPanel.setLayout(new GridLayout(godsInGame.size(),1));
 
         for(int i = 0; i<godsInGame.size(); i++){
             final int j = i + 1;
-            final JLabel playerText = new JLabel(new ImageIcon(new File("./src/main/images/godcards/" + godsInGame.get(i).name().toLowerCase() + ".png").getAbsolutePath()));
+            final JLabel playerText = new JLabel(new ImageIcon(new File("./src/main/images/godcards/" + godsInGame.get(i).name().toLowerCase() + "Panel.png").getAbsolutePath()));
             playerText.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
@@ -100,7 +100,7 @@ public class InnerMainPanel {
             });
             godPanel.add(playerText);
         }
-        if(godsInGame.size()==2){
+        /*if(godsInGame.size()==2){
             final JLabel playerText = new JLabel(Pics.NOTHIRDPLAYER.getImageIcon());
             playerText.addMouseListener(new MouseAdapter() {
             @Override
@@ -113,7 +113,7 @@ public class InnerMainPanel {
             }
             });
             godPanel.add(playerText);
-        }
+        }*/
 
         return godPanel;
     }

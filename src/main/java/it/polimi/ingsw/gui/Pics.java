@@ -56,8 +56,11 @@ public enum Pics {
 
         // GODCARDS
         APOLLO("./src/main/images/godcards/" + "apollo.png"),  //0
+        APOLLOPANEL("./src/main/images/godcards/" + "apolloPanel.png"),  //0
         ARTEMIS("./src/main/images/godcards/" + "artemis.png"),   //1
+        ARTEMISPANEL("./src/main/images/godcards/" + "artemisPanel.png"),   //1
         ATHENA("./src/main/images/godcards/" + "athena.png"),  //2
+        ATHENAPANEL("./src/main/images/godcards/" + "athenaPanel.png"),  //2
         ATLAS("./src/main/images/godcards/" + "atlas.png"),  //3
         CHRONUS("./src/main/images/godcards/" + "chronus.png"), //4
         DEMETER("./src/main/images/godcards/" + "demeter.png"),  //5
@@ -104,6 +107,7 @@ public enum Pics {
         ASKFORPROMETHEUSPOWER("./src/main/images/utils/" + "prometheus.png"),
 
         // MESSAGES
+        WELCOMEMESSAGE("./src/main/images/messages/" + "welcomeMessage.png"),
         ASK_FOR_BUILD("./src/main/images/messages/" + "ASK_FOR_BUILD.png"),
         ASK_FOR_SELECT_TOKEN("./src/main/images/messages/" + "ASK_FOR_SELECT_TOKEN.png"),
         ASK_FOR_WHERE_TO_MOVE("./src/main/images/messages/" + "ASK_FOR_WHERE_TO_MOVE.png"),
@@ -111,6 +115,7 @@ public enum Pics {
         NOT_YOUR_TURN("./src/main/images/messages/" + "NOT_YOUR_TURN.png"),
 
         // BACKGROUNDS
+        BLACKBG("./src/main/images/backgrounds/" + "blackBg.png"),
         DIALOGBG("./src/main/images/backgrounds/" + "dialogBg.png"),
         MAINBG("./src/main/images/backgrounds/" + "mainBg.png"),
         COLUMNS("./src/main/images/backgrounds/" + "columns.png"),
