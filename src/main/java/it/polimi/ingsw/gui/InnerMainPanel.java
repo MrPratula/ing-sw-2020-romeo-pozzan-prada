@@ -88,6 +88,9 @@ public class InnerMainPanel {
         for(int i = 0; i<godsInGame.size(); i++){
             final int j = i + 1;
             final JLabel playerText = new JLabel(new ImageIcon(new File("./src/main/images/godcards/" + godsInGame.get(i).name().toLowerCase() + "Panel.png").getAbsolutePath()));
+
+            //final GodLabel playerText = new GodLabel();
+            //playerText.changeGodLabel(new ImageIcon(new File("./src/main/images/godcards/" + godsInGame.get(i).name().toLowerCase() + "Panel.png").getAbsolutePath()));
             playerText.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
@@ -122,4 +125,7 @@ public class InnerMainPanel {
         return battlefieldGUI;
     }
 
+    public JLabel getMessageLabel() {
+        return messageLabel;
+    }
 }

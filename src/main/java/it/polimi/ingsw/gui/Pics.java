@@ -62,16 +62,27 @@ public enum Pics {
         ATHENA("./src/main/images/godcards/" + "athena.png"),  //2
         ATHENAPANEL("./src/main/images/godcards/" + "athenaPanel.png"),  //2
         ATLAS("./src/main/images/godcards/" + "atlas.png"),  //3
+        ATLASPANEL("./src/main/images/godcards/" + "atlasPanel.png"),  //3
         CHRONUS("./src/main/images/godcards/" + "chronus.png"), //4
+        CHRONUSPANEL("./src/main/images/godcards/" + "chronusPanel.png"), //4
         DEMETER("./src/main/images/godcards/" + "demeter.png"),  //5
+        DEMETERPANEL("./src/main/images/godcards/" + "demeterPanel.png"),  //5
         HEPHAESTUS("./src/main/images/godcards/" + "hephaestus.png"), //6
+        HEPHAESTUSPANEL("./src/main/images/godcards/" + "hephaestusPanel.png"), //6
         HERA("./src/main/images/godcards/" + "hera.png"), //7
+        HERAPANEL("./src/main/images/godcards/" + "heraPanel.png"), //7
         HESTIA("./src/main/images/godcards/" + "hestia.png"),  //8
+        HESTIAPANEL("./src/main/images/godcards/" + "hestiaPanel.png"),  //8
         LIMUS("./src/main/images/godcards/" + "limus.png"),   //9
+        LIMUSPANEL("./src/main/images/godcards/" + "limusPanel.png"),   //9
         MINOTAUR("./src/main/images/godcards/" + "minotaur.png"),  //10
+        MINOTAURPANEL("./src/main/images/godcards/" + "minotaurPanel.png"),  //10
         PAN("./src/main/images/godcards/" + "pan.png"),  //11
+        PANPANEL("./src/main/images/godcards/" + "panPanel.png"),  //11
         PROMETHEUS("./src/main/images/godcards/" + "prometheus.png"), //12
+        PROMETHEUSPANEL("./src/main/images/godcards/" + "prometheusPanel.png"), //12
         ZEUS("./src/main/images/godcards/" + "zeus.png"), //13
+        ZEUSPANEL("./src/main/images/godcards/" + "zeusPanel.png"), //13
         APOLLOTEXT("./src/main/images/godcards/" + "apolloText.png"),  //+ 0
         ARTEMISTEXT("./src/main/images/godcards/" + "artemisText.png"),   //1
         ATHENATEXT("./src/main/images/godcards/" + "athenaText.png"),  //2

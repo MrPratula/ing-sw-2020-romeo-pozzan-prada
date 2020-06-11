@@ -1,9 +1,9 @@
 package it.polimi.ingsw.gui;
 
 import it.polimi.ingsw.cli.Cell;
-
 import javax.swing.*;
 import java.awt.*;
+
 
 public class CellButton extends JButton {
 
@@ -19,18 +19,16 @@ public class CellButton extends JButton {
     }
 
 
+    public void changeImageIcon(ImageIcon img) {
+        this.img = img;
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(img.getImage(),0,0,this.getWidth(), this.getHeight(),this);
         repaint();
         revalidate();
-    }
-
-
-    public void changeImageIcon(ImageIcon img) {
-        this.img = img;
-        //paintComponent(g);
     }
 
 }

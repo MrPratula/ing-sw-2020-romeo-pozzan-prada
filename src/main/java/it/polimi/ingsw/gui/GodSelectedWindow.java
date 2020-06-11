@@ -2,7 +2,10 @@ package it.polimi.ingsw.gui;
 
 import it.polimi.ingsw.cli.GodCard;
 import javax.swing.*;
+import javax.swing.plaf.BorderUIResource;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +33,17 @@ public class GodSelectedWindow extends JFrame{
             selectedGodsPanel.add(playerText);
         }
 
+        ConfirmButton c = new ConfirmButton("OK");
+        c.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GodSelectedWindow.this.dispose();
+            }
+        });
+
         add(selectedGodsPanel);
+        add(c, BorderLayout.PAGE_END);
+
         pack();
         setVisible(true);
     }
@@ -45,7 +58,7 @@ public class GodSelectedWindow extends JFrame{
     private List<GodCard> recognizeGodInGame(String godCardsForTheGame) {
 
         List<GodCard> godsSeparated = new ArrayList<>();
-        String[] godNamesInGame = godCardsForTheGame.split(" ");
+        String[] godNamesInGame = godCardsForTheGame.split(",");
         GodCard[] allGods = GodCard.values();
         int i = 0, j = 0;
         while(i < godNamesInGame.length){

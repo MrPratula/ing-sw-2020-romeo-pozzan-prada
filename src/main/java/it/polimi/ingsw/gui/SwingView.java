@@ -225,6 +225,7 @@ public class SwingView extends View {
                     //se non è null quindi se ha già posizionato i token, si aggiorna la board
                     if(this.gameFrame != null){
                         displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
+                        this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(Pics.PLACE_YOUR_TOKEN.getImageIcon());
                     }
                     //altrimenti crea la board così può vedere dove l'altro posiziona i token
                     //per fare una cosa fatta bene dobbiamo disabilitare i bottoni a questo player
