@@ -47,8 +47,8 @@ public class AskToUseTheGodsPower extends JDialog{
                     view.setWantToUsePower(true);
                     view.displayGui(view.getBattlefieldGUI(),serverResponse.getPack().getModelCopy(), null);
                     dispose();
-                } catch (CellOutOfBattlefieldException cellOutOfBattlefieldException) {
-                    cellOutOfBattlefieldException.printStackTrace();
+                } catch (CellOutOfBattlefieldException ex) {
+                    ex.printStackTrace();
                 }
                 //new GameFrame(serverResponse,view);
                 //dispose(mainframe.getInnerMainPanel().getBattlefieldGUI());
@@ -61,8 +61,8 @@ public class AskToUseTheGodsPower extends JDialog{
                     view.setWantToUsePower(false);
                     view.displayGui(view.getBattlefieldGUI(),serverResponse.getPack().getModelCopy(), null);
                     dispose();
-                } catch (CellOutOfBattlefieldException cellOutOfBattlefieldException) {
-                    cellOutOfBattlefieldException.printStackTrace();
+                } catch (CellOutOfBattlefieldException ex) {
+                    ex.printStackTrace();
                 }
             }
         });

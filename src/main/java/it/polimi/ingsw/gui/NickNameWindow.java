@@ -63,8 +63,8 @@ public class NickNameWindow extends JDialog{
                         //System.out.println("Nome: " + nicknameTextField.getText());
                         view.notifyClient(playerAction);
                         NickNameWindow.this.dispose();
-                    } catch (CellOutOfBattlefieldException | WrongNumberPlayerException | ImpossibleTurnException | IOException | CellHeightException | ReachHeightLimitException cellOutOfBattlefieldException) {
-                        cellOutOfBattlefieldException.printStackTrace();
+                    } catch (CellOutOfBattlefieldException | WrongNumberPlayerException | ImpossibleTurnException | IOException | CellHeightException | ReachHeightLimitException ex) {
+                        ex.printStackTrace();
                     }
                 }
                 else {

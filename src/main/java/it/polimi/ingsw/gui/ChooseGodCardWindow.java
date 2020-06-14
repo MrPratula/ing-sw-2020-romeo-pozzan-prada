@@ -115,8 +115,8 @@ public class ChooseGodCardWindow extends JDialog {
                     JOptionPane.showMessageDialog(new JFrame(),new ImageIcon(new File(startPath +((GodButton) e.getSource()).getGodCard().name().toLowerCase()+ ".png").getAbsolutePath()),"You Selected: "+((GodButton) e.getSource()).getGodCard().name(), JOptionPane.INFORMATION_MESSAGE,Pics.DONE.getImageIcon());
                     swingView.notifyClient(playerAction);
                     mainFrame.dispose();
-                } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException cellOutOfBattlefieldException) {
-                    cellOutOfBattlefieldException.printStackTrace();
+                } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException ex) {
+                    ex.printStackTrace();
                 }
                 dispose();
             }
@@ -131,8 +131,8 @@ public class ChooseGodCardWindow extends JDialog {
                     JOptionPane.showMessageDialog(new JFrame(),new ImageIcon(new File(startPath +((GodButton) e.getSource()).getGodCard().name().toLowerCase()+ ".png").getAbsolutePath()),"You Selected: "+((GodButton) e.getSource()).getGodCard().name(), JOptionPane.INFORMATION_MESSAGE,Pics.DONE.getImageIcon());
                     swingView.notifyClient(playerAction);
                     mainFrame.dispose();
-                } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException cellOutOfBattlefieldException) {
-                    cellOutOfBattlefieldException.printStackTrace();
+                } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException ex) {
+                    ex.printStackTrace();
                 }
                 dispose();
             }
@@ -149,8 +149,8 @@ public class ChooseGodCardWindow extends JDialog {
                         JOptionPane.showMessageDialog(new JFrame(), new ImageIcon(new File(startPath + ((GodButton) e.getSource()).getGodCard().name().toLowerCase() + ".png").getAbsolutePath()), "You Selected: " + ((GodButton) e.getSource()).getGodCard().name(), JOptionPane.INFORMATION_MESSAGE, Pics.DONE.getImageIcon());
                         swingView.notifyClient(playerAction);
                         mainFrame.dispose();
-                    } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException cellOutOfBattlefieldException) {
-                        cellOutOfBattlefieldException.printStackTrace();
+                    } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException ex) {
+                        ex.printStackTrace();
                     }
                     dispose();
                 }

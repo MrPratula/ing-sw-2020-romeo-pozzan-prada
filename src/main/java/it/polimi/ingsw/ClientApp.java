@@ -24,7 +24,7 @@ public class ClientApp {
 
         //todo: non cancellare
 
-       // new GodSelectedWindow("minotaur prometheus");
+        //new GodSelectedWindow("minotaur,prometheus");
 
 
         //JOptionPane.showMessageDialog(new JFrame(),new Pack(Action.SELECT_YOUR_GOD_CARD).getAction().getName().toUpperCase(),"AGAIN YOUR TURN, ", JOptionPane.WARNING_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
