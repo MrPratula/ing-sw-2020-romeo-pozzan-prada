@@ -760,9 +760,9 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         }
 
         // Check for a win move
-        if (this.checkWin(selectedToken, myGodCard, enemyGodCards)) {
+        if (checkWin(selectedToken, myGodCard, enemyGodCards)) {
             String winner = playerAction.getPlayer().getUsername();
-            gameOver(winner);
+            notify (gameOver(winner));
             return;
         }
 
@@ -776,7 +776,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             else if(allPlayers.size() == 2) {
                 updateTurn();
                 String winner = getTurn().toString();
-                gameOver(winner);
+                notify(gameOver(winner));
             }
         }
         else {
@@ -1001,7 +1001,8 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                     }
                 }
                 assert winner != null;
-                gameOver(winner);
+                notify(gameOver(winner));
+                return;
             }
         }
 
