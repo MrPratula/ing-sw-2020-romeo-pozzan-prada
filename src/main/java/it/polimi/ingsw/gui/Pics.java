@@ -124,6 +124,7 @@ public enum Pics {
         ASK_FOR_WHERE_TO_MOVE("./src/main/images/messages/" + "ASK_FOR_WHERE_TO_MOVE.png"),
         PLACE_YOUR_TOKEN("./src/main/images/messages/" + "PLACE_YOUR_TOKEN.png"),
         NOT_YOUR_TURN("./src/main/images/messages/" + "NOT_YOUR_TURN.png"),
+        GAMEENDED("./src/main/images/messages/" + "gameover.png"),
 
         // BACKGROUNDS
         DIALOGBG("./src/main/images/backgrounds/" + "dialogBg.png"),

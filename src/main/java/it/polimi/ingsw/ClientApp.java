@@ -21,8 +21,11 @@ public class ClientApp {
 
         Client client = new Client("127.0.0.1", 12345);
 
-
-        //todo: non cancellare
+        /* //todo FIXARE ALIGNMENT LABEL
+        Pack pack = new Pack(Action.CHOOSE_GOD_CARD_TO_PLAY);
+        pack.setMessageInTurn("fineeeeeeeeee");
+        new GameOverDialog(pack);
+*/
 
         //new GodSelectedWindow("minotaur,prometheus");
 

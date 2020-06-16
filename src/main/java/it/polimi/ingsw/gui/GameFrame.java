@@ -50,12 +50,6 @@ public class GameFrame extends JFrame {
         this.serverResponse = serverResponse;
         this.godsInGame = serverResponse.getPack().getGodCards();
 
-        //to be deleted
-        /*      this.allPlayers = serverResponse.getPack().getModelCopy().getAllPlayers();
-        this.battlefield = serverResponse.getPack().getModelCopy().getBattlefield();
-        this.power = wantPower;
-        */
-
         innerMainPanel = new InnerMainPanel(swingView);
 
         JPanel battlefieldPanel = innerMainPanel.createBattlefieldPanel();
@@ -69,53 +63,6 @@ public class GameFrame extends JFrame {
     }
 
 
-    /*
-     * Updates the GUI updating che changed cells
-     *
-     * TODO : DELETE THIS
-     *
-     * @param serverResponse response from the server
-     * @param wantPower boolean autoexplcative
-     * @throws CellOutOfBattlefieldException
-     */
-    /*    public void updateGui(ServerResponse serverResponse , boolean wantPower) throws CellOutOfBattlefieldException {
-
-        this.godsInGame = serverResponse.getPack().getGodCards();
-        this.allPlayers = serverResponse.getPack().getModelCopy().getAllPlayers();
-        this.battlefield = serverResponse.getPack().getModelCopy().getBattlefield();
-        this.power = wantPower;
-
-        // Compare every cell to update new modified ones
-
-        for(int i=0; i<5; i++) {
-            for (int j = 0; j < 5; j++) {
-
-                int height = battlefield.getCell(i,j).getHeight();
-                boolean dome = battlefield.getCell(i,j).getIsDome();
-
-                if(battlefield.getCell(i,j).getThereIsPlayer()){
-                    for (Player p : allPlayers) {
-                        if (p.getToken1() != null && p.getToken1().getTokenPosition()!=null) {
-                            if (p.getToken1().getTokenPosition().equals(battlefield.getCell(i,j))) {
-                                setIconCell(battlefieldGUI[i][j],height,dome,p);
-                            }
-                        }
-                        if (p.getToken2() != null && p.getToken2().getTokenPosition()!=null) {
-                            if (p.getToken2().getTokenPosition().equals(battlefield.getCell(i,j))) {
-                                setIconCell(battlefieldGUI[i][j],height,dome,p);
-                            }
-                        }
-                    }
-                }
-                else{
-                    setIconCell(battlefieldGUI[i][j],height,dome, null);
-                }
-                setRolloverIconCell(battlefieldGUI[i][j],height,dome);
-
-            }
-        }
-    }
-*/
 
     /*     GETTER      */
 

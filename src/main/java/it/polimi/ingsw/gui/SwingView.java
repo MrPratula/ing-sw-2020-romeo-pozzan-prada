@@ -295,8 +295,12 @@ public class SwingView extends View {
             case GAME_OVER:{
                 Pack pack = serverResponse.getPack();
                 JOptionPane.showMessageDialog(new JFrame(), pack.getAction().getName().toUpperCase(), "GAME OVER ", JOptionPane.WARNING_MESSAGE, Pics.GAMEOVERICON.getImageIcon());
+
+                new GameOverDialog(pack);
+
                 System.out.print(serverResponse.getPack().getAction().getInfo());
                 System.out.println(pack.getMessageInTurn());
+
                 break;
             }
 
@@ -326,7 +330,7 @@ public class SwingView extends View {
                 Pack pack = serverResponse.getPack();
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
-                    displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
+                    displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), pack.getValidMoves()); //edit
                     this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(Pics.NOT_YOUR_TURN.getImageIcon());
                     //JOptionPane.showMessageDialog(new JFrame(), pack.getMessageOpponents(), "NOT YOUR TURN",JOptionPane.INFORMATION_MESSAGE, Pics.ERRORICON.getImageIcon());
                 }

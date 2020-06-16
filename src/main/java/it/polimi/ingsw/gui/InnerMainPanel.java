@@ -45,32 +45,6 @@ public class InnerMainPanel {
                 battlefieldButtons.add(bh);
                 battlefieldGUI[i][j].addActionListener(bh);
                 battlefieldPanel.add(battlefieldGUI[i][j]);
-
-                //to be deleted
-                 /*
-                int height = battlefield.getCell(i,j).getHeight();
-                boolean dome = battlefield.getCell(i,j).getIsDome();
-
-                if(battlefield.getCell(i,j).getThereIsPlayer()){
-                    for (Player p : allPlayers) {
-                        if (p.getToken1() != null && p.getToken1().getTokenPosition()!=null) {
-                            if (p.getToken1().getTokenPosition().equals(battlefield.getCell(i,j))) {
-                                setIconCell(battlefieldGUI[i][j],height,dome,p);
-                            }
-                        }
-                        if (p.getToken2() != null && p.getToken2().getTokenPosition()!=null) {
-                            if (p.getToken2().getTokenPosition().equals(battlefield.getCell(i,j))) {
-                                setIconCell(battlefieldGUI[i][j],height,dome,p);
-                            }
-                        }
-                    }
-                }
-                else{
-                    setIconCell(battlefieldGUI[i][j],height,dome, null);
-                }
-                setRolloverIconCell(battlefieldGUI[i][j],height,dome);
-*/
-
             }
         }
         return battlefieldPanel;
@@ -80,7 +54,7 @@ public class InnerMainPanel {
         return messageLabel;
     }
 
-    public JPanel createGodPanel(List<GodCard> godsInGame) {
+    public JPanel createGodPanel(final List<GodCard> godsInGame) {
 
         godPanel = new JPanel();
         godPanel.setLayout(new GridLayout(godsInGame.size(),1));
@@ -91,10 +65,13 @@ public class InnerMainPanel {
 
             //final GodLabel playerText = new GodLabel();
             //playerText.changeGodLabel(new ImageIcon(new File("./src/main/images/godcards/" + godsInGame.get(i).name().toLowerCase() + "Panel.png").getAbsolutePath()));
+            final int finalI = i;
             playerText.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
-                    playerText.setText("Player"+j);
+                    if(swingView.getPlayer().getMyGodCard().equals(godsInGame.get(finalI)))
+                        playerText.setText("Player"+j+" (you)"   /*swingView.getPlayer().getUsername()*/); //todo FIXARE NOMI UGUALI edit: fixato mettendo YOU
+                    else playerText.setText("Player"+j   /*swingView.getPlayer().getUsername()*/);
                 }
                 @Override
                 public void mouseExited(MouseEvent e) {
