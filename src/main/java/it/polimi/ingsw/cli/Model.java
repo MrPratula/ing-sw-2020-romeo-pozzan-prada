@@ -474,7 +474,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
         ServerResponse serverResponse;
 
-        if (validMoves == null) {
+        if (validMoves.isEmpty()) {
             serverResponse = checkLoseForMove(otherToken, enemyTokens, myGodCard, enemyGodCards);
         } else {
 
@@ -504,15 +504,49 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         // Set default value
         didPrometheusUsePower = false;
 
-        Pack pack = new Pack(Action.ASK_FOR_PROMETHEUS_POWER);
-        pack.setPlayer(getPlayerInTurn());
-        pack.setModelCopy(getCopy());
-        pack.setGodCards(getGodCards(allPlayers));
-        pack.setMessageOpponents("Another player is choosing if use Prometheus power or not...");
+        List<Player> opponents = getOpponents(getPlayerInTurn());
+        List<Token> enemyTokens = getTokens(opponents);
 
-        prometheusToken = parseToken(playerAction.getTokenMain());
+        GodCard myGodCard = getPlayerInTurn().getMyGodCard();
+        List<GodCard> enemyGodCards = getGodCards(opponents);
 
-        ServerResponse serverResponse = new ServerResponse(getTurn(), pack);
+        Token selectedToken, otherToken = null;
+        int selectedTokenId;
+
+        selectedTokenId = playerAction.getTokenMain();
+        selectedToken = parseToken(selectedTokenId);
+
+        try {
+            if (getPlayerInTurn().getToken1().getId() == selectedTokenId) {
+                otherToken = getPlayerInTurn().getToken2();
+            }
+            if (getPlayerInTurn().getToken2().getId() == selectedTokenId) {
+                otherToken = getPlayerInTurn().getToken1();
+            }
+        } catch (NullPointerException e){
+            otherToken = null;
+        }
+
+        List<Cell> validMoves;
+        validMoves = computeValidMoves(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, getBattlefield());
+
+        ServerResponse serverResponse;
+
+        if (validMoves == null) {
+            serverResponse = checkLoseForMove(otherToken, enemyTokens, myGodCard, enemyGodCards);
+        } else {
+
+            Pack pack = new Pack(Action.ASK_FOR_PROMETHEUS_POWER);
+            pack.setPlayer(getPlayerInTurn());
+            pack.setModelCopy(getCopy());
+            pack.setGodCards(getGodCards(allPlayers));
+            pack.setMessageOpponents("Another player is choosing if use Prometheus power or not...");
+
+            prometheusToken = parseToken(playerAction.getTokenMain());
+
+            serverResponse = new ServerResponse(getTurn(), pack);
+        }
+
         lastSentServerResponse = serverResponse;
         notify(serverResponse);
     }
@@ -693,7 +727,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             validMoves2 = computeValidMoves(otherToken, null, enemyTokens, myGodCard, enemyGodCards, battlefield);
 
             // If i can not move it
-            if (validMoves2 == null) {
+            if (validMoves2.isEmpty()) {
                 if (allPlayers.size() == 2) {
                     // If there are 2 players
                     return gameOver(getNextPlayer().getUsername());
@@ -706,8 +740,11 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         }
 
         Pack pack = new Pack(Action.TOKEN_NOT_MOVABLE);
+
         pack.setModelCopy(getCopy());
         pack.setMessageOpponents(getPlayerInTurn().getUsername()+" can not move the token he selected...");
+        pack.setGodCards(getGodCards(allPlayers));
+        pack.setPlayer(getPlayerInTurn());
 
         return new ServerResponse(getTurn(), pack);
     }
@@ -769,13 +806,13 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         // If nobody has won then i aks for where to build
         List<Cell> validBuilds = validBuilds(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, battlefield);
 
-        if (validBuilds == null) {
+        if (validBuilds.isEmpty()) {
             if (allPlayers.size() == 3) {
                 playerLost(playerAction.getPlayer());
             }
             else if(allPlayers.size() == 2) {
                 updateTurn();
-                String winner = getTurn().toString();
+                String winner = getPlayerInTurn().getUsername();
                 notify(gameOver(winner));
             }
         }

@@ -9,8 +9,8 @@ import java.io.*;
 
 public class RemoteView extends Observable<PlayerAction> implements Observer<ServerResponse> {
 
-    private Player player;
-    private Connection connection;
+    private final Player player;
+    private final Connection connection;
     private Server server;
 
 

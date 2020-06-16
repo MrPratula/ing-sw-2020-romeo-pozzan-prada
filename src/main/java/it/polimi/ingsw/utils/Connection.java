@@ -1,6 +1,5 @@
 package it.polimi.ingsw.utils;
 
-import it.polimi.ingsw.cli.Player;
 import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.server.Server;
 
@@ -10,10 +9,10 @@ import java.util.List;
 
 public class Connection extends Observable<PlayerAction> implements Runnable{
 
-    private Socket socket;
+    private final Socket socket;
     private ObjectOutputStream objectOutputStream;
     private ObjectInputStream objectInputStream;
-    private Server server;
+    private final Server server;
     private String name;
 
     private boolean active = true;
@@ -55,7 +54,7 @@ public class Connection extends Observable<PlayerAction> implements Runnable{
                 try {
                     send(serverResponse);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    System.err.println(name.toUpperCase()+" can't send object into socket!");
                 }
             }
         }).start();
@@ -77,11 +76,11 @@ public class Connection extends Observable<PlayerAction> implements Runnable{
      * Call the closeConnection
      * and deregister the connection from the server.
      */
-    private void close() throws IOException {
+    private void close() {
 
         closeConnection();
 
-        System.out.println("De-registering client...");
+        System.out.println("De-registering "+name.toUpperCase()+"...");
         server.deregisterConnection(this);
         System.out.println("Done!");
     }
@@ -99,17 +98,21 @@ public class Connection extends Observable<PlayerAction> implements Runnable{
         try {
             socket.close();
         } catch (IOException ioException) {
-            System.err.println(ioException.getMessage());
+            System.err.println(name.toUpperCase()+" can't close his connection!");
         }
         active = false;
     }
 
 
+    /**
+     * Used into the server during the init first player to ask him how much player he want to play with.
+     * @return the object received from socket if it is a playerAction.
+     */
     public PlayerAction listenSocket() {
         try {
             return (PlayerAction) objectInputStream.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            System.err.println(name.toUpperCase()+" can't read object from socket!");
             return null;
         }
     }
@@ -169,7 +172,6 @@ public class Connection extends Observable<PlayerAction> implements Runnable{
                 server.lobby(thisConnection, name);
             } catch (IOException e) {
                 System.err.println("Error in launch new thread into lobby");
-                e.printStackTrace();
             }
 
             // Start listening every request from the client
@@ -183,13 +185,9 @@ public class Connection extends Observable<PlayerAction> implements Runnable{
             }
 
         } catch(IOException | CellOutOfBattlefieldException | ImpossibleTurnException | ReachHeightLimitException | CellHeightException | WrongNumberPlayerException | ClassNotFoundException e){
-            System.err.println(e.getMessage());
+            System.err.println(name.toUpperCase()+" has disconnected!");
         } finally {
-            try {
-                close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            close();
         }
     }
 }

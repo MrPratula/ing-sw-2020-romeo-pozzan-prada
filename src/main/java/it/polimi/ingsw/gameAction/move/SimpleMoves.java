@@ -43,7 +43,7 @@ public class SimpleMoves implements MoveBehavior {
 
         int provX, provY;
 
-        // Cicle around my token position to get the 8 cell in which i can move
+        // Cycle around my token position to get the 8 cell in which i can move
         for (int i=-1; i<2; i++) {
             provX = selectedToken.getTokenPosition().getPosX() + i;
             for (int j = -1; j < 2; j++) {

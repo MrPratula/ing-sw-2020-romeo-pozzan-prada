@@ -341,33 +341,23 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                 }
                 else {
 
-                    boolean needToLoop = true;
-                    PlayerAction playerAction = null;
-                    System.out.print(serverResponse.getPack().getAction().getInfo());
+                    PlayerAction playerAction;
+                    System.out.println(serverResponse.getPack().getAction().getInfo());
 
-                    while (needToLoop){
-                        try {
+                    try {
 
-                            Scanner scanner = new Scanner(System.in);
-                            String answer = scanner.nextLine().toUpperCase();
+                        boolean wantToUsePower = askYesOrNot();
 
-                            if (answer.equals("YES")) {
-                                playerAction = new PlayerAction(Action.PROMETHEUS_ANSWER, player, null, null, 0, 0, null, null, true, null);
-                                needToLoop = false;
-                            }
-                            else if (answer.equals("NO")) {
-                                playerAction = new PlayerAction(Action.PROMETHEUS_ANSWER, player, null, null, 0, 0, null, null, false, null);
-                                needToLoop = false;
-                            }
-                            else {
-                                System.out.println("Please write yes or no...");
-                            }
+                        if (wantToUsePower)
+                            playerAction = new PlayerAction(Action.PROMETHEUS_ANSWER, player, null, null, 0, 0, null, null, true, null);
 
-                        }catch (Exception e){
-                            System.out.println("Please write yes or no...");
-                            needToLoop = true;
-                        }
+                        else
+                            playerAction = new PlayerAction(Action.PROMETHEUS_ANSWER, player, null, null, 0, 0, null, null, false, null);
+
+                    }catch (Exception e){
+                        playerAction = new PlayerAction(Action.PROMETHEUS_ANSWER, player, null, null, 0, 0, null, null, false, null);
                     }
+
                     notifyClient(playerAction);
                 }
                 break;
@@ -397,9 +387,13 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
                             Cell selectedCell = getCell(inputs, pack.getModelCopy().getBattlefield());
 
-                            if (selectedCell != null){
+                            if (selectedCell != null && cellIsInValidCells(selectedCell, pack.getValidMoves())){
+
                                 playerAction = new PlayerAction(Action.WHERE_TO_MOVE_SELECTED, player, null, null, savedToken, 0, selectedCell, null, false, null);
                                 needToLoop = false;
+                            }
+                            else {
+                                System.out.println("That cell is not a valid move!");
                             }
                         } catch (Exception e){
                             System.out.println("Your input wasn't correct!");
@@ -446,7 +440,14 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                                 try {
                                     String[] inputs = getUserInput();
                                     selectedCell = getCell(inputs, pack.getModelCopy().getBattlefield());
-                                    needToLoop = false;
+
+                                    if (selectedCell != null && cellIsInValidCells(selectedCell, pack.getValidBuilds())){
+                                        needToLoop = false;
+                                    }
+                                    else {
+                                        System.out.println("That cell is not a valid build!");
+                                    }
+
                                 } catch (Exception e) {
                                     printCLI(pack.getModelCopy(), pack.getValidBuilds());
                                     System.out.println("Your input wasn't correct!");
@@ -469,9 +470,17 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                                     }
 
                                     otherCell = getCell(inputs, pack.getModelCopy().getBattlefield());
-                                    if (!selectedCell.equals(otherCell)) {
-                                        needToLoop = false;
+
+                                    if (otherCell != null && cellIsInValidCells(otherCell, pack.getValidBuilds())){
+                                        if (!selectedCell.equals(otherCell))
+                                            needToLoop = false;
+                                        else
+                                            System.out.println("You can't choose the same cell!");
                                     }
+                                    else {
+                                        System.out.println("That cell is not a valid build!");
+                                    }
+
                                 } catch (Exception e) {
                                     printCLI(pack.getModelCopy(), pack.getValidBuilds());
                                     System.out.println("Your input wasn't correct!");
@@ -504,7 +513,14 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                                 try {
                                     String[] inputs = getUserInput();
                                     selectedCell = getCell(inputs, pack.getModelCopy().getBattlefield());
-                                    needToLoop = false;
+
+                                    if (selectedCell != null && cellIsInValidCells(selectedCell, pack.getValidBuilds())){
+                                        needToLoop = false;
+                                    }
+                                    else {
+                                        System.out.println("That cell is not a valid build!");
+                                    }
+
                                 } catch (Exception e) {
                                     printCLI(pack.getModelCopy(), pack.getValidBuilds());
                                     System.out.println("Your input wasn't correct!");
@@ -528,9 +544,16 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
                                     otherCell = getCell(inputs, pack.getModelCopy().getBattlefield());
 
-                                    if (notPerimeterCell(otherCell)) {
-                                        needToLoop = false;
+                                    if (otherCell != null && cellIsInValidCells(otherCell, pack.getValidBuilds())){
+                                        if (notPerimeterCell(otherCell))
+                                            needToLoop = false;
+                                        else
+                                            System.out.println("The second cell can't be on a perimeter space!");
                                     }
+                                    else {
+                                        System.out.println("That cell is not a valid build!");
+                                    }
+
                                 } catch (Exception e) {
                                     printCLI(pack.getModelCopy(), pack.getValidBuilds());
                                     System.out.println("Your input wasn't correct!");
@@ -569,9 +592,13 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
                                     selectedCell = getCell(inputs, pack.getModelCopy().getBattlefield());
 
-                                    if (selectedCell != null) {
+                                    if (selectedCell != null && cellIsInValidCells(selectedCell, pack.getValidBuilds())){
                                         needToLoop = false;
                                     }
+                                    else {
+                                        System.out.println("That cell is not a valid build!");
+                                    }
+
                                 } catch (Exception e) {
                                     System.out.println("Your input wasn't correct!");
                                 }
@@ -621,16 +648,21 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
                                     Cell selectedCell = getCell(inputs, pack.getModelCopy().getBattlefield());
 
-                                    if (selectedCell != null) {
-                                        playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, getPlayer(), null, null, savedToken, 0, selectedCell, null, false, null);
+                                    if (selectedCell != null && cellIsInValidCells(selectedCell, pack.getValidBuilds())){
                                         needToLoop = false;
+                                        playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, getPlayer(), null, null, savedToken, 0, selectedCell, null, false, null);
                                     }
+                                    else {
+                                        System.out.println("That cell is not a valid build!");
+                                    }
+
                                 } catch (Exception e) {
                                     System.out.println("Your input wasn't correct!");
                                 }
                             }
                             if (!player.getMyGodCard().equals(GodCard.PROMETHEUS))
                                 savedToken = 0;
+
                             notify(playerAction);
                         }
                     }
@@ -719,9 +751,36 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
     public boolean askYesOrNot(){
 
         Scanner in = new Scanner(System.in);
-        String input = in.nextLine().toUpperCase();
+        String input;
+
+        try {
+            input = in.nextLine().toUpperCase();
+        } catch (Exception e){
+            return false;
+        }
 
         return input.equals("Y") || input.equals("YE") || input.equals("YES") || input.equals("TRUE") || input.equals("SI");
+    }
+
+
+    /**
+     * Tells if a cell got from user is a valid cell.
+     * @param targetCell cell got from user.
+     * @param validCells valid cells got from model.
+     * @return true if target cell is in the valid cells.
+     */
+    public boolean cellIsInValidCells (Cell targetCell, List<Cell> validCells){
+
+        if(targetCell==null || validCells == null || validCells.isEmpty()){
+            return false;
+        }
+
+        for (Cell c: validCells){
+            if (c.equals(targetCell))
+                return true;
+        }
+
+        return false;
     }
 
 

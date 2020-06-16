@@ -1,12 +1,7 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.gui.ChooseGodCardToPlayWindow;
-import it.polimi.ingsw.gui.GameFrame;
-import it.polimi.ingsw.gui.SwingView;
 import it.polimi.ingsw.server.Server;
 
-
-import javax.swing.*;
 import java.io.IOException;
 
 
@@ -28,8 +23,7 @@ public class ServerApp
             server.run();
 
         } catch(IOException exception){
-            System.err.println("Impossible to start the server!");
-            System.err.println(exception.getMessage());
+            System.err.println("Error in server launch!");
         }
     }
 }

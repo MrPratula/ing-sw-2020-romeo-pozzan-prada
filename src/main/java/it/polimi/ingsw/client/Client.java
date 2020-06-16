@@ -59,6 +59,10 @@ public class Client extends Observable<ServerResponse> implements Observer<Playe
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
+
+
+
+                /*
                 while (isActive()){
                     try{
                         Object serverResponse = objectInputStream.readObject();
@@ -74,7 +78,11 @@ public class Client extends Observable<ServerResponse> implements Observer<Playe
                         e.printStackTrace();
                     }
                 }
-                /*
+
+
+                */
+
+
                 try {
 
                     while (isActive()) {
@@ -84,14 +92,14 @@ public class Client extends Observable<ServerResponse> implements Observer<Playe
                         if (serverResponse instanceof ServerResponse) {
                             notifyView((ServerResponse)serverResponse);
                         } else {
+                            System.err.println("Received a not ServerResponse object!");
                             throw new IllegalArgumentException();
                         }
                     }
                 } catch (IOException | ImpossibleTurnException | ClassNotFoundException | CellHeightException | WrongNumberPlayerException | ReachHeightLimitException | CellOutOfBattlefieldException e) {
-                    System.out.println("qualche tipo di errore strano mi fa chiudere il socket"+e.getMessage());
-                    e.printStackTrace();
+                    System.err.println("Connection closed, the server shouted down!");
                     setActive(false);
-                }*/
+                }
             }
         });
         thread.start();
@@ -164,7 +172,7 @@ public class Client extends Observable<ServerResponse> implements Observer<Playe
             t0.join();
 
         } catch (InterruptedException e) {
-            System.out.println("Connection closed from CLIENT side");
+            System.err.println("Connection closed from CLIENT side");
         } finally {
             objectInputStream.close();
             objectOutputStream.close();
