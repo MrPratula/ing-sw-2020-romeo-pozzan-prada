@@ -125,6 +125,7 @@ public enum Pics {
         PLACE_YOUR_TOKEN("./src/main/images/messages/" + "PLACE_YOUR_TOKEN.png"),
         NOT_YOUR_TURN("./src/main/images/messages/" + "NOT_YOUR_TURN.png"),
         GAMEENDED("./src/main/images/messages/" + "gameover.png"),
+        ANOTHERPLAYERISBUILDING("./src/main/images/messages/" + "another chosing build.png"),
 
         // BACKGROUNDS
         DIALOGBG("./src/main/images/backgrounds/" + "dialogBg.png"),

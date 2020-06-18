@@ -36,7 +36,6 @@ public class AskPrometheusPowerWindow extends JDialog {
         no_button.setContentAreaFilled(false);
         no_button.setBorderPainted(false);
 
-
         yes_button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

@@ -30,6 +30,7 @@ public class ButtonHandler implements ActionListener {
     public void actionPerformed(ActionEvent clickedButtonEvent) {
 
         currentServerResponse = swingView.getCurrentServerResponse();
+
         switch(currentServerResponse.getPack().getAction()) {
 
             case PLACE_YOUR_TOKEN:{
@@ -74,6 +75,9 @@ public class ButtonHandler implements ActionListener {
 
             case ASK_FOR_WHERE_TO_MOVE:{
                 Cell targetCell = swingView.getCell(cellButton.getCell().getPosX(), cellButton.getCell().getPosY(), currentServerResponse.getPack().getModelCopy().getBattlefield());
+
+
+
                 if(targetCell != null){
                     PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_MOVE_SELECTED, swingView.getPlayer(), null, null, swingView.GetSavedToken(), 0, targetCell, null, false, null);
                     try {
@@ -89,6 +93,7 @@ public class ButtonHandler implements ActionListener {
             }
 
             case ASK_FOR_BUILD: {
+
                 Cell targetCell = null;
                 power = swingView.wantToUsePower();
                 try {

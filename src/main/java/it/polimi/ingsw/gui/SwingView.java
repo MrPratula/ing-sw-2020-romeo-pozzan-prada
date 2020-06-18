@@ -283,9 +283,11 @@ public class SwingView extends View {
                 Pack pack = serverResponse.getPack();
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
-                    System.out.println(pack.getMessageOpponents());
+                    displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
                 }
                 else {
+                    this.player = pack.getPlayer();
+                    displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
                     new AskPrometheusPowerWindow(this);
                 }
                 break;
@@ -329,24 +331,51 @@ public class SwingView extends View {
             case ASK_FOR_BUILD:{
 
                 Pack pack = serverResponse.getPack();
+                this.player = pack.getPlayer();
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
                     displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null); //edit
-                    this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(Pics.NOT_YOUR_TURN.getImageIcon());
+                    this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(Pics.ANOTHERPLAYERISBUILDING.getImageIcon());
                     //JOptionPane.showMessageDialog(new JFrame(), pack.getMessageOpponents(), "NOT YOUR TURN",JOptionPane.INFORMATION_MESSAGE, Pics.ERRORICON.getImageIcon());
                 }
                 else{
                     this.player = pack.getPlayer();
-
-                    if(player.getMyGodCard().equals(GodCard.DEMETER) ||
-                       player.getMyGodCard().equals(GodCard.ARTEMIS) ||
-                       player.getMyGodCard().equals(GodCard.HESTIA)  ||
-                       player.getMyGodCard().equals(GodCard.HEPHAESTUS) ||
-                       player.getMyGodCard().equals(GodCard.ATLAS)    )
-                            new AskToUseTheGodsPower(this, serverResponse,this.gameFrame);
-
                     JOptionPane.showMessageDialog(new JFrame(), pack.getAction().getName().toUpperCase(), "YOUR TURN, "+getPlayer().getUsername(), JOptionPane.WARNING_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
-                    displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), pack.getValidBuilds());
+                    this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(Pics.ASK_FOR_BUILD.getImageIcon());
+
+                    switch(player.getMyGodCard()) {
+
+                        case DEMETER: {
+                            displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), pack.getValidBuilds());
+                            new AskToUseTheGodsPower(this, serverResponse, this.gameFrame);
+                            break;
+                        }
+                        case ARTEMIS: {
+                            displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), pack.getValidBuilds());
+                            new AskToUseTheGodsPower(this, serverResponse, this.gameFrame);
+                            break;
+                        }
+                        case HESTIA: {
+                            displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), pack.getValidBuilds());
+                            new AskToUseTheGodsPower(this, serverResponse, this.gameFrame);
+                            break;
+                        }
+                        case HEPHAESTUS:{
+                            displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), pack.getValidBuilds());
+                            new AskToUseTheGodsPower(this, serverResponse, this.gameFrame);
+                            break;
+                        }
+                        case ATLAS:{
+                            displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), pack.getValidBuilds());
+                            new AskToUseTheGodsPower(this, serverResponse, this.gameFrame);
+                            break;
+                        }
+                        default:
+                            displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), pack.getValidBuilds());
+                            break;
+
+                    }
+                    //displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), pack.getValidBuilds());
                     this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(Pics.ASK_FOR_BUILD.getImageIcon());
                 }
                 break;
