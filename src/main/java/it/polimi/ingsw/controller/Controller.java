@@ -1,6 +1,8 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.cli.*;
+import it.polimi.ingsw.model.Cell;
+import it.polimi.ingsw.model.GodCard;
+import it.polimi.ingsw.model.Model;
 import it.polimi.ingsw.utils.PlayerAction;
 import it.polimi.ingsw.utils.Observer;
 import java.io.IOException;

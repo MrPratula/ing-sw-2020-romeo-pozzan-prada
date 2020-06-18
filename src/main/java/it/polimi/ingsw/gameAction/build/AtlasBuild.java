@@ -1,7 +1,7 @@
 package it.polimi.ingsw.gameAction.build;
 
 import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
-import it.polimi.ingsw.cli.*;
+import it.polimi.ingsw.model.*;
 
 import java.util.List;
 

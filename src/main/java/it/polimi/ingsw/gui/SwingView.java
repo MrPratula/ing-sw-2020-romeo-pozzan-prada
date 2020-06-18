@@ -1,9 +1,8 @@
 package it.polimi.ingsw.gui;
 
 import it.polimi.ingsw.client.View;
-import it.polimi.ingsw.cli.Player;
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.controller.*;
-import it.polimi.ingsw.cli.*;
 import it.polimi.ingsw.utils.*;
 import it.polimi.ingsw.utils.Action;
 
@@ -220,6 +219,7 @@ public class SwingView extends View {
             case PLACE_YOUR_TOKEN:{
 
                 Pack pack = serverResponse.getPack();
+                List<Player> allPlayers = pack.getModelCopy().getAllPlayers();
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
                     //se non è null quindi se ha già posizionato i token, si aggiorna la board
@@ -294,12 +294,16 @@ public class SwingView extends View {
 
             case GAME_OVER:{
                 Pack pack = serverResponse.getPack();
-                JOptionPane.showMessageDialog(new JFrame(), pack.getAction().getName().toUpperCase(), "GAME OVER ", JOptionPane.WARNING_MESSAGE, Pics.GAMEOVERICON.getImageIcon());
 
-                new GameOverDialog(pack);
-
-                System.out.print(serverResponse.getPack().getAction().getInfo());
-                System.out.println(pack.getMessageInTurn());
+                if(!serverResponse.getTurn().equals(player.getTokenColor())){
+                    JOptionPane.showMessageDialog(new JFrame(),"" , "GAME OVER ", JOptionPane.WARNING_MESSAGE, Pics.GAMEOVERICON.getImageIcon());
+                    displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
+                    new GameOverDialog(pack,false);
+                }
+                else{
+                    displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
+                    new GameOverDialog(pack,true);
+                }
 
                 break;
             }
@@ -311,15 +315,12 @@ public class SwingView extends View {
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
                     this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(Pics.NOT_YOUR_TURN.getImageIcon());
-                    //JOptionPane.showMessageDialog(new JFrame(), pack.getMessageOpponents(), "NOT YOUR TURN",JOptionPane.INFORMATION_MESSAGE, Pics.ERRORICON.getImageIcon());
                     displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
                 }
                 else{
                     this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(Pics.ASK_FOR_WHERE_TO_MOVE.getImageIcon());
                     JOptionPane.showMessageDialog(new JFrame(), pack.getAction().getName().toUpperCase(), "YOUR TURN, "+getPlayer().getUsername(), JOptionPane.WARNING_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
-                    //this.gameFrame.updateGui(serverResponse, false);
                     displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), pack.getValidMoves());
-                    //new GameFrame(serverResponse,this,null);
                 }
                 break;
             }
@@ -330,16 +331,22 @@ public class SwingView extends View {
                 Pack pack = serverResponse.getPack();
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
-                    displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), pack.getValidMoves()); //edit
+                    displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null); //edit
                     this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(Pics.NOT_YOUR_TURN.getImageIcon());
                     //JOptionPane.showMessageDialog(new JFrame(), pack.getMessageOpponents(), "NOT YOUR TURN",JOptionPane.INFORMATION_MESSAGE, Pics.ERRORICON.getImageIcon());
                 }
                 else{
                     this.player = pack.getPlayer();
-                    //if(this.getPlayer().getMyGodCard().equals(GodCard.DEMETER|| l'altro')
+
+                    if(player.getMyGodCard().equals(GodCard.DEMETER) ||
+                       player.getMyGodCard().equals(GodCard.ARTEMIS) ||
+                       player.getMyGodCard().equals(GodCard.HESTIA)  ||
+                       player.getMyGodCard().equals(GodCard.HEPHAESTUS) ||
+                       player.getMyGodCard().equals(GodCard.ATLAS)    )
+                            new AskToUseTheGodsPower(this, serverResponse,this.gameFrame);
+
                     JOptionPane.showMessageDialog(new JFrame(), pack.getAction().getName().toUpperCase(), "YOUR TURN, "+getPlayer().getUsername(), JOptionPane.WARNING_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
-                    new AskToUseTheGodsPower(this, serverResponse,this.gameFrame);
-                    displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), pack.getValidMoves());
+                    displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), pack.getValidBuilds());
                     this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(Pics.ASK_FOR_BUILD.getImageIcon());
                 }
                 break;

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.controller.*;
-import it.polimi.ingsw.cli.*;
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.utils.*;
 
 import java.io.IOException;
@@ -677,10 +677,10 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                 System.out.println(pack.getMessageInTurn());
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
-                    System.out.println("YOU HAVE LOST");
+                    System.out.println("YOU LOST");
                 }
                 else {
-                    System.out.println("YOU HAVE WIN");
+                    System.out.println("YOU WON");
                 }
                 break;
             }

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gui;
 
-import it.polimi.ingsw.cli.GodCard;
+import it.polimi.ingsw.model.GodCard;
+import it.polimi.ingsw.model.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -54,13 +55,13 @@ public class InnerMainPanel {
         return messageLabel;
     }
 
-    public JPanel createGodPanel(final List<GodCard> godsInGame) {
+    public JPanel createGodPanel(final List<GodCard> godsInGame, final List<Player> allPlayers) {
 
         godPanel = new JPanel();
         godPanel.setLayout(new GridLayout(godsInGame.size(),1));
 
         for(int i = 0; i<godsInGame.size(); i++){
-            final int j = i + 1;
+
             final JLabel playerText = new JLabel(new ImageIcon(new File("./src/main/images/godcards/" + godsInGame.get(i).name().toLowerCase() + "Panel.png").getAbsolutePath()));
 
             //final GodLabel playerText = new GodLabel();
@@ -69,9 +70,7 @@ public class InnerMainPanel {
             playerText.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
-                    if(swingView.getPlayer().getMyGodCard().equals(godsInGame.get(finalI)))
-                        playerText.setText("Player"+j+" (you)"   /*swingView.getPlayer().getUsername()*/); //todo FIXARE NOMI UGUALI edit: fixato mettendo YOU
-                    else playerText.setText("Player"+j   /*swingView.getPlayer().getUsername()*/);
+                        playerText.setText("Player " + allPlayers.get(finalI).getTokenColor().name() + " - " + allPlayers.get(finalI).getUsername().toUpperCase() );
                 }
                 @Override
                 public void mouseExited(MouseEvent e) {
@@ -80,20 +79,6 @@ public class InnerMainPanel {
             });
             godPanel.add(playerText);
         }
-        /*if(godsInGame.size()==2){
-            final JLabel playerText = new JLabel(Pics.NOTHIRDPLAYER.getImageIcon());
-            playerText.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                playerText.setText("No Player");
-            }
-            @Override
-            public void mouseExited(MouseEvent e) {
-                playerText.setText(" ");
-            }
-            });
-            godPanel.add(playerText);
-        }*/
 
         return godPanel;
     }

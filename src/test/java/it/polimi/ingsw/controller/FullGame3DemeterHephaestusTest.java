@@ -1,7 +1,7 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.cli.*;
 import it.polimi.ingsw.client.View;
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.PlayerAction;
 import org.junit.jupiter.api.BeforeEach;

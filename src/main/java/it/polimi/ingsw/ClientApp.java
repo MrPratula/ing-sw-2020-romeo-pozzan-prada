@@ -1,19 +1,10 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.cli.GodCard;
-import it.polimi.ingsw.cli.TokenColor;
 import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
-import it.polimi.ingsw.gui.*;
-import it.polimi.ingsw.utils.Action;
-import it.polimi.ingsw.utils.Pack;
-import it.polimi.ingsw.utils.ServerResponse;
+import it.polimi.ingsw.model.TokenColor;
 
-import javax.swing.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class ClientApp {
 

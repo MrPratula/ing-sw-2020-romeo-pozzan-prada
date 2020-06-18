@@ -1,4 +1,4 @@
-package it.polimi.ingsw.cli;
+package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.CellHeightException;
 import it.polimi.ingsw.controller.ReachHeightLimitException;

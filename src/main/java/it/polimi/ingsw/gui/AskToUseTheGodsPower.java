@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 
 public class AskToUseTheGodsPower extends JDialog{
 
-    private final ServerResponse serverResponse;
     private final SwingView view;
     private JFrame mainframe;
 
@@ -21,7 +20,6 @@ public class AskToUseTheGodsPower extends JDialog{
      */
     public AskToUseTheGodsPower(SwingView swingView, final ServerResponse serverResponse, final JFrame mainframe){
 
-        this.serverResponse = serverResponse;
         this.view = swingView;
         this.mainframe = mainframe;
 

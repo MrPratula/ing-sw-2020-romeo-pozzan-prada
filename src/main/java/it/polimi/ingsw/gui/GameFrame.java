@@ -1,11 +1,14 @@
 package it.polimi.ingsw.gui;
 
-import it.polimi.ingsw.cli.*;
+import it.polimi.ingsw.model.GodCard;
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.TokenColor;
 import it.polimi.ingsw.utils.ServerResponse;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -20,7 +23,7 @@ public class GameFrame extends JFrame {
     private final SwingView view;
     private final ServerResponse serverResponse;
     private List<GodCard> godsInGame;
-    //List<Player> allPlayers;
+    List<Player> allPlayers = new ArrayList<>();
     //Battlefield battlefield;
 
 
@@ -31,6 +34,7 @@ public class GameFrame extends JFrame {
     public GameFrame(ServerResponse serverResponse, SwingView swingView) {
 
         super( " Battlefield | " + swingView.getPlayer().getUsername());
+        allPlayers = serverResponse.getPack().getModelCopy().getAllPlayers();
         setLayout(new BorderLayout());
         setIconImage(Pics.BATTLEFIELDICON.getImageIcon().getImage());
         setSize(1000,950);
@@ -53,7 +57,7 @@ public class GameFrame extends JFrame {
         innerMainPanel = new InnerMainPanel(swingView);
 
         JPanel battlefieldPanel = innerMainPanel.createBattlefieldPanel();
-        JPanel godPanel = innerMainPanel.createGodPanel(godsInGame);
+        JPanel godPanel = innerMainPanel.createGodPanel(godsInGame, allPlayers);
         JLabel messageLabel = innerMainPanel.createMessageLabel();
 
         add(battlefieldPanel, BorderLayout.CENTER);

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.utils;
 
-import it.polimi.ingsw.cli.*;
+import it.polimi.ingsw.model.TokenColor;
 
 import java.io.Serializable;
 

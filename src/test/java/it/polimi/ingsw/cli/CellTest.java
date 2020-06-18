@@ -3,6 +3,7 @@ package it.polimi.ingsw.cli;
 import it.polimi.ingsw.controller.CellHeightException;
 import it.polimi.ingsw.controller.ReachHeightLimitException;
 
+import it.polimi.ingsw.model.Cell;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 

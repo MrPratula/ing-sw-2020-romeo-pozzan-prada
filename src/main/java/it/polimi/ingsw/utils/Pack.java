@@ -1,9 +1,9 @@
 package it.polimi.ingsw.utils;
 
-import it.polimi.ingsw.cli.Cell;
-import it.polimi.ingsw.cli.GodCard;
-import it.polimi.ingsw.cli.ModelUtils;
-import it.polimi.ingsw.cli.Player;
+import it.polimi.ingsw.model.Cell;
+import it.polimi.ingsw.model.GodCard;
+import it.polimi.ingsw.model.ModelUtils;
+import it.polimi.ingsw.model.Player;
 
 import java.io.Serializable;
 import java.util.List;

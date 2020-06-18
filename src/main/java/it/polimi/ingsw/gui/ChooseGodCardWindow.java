@@ -1,6 +1,6 @@
 package it.polimi.ingsw.gui;
 
-import it.polimi.ingsw.cli.GodCard;
+import it.polimi.ingsw.model.GodCard;
 import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.PlayerAction;

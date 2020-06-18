@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.controller.*;
-import it.polimi.ingsw.cli.Player;
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.utils.*;
 
 import java.io.*;

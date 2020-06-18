@@ -1,7 +1,7 @@
 package it.polimi.ingsw.gameAction.move;
 
 import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
-import it.polimi.ingsw.cli.*;
+import it.polimi.ingsw.model.*;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

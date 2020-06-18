@@ -1,8 +1,8 @@
 package it.polimi.ingsw.gameAction.win;
 
 import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
-import it.polimi.ingsw.cli.Battlefield;
-import it.polimi.ingsw.cli.Token;
+import it.polimi.ingsw.model.Battlefield;
+import it.polimi.ingsw.model.Token;
 
 
 /**

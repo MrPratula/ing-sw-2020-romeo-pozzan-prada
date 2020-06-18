@@ -1,10 +1,10 @@
 package it.polimi.ingsw.gameAction.move;
 
 import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
-import it.polimi.ingsw.cli.Battlefield;
-import it.polimi.ingsw.cli.Cell;
-import it.polimi.ingsw.cli.GodCard;
-import it.polimi.ingsw.cli.Token;
+import it.polimi.ingsw.model.Battlefield;
+import it.polimi.ingsw.model.Cell;
+import it.polimi.ingsw.model.GodCard;
+import it.polimi.ingsw.model.Token;
 
 import java.util.List;
 

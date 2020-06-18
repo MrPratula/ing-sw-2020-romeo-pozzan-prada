@@ -60,7 +60,6 @@ public class NickNameWindow extends JDialog{
                 if(!nicknameTextField.getText().trim().isEmpty()){
                     PlayerAction playerAction = new PlayerAction(Action.MY_NAME,null,null, null, 0, 0, null, null, false, nicknameTextField.getText());
                     try {
-                        //System.out.println("Nome: " + nicknameTextField.getText());
                         view.notifyClient(playerAction);
                         NickNameWindow.this.dispose();
                     } catch (CellOutOfBattlefieldException | WrongNumberPlayerException | ImpossibleTurnException | IOException | CellHeightException | ReachHeightLimitException ex) {

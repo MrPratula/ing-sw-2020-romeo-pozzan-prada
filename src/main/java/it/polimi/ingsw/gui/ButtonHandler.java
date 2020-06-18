@@ -1,8 +1,8 @@
 package it.polimi.ingsw.gui;
 
-import it.polimi.ingsw.cli.Cell;
+import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.controller.*;
-import it.polimi.ingsw.cli.TokenColor;
+import it.polimi.ingsw.model.TokenColor;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.PlayerAction;
 import it.polimi.ingsw.utils.ServerResponse;

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.gui;
 
-import it.polimi.ingsw.cli.Cell;
+import it.polimi.ingsw.model.Cell;
 import javax.swing.*;
 import java.awt.*;
 

@@ -1,8 +1,7 @@
 package it.polimi.ingsw.gui;
 
-import it.polimi.ingsw.cli.GodCard;
+import it.polimi.ingsw.model.GodCard;
 import javax.swing.*;
-import javax.swing.plaf.BorderUIResource;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

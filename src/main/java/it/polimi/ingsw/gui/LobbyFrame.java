@@ -1,7 +1,5 @@
 package it.polimi.ingsw.gui;
 
-import it.polimi.ingsw.cli.Player;
-
 import javax.swing.*;
 import java.awt.*;
 
