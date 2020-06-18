@@ -36,7 +36,7 @@ public class MinotaurMoves implements MoveBehavior{
                     (!battlefield.getCell(provX, provY).getIsDome())) {
 
 
-                    //MINOTAUR CHANGES HERE
+                    // Compute if i can push a player
                     if(battlefield.getCell(provX,provY).getThereIsPlayer()){
 
                         // If the pushed cell is inside the battlefield
@@ -47,8 +47,6 @@ public class MinotaurMoves implements MoveBehavior{
                                 allMoves.add(battlefield.getCell(provX, provY));
                             }
                         }
-
-
                     }
                     else{
                         allMoves.add(battlefield.getCell(provX, provY));
