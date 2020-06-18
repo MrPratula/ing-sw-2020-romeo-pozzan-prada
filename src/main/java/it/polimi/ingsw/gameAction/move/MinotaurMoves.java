@@ -39,11 +39,16 @@ public class MinotaurMoves implements MoveBehavior{
                     //MINOTAUR CHANGES HERE
                     if(battlefield.getCell(provX,provY).getThereIsPlayer()){
 
-                        Cell nextOne = battlefield.getCell(provX+i,provY+j);
+                        // If the pushed cell is inside the battlefield
+                        if (0<=provX+i && provX+i<5 && 0<=provY+j && provY+j<5) {
+                            Cell nextOne = battlefield.getCell(provX + i, provY + j);
 
-                        if(!(nextOne.getThereIsPlayer() || nextOne.getIsDome() || nextOne.getPosX()>4 || nextOne.getPosY()>4 || nextOne.getPosX()<0 || nextOne.getPosY()<0)){
-                            allMoves.add(battlefield.getCell(provX, provY));
+                            if(!(nextOne.getThereIsPlayer() || nextOne.getIsDome() || nextOne.getPosX()>4 || nextOne.getPosY()>4 || nextOne.getPosX()<0 || nextOne.getPosY()<0)){
+                                allMoves.add(battlefield.getCell(provX, provY));
+                            }
                         }
+
+
                     }
                     else{
                         allMoves.add(battlefield.getCell(provX, provY));
@@ -95,7 +100,4 @@ public class MinotaurMoves implements MoveBehavior{
         battlefield.getCell(copy.getPosX(),copy.getPosY()).setFree();
         //battlefield.getCell(targetCell.getPosX()-deltaX,targetCell.getPosY()-deltaY).setFree();
     }
-
-
-
 }
