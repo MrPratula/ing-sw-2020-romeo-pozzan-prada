@@ -1,15 +1,13 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.model.TokenColor;
-
-import java.util.Scanner;
+import it.polimi.ingsw.client.View;
 
 public class DontCareAboutThis {
 
     public static void main(String[] args) {
 
-        TokenColor c = TokenColor.RED;
-        System.out.println(c.name());
+        View v = new View();
+        v.printSANTORINI();
 
 
     }
