@@ -615,19 +615,12 @@ public class SwingView extends View {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    /**
+     * In case a player wants to use the power of Demeter or Hestia (the cases where you can build
+     * twice) the buttonHandler call this method (twice) to save the two targetcell. At the end of
+     * the second call the playerAction is sent.
+     * @param targetcell the selected cell in which the player wants to build
+     */
     public void buildGod(Cell targetcell) throws ImpossibleTurnException, IOException, CellHeightException, WrongNumberPlayerException, ReachHeightLimitException, CellOutOfBattlefieldException {
 
         count --;
