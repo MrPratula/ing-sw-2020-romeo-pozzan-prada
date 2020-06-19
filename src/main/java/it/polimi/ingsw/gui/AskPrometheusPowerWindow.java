@@ -41,6 +41,7 @@ public class AskPrometheusPowerWindow extends JDialog {
             public void actionPerformed(ActionEvent e) {
                PlayerAction playerAction = new PlayerAction(Action.PROMETHEUS_ANSWER, view.getPlayer(), null, null, 0, 0, null, null, true, null);
                 try {
+                    view.setWantToUsePower(true);
                     view.notifyClient(playerAction);
                     AskPrometheusPowerWindow.this.dispose();
                 } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException ex) {
@@ -54,6 +55,7 @@ public class AskPrometheusPowerWindow extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 PlayerAction playerAction = new PlayerAction(Action.PROMETHEUS_ANSWER, view.getPlayer(), null, null, 0, 0, null, null, false, null);
                 try {
+                    view.setWantToUsePower(false);
                     view.notifyClient(playerAction);
                     AskPrometheusPowerWindow.this.dispose();
                 } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException ex) {
