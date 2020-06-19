@@ -25,8 +25,8 @@ public enum Action implements Serializable {
 
     /*    FROM SERVER TO CLIENT     */
 
-    WELCOME("Welcome to Santorini! What is your name?"),
-    INVALID_NAME("This name is not available, please try with another one..."),
+    WELCOME("Welcome to Santorini!"),
+    INVALID_NAME("This name is not available!"),
 
     HOW_MANY_PLAYERS("Do you want to make a 2 players game or a 3 players game? [2][3]"),
     WRONG_NUMBER_OF_PLAYER("Please insert 2 players or 3 players..."),

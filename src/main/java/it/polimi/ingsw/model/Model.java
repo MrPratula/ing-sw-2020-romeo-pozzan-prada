@@ -1194,6 +1194,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                         }
                     }
                 }
+                break;
             }
 
             case BLUE: {
@@ -1216,6 +1217,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                         }
                     }
                 }
+                break;
             }
 
             case YELLOW: {
@@ -1238,6 +1240,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                         }
                     }
                 }
+                break;
             }
         }
     }

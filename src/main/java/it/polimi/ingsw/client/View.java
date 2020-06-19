@@ -73,13 +73,26 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
             case WELCOME:
             case INVALID_NAME: {
 
-                PlayerAction playerAction;
+                PlayerAction playerAction = null;
 
-                // Print hello what is your name?
+                // Print hello
                 System.out.println(serverResponse.getPack().getAction().toString());
-                Scanner scanner = new Scanner(System.in);
-                String name = scanner.nextLine();
-                playerAction = new PlayerAction(Action.MY_NAME, null, null, null, 0, 0, null, null, false, name);
+
+                boolean needToLoop = true;
+
+                while (needToLoop){
+                    System.out.println("Please type your name...");
+                    Scanner scanner = new Scanner(System.in);
+                    String name = scanner.nextLine();
+
+                    if (isAGoodName(name)){
+                        playerAction = new PlayerAction(Action.MY_NAME, null, null, null, 0, 0, null, null, false, name);
+                        needToLoop=false;
+                    }
+                    else
+                        needToLoop=true;
+                }
+
                 notifyClient(playerAction);
                 break;
             }
@@ -779,9 +792,31 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
             if (c.equals(targetCell))
                 return true;
         }
-
         return false;
     }
+
+
+    /**
+     * @param name string to ckeck. It is the user input for his username.
+     * @return true if it is not empty, too long(<=16) or with spaces.
+     */
+    public boolean isAGoodName(String name){
+
+        if (name==null)
+            return false;
+
+        if (name.isEmpty())
+            return false;
+
+        if (name.contains(" "))
+            return false;
+
+        if (name.contains("\n"))
+            return false;
+
+        return name.length() <= 16;
+    }
+
 
 
     /**

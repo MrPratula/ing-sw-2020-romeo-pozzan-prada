@@ -149,20 +149,29 @@ public class Connection extends Observable<PlayerAction> implements Runnable{
 
                     for (String n: names) {
 
-                        // Check for upper case to avoid having Lorenzo and lorenzo in the same game
-                        if (n.toUpperCase().equals(name.toUpperCase())){
-                            Pack pack2 = new Pack(Action.INVALID_NAME);
-                            asyncSend(new ServerResponse(null, pack2));
+                        // Check for the name to be not empty or too long or with spaces
+                        if (!isAGoodName(name)){
                             needToLoop = true;
                             break;
                         }
-                        else {
-                            this.name = name;
-                            needToLoop = false;
+                        // If it is a good name
+                        else{
+                            // Check for upper case to avoid having Lorenzo and lorenzo in the same game
+                            if (n.toUpperCase().equals(name.toUpperCase())){
+                                Pack pack2 = new Pack(Action.INVALID_NAME);
+                                asyncSend(new ServerResponse(null, pack2));
+                                needToLoop = true;
+                                break;
+                            }
+                            else {
+                                this.name = name;
+                                needToLoop = false;
+                            }
                         }
 
+
                     }
-                // This is for empty waiting connection
+                // This is for empty waiting connection when the first player connect
                 } else {
                     this.name = name;
                     needToLoop = false;
@@ -193,5 +202,27 @@ public class Connection extends Observable<PlayerAction> implements Runnable{
         } finally {
             close();
         }
+    }
+
+
+    /**
+     * @param name string to ckeck. It is the user input for his username.
+     * @return true if it is not empty, too long(<=16) or with spaces.
+     */
+    public boolean isAGoodName(String name){
+
+        if (name==null)
+            return false;
+
+        if (name.isEmpty())
+            return false;
+
+        if (name.contains(" "))
+            return false;
+
+        if (name.contains("\n"))
+            return false;
+
+        return name.length() <= 16;
     }
 }
