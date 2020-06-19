@@ -331,7 +331,6 @@ public class SwingView extends View {
             case ASK_FOR_BUILD:{
 
                 Pack pack = serverResponse.getPack();
-                this.player = pack.getPlayer();
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
                     displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null); //edit
@@ -339,44 +338,33 @@ public class SwingView extends View {
                     //JOptionPane.showMessageDialog(new JFrame(), pack.getMessageOpponents(), "NOT YOUR TURN",JOptionPane.INFORMATION_MESSAGE, Pics.ERRORICON.getImageIcon());
                 }
                 else{
-                    this.player = pack.getPlayer();
+
+                    // Refresh the player so the token position is updated
+                    if (pack.getPlayer() != null)
+                        this.player = pack.getPlayer();
+
                     JOptionPane.showMessageDialog(new JFrame(), pack.getAction().getName().toUpperCase(), "YOUR TURN, "+getPlayer().getUsername(), JOptionPane.WARNING_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
                     this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(Pics.ASK_FOR_BUILD.getImageIcon());
 
                     switch(player.getMyGodCard()) {
 
-                        case DEMETER: {
-                            displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), pack.getValidBuilds());
-                            new AskToUseTheGodsPower(this, serverResponse, this.gameFrame);
-                            break;
-                        }
-                        case ARTEMIS: {
-                            displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), pack.getValidBuilds());
-                            new AskToUseTheGodsPower(this, serverResponse, this.gameFrame);
-                            break;
-                        }
-                        case HESTIA: {
-                            displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), pack.getValidBuilds());
-                            new AskToUseTheGodsPower(this, serverResponse, this.gameFrame);
-                            break;
-                        }
-                        case HEPHAESTUS:{
-                            displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), pack.getValidBuilds());
-                            new AskToUseTheGodsPower(this, serverResponse, this.gameFrame);
-                            break;
-                        }
-                        case ATLAS:{
+                        case DEMETER:
+                        case ARTEMIS:
+                        case HESTIA:
+                        case HEPHAESTUS:
+                        case ATLAS: {
                             displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), pack.getValidBuilds());
                             new AskToUseTheGodsPower(this, serverResponse, this.gameFrame);
                             break;
                         }
                         default:
+                            this.power = false;
                             displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), pack.getValidBuilds());
                             break;
 
                     }
                     //displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), pack.getValidBuilds());
-                    this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(Pics.ASK_FOR_BUILD.getImageIcon());
+                    //this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(Pics.ASK_FOR_BUILD.getImageIcon());
                 }
                 break;
             }
