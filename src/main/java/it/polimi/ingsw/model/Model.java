@@ -475,7 +475,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         ServerResponse serverResponse;
 
         if (validMoves.isEmpty()) {
-            serverResponse = checkLoseForMove(otherToken, enemyTokens, myGodCard, enemyGodCards);
+            serverResponse = checkLoseForMove(otherToken, enemyTokens, myGodCard, enemyGodCards, selectedToken);
         } else {
 
             Pack pack = new Pack(Action.ASK_FOR_WHERE_TO_MOVE);
@@ -533,7 +533,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         ServerResponse serverResponse;
 
         if (validMoves == null) {
-            serverResponse = checkLoseForMove(otherToken, enemyTokens, myGodCard, enemyGodCards);
+            serverResponse = checkLoseForMove(otherToken, enemyTokens, myGodCard, enemyGodCards, selectedToken);
         } else {
 
             Pack pack = new Pack(Action.ASK_FOR_PROMETHEUS_POWER);
@@ -708,7 +708,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * It could be a TOKEN_NOT_MOVABLE, GAME_OVER or PLAYER_LOST.
      * @throws CellOutOfBattlefieldException if something goes wrong.
      */
-    public ServerResponse checkLoseForMove(Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards) throws CellOutOfBattlefieldException, WrongNumberPlayerException, ImpossibleTurnException {
+    public ServerResponse checkLoseForMove(Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Token selectedToken) throws CellOutOfBattlefieldException, WrongNumberPlayerException, ImpossibleTurnException {
 
         // If there is no 2nd token
         if (otherToken == null) {
@@ -724,7 +724,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         // If there is 2nd token
         else {
             List<Cell> validMoves2;
-            validMoves2 = computeValidMoves(otherToken, null, enemyTokens, myGodCard, enemyGodCards, battlefield);
+            validMoves2 = computeValidMoves(otherToken, selectedToken, enemyTokens, myGodCard, enemyGodCards, battlefield);
 
             // If i can not move it
             if (validMoves2.isEmpty()) {
@@ -1123,11 +1123,14 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
         Pack pack = new Pack(Action.PLAYER_LOST);
         String message = looser.getUsername().toUpperCase()+" lost the game!";
-        pack.setMessageInTurn(message);
-        pack.setMessageOpponents(message);
-        pack.setModelCopy(getCopy());
 
         removeFromTheGame(looser);
+
+        message = message+"\nIs now "+getPlayerInTurn().getUsername()+" turn!";
+
+        pack.setMessageInTurn(message+"\nPlease select which token do you want to move...");
+        pack.setMessageOpponents(message);
+        pack.setModelCopy(getCopy());
         pack.setPlayer(getPlayerInTurn());
 
         return new ServerResponse (getTurn(), pack);
@@ -1140,8 +1143,17 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      */
     public void removeFromTheGame (Player player) throws WrongNumberPlayerException, ImpossibleTurnException {
 
-        player.getToken1().getTokenPosition().setFree();
-        player.getToken2().getTokenPosition().setFree();
+        if(player.getMyGodCard().equals(GodCard.ATHENA))
+            didAthenaMovedUp=false;
+
+        try{
+            battlefield.getCell(player.getToken1().getTokenPosition()).setFree();
+        } catch (NullPointerException ignore){}
+        try{
+            battlefield.getCell(player.getToken2().getTokenPosition()).setFree();
+        } catch (NullPointerException ignore){}
+
+        allGodCards.remove(player.getMyGodCard());
         allPlayers.remove(player);
 
         updateTurn();
