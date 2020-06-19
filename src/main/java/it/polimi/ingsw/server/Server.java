@@ -136,7 +136,7 @@ public class Server  {
      * When there are 2 or 3 players in the waiting connection,
      * the game is set up and it starts.
      */
-    public synchronized void lobby(Connection connection, String name) throws IOException {
+    public synchronized void lobby(Connection connection, String name) {
 
         System.out.println(name.toUpperCase()+ " entered into the lobby");
 

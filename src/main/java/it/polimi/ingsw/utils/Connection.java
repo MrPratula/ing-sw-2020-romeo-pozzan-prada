@@ -148,15 +148,19 @@ public class Connection extends Observable<PlayerAction> implements Runnable{
                 if (names != null) {
 
                     for (String n: names) {
+
                         // Check for upper case to avoid having Lorenzo and lorenzo in the same game
                         if (n.toUpperCase().equals(name.toUpperCase())){
                             Pack pack2 = new Pack(Action.INVALID_NAME);
                             asyncSend(new ServerResponse(null, pack2));
+                            needToLoop = true;
+                            break;
                         }
                         else {
                             this.name = name;
                             needToLoop = false;
                         }
+
                     }
                 // This is for empty waiting connection
                 } else {
@@ -170,7 +174,7 @@ public class Connection extends Observable<PlayerAction> implements Runnable{
 
             try {
                 server.lobby(thisConnection, name);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 System.err.println("Error in launch new thread into lobby");
             }
 
