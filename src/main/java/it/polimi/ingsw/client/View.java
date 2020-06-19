@@ -16,6 +16,8 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
     private int savedToken;
 
     public View() {
+        // Prints santorini in ASCII ART
+        printSANTORINI();
     }
 
     protected Player getPlayer(){
@@ -929,4 +931,143 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
         System.out.print(" ");
         System.out.print("\033[047m");          //on a white board
     }
+
+
+    /**
+     * Prints SANTORINI in ascii art
+     */
+    public void printSANTORINI(){
+
+        System.out.println();
+        System.out.println();
+
+
+        //first line
+        printNBlueSpaces(6);
+        printNBlueSpaces(6);
+        printNBlueSpaces(3);
+        printNResetSpaces(1);
+        printNBlueSpaces(2);
+        printNBlueSpaces(6);
+        printNBlueSpaces(6);
+        printNBlueSpaces(6);
+        printNBlueSpaces(2);
+        printNBlueSpaces(3);
+        printNResetSpaces(1);
+        printNBlueSpaces(2);
+        printNBlueSpaces(2);
+        System.out.println();
+
+        //second line
+        printNBlueSpaces(2);
+        printNResetSpaces(4);
+        printNBlueSpaces(2);
+        printNBlueSpaces(2);
+        printNBlueSpaces(4);
+        printNBlueSpaces(2);
+        printNResetSpaces(2);
+        printNBlueSpaces(2);
+        printNResetSpaces(2);
+        printNBlueSpaces(2);
+        printNBlueSpaces(2);
+        printNBlueSpaces(2);
+        printNBlueSpaces(2);
+        printNBlueSpaces(2);
+        printNBlueSpaces(4);
+        printNBlueSpaces(2);
+        printNBlueSpaces(2);
+        System.out.println();
+
+        //third line
+        printNBlueSpaces(6);
+        printNBlueSpaces(6);
+        printNBlueSpaces(2);
+        printNBlueSpaces(4);
+        printNResetSpaces(2);
+        printNBlueSpaces(2);
+        printNResetSpaces(2);
+        printNBlueSpaces(2);
+        printNBlueSpaces(2);
+        printNBlueSpaces(5);
+        printNResetSpaces(1);
+        printNBlueSpaces(2);
+        printNBlueSpaces(2);
+        printNBlueSpaces(4);
+        printNBlueSpaces(2);
+        System.out.println();
+
+        //fourth line
+        printNResetSpaces(4);
+        printNBlueSpaces(2);
+        printNBlueSpaces(2);
+        printNBlueSpaces(2);
+        printNBlueSpaces(2);
+        printNResetSpaces(1);
+        printNBlueSpaces(3);
+        printNResetSpaces(2);
+        printNBlueSpaces(2);
+        printNResetSpaces(2);
+        printNBlueSpaces(2);
+        printNBlueSpaces(2);
+        printNBlueSpaces(2);
+        printNBlueSpaces(2);
+        printNBlueSpaces(2);
+        printNBlueSpaces(2);
+        printNResetSpaces(1);
+        printNBlueSpaces(3);
+        printNBlueSpaces(2);
+        System.out.println();
+
+        //fifth line
+        printNBlueSpaces(6);
+        printNBlueSpaces(2);
+        printNBlueSpaces(2);
+        printNBlueSpaces(2);
+        printNResetSpaces(2);
+        printNBlueSpaces(2);
+        printNResetSpaces(2);
+        printNBlueSpaces(2);
+        printNResetSpaces(2);
+        printNBlueSpaces(6);
+        printNBlueSpaces(2);
+        printNBlueSpaces(2);
+        printNBlueSpaces(2);
+        printNBlueSpaces(2);
+        printNResetSpaces(2);
+        printNBlueSpaces(2);
+        printNBlueSpaces(2);
+        System.out.println();
+
+        System.out.println();
+
+    }
+
+    /**
+     * prints n times a space on the reset color backgrund
+     * @param n times
+     */
+    public void printNResetSpaces(int n){
+
+        for(int i = 0; i < n; i++) {
+            System.out.print("\033[049m");             //reset
+            System.out.print(" ");
+        }
+    }
+
+    /**
+     * Prints n times a space on a blue background
+     * @param n times
+     */
+    public void printNBlueSpaces(int n){
+
+        for(int i = 0; i < n; i++) {
+            System.out.print("\033[044m");
+            System.out.print(" "); //2i
+        }
+
+        System.out.print("\033[049m");             //reset
+        System.out.print("  ");
+    }
+
+
 }
