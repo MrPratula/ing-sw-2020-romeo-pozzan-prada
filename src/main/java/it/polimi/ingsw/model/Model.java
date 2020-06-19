@@ -708,7 +708,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * It could be a TOKEN_NOT_MOVABLE, GAME_OVER or PLAYER_LOST.
      * @throws CellOutOfBattlefieldException if something goes wrong.
      */
-    public ServerResponse checkLoseForMove(Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Token selectedToken) throws CellOutOfBattlefieldException, WrongNumberPlayerException, ImpossibleTurnException {
+    public ServerResponse checkLoseForMove(Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Token selectedToken) throws CellOutOfBattlefieldException {
 
         // If there is no 2nd token
         if (otherToken == null) {
@@ -1119,7 +1119,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * @param looser is the player who lost.
      * @return the correct ServerResponse.
      */
-    public ServerResponse playerLost (Player looser) throws WrongNumberPlayerException, ImpossibleTurnException {
+    public ServerResponse playerLost (Player looser) {
 
         Pack pack = new Pack(Action.PLAYER_LOST);
         String message = looser.getUsername().toUpperCase()+" lost the game!";
@@ -1141,7 +1141,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * It removes a player from the game and set free the cells where he has his tokens.
      * @param player the player who has to be removed.
      */
-    public void removeFromTheGame (Player player) throws WrongNumberPlayerException, ImpossibleTurnException {
+    public void removeFromTheGame (Player player) {
 
         if(player.getMyGodCard().equals(GodCard.ATHENA))
             didAthenaMovedUp=false;
@@ -1166,38 +1166,78 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * if it is blue it check for number of players. If 2 than it is red again,
      * if it is 3 it change to yellow.
      * if it is yellow it update to red.
-     * @throws ImpossibleTurnException if the turn is not red, blue or yellow.
-     * @throws WrongNumberPlayerException if the numbers of player is not 2 nor 3;
      */
-    public void updateTurn() throws ImpossibleTurnException, WrongNumberPlayerException {
+    public void updateTurn() {
+
+        int numberOfPlayers = allPlayers.size();
 
         switch (turn) {
 
             case RED: {
-                this.turn = TokenColor.BLUE;
-                break;
+
+                // If 3 players after red always blue
+                if (numberOfPlayers==3){
+                    this.turn = TokenColor.BLUE;
+                    break;
+                }
+
+                // If 2 players after red may be yellow or blue
+                else {
+                    for (Player p: allPlayers){
+                        if (p.getTokenColor().equals(TokenColor.BLUE)){
+                            this.turn = TokenColor.BLUE;
+                            break;
+                        }
+                        if (p.getTokenColor().equals(TokenColor.YELLOW)){
+                            this.turn = TokenColor.YELLOW;
+                            break;
+                        }
+                    }
+                }
             }
 
             case BLUE: {
-                if (allPlayers.size() == 2) {
-                    this.turn = TokenColor.RED;
-                } else if (allPlayers.size() == 3) {
+
+                // If 3 players after blue always yellow
+                if (numberOfPlayers==3){
                     this.turn = TokenColor.YELLOW;
+                    break;
                 }
+                // If 2 players after blue may be yellow or red
                 else {
-                    throw new WrongNumberPlayerException(
-                            String.format("There are %d players and it is not allowed!", allPlayers.size()));
+                    for (Player p: allPlayers){
+                        if (p.getTokenColor().equals(TokenColor.YELLOW)){
+                            this.turn = TokenColor.YELLOW;
+                            break;
+                        }
+                        if (p.getTokenColor().equals(TokenColor.RED)){
+                            this.turn = TokenColor.RED;
+                            break;
+                        }
+                    }
                 }
-                break;
             }
 
             case YELLOW: {
-                this.turn = TokenColor.RED;
-                break;
-            }
-            default: {
-                throw new ImpossibleTurnException(
-                        String.format("The color %s is not a valid turn", turn));
+
+                // If 3 players after yellow always red
+                if (numberOfPlayers==3){
+                    this.turn = TokenColor.RED;
+                    break;
+                }
+                // If 2 players after yellow may be red or blue
+                else {
+                    for (Player p: allPlayers){
+                        if (p.getTokenColor().equals(TokenColor.RED)){
+                            this.turn = TokenColor.RED;
+                            break;
+                        }
+                        if (p.getTokenColor().equals(TokenColor.BLUE)){
+                            this.turn = TokenColor.BLUE;
+                            break;
+                        }
+                    }
+                }
             }
         }
     }
