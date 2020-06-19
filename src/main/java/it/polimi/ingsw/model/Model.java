@@ -665,7 +665,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
         if (enemyGodCards.contains(GodCard.ATHENA) && didAthenaMovedUp) {
             MoveContext thisMove = new MoveContext(new AthenaMoves());
-            validMoves = thisMove.executeValidMoves(selectedToken, null, null, null, null, null, validMoves);
+            validMoves = thisMove.executeValidMoves(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, battlefield, validMoves);
         }
 
         return validMoves;
