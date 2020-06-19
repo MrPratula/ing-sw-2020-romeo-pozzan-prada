@@ -39,7 +39,7 @@ public class SimpleMoves implements MoveBehavior {
     @Override
     public List<Cell> computeValidMoves(Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield, List<Cell> moveToCheck) throws CellOutOfBattlefieldException {
 
-        List<Cell> allMoves = new ArrayList<Cell>();
+        List<Cell> allMoves = new ArrayList<>();
 
         int provX, provY;
 
@@ -60,22 +60,25 @@ public class SimpleMoves implements MoveBehavior {
                 }
             }
         }
-        // Remove my token position.
-        allMoves.remove(battlefield.getCell(selectedToken.getTokenPosition()));
 
-        // Remove my other token position.
+        List<Cell> allMovesToReturn = new ArrayList<>(allMoves);
+
+        // Remove both my token position from valid moves
         try{
-            allMoves.remove(battlefield.getCell(otherToken.getTokenPosition()));
-        }catch(NullPointerException ignore){}
+            allMovesToReturn.remove(battlefield.getCell(selectedToken.getTokenPosition()));
+        } catch (NullPointerException ignore){}
+        try{
+            allMovesToReturn.remove(battlefield.getCell(otherToken.getTokenPosition()));
+        } catch (NullPointerException ignore){}
 
-        // Remove enemies token positions.
-        for (Token enemyToken : enemyTokens) {
-            try{
-                allMoves.remove(battlefield.getCell(enemyToken.getTokenPosition()));
-            }catch (NullPointerException ignore) {}
-        }
+        // Remove enemy tokens position from valid moves
+        try{
+            for (Token enemyToken : enemyTokens) {
+                allMovesToReturn.remove(battlefield.getCell(enemyToken.getTokenPosition()));
+            }
+        } catch (NullPointerException ignore){}
 
-        return allMoves;
+        return allMovesToReturn;
     }
 
 
@@ -93,10 +96,16 @@ public class SimpleMoves implements MoveBehavior {
     @Override
     public void performMove(Token selectedToken, Token otherToken, List<Token> enemyTokens, Cell targetCell, List<GodCard> enemyGodCards, Battlefield battlefield) {
 
+        // Set token's old height
         selectedToken.setOldHeight(battlefield.getCell(selectedToken.getTokenPosition()).getHeight());
+
+        // Set free old position
         selectedToken.getTokenPosition().setFree();
 
+        // Set new token position
         selectedToken.setTokenPosition(targetCell);
+
+        // Set new position occupied
         selectedToken.getTokenPosition().setOccupied();
     }
 }

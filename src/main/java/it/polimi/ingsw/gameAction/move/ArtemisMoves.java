@@ -17,17 +17,18 @@ public class ArtemisMoves implements MoveBehavior {
 
 
     /**
-     * Just scan between -2 and +2 around the token position instead of -1 and +1.
+     * It works as simple move, but for each cell of simple move it compute another simple move and add those cell to
+     * valid moves.
      * Other cell restriction such as height limitation or cell occupied still applies.
      */
     @Override
     public List<Cell> computeValidMoves(Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield, List<Cell> moveToCheck) throws CellOutOfBattlefieldException {
 
-        List<Cell> allMoves = new ArrayList<Cell>();
+        List<Cell> allMoves = new ArrayList<>();
 
         int provX, provY;
 
-        // Cicle around my token position to get the 8 cell in which i can move
+        // Cycle around my token position to get the 8 cell in which i can move
         for (int i=-1; i<2; i++) {
             provX = selectedToken.getTokenPosition().getPosX() + i;
             for (int j = -1; j < 2; j++) {
@@ -60,12 +61,11 @@ public class ArtemisMoves implements MoveBehavior {
         }
 
         // Now I have normal validMoves. For each of them I can move again
-
         List<Cell> allMovesArtemis = new ArrayList<>(allMoves);
 
         // Scan for each cell of valid moves
         for (Cell cell: allMoves) {
-            // Cicle around each cell of valid moves to get all the potential 25 valid moves
+            // Cycle around each cell of valid moves to get all the potential 25 valid moves
             for (int i=-1; i<2; i++) {
                 provX = cell.getPosX() + i;
                 for (int j = -1; j < 2; j++) {

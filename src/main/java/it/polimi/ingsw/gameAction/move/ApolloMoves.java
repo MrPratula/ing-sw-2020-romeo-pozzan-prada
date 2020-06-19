@@ -25,7 +25,7 @@ public class ApolloMoves implements MoveBehavior {
     @Override
     public List<Cell> computeValidMoves(Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield, List<Cell> moveToCheck) throws CellOutOfBattlefieldException {
 
-        List<Cell> allMoves = new ArrayList<Cell>();
+        List<Cell> allMoves = new ArrayList<>();
 
         int provX, provY;
 
@@ -44,15 +44,14 @@ public class ApolloMoves implements MoveBehavior {
 
         List<Cell> allMovesToReturn = new ArrayList<>(allMoves);
 
-        for (Cell validCell: allMoves) {
-            try{
-                allMovesToReturn.remove(battlefield.getCell(selectedToken.getTokenPosition()));     // rimuovo le posizioni dei miei token
-            } catch (NullPointerException ignore){}
-            try{
-                allMovesToReturn.remove(battlefield.getCell(otherToken.getTokenPosition()));        // e no quelle dei miei avversari
-            } catch (NullPointerException ignore){}
+        // Remove both my token position from valid moves and do not remove enemy tokens position
+        try{
+            allMovesToReturn.remove(battlefield.getCell(selectedToken.getTokenPosition()));
+        } catch (NullPointerException ignore){}
+        try{
+            allMovesToReturn.remove(battlefield.getCell(otherToken.getTokenPosition()));
+        } catch (NullPointerException ignore){}
 
-        }
         return allMovesToReturn;
     }
 
@@ -62,11 +61,9 @@ public class ApolloMoves implements MoveBehavior {
      * @param () the same as the simple perform move.
      */
     @Override
-    public void performMove(Token selectedToken, Token otherToken, List<Token> enemyTokens, Cell targetCell, List<GodCard> enemyGodCards, Battlefield battlefield) {
+    public void performMove(Token selectedToken, Token otherToken, List<Token> enemyTokens, Cell targetCell, List<GodCard> enemyGodCards, Battlefield battlefield) throws CellOutOfBattlefieldException {
 
-        Cell selectedTokenPosition = battlefield.getCell(selectedToken.getTokenPosition());
         Token swapToken = null;
-
 
         if (targetCell.getThereIsPlayer()) {
 
@@ -88,14 +85,19 @@ public class ApolloMoves implements MoveBehavior {
         }
         // Handle the swap
         else{
+            // Set old height for both token
+            selectedToken.setOldHeight(battlefield.getCell(selectedToken.getTokenPosition()).getHeight());
+            swapToken.setOldHeight(battlefield.getCell(swapToken.getTokenPosition()).getHeight());
+
+            // Change the position
+            Cell provCell = battlefield.getCell(selectedToken.getTokenPosition());
+
             selectedToken.setTokenPosition(swapToken.getTokenPosition());
-            selectedToken.setOldHeight(selectedTokenPosition.getHeight());
+            swapToken.setTokenPosition(battlefield.getCell(provCell));
 
-            swapToken.setOldHeight(swapToken.getTokenPosition().getHeight());
-            swapToken.setTokenPosition(selectedTokenPosition);
-
-            selectedToken.getTokenPosition().setOccupied();
-            swapToken.getTokenPosition().setOccupied();
+            // Set both occupied
+            battlefield.getCell(selectedToken.getTokenPosition()).setOccupied();
+            battlefield.getCell(swapToken.getTokenPosition()).setOccupied();
         }
     }
 }

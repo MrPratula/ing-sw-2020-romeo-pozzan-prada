@@ -22,7 +22,7 @@ public class PrometheusMove implements MoveBehavior {
     @Override
     public List<Cell> computeValidMoves(Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield, List<Cell> moveToCheck) throws CellOutOfBattlefieldException {
 
-        List<Cell> allMoves = new ArrayList<Cell>();
+        List<Cell> allMoves = new ArrayList<>();
 
         boolean canIMoveUp = !Model.isDidPrometheusUsePower();
 
@@ -42,13 +42,16 @@ public class PrometheusMove implements MoveBehavior {
                         // If i can not move up
                         if (!canIMoveUp) {
 
-                            // if i am not moving up
+                            // Simple valid moves without going up
                             if ((battlefield.getCell(provX, provY).getHeight() <= selectedToken.getTokenPosition().getHeight())) {
                                 allMoves.add(battlefield.getCell(provX, provY));
                             }
                         }
+                        // Simple move instead
                         else {
-                            allMoves.add(battlefield.getCell(provX, provY));
+                            if (battlefield.getCell(provX, provY).getHeight() -selectedToken.getTokenPosition().getHeight() <= 1){
+                                allMoves.add(battlefield.getCell(provX, provY));
+                            }
                         }
                     }
                 }
@@ -57,18 +60,20 @@ public class PrometheusMove implements MoveBehavior {
 
         List<Cell> allMovesToReturn = new ArrayList<>(allMoves);
 
+        // Remove both my token position from valid moves
         try{
-            allMovesToReturn.remove(battlefield.getCell(selectedToken.getTokenPosition()));     // rimuovo le posizioni dei miei token
+            allMovesToReturn.remove(battlefield.getCell(selectedToken.getTokenPosition()));
         } catch (NullPointerException ignore){}
         try{
             allMovesToReturn.remove(battlefield.getCell(otherToken.getTokenPosition()));
         } catch (NullPointerException ignore){}
+
+        // Remove enemy tokens position from valid moves
         try{
             for (Token enemyToken : enemyTokens) {
-                allMovesToReturn.remove(battlefield.getCell(enemyToken.getTokenPosition()));        // rimuovo la posizione dei token dei miei nemici
+                allMovesToReturn.remove(battlefield.getCell(enemyToken.getTokenPosition()));
             }
         } catch (NullPointerException ignore){}
-
 
         return allMovesToReturn;
     }
@@ -76,8 +81,9 @@ public class PrometheusMove implements MoveBehavior {
 
     /**
      * It handle the move.
-     * Just take the target position and set it for the to-be-moved token.
-     * Need to set free the old position and set occupied the new position.
+     * Take the target position and set it for the to-be-moved token.
+     * Set free the old position and set occupied the new position.
+     * Set the moved token old height.
      * @param selectedToken the token a player want to move.
      * @param otherToken the player-in-turn other token.
      * @param enemyTokens a list of all enemy token.
@@ -88,10 +94,9 @@ public class PrometheusMove implements MoveBehavior {
     @Override
     public void performMove(Token selectedToken, Token otherToken, List<Token> enemyTokens, Cell targetCell, List<GodCard> enemyGodCards, Battlefield battlefield) {
 
+        selectedToken.setOldHeight(battlefield.getCell(selectedToken.getTokenPosition()).getHeight());
         battlefield.getCell(selectedToken.getTokenPosition()).setFree();
         selectedToken.setTokenPosition(battlefield.getCell(targetCell));
         battlefield.getCell(selectedToken.getTokenPosition()).setOccupied();
-
     }
-
 }

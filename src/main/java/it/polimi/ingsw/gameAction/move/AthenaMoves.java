@@ -25,16 +25,14 @@ public class AthenaMoves implements MoveBehavior{
      * @param battlefield null
      * @param movesToCheck the moves to check for height.
      * @return the same movesToCheck with some elimination if they satisfy the ATHENA rule.
-     * @throws CellOutOfBattlefieldException if something goes wrong.
      */
     @Override
-    public List<Cell> computeValidMoves(Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield, List<Cell> movesToCheck) throws CellOutOfBattlefieldException {
+    public List<Cell> computeValidMoves(Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield, List<Cell> movesToCheck) {
 
         List<Cell> movesToReturn = new ArrayList<>(movesToCheck);
 
-
         for (Cell cell: movesToCheck) {
-            if (selectedToken.getTokenPosition().getHeight() < cell.getHeight()) {
+            if (battlefield.getCell(selectedToken.getTokenPosition()).getHeight() < battlefield.getCell(cell).getHeight()) {
                 movesToReturn.remove(cell);
             }
         }
@@ -52,18 +50,17 @@ public class AthenaMoves implements MoveBehavior{
      * @param targetCell the cell to move.
      * @param enemyGodCards null.
      * @param battlefield null.
-     * @throws CellOutOfBattlefieldException if something goes wrong.
      */
     @Override
-    public void performMove(Token selectedToken, Token otherToken, List<Token> enemyTokens, Cell targetCell, List<GodCard> enemyGodCards, Battlefield battlefield) throws CellOutOfBattlefieldException {
+    public void performMove(Token selectedToken, Token otherToken, List<Token> enemyTokens, Cell targetCell, List<GodCard> enemyGodCards, Battlefield battlefield) {
 
         int oldHeight, newHeight;
 
         oldHeight = selectedToken.getTokenPosition().getHeight();
-        selectedToken.getTokenPosition().setFree();
-        selectedToken.setTokenPosition(targetCell);
-        newHeight = selectedToken.getTokenPosition().getHeight();
-        selectedToken.getTokenPosition().setOccupied();
+        battlefield.getCell(selectedToken.getTokenPosition()).setFree();
+        selectedToken.setTokenPosition(battlefield.getCell(targetCell));
+        newHeight = battlefield.getCell(selectedToken.getTokenPosition()).getHeight();
+        battlefield.getCell(selectedToken.getTokenPosition()).setOccupied();
 
         Model.athenaMovedUp(oldHeight - newHeight < 0);
     }

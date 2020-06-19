@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class MoveContext {
 
-   private MoveBehavior moveStrategy;
+   private final MoveBehavior moveStrategy;
 
    public MoveContext(MoveBehavior moveStrategy) {
        this.moveStrategy = moveStrategy;

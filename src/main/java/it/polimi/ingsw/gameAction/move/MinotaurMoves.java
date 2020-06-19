@@ -23,7 +23,7 @@ public class MinotaurMoves implements MoveBehavior{
     @Override
     public List<Cell> computeValidMoves(Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield, List<Cell> moveToCheck) throws CellOutOfBattlefieldException {
 
-        List<Cell> allMoves = new ArrayList<Cell>();
+        List<Cell> allMoves = new ArrayList<>();
         int provX, provY;
 
         for (int i=-1; i<2; i++) {
@@ -34,7 +34,6 @@ public class MinotaurMoves implements MoveBehavior{
                     (battlefield.getCell(provX, provY).getHeight() -
                      selectedToken.getTokenPosition().getHeight() <= 1) &&
                     (!battlefield.getCell(provX, provY).getIsDome())) {
-
 
                     // Compute if i can push a player
                     if(battlefield.getCell(provX,provY).getThereIsPlayer()){
@@ -57,6 +56,7 @@ public class MinotaurMoves implements MoveBehavior{
 
         List<Cell> allMovesToReturn = new ArrayList<>(allMoves);
 
+        // Remove both my tokens and not enemy tokens
         try{
             allMovesToReturn.remove(battlefield.getCell(selectedToken.getTokenPosition()));
         } catch (NullPointerException ignore){}
@@ -78,7 +78,7 @@ public class MinotaurMoves implements MoveBehavior{
     @Override
     public void performMove(Token selectedToken, Token otherToken, List<Token> enemyTokens, Cell targetCell, List<GodCard> enemyGodCards, Battlefield battlefield) throws CellOutOfBattlefieldException {
 
-        int deltaX = 0, deltaY = 0;
+        int deltaX, deltaY;
         Cell copy = selectedToken.getTokenPosition();
         if (targetCell.getThereIsPlayer()) {
 
@@ -86,6 +86,7 @@ public class MinotaurMoves implements MoveBehavior{
                 if (t.getTokenPosition().getPosX()==targetCell.getPosX() && t.getTokenPosition().getPosY()==targetCell.getPosY() ){
                     deltaX = targetCell.getPosX() - selectedToken.getTokenPosition().getPosX();
                     deltaY = targetCell.getPosY() - selectedToken.getTokenPosition().getPosY();
+                    t.setOldHeight(battlefield.getCell(t.getTokenPosition()).getHeight());
                     t.setTokenPosition(battlefield.getCell(targetCell.getPosX()+deltaX,targetCell.getPosY()+deltaY));
                     battlefield.getCell(targetCell.getPosX()+deltaX,targetCell.getPosY()+deltaY).setOccupied();
                     battlefield.getCell(targetCell).setFree();
