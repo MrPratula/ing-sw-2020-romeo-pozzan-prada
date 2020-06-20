@@ -36,6 +36,10 @@ public class SwingView extends View {
     public SwingView(){
     }
 
+    public void setFirst_cell(Cell targetcell){
+        this.first_cell = targetcell;
+    }
+
     public void setWantToUsePower(Boolean power){this.power = power;}
 
 
@@ -277,7 +281,6 @@ public class SwingView extends View {
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
                     this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(Pics.NOT_YOUR_TURN.getImageIcon());
                     //JOptionPane.showMessageDialog(new JFrame(),pack.getMessageOpponents(),"NOT YOUR TURN!! PLEASE WAIT!", JOptionPane.WARNING_MESSAGE, Pics.ERRORICON.getImageIcon());
-                    displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
                 }
                 else {
                     if(pack.getPlayer()!=null)
@@ -288,8 +291,8 @@ public class SwingView extends View {
 
                     this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(Pics.ASK_FOR_SELECT_TOKEN.getImageIcon());
 
-                    displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
                 }
+                displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
                 break;
             }
 
@@ -349,7 +352,9 @@ public class SwingView extends View {
                     dialog.setAlwaysOnTop(true);
                     JOptionPane.showMessageDialog(dialog, pack.getAction().getName().toUpperCase(), "YOUR TURN, "+getPlayer().getUsername(), JOptionPane.WARNING_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
                     this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(Pics.ASK_FOR_BUILD.getImageIcon());
+                    displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), pack.getValidBuilds());
 
+                     /*
                     switch(player.getMyGodCard()) {
 
                         case DEMETER: //prima cella, vuoi usare pow, se si altra cella, se no
@@ -363,8 +368,7 @@ public class SwingView extends View {
                             this.power = false;
                             displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), pack.getValidBuilds());
                             break;
-
-                    }
+                    }*/
                     //displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), pack.getValidBuilds());
                     //this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(Pics.ASK_FOR_BUILD.getImageIcon());
                 }
@@ -393,8 +397,6 @@ public class SwingView extends View {
 
         }
     }
-
-
 
 
     /**
@@ -597,6 +599,25 @@ public class SwingView extends View {
         }
     }
 
+    /**
+     * Tells if a cell got from user is a valid cell.
+     * @param targetCell cell got from user.
+     * @param validCells valid cells got from model.
+     * @return true if target cell is in the valid cells.
+     */
+    public boolean cellIsInValidCells (Cell targetCell, List<Cell> validCells){
+
+        if(targetCell==null || validCells == null || validCells.isEmpty()){
+            return false;
+        }
+
+        for (Cell c: validCells){
+            if (c.equals(targetCell))
+                return true;
+        }
+        return false;
+    }
+
     public boolean notPerimeterCell(Cell targetCell){
         return ((targetCell.getPosX()!=4 && targetCell.getPosY()!=4) && (targetCell.getPosX()!=0 && targetCell.getPosY()!=0));
     }
@@ -703,4 +724,15 @@ public class SwingView extends View {
             }
         }
     }
+
+    /*
+    public List<Cell> newValidBuilds(){
+        switch (player.getMyGodCard()){
+            case DEMETER:{
+
+            }
+        }
+
+    }
+    */
 }

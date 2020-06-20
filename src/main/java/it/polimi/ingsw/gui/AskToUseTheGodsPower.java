@@ -1,27 +1,31 @@
 package it.polimi.ingsw.gui;
 
-import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
+import it.polimi.ingsw.controller.*;
+import it.polimi.ingsw.model.Cell;
+import it.polimi.ingsw.utils.Action;
+import it.polimi.ingsw.utils.PlayerAction;
 import it.polimi.ingsw.utils.ServerResponse;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class AskToUseTheGodsPower extends JDialog{
 
     private final SwingView view;
-    private JFrame mainframe;
+    Cell targetcell;
 
     /**
      * JDialog that asks if the player wants to use his god's power
      * @param swingView
      * @param serverResponse
      */
-    public AskToUseTheGodsPower(SwingView swingView, final ServerResponse serverResponse, final JFrame mainframe){
+    public AskToUseTheGodsPower(final SwingView swingView, final ServerResponse serverResponse, final Cell targetcell){
 
         this.view = swingView;
-        this.mainframe = mainframe;
+        this.targetcell = targetcell;
 
         setTitle("GOD'S POWER");
         setLocationRelativeTo(null);
@@ -48,18 +52,16 @@ public class AskToUseTheGodsPower extends JDialog{
                 } catch (CellOutOfBattlefieldException ex) {
                     ex.printStackTrace();
                 }
-                //new GameFrame(serverResponse,view);
-                //dispose(mainframe.getInnerMainPanel().getBattlefieldGUI());
             }
         });
         no_button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    view.setWantToUsePower(false);
-                    view.displayGui(view.getBattlefieldGUI(),serverResponse.getPack().getModelCopy(), serverResponse.getPack().getValidBuilds());
+                    PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, view.getPlayer(), null, null, view.getSavedToken(), 0, targetcell, null, false, null);
+                    view.notifyClient(playerAction);
                     dispose();
-                } catch (CellOutOfBattlefieldException ex) {
+                } catch (CellOutOfBattlefieldException | IOException | WrongNumberPlayerException | ReachHeightLimitException | CellHeightException | ImpossibleTurnException ex) {
                     ex.printStackTrace();
                 }
             }
