@@ -69,7 +69,6 @@ public class ChooseGodCardToPlayWindow {
 
                                 new GodSelectedWindow(godStringToSplit.toString());
 
-                                //System.out.println(godStringToSplit);
                                 PlayerAction playerAction = new PlayerAction(Action.CHOSE_GOD_CARD, view.getPlayer(), null, null, 0, 0, null, null, false, godStringToSplit.toString());
                                 try {
                                     view.notifyClient(playerAction);

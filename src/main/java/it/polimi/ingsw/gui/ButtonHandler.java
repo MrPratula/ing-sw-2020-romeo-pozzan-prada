@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.model.TokenColor;
 import it.polimi.ingsw.utils.Action;
+import it.polimi.ingsw.utils.Pack;
 import it.polimi.ingsw.utils.PlayerAction;
 import it.polimi.ingsw.utils.ServerResponse;
 
@@ -58,7 +59,7 @@ public class ButtonHandler implements ActionListener {
             case ASK_FOR_SELECT_TOKEN:{
                 int selectedToken = swingView.getToken(cellButton.getCell().getPosX(),cellButton.getCell().getPosY(), swingView.getPlayer());
                 if(selectedToken != 0){
-                    swingView.SavedToken(selectedToken);
+                    swingView.savedToken(selectedToken);
                     PlayerAction playerAction = new PlayerAction(Action.TOKEN_SELECTED, swingView.getPlayer(), null, null, selectedToken, 0, null, null, false, null);
                     try {
                         swingView.notifyClient(playerAction);
@@ -79,7 +80,7 @@ public class ButtonHandler implements ActionListener {
 
 
                 if(targetCell != null){
-                    PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_MOVE_SELECTED, swingView.getPlayer(), null, null, swingView.GetSavedToken(), 0, targetCell, null, false, null);
+                    PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_MOVE_SELECTED, swingView.getPlayer(), null, null, swingView.getSavedToken(), 0, targetCell, null, false, null);
                     try {
                         swingView.notifyClient(playerAction);
                     } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException e) {
@@ -94,6 +95,8 @@ public class ButtonHandler implements ActionListener {
 
             case ASK_FOR_BUILD: {
 
+                Pack pack = currentServerResponse.getPack();
+
                 Cell targetCell = null;
                 power = swingView.wantToUsePower();
                 try {
@@ -102,7 +105,7 @@ public class ButtonHandler implements ActionListener {
                     //Simple Build
                     if(!power) {
                         if (targetCell != null) {
-                            PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, swingView.getPlayer(), null, null, swingView.GetSavedToken(), 0, targetCell, null, false, null);
+                            PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, swingView.getPlayer(), null, null, swingView.getSavedToken(), 0, targetCell, null, false, null);
                             try {
                                 swingView.notifyClient(playerAction);
                             } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException e) {
@@ -116,18 +119,18 @@ public class ButtonHandler implements ActionListener {
                     else {
                         switch (swingView.getPlayer().getMyGodCard()){
                             case DEMETER:{
-                                swingView.buildGod(targetCell);
+                                swingView.buildGod(pack,targetCell);
                                 break;
                             }
                             case HESTIA:{
                                 if(swingView.notPerimeterCell(targetCell)) {
-                                    swingView.buildGod(targetCell);
+                                    swingView.buildGod(pack, targetCell);
                                     break;
                                 }
                             }
                             case ATLAS:
                             case HEPHAESTUS:{
-                                PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, swingView.getPlayer(), null, null, swingView.GetSavedToken(), 0, targetCell, null, true, null);
+                                PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, swingView.getPlayer(), null, null, swingView.getSavedToken(), 0, targetCell, null, true, null);
                                 try {
                                     swingView.notifyClient(playerAction);
                                 } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException e) {
@@ -181,35 +184,6 @@ public class ButtonHandler implements ActionListener {
     }
 
 
-    /**
-     * It removes the token on the starting position
-     * @param prevButton: button of the starting position
-     */
-    private void takeCareOfStartingPosition(CellButton prevButton) {
-
-        switch (prevButton.getCell().getHeight()) {
-            case 0: {
-                checkTokenColor(0, prevButton/*tc*/);
-                break;
-            }
-            case 1: {
-                checkTokenColor(1, prevButton/*tc*/);
-                break;
-            }
-            case 2: {
-                checkTokenColor(2, prevButton/*tc*/);
-                break;
-            }
-            case 3: {
-                checkTokenColor(3, prevButton/*tc*/);
-                break;
-            }
-            default: {
-                System.out.println("\nERRORE SICURO\n");
-                break;
-            }
-        }
-    }
 
     /**
      * It sets che correct image of the height level,
