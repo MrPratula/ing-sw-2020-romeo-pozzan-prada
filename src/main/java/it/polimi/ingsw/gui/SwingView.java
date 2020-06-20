@@ -19,6 +19,7 @@ public class SwingView extends View {
     private GameFrame gameFrame = null;
     private CellButton[][] battlefieldGUI; //maybe delete
     private ServerResponse currentServerResponse;
+    List<Cell> currentValidBuilds=null;
 
     private Player player;
     private int savedToken;
@@ -40,6 +41,10 @@ public class SwingView extends View {
 
     public void setWantToUsePower(Boolean power){this.power = power;}
 
+    public void setValidBuilds(List<Cell>valid){
+        currentValidBuilds = valid;
+    }
+
 
     /*     GETTER      */
 
@@ -60,6 +65,10 @@ public class SwingView extends View {
     }
 
     public Boolean wantToUsePower(){return power;}
+
+    public List<Cell> getCurrentValidBuilds(){
+        return currentValidBuilds;
+    }
 
 
     /**
@@ -703,45 +712,56 @@ public class SwingView extends View {
 
     public List<Cell> newValidBuilds(Cell selectedCell){
         List<Cell> valid = getCurrentServerResponse().getPack().getValidBuilds();
+        List<Cell> targetCells = new ArrayList<>();
+        Cell targetcell = null;
         switch (player.getMyGodCard()){
             case DEMETER:{
-                for(Cell c : valid){
+                for(Cell c: valid){
                     if(c.getPosY()==selectedCell.getPosY() && c.getPosX()==selectedCell.getPosX()){
-                        valid.remove(c);
+                        targetcell=c;
+                        break;
                     }
                 }
+                valid.remove(targetcell);
+                getCurrentServerResponse().getPack().setValidBuilds(valid);
                 break;
             }
             case HESTIA:{
-                for(Cell c : valid){
-                    if(!notPerimeterCell(c)){
-                        valid.remove(c);
+                for(Cell c: valid){
+                    if(notPerimeterCell(c)){
+                        targetCells.add(c);
                     }
                 }
+                getCurrentServerResponse().getPack().setValidBuilds(targetCells);
                 break;
             }
             case HEPHAESTUS:{
-                for (Cell c : valid){
+                for (Cell c: valid){
                     if(c.getPosY()==selectedCell.getPosY() && c.getPosX()==selectedCell.getPosX()){
                         if(c.getHeight()>=2){
-                            valid.remove(c);
+                            targetCells.add(c);
                         }
                     }
                 }
+                getCurrentServerResponse().getPack().setValidBuilds(targetCells);
                 break;
             }
             case ATLAS:{
-                for(Cell c : valid){
+                for(Cell c: valid){
                     if(c.getPosY()==selectedCell.getPosY() && c.getPosX()==selectedCell.getPosX()){
                         if(c.getHeight()==3){
-                            valid.remove(c);
+                            targetCells.add(c);
                         }
                     }
                 }
+                getCurrentServerResponse().getPack().setValidBuilds(targetCells);
                 break;
             }
+            default:
+                throw new IllegalStateException("Unexpected value: " + player.getMyGodCard());
         }
-        return valid;
+        setValidBuilds(getCurrentServerResponse().getPack().getValidBuilds());
+        return getCurrentServerResponse().getPack().getValidBuilds();
     }
 
 }

@@ -109,7 +109,7 @@ public class ButtonHandler implements ActionListener {
                             swingView.setFirst_cell(targetCell);
                             List<Cell> validBuilds = swingView.newValidBuilds(targetCell);
                             if (validBuilds != null) {
-                                new AskToUseTheGodsPower(swingView, currentServerResponse, targetCell, (java.awt.List) validBuilds);
+                                new AskToUseTheGodsPower(swingView, currentServerResponse, targetCell);
                             } else {
                                 PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, swingView.getPlayer(), null, null, swingView.getSavedToken(), 0, targetCell, null, false, null);
                                 swingView.notifyClient(playerAction);

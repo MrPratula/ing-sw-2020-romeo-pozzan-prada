@@ -16,18 +16,16 @@ public class AskToUseTheGodsPower extends JDialog{
 
     private final SwingView view;
     Cell targetcell;
-    List validBuilds;
 
     /**
      * JDialog that asks if the player wants to use his god's power
      * @param swingView
      * @param serverResponse
      */
-    public AskToUseTheGodsPower(final SwingView swingView, final ServerResponse serverResponse, final Cell targetcell, final List valid){
+    public AskToUseTheGodsPower(final SwingView swingView, final ServerResponse serverResponse, final Cell targetcell){
 
         this.view = swingView;
         this.targetcell = targetcell;
-        this.validBuilds = valid;
 
         setTitle("GOD'S POWER");
         setLocationRelativeTo(null);
@@ -49,7 +47,7 @@ public class AskToUseTheGodsPower extends JDialog{
             public void actionPerformed(ActionEvent e) {
                 try {
                     view.setWantToUsePower(true);
-                    view.displayGui(view.getBattlefieldGUI(),serverResponse.getPack().getModelCopy(), (java.util.List<Cell>) validBuilds);
+                    view.displayGui(view.getBattlefieldGUI(),serverResponse.getPack().getModelCopy(), swingView.getCurrentValidBuilds());
                     swingView.buildGod(serverResponse.getPack(),targetcell);
                     dispose();
                 } catch (CellOutOfBattlefieldException | IOException | WrongNumberPlayerException | CellHeightException | ImpossibleTurnException | ReachHeightLimitException ex) {
