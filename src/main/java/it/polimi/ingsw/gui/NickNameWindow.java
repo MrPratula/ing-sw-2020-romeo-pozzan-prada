@@ -39,13 +39,11 @@ public class NickNameWindow extends JDialog{
 
         //textfield to let the user type his nickname
         nicknameTextField = new JTextField(15);
-        //nicknameTextField.setBorder(BorderFactory.createEmptyBorder());
         nicknameTextField.setHorizontalAlignment(JTextField.CENTER);
         nicknameTextField.setBounds(130,130,60,50);
         nicknameTextField.setPreferredSize(new Dimension(250,50));
         nicknameTextField.setMaximumSize(new Dimension(70,10));
         nicknameTextField.setMinimumSize(new Dimension(50,10));
-        //nicknameTextField.setOpaque(false);
         nicknameTextField.setSelectedTextColor(Color.BLACK);
 
         nicknamePanel.add(nicknameTextField, BorderLayout.SOUTH);
@@ -75,11 +73,9 @@ public class NickNameWindow extends JDialog{
         add(nicknamePanel,BorderLayout.CENTER);
         add(confirmButton, BorderLayout.PAGE_END);
 
-
         validate();
         pack();
         setVisible(true);
-
     }
 
 

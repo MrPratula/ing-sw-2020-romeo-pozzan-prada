@@ -5,82 +5,40 @@ import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
 import it.polimi.ingsw.model.TokenColor;
 
 import java.io.IOException;
+import java.util.Scanner;
 
 public class ClientApp {
 
-    public static void main(String[] args) throws CellOutOfBattlefieldException {
+    public static void main(String[] args) {
 
-        Client client = new Client("127.0.0.1", 12345);
+        Client client=null;
+        String ip;
+        boolean needToLoop = true;
 
-        /* //todo FIXARE ALIGNMENT LABEL
-        Pack pack = new Pack(Action.CHOOSE_GOD_CARD_TO_PLAY);
-        pack.setMessageInTurn("fineeeeeeeeee");
-        new GameOverDialog(pack);
-*/
+        while(needToLoop){
 
-        //new GodSelectedWindow("minotaur,prometheus");
+            System.out.println("Insert a LAN ip... 192.168.1.XX");
 
+            try {
+                Scanner scanner = new Scanner(System.in);
+                ip = scanner.nextLine();
 
-        //JOptionPane.showMessageDialog(new JFrame(),new Pack(Action.SELECT_YOUR_GOD_CARD).getAction().getName().toUpperCase(),"AGAIN YOUR TURN, ", JOptionPane.WARNING_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
+                String[] ipArray = ip.split(".");
+                if (ipArray[0].length()==3 && ipArray[1].length()==3 && ipArray[2].length()==1 && ipArray[3].length()<=3) {
+                    client = new Client(ip, 12345);
+                    needToLoop = false;
+                }
 
-        /*      //  PROVA FINESTRA SCELTA SINGOLO GOD
-        List<GodCard> allGodCards = new ArrayList<>();
-        allGodCards.add(GodCard.CHRONUS);
-        allGodCards.add(GodCard.LIMUS);
-        allGodCards.add(GodCard.PROMETHEUS);
-        Pack pack = new Pack(Action.SELECT_YOUR_GOD_CARD);
-        pack.setGodCards(allGodCards);
-        ServerResponse serverResponse = new ServerResponse(TokenColor.RED, pack);
-        new ChooseGodCardWindow(new SwingView(),serverResponse);
-        */
-
-        /*   //  PROVA FINESTRA SCELTA dei GOD
-        List<GodCard> godsDeck = new ArrayList<>(Arrays.asList(GodCard.values()).subList(0, 14));
-        Pack pack = new Pack(Action.CHOOSE_GOD_CARD_TO_PLAY);
-        pack.setGodCards(godsDeck);
-        pack.setNumberOfPlayers(3);
-        ServerResponse serverResponse = new ServerResponse(TokenColor.RED, pack);
-        new ChooseGodCardToPlayWindow(new SwingView(),serverResponse);
-        */
-
-
-        /*   //PROVA GAMEFRAME CON GODS
-        List<GodCard> godsInGame = new ArrayList<>();
-        godsInGame.add(GodCard.ZEUS);
-        //godsInGame.add(GodCard.LIMUS);
-        godsInGame.add(GodCard.ATHENA);
-        Pack pa = new Pack(Action.CHOOSE_GOD_CARD_TO_PLAY);
-        pa.setGodCards(godsInGame);
-        new GameFrame(new ServerResponse(TokenColor.RED, pa),new SwingView());
-*/
-
-
-        //new NickNameWindow(new SwingView());
-
-        //new NumberOfPlayersWindow(new SwingView());
-
-
-        //new WelcomeFrame(new SwingView());
-
-        //new AskPrometheusPowerFrame(new SwingView());
-
-
-            //PROVA test CON GODS
-        /*
-        List<GodCard> godsInGame = new ArrayList<>();
-        godsInGame.add(GodCard.CHRONUS);
-        godsInGame.add(GodCard.ATHENA);
-        godsInGame.add(GodCard.MINOTAUR);
-        new test(godsInGame,new ServerResponse(TokenColor.RED, new Pack(Action.ASK_FOR_BUILD)));
-        */
-
-        //new AskToUseTheGodsPower(new SwingView(),new ServerResponse(TokenColor.RED, new Pack(Action.CHOOSE_GOD_CARD_TO_PLAY)));
+            }catch (Exception e){
+                System.out.println("Insert a LAN ip... 192.168.1.XX");
+                needToLoop=true;
+            }
+        }
 
         try{
             client.run();
         }catch (IOException e){
-            System.err.println(e.getMessage());
+            System.err.println("Can not start the client. May be a wrong IP?");
         }
-
     }
 }
