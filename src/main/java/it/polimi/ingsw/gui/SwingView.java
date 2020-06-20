@@ -414,7 +414,7 @@ public class SwingView extends View {
                 if (validMoves != null) {
                     if (validMoves.contains(newBattlefield.getCell(x, y))) {
                         battlefieldGUI[x][y].getCell().setHeight(newBattlefield.getCell(x, y).getHeight());
-                        battlefieldGUI[x][y].changeImageIcon(selectIcon(null, newBattlefield.getCell(x, y),false, true));
+                        battlefieldGUI[x][y].changeImageIcon(selectIcon(player, newBattlefield.getCell(x, y),false, true));
                         battlefieldGUI[x][y].setRolloverIcon(selectRolloverIcon(newBattlefield.getCell(x,y),false));
                     }
                     else{

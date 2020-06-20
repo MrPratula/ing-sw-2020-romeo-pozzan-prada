@@ -12,15 +12,15 @@ public class ClientApp {
     public static void main(String[] args) {
 
         Client client=null;
-        String ip;
+        String ip = "192.168.1.93";
+        String localHost = "192.168.0.1";
+
         boolean needToLoop = true;
 
         /*
         while(needToLoop){
 
             System.out.println("Insert a LAN ip... 192.168.1.XX");
-
-
 
             try {
                 Scanner scanner = new Scanner(System.in);
@@ -43,10 +43,7 @@ public class ClientApp {
         }
              */
 
-
-        ip = "192.168.1.93";
         client = new Client(ip, 12345);
-
 
         try{
             client.run();
