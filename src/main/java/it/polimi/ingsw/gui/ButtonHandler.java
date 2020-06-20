@@ -2,6 +2,7 @@ package it.polimi.ingsw.gui;
 
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.controller.*;
+import it.polimi.ingsw.model.GodCard;
 import it.polimi.ingsw.model.TokenColor;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.Pack;
@@ -9,9 +10,11 @@ import it.polimi.ingsw.utils.PlayerAction;
 import it.polimi.ingsw.utils.ServerResponse;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.List;
 
 
 public class ButtonHandler implements ActionListener {
@@ -65,7 +68,6 @@ public class ButtonHandler implements ActionListener {
                     PlayerAction playerAction = new PlayerAction(Action.TOKEN_SELECTED, swingView.getPlayer(), null, null, selectedToken, 0, null, null, false, null);
                     try {
                         swingView.notifyClient(playerAction);
-                        //mainframe.dispose();
                     } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException e) {
                         e.printStackTrace();
                     }
@@ -81,9 +83,8 @@ public class ButtonHandler implements ActionListener {
             case ASK_FOR_WHERE_TO_MOVE:{
                 Cell targetCell = swingView.getCell(cellButton.getCell().getPosX(), cellButton.getCell().getPosY(), currentServerResponse.getPack().getModelCopy().getBattlefield());
 
-
-
-                if(targetCell != null){
+                //cell != null and it has to be one of the valid move
+                if(targetCell != null && swingView.cellIsInValidCells(targetCell,currentServerResponse.getPack().getValidMoves())){
                     PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_MOVE_SELECTED, swingView.getPlayer(), null, null, swingView.getSavedToken(), 0, targetCell, null, false, null);
                     try {
                         swingView.notifyClient(playerAction);
@@ -94,16 +95,31 @@ public class ButtonHandler implements ActionListener {
                 else {
                     final JDialog dialog = new JDialog();
                     dialog.setAlwaysOnTop(true);
-                    JOptionPane.showMessageDialog(dialog, "You can't place your token here! Already occupied!", "Error", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());
+                    JOptionPane.showMessageDialog(dialog, "You can't place your token here! That cell is not a valid move!", "Error", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());
                 }
                 break;
             }
 
             case ASK_FOR_BUILD: {
 
-                Pack pack = currentServerResponse.getPack();
+                Cell targetCell;
+                try {
+                    targetCell = currentServerResponse.getPack().getModelCopy().getBattlefield().getCell(cellButton.getCell().getPosX(),cellButton.getCell().getPosY());
+                    if(swingView.getPlayer().getMyGodCard() == GodCard.DEMETER || swingView.getPlayer().getMyGodCard() == GodCard.HESTIA || swingView.getPlayer().getMyGodCard() == GodCard.HEPHAESTUS || swingView.getPlayer().getMyGodCard() == GodCard.ATLAS) {
+                        swingView.setFirst_cell(targetCell);
+                        //List<Cell> validMoves = swingView.newValidBuilds();
+                        new AskToUseTheGodsPower(swingView, currentServerResponse,targetCell);
+                    }
 
-                Cell targetCell = null;
+
+
+                } catch (CellOutOfBattlefieldException e) {
+                    e.printStackTrace();
+                }
+
+
+
+
                 power = swingView.wantToUsePower();
                 try {
                     targetCell = currentServerResponse.getPack().getModelCopy().getBattlefield().getCell(cellButton.getCell().getPosX(),cellButton.getCell().getPosY());
@@ -128,7 +144,7 @@ public class ButtonHandler implements ActionListener {
                         switch (swingView.getPlayer().getMyGodCard()){
                             case DEMETER:
                             case HESTIA: {
-                                swingView.buildGod(pack,targetCell);
+                                swingView.buildGod(currentServerResponse.getPack(),targetCell);
                                 break;
                             }
                             case ATLAS:
