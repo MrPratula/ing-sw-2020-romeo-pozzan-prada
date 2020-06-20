@@ -64,13 +64,11 @@ public class InnerMainPanel {
 
             final JLabel playerText = new JLabel(new ImageIcon(new File("./src/main/images/godcards/" + godsInGame.get(i).name().toLowerCase() + "Panel.png").getAbsolutePath()));
 
-            //final GodLabel playerText = new GodLabel();
-            //playerText.changeGodLabel(new ImageIcon(new File("./src/main/images/godcards/" + godsInGame.get(i).name().toLowerCase() + "Panel.png").getAbsolutePath()));
             final int finalI = i;
             playerText.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
-                        playerText.setText("Player " + allPlayers.get(finalI).getTokenColor().name() + " - " + allPlayers.get(finalI).getUsername().toUpperCase() );
+                    playerText.setText("Player " + allPlayers.get(finalI).getTokenColor().name() + " - " + allPlayers.get(finalI).getUsername().toUpperCase() );
                 }
                 @Override
                 public void mouseExited(MouseEvent e) {

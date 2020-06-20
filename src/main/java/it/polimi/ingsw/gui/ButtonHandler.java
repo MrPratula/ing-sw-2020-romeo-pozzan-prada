@@ -47,7 +47,9 @@ public class ButtonHandler implements ActionListener {
                         }
                     }
                     else {
-                        JOptionPane.showMessageDialog(new JFrame(), "You can't place your token here! Already occupied!", "Error", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());
+                        final JDialog dialog = new JDialog();
+                        dialog.setAlwaysOnTop(true);
+                        JOptionPane.showMessageDialog(dialog, "You can't place your token here! Already occupied!", "Error", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());
                     }
                 } catch (CellOutOfBattlefieldException e) {
                     e.printStackTrace();
@@ -69,7 +71,9 @@ public class ButtonHandler implements ActionListener {
                     }
                 }
                 else{
-                    JOptionPane.showMessageDialog(new JFrame(), "You have to select one of your tokens!", "Error", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());
+                    final JDialog dialog = new JDialog();
+                    dialog.setAlwaysOnTop(true);
+                    JOptionPane.showMessageDialog(dialog, "You have to select one of your tokens!", "Error", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());
                 }
                 break;
             }
@@ -88,7 +92,9 @@ public class ButtonHandler implements ActionListener {
                     }
                 }
                 else {
-                    JOptionPane.showMessageDialog(new JFrame(), "You can't place your token here! Already occupied!", "Error", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());
+                    final JDialog dialog = new JDialog();
+                    dialog.setAlwaysOnTop(true);
+                    JOptionPane.showMessageDialog(dialog, "You can't place your token here! Already occupied!", "Error", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());
                 }
                 break;
             }
@@ -112,7 +118,9 @@ public class ButtonHandler implements ActionListener {
                                 e.printStackTrace();
                             }
                         } else {
-                            JOptionPane.showMessageDialog(new JFrame(), "You can't place your token here! Already occupied!", "Error", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());
+                            final JDialog dialog = new JDialog();
+                            dialog.setAlwaysOnTop(true);
+                            JOptionPane.showMessageDialog(dialog, "You can't place your token here! Already occupied!", "Error", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());
                         }
                         break;
                     }
@@ -194,7 +202,9 @@ public class ButtonHandler implements ActionListener {
     public void incrementHeight() throws CellHeightException, ReachHeightLimitException {
 
         if(cellButton.getCell().getIsDome()){
-            JOptionPane.showMessageDialog(new JFrame(),"You can't build over a dome!","Error", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());  //posso anche mettere un'immagine error
+            final JDialog dialog = new JDialog();
+            dialog.setAlwaysOnTop(true);
+            JOptionPane.showMessageDialog(dialog,"You can't build over a dome!","Error", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());  //posso anche mettere un'immagine error
         }
 
         else {

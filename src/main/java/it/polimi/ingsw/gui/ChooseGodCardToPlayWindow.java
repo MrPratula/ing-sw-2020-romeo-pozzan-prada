@@ -64,8 +64,6 @@ public class ChooseGodCardToPlayWindow {
                                 for (GodCard g : selectedGods) {
                                     godStringToSplit.append(g.name().toUpperCase()).append(",");
                                 }
-                                //inutile swingView.setGodCardsForTheGame(godStringToSplit.toString());
-                                //JOptionPane.showMessageDialog(new JFrame(), "Ok! Thanks for the selections. The GodCards in game will be: "+godStringToSplit, "Selection confirmed", JOptionPane.INFORMATION_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
 
                                 new GodSelectedWindow(godStringToSplit.toString());
 
@@ -103,7 +101,9 @@ public class ChooseGodCardToPlayWindow {
         mainFrame.setLocationRelativeTo(null);
 
         //Frame che dice al giocatore cosa fare (cioè che dovrà scegliere 2 o 3 god)
-        JOptionPane.showMessageDialog(new JFrame(), "Select the "+n+" GodCards for this game", "GodCard", JOptionPane.INFORMATION_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
+        final JDialog dialog = new JDialog();
+        dialog.setAlwaysOnTop(true);
+        JOptionPane.showMessageDialog(dialog, "Select the "+n+" GodCards for this game", "GodCard", JOptionPane.INFORMATION_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
     }
 
 

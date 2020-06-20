@@ -18,13 +18,12 @@ import java.util.List;
 public class GameFrame extends JFrame {
 
 
-    private InnerMainPanel innerMainPanel;
+    private final InnerMainPanel innerMainPanel;
 
     private final SwingView view;
     private final ServerResponse serverResponse;
     private List<GodCard> godsInGame;
-    List<Player> allPlayers = new ArrayList<>();
-    //Battlefield battlefield;
+    private List<Player> allPlayers = new ArrayList<>();
 
 
 
