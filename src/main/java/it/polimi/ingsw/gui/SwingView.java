@@ -263,7 +263,9 @@ public class SwingView extends View {
                         contPlaceToken++;
                     }
                     else{
-                        JOptionPane.showMessageDialog(new JFrame(),pack.getAction().getName().toUpperCase(),"AGAIN YOUR TURN! PLACE YOUR SECOND TOKEN! "+getPlayer().getUsername(), JOptionPane.WARNING_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
+                        final JDialog dialog = new JDialog();
+                        dialog.setAlwaysOnTop(true);
+                        JOptionPane.showMessageDialog(dialog,pack.getAction().getName().toUpperCase(),"AGAIN YOUR TURN! PLACE YOUR SECOND TOKEN! "+getPlayer().getUsername(), JOptionPane.WARNING_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
                         displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
                     }
                 }
@@ -447,12 +449,12 @@ public class SwingView extends View {
 
                 battlefieldGUI[x][y].getCell().setHeight(battlefield.getCell(x, y).getHeight());
                 battlefieldGUI[x][y].getCell().setIsDome();
-                battlefieldGUI[x][y].changeImageIcon(selectIcon(null, battlefield.getCell(x, y), true,false));
+                battlefieldGUI[x][y].changeImageIcon(selectIcon(player, battlefield.getCell(x, y), true,false));
                 battlefieldGUI[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x, y), true));
             }
             else {
                 battlefieldGUI[x][y].getCell().setHeight(battlefield.getCell(x, y).getHeight());
-                battlefieldGUI[x][y].changeImageIcon(selectIcon(null, battlefield.getCell(x, y), false,false));
+                battlefieldGUI[x][y].changeImageIcon(selectIcon(player, battlefield.getCell(x, y), false,false));
                 battlefieldGUI[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x, y),false));
             }
         }
@@ -504,7 +506,7 @@ public class SwingView extends View {
         ImageIcon toReturn = new ImageIcon();
 
         //player not present
-        if(player == null) {
+        if(!(cell.equals(player.getToken1().getTokenPosition()) || cell.equals(player.getToken2().getTokenPosition())) ) {
             //valid moves to display
             if(iHaveToDisplayValidMoves)
                 return switchOnHeight(cell.getHeight(), Pics.LEVEL0VALIDMOVE, Pics.LEVEL1VALIDMOVE, Pics.LEVEL2VALIDMOVE, Pics.LEVEL3VALIDMOVE);
