@@ -96,6 +96,7 @@ public class Server  {
 
 
                 System.out.println("Someone connected on address ---->      "+socket.getRemoteSocketAddress().toString());
+
                 
 
                 // Create a Connection for that specific client
