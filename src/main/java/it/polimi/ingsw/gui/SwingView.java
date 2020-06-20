@@ -763,5 +763,4 @@ public class SwingView extends View {
         setValidBuilds(getCurrentServerResponse().getPack().getValidBuilds());
         return getCurrentServerResponse().getPack().getValidBuilds();
     }
-
 }
