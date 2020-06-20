@@ -653,20 +653,26 @@ public class SwingView extends View {
                     break;
                 }
                 if (count == 0) {
-                    count = 2;
+                    //if the two selected cell are different (different coordinate)
+                    if(targetCell.getPosX()!=first_cell.getPosX() || targetCell.getPosY() != first_cell.getPosY()) {
+                        count = 2;
 
-                    List<Cell> newValidBuilds = new ArrayList<>();
-                    for(Cell c : pack.getValidBuilds()){
-                        if(!c.equals(targetCell))
-                            newValidBuilds.add(c);
+                        List<Cell> newValidBuilds = new ArrayList<>();
+                        for (Cell c : pack.getValidBuilds()) {
+                            if (!c.equals(targetCell))
+                                newValidBuilds.add(c);
+                        }
+                        SwingView.this.displayGui(getBattlefieldGUI(), pack.getModelCopy(), newValidBuilds);
+
+                        this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(Pics.SECOND_BUILD.getImageIcon());
+
+                        PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, player, null, null, savedToken, 0, first_cell, targetCell, true, null);
+                        notifyClient(playerAction);
+                        first_cell = null;
                     }
-                    SwingView.this.displayGui(getBattlefieldGUI(), pack.getModelCopy(), newValidBuilds);
-
-                    this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(Pics.SECOND_BUILD.getImageIcon());
-
-                    PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, player, null, null, savedToken, 0, first_cell, targetCell, true, null);
-                    notifyClient(playerAction);
-                    first_cell = null;
+                    else{
+                        JOptionPane.showMessageDialog(new JFrame(), "You can't build twice in the same cell", "Error", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());
+                    }
                     break;
                 }
                 break;
@@ -677,157 +683,20 @@ public class SwingView extends View {
                     break;
                 }
                 if(count == 0){
-                    count = 2;
-                    PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, player, null, null, savedToken, 0, first_cell, targetCell, true, null);
-                    notifyClient(playerAction);
-                    first_cell = null;
+
+                    //the cell of the second buil can't be a perimeter cell.
+                    if(notPerimeterCell(targetCell)) {
+                        count = 2;
+                        PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, player, null, null, savedToken, 0, first_cell, targetCell, true, null);
+                        notifyClient(playerAction);
+                        first_cell = null;
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(new JFrame(), "You can't select a perimeter cell", "Error", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());
+                    }
                     break;
                 }
             }
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
