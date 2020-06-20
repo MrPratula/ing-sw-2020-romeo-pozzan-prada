@@ -57,7 +57,7 @@ public class AthenaMovesTest {
 
         if (enemyGodCards.contains(GodCard.ATHENA) && Model.isDidAthenaMovedUp()) {
             MoveContext thisMove2 = new MoveContext(new AthenaMoves());
-            validMoves = thisMove2.executeValidMoves(selectedToken, null, null, null, null, null, validMoves);
+            validMoves = thisMove2.executeValidMoves(selectedToken, null, null, null, null, battlefield, validMoves);
         }
         Assert.assertEquals(8, validMoves.size());
     }
@@ -91,7 +91,7 @@ public class AthenaMovesTest {
 
         if (enemyGodCards.contains(GodCard.ATHENA) && Model.isDidAthenaMovedUp()) {
             MoveContext thisMove2 = new MoveContext(new AthenaMoves());
-            validMoves = thisMove2.executeValidMoves(selectedToken, null, null, null, null, null, validMoves);
+            validMoves = thisMove2.executeValidMoves(selectedToken, null, null, null, null, battlefield, validMoves);
         }
         Assert.assertEquals(2, validMoves.size());
         Assert.assertTrue(validMoves.contains(battlefield.getCell(3,1)));
