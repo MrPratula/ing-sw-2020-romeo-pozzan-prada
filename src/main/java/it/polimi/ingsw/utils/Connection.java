@@ -206,7 +206,7 @@ public class Connection extends Observable<PlayerAction> implements Runnable{
 
 
     /**
-     * @param name string to ckeck. It is the user input for his username.
+     * @param name string to check. It is the user input for his username.
      * @return true if it is not empty, too long(<=16) or with spaces.
      */
     public boolean isAGoodName(String name){

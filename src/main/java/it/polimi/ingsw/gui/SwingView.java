@@ -339,7 +339,6 @@ public class SwingView extends View {
                         case HESTIA:
                         case HEPHAESTUS:
                         case ATLAS: {
-                            displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), pack.getValidBuilds());
                             new AskToUseTheGodsPower(this, serverResponse, this.gameFrame);
                             break;
                         }
@@ -622,18 +621,18 @@ public class SwingView extends View {
 
     /**
      * In case a player wants to use the power of Demeter or Hestia (the cases where you can build
-     * twice) the buttonHandler call this method (twice) to save the two targetcell. At the end of
+     * twice) the buttonHandler call this method (twice) to save the two targetCell. At the end of
      * the second call the playerAction is sent.
-     * @param targetcell the selected cell in which the player wants to build
+     * @param targetCell the selected cell in which the player wants to build
      */
-    public void buildGod(Pack pack, Cell targetcell) throws ImpossibleTurnException, IOException, CellHeightException, WrongNumberPlayerException, ReachHeightLimitException, CellOutOfBattlefieldException {
+    public void buildGod(Pack pack, Cell targetCell) throws ImpossibleTurnException, IOException, CellHeightException, WrongNumberPlayerException, ReachHeightLimitException, CellOutOfBattlefieldException {
 
         count --;
         switch (player.getMyGodCard()) {
             case DEMETER: {
                 if (count == 1) {
                     SwingView.this.displayGui(getBattlefieldGUI(), pack.getModelCopy(), pack.getValidBuilds());
-                    first_cell = targetcell;
+                    first_cell = targetCell;
                     break;
                 }
                 if (count == 0) {
@@ -641,14 +640,14 @@ public class SwingView extends View {
 
                     List<Cell> newValidBuilds = new ArrayList<>();
                     for(Cell c : pack.getValidBuilds()){
-                        if(!c.equals(targetcell))
+                        if(!c.equals(targetCell))
                             newValidBuilds.add(c);
                     }
                     SwingView.this.displayGui(getBattlefieldGUI(), pack.getModelCopy(), newValidBuilds);
 
                     this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(Pics.SECOND_BUILD.getImageIcon());
 
-                    PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, player, null, null, savedToken, 0, first_cell, targetcell, true, null);
+                    PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, player, null, null, savedToken, 0, first_cell, targetCell, true, null);
                     notifyClient(playerAction);
                     first_cell = null;
                     break;
@@ -657,12 +656,12 @@ public class SwingView extends View {
             }
             case HESTIA:{
                 if(count == 1){
-                    first_cell = targetcell;
+                    first_cell = targetCell;
                     break;
                 }
                 if(count == 0){
                     count = 2;
-                    PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, player, null, null, savedToken, 0, first_cell, targetcell, true, null);
+                    PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, player, null, null, savedToken, 0, first_cell, targetCell, true, null);
                     notifyClient(playerAction);
                     first_cell = null;
                     break;

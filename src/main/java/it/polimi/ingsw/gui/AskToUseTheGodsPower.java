@@ -14,7 +14,7 @@ public class AskToUseTheGodsPower extends JDialog{
     private JFrame mainframe;
 
     /**
-     * JDialog thats asks if the player wants to use his god's power
+     * JDialog that asks if the player wants to use his god's power
      * @param swingView
      * @param serverResponse
      */
@@ -43,7 +43,7 @@ public class AskToUseTheGodsPower extends JDialog{
             public void actionPerformed(ActionEvent e) {
                 try {
                     view.setWantToUsePower(true);
-                    view.displayGui(view.getBattlefieldGUI(),serverResponse.getPack().getModelCopy(), null);
+                    view.displayGui(view.getBattlefieldGUI(),serverResponse.getPack().getModelCopy(), serverResponse.getPack().getValidBuilds());
                     dispose();
                 } catch (CellOutOfBattlefieldException ex) {
                     ex.printStackTrace();
@@ -57,7 +57,7 @@ public class AskToUseTheGodsPower extends JDialog{
             public void actionPerformed(ActionEvent e) {
                 try {
                     view.setWantToUsePower(false);
-                    view.displayGui(view.getBattlefieldGUI(),serverResponse.getPack().getModelCopy(), null);
+                    view.displayGui(view.getBattlefieldGUI(),serverResponse.getPack().getModelCopy(), serverResponse.getPack().getValidBuilds());
                     dispose();
                 } catch (CellOutOfBattlefieldException ex) {
                     ex.printStackTrace();
