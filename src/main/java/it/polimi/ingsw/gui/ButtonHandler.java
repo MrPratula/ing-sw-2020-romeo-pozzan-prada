@@ -22,7 +22,6 @@ public class ButtonHandler implements ActionListener {
     final private CellButton cellButton;
     private ServerResponse currentServerResponse; //todo fixme
     private final SwingView swingView;
-    private Boolean power;
 
 
     public ButtonHandler(CellButton cellButton, SwingView swingView) {
@@ -105,60 +104,27 @@ public class ButtonHandler implements ActionListener {
                 Cell targetCell;
                 try {
                     targetCell = currentServerResponse.getPack().getModelCopy().getBattlefield().getCell(cellButton.getCell().getPosX(),cellButton.getCell().getPosY());
-                    if(swingView.getPlayer().getMyGodCard() == GodCard.DEMETER || swingView.getPlayer().getMyGodCard() == GodCard.HESTIA || swingView.getPlayer().getMyGodCard() == GodCard.HEPHAESTUS || swingView.getPlayer().getMyGodCard() == GodCard.ATLAS) {
-                        swingView.setFirst_cell(targetCell);
-                        //List<Cell> validMoves = swingView.newValidBuilds();
-                        new AskToUseTheGodsPower(swingView, currentServerResponse,targetCell);
-                    }
-
-
-
-                } catch (CellOutOfBattlefieldException e) {
-                    e.printStackTrace();
-                }
-
-
-
-
-                power = swingView.wantToUsePower();
-                try {
-                    targetCell = currentServerResponse.getPack().getModelCopy().getBattlefield().getCell(cellButton.getCell().getPosX(),cellButton.getCell().getPosY());
-
-                    //Simple Build
-                    if(!power) {
-                        if (targetCell != null) {
-                            PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, swingView.getPlayer(), null, null, swingView.getSavedToken(), 0, targetCell, null, false, null);
-                            try {
+                    if(!swingView.wantToUsePower()) {
+                        if (swingView.getPlayer().getMyGodCard() == GodCard.DEMETER || swingView.getPlayer().getMyGodCard() == GodCard.HESTIA || swingView.getPlayer().getMyGodCard() == GodCard.HEPHAESTUS || swingView.getPlayer().getMyGodCard() == GodCard.ATLAS) {
+                            swingView.setFirst_cell(targetCell);
+                            List<Cell> validBuilds = swingView.newValidBuilds(targetCell);
+                            if (validBuilds != null) {
+                                new AskToUseTheGodsPower(swingView, currentServerResponse, targetCell, (java.awt.List) validBuilds);
+                            } else {
+                                PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, swingView.getPlayer(), null, null, swingView.getSavedToken(), 0, targetCell, null, false, null);
                                 swingView.notifyClient(playerAction);
-                            } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            final JDialog dialog = new JDialog();
-                            dialog.setAlwaysOnTop(true);
-                            JOptionPane.showMessageDialog(dialog, "You can't place your token here! Already occupied!", "Error", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());
-                        }
-                        break;
-                    }
-                    else {
-                        switch (swingView.getPlayer().getMyGodCard()){
-                            case DEMETER:
-                            case HESTIA: {
-                                swingView.buildGod(currentServerResponse.getPack(),targetCell);
-                                break;
-                            }
-                            case ATLAS:
-                            case HEPHAESTUS:{
-                                PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, swingView.getPlayer(), null, null, swingView.getSavedToken(), 0, targetCell, null, true, null);
-                                try {
-                                    swingView.notifyClient(playerAction);
-                                } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException e) {
-                                    e.printStackTrace();
-                                }
                             }
                         }
+                        //In case the god's player isn't one of them (upper if).
+                        else {
+                            PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, swingView.getPlayer(), null, null, swingView.getSavedToken(), 0, targetCell, null, false, null);
+                            swingView.notifyClient(playerAction);
+                        }
                     }
-                } catch (CellOutOfBattlefieldException | IOException | WrongNumberPlayerException | CellHeightException | ImpossibleTurnException | ReachHeightLimitException e) {
+                    else{
+                        swingView.buildGod(currentServerResponse.getPack(),targetCell);
+                    }
+                } catch (CellOutOfBattlefieldException | IOException | WrongNumberPlayerException | ReachHeightLimitException | CellHeightException | ImpossibleTurnException e) {
                     e.printStackTrace();
                 }
             }

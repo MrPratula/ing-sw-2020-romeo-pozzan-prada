@@ -15,15 +15,13 @@ import javax.swing.*;
 
 public class SwingView extends View {
 
-    private int contPlaceToken = 0 , getContPlaceToken2 = 0;
+    private int contPlaceToken = 0;
     private GameFrame gameFrame = null;
     private CellButton[][] battlefieldGUI; //maybe delete
     private ServerResponse currentServerResponse;
 
     private Player player;
     private int savedToken;
-    private String godcardsForTheGame;
-    private List<GodCard> godsInGame = new ArrayList<>();
 
     private int count = 2;
     private Cell first_cell;
@@ -333,7 +331,6 @@ public class SwingView extends View {
             }
 
 
-
             case ASK_FOR_BUILD:{
 
                 Pack pack = serverResponse.getPack();
@@ -348,29 +345,12 @@ public class SwingView extends View {
                     if (pack.getPlayer() != null)
                         this.player = pack.getPlayer();
 
+                    this.power = false;
                     final JDialog dialog = new JDialog();
                     dialog.setAlwaysOnTop(true);
                     JOptionPane.showMessageDialog(dialog, pack.getAction().getName().toUpperCase(), "YOUR TURN, "+getPlayer().getUsername(), JOptionPane.WARNING_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
                     this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(Pics.ASK_FOR_BUILD.getImageIcon());
                     displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), pack.getValidBuilds());
-
-                     /*
-                    switch(player.getMyGodCard()) {
-
-                        case DEMETER: //prima cella, vuoi usare pow, se si altra cella, se no
-                        case HESTIA:
-                        case HEPHAESTUS:
-                        case ATLAS: {
-                            new AskToUseTheGodsPower(this, serverResponse, this.gameFrame);
-                            break;
-                        }
-                        default:
-                            this.power = false;
-                            displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), pack.getValidBuilds());
-                            break;
-                    }*/
-                    //displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), pack.getValidBuilds());
-                    //this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(Pics.ASK_FOR_BUILD.getImageIcon());
                 }
                 break;
             }
@@ -622,10 +602,6 @@ public class SwingView extends View {
         return ((targetCell.getPosX()!=4 && targetCell.getPosY()!=4) && (targetCell.getPosX()!=0 && targetCell.getPosY()!=0));
     }
 
-    public void setGodCardsForTheGame(String g) {
-        this.godcardsForTheGame = g;
-    }
-
     public boolean isFree(Cell targetCell, ModelUtils modelCopy){
 
         List<Player> allPlayers = modelCopy.getAllPlayers();
@@ -725,14 +701,47 @@ public class SwingView extends View {
         }
     }
 
-    /*
-    public List<Cell> newValidBuilds(){
+    public List<Cell> newValidBuilds(Cell selectedCell){
+        List<Cell> valid = getCurrentServerResponse().getPack().getValidBuilds();
         switch (player.getMyGodCard()){
             case DEMETER:{
-
+                for(Cell c : valid){
+                    if(c.getPosY()==selectedCell.getPosY() && c.getPosX()==selectedCell.getPosX()){
+                        valid.remove(c);
+                    }
+                }
+                break;
+            }
+            case HESTIA:{
+                for(Cell c : valid){
+                    if(!notPerimeterCell(c)){
+                        valid.remove(c);
+                    }
+                }
+                break;
+            }
+            case HEPHAESTUS:{
+                for (Cell c : valid){
+                    if(c.getPosY()==selectedCell.getPosY() && c.getPosX()==selectedCell.getPosX()){
+                        if(c.getHeight()>=2){
+                            valid.remove(c);
+                        }
+                    }
+                }
+                break;
+            }
+            case ATLAS:{
+                for(Cell c : valid){
+                    if(c.getPosY()==selectedCell.getPosY() && c.getPosX()==selectedCell.getPosX()){
+                        if(c.getHeight()==3){
+                            valid.remove(c);
+                        }
+                    }
+                }
+                break;
             }
         }
-
+        return valid;
     }
-    */
+
 }
