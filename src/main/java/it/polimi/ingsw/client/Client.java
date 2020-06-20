@@ -127,7 +127,6 @@ public class Client extends Observable<ServerResponse> implements Observer<Playe
             number = 1;
         }
 
-
         Socket socket = new Socket(ip, port);
         System.out.println("Connection established!");
         setActive(true);
