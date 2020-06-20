@@ -671,6 +671,7 @@ public class SwingView extends View {
                         first_cell = null;
                     }
                     else{
+                        count = 1;
                         JOptionPane.showMessageDialog(new JFrame(), "You can't build twice in the same cell", "Error", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());
                     }
                     break;
@@ -692,6 +693,7 @@ public class SwingView extends View {
                         first_cell = null;
                     }
                     else{
+                        count = 1;
                         JOptionPane.showMessageDialog(new JFrame(), "You can't select a perimeter cell", "Error", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());
                     }
                     break;
