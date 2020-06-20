@@ -118,15 +118,10 @@ public class ButtonHandler implements ActionListener {
                     }
                     else {
                         switch (swingView.getPlayer().getMyGodCard()){
-                            case DEMETER:{
+                            case DEMETER:
+                            case HESTIA: {
                                 swingView.buildGod(pack,targetCell);
                                 break;
-                            }
-                            case HESTIA:{
-                                if(swingView.notPerimeterCell(targetCell)) {
-                                    swingView.buildGod(pack, targetCell);
-                                    break;
-                                }
                             }
                             case ATLAS:
                             case HEPHAESTUS:{
