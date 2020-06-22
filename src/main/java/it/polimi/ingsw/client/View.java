@@ -691,12 +691,8 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                 printCLI(pack.getModelCopy(), pack.getValidBuilds());
                 System.out.println(pack.getMessageInTurn());
 
-                if (!player.getTokenColor().equals(serverResponse.getTurn())){
-                    System.out.println("YOU LOST");
-                }
-                else {
-                    System.out.println("YOU WON");
-                }
+                System.out.println("GAME OVER!");
+
                 break;
             }
         }

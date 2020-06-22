@@ -34,7 +34,6 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     private Token prometheusToken;
     private ServerResponse lastSentServerResponse;
 
-
     public Model() {
         this.battlefield = new Battlefield();
     }
@@ -156,30 +155,15 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      */
     public Player getNextPlayer() {
 
-        int playerIndex;
-
-        switch (getTurn()){
-
-            case RED:{
-                playerIndex=1;
+        Player playerInTurn = getPlayerInTurn();
+        int index = 0;
+        for (Player p: allPlayers){
+            if (p.equals(playerInTurn))
                 break;
-            }
-            case BLUE:{
-                if (allPlayers.size()==2)
-                    playerIndex=0;
-                else
-                    playerIndex=2;
-                break;
-            }
-            case YELLOW:{
-                playerIndex=0;
-                break;
-            }
-            default:{
-                return null;
-            }
+            index++;
         }
-        return allPlayers.get(playerIndex);
+
+        return allPlayers.get(index+1);
     }
 
 
@@ -1109,7 +1093,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         String message = winner.toUpperCase()+" won the game!";
         pack.setMessageInTurn(message);
         pack.setModelCopy(getCopy());
-
+        Controller.setGameOver();
         return new ServerResponse (getTurn(), pack);
     }
 
@@ -1287,6 +1271,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         notify(serverResponse);
     }
 
+
     /**
      * Check if the two cells have different coordinates.
      */
@@ -1296,6 +1281,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         return !(firstCell.getPosX()==secondCell.getPosX() && firstCell.getPosY()==secondCell.getPosY());
     }
 
+
     /**
      * Check if the targetCell is a perimeter cell.
      */
@@ -1304,4 +1290,62 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             return false;
         return ((targetCell.getPosX()!=4 && targetCell.getPosY()!=4) && (targetCell.getPosX()!=0 && targetCell.getPosY()!=0));
     }
+
+
+    /**
+     * When a player disconnected if there are 2 players the last one win the game,
+     * else he is removed from the game and the game goes on.
+     * @param name name of the player who disconnect.
+     */
+    public void disconnected(String name) throws ImpossibleTurnException, IOException, CellHeightException, WrongNumberPlayerException, ReachHeightLimitException, CellOutOfBattlefieldException {
+
+        Player looser = null;
+        for (Player p: allPlayers){
+            if (p.getUsername().toUpperCase().equals(name.toUpperCase())) {
+                looser = p;
+                break;
+            }
+        }
+        assert looser != null;
+
+        // If there are 2 players
+        if (allPlayers.size()==2){
+
+            ServerResponse serverResponse;
+
+            if (looser.getUsername().toUpperCase().equals(name.toUpperCase()))
+                serverResponse = gameOver(getNextPlayer().getUsername());
+            else
+                serverResponse = gameOver(name);
+
+            notify(serverResponse);
+        }
+
+        // If there are 3 players
+        else {
+
+            // If it is my turn, than the turn must be updated and next player have to play
+            if (getPlayerInTurn().equals(looser)){
+                ServerResponse serverResponse = playerLost(looser);
+                notify(serverResponse);
+            }
+            // If not then nothing happen, I am just removed from the game
+            else {
+                playerLost(looser);
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

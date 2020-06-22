@@ -1,6 +1,7 @@
 package it.polimi.ingsw.utils;
 
 import it.polimi.ingsw.controller.*;
+import it.polimi.ingsw.model.Model;
 import it.polimi.ingsw.server.Server;
 
 import java.io.*;
@@ -198,7 +199,12 @@ public class Connection extends Observable<PlayerAction> implements Runnable{
             }
 
         } catch(IOException | CellOutOfBattlefieldException | ImpossibleTurnException | ReachHeightLimitException | CellHeightException | WrongNumberPlayerException | ClassNotFoundException e){
-            System.err.println(name.toUpperCase()+" has disconnected!");
+            System.err.println(name.toUpperCase()+" has disconnected!\n He will loose the game!");
+            try {
+                server.getModel().disconnected(name);
+            } catch (ImpossibleTurnException | IOException | CellHeightException | WrongNumberPlayerException | ReachHeightLimitException | CellOutOfBattlefieldException impossibleTurnException) {
+                System.err.println("Can't make a player loose...");
+            }
         } finally {
             close();
         }
