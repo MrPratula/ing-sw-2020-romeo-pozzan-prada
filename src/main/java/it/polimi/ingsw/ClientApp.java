@@ -11,9 +11,9 @@ public class ClientApp {
 
     public static void main(String[] args) {
 
-        Client client=null;
+        Client client = null;
         String ip = "192.168.1.93";
-        String localHost = "192.168.1.149";
+        String localHostFede = "192.168.1.149";
         String localHostRichi = "192.168.1.7";
 
         boolean needToLoop = true;
@@ -44,7 +44,7 @@ public class ClientApp {
         }
              */
 
-        client = new Client(localHostRichi, 12345);
+        client = new Client(localHostFede, 12345);
 
         try{
             client.run();
