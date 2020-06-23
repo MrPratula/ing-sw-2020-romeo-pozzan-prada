@@ -7,7 +7,7 @@ import it.polimi.ingsw.model.TokenColor;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class ClientApp {
+public class ClientAppCLI {
 
     public static void main(String[] args) {
 
@@ -49,7 +49,7 @@ public class ClientApp {
         client = new Client(localHost, 12345);
 
         try{
-            client.run();
+            client.run(false);
         }catch (IOException e){
             System.err.println("Can not start the client. May be a wrong IP?");
         }
