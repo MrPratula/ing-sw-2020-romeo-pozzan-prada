@@ -1126,9 +1126,15 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      */
     public void removeFromTheGame (Player player) {
 
+        // If a player disconnected the turn may not need to be updated
+        if (player.getTokenColor().equals(turn))
+            updateTurn();
+
+        // Reset didAthenaMovedUp
         if(player.getMyGodCard().equals(GodCard.ATHENA))
             didAthenaMovedUp=false;
 
+        // Remove the tokens if they exist
         try{
             battlefield.getCell(player.getToken1().getTokenPosition()).setFree();
         } catch (NullPointerException ignore){}
@@ -1136,10 +1142,9 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             battlefield.getCell(player.getToken2().getTokenPosition()).setFree();
         } catch (NullPointerException ignore){}
 
+        // Remove the player and his god from the game
         allGodCards.remove(player.getMyGodCard());
         allPlayers.remove(player);
-
-        updateTurn();
     }
 
 
@@ -1299,6 +1304,9 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     public void disconnected(String name) throws ImpossibleTurnException, IOException, CellHeightException, WrongNumberPlayerException, ReachHeightLimitException, CellOutOfBattlefieldException {
 
         Player looser = null;
+        Player winner = null;
+
+        // Find the player with username == name
         for (Player p: allPlayers){
             if (p.getUsername().toUpperCase().equals(name.toUpperCase())) {
                 looser = p;
@@ -1312,15 +1320,17 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
             ServerResponse serverResponse;
 
-            /*
-            if (looser.getUsername().toUpperCase().equals(name.toUpperCase()))
-                serverResponse = gameOver(getNextPlayer().getUsername());
-            else
-                serverResponse = gameOver(name);
-             */
+            // If the looser is the one who is playing the other one win
+            if (getPlayerInTurn().equals(looser)){
+                int indexLooser = allPlayers.indexOf(looser);
+                if (indexLooser == 0)
+                    winner = allPlayers.get(1);
+                else
+                    winner = allPlayers.get(0);
+            }
 
-
-            serverResponse = gameOver(name);
+            assert winner != null;
+            serverResponse = gameOver(winner.getUsername());
 
             notify(serverResponse);
         }
@@ -1328,7 +1338,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         // If there are 3 players
         else {
 
-            // If it is my turn, than the turn must be updated and next player have to play
+            // If it is looser turn, than the turn must be updated and next player have to play
             if (getPlayerInTurn().equals(looser)){
                 ServerResponse serverResponse = playerLost(looser);
                 notify(serverResponse);
@@ -1339,17 +1349,4 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             }
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
