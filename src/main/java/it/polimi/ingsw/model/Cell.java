@@ -5,13 +5,13 @@ import it.polimi.ingsw.controller.ReachHeightLimitException;
 
 import java.io.Serializable;
 
+
 /**
  * Each Cell is a little square that form the Battlefield.
  * Each one of them is uniquely identified by two int.
  * A Cell always has an height is 0 if nobody has already build there
  * and always has a boolean that tell us if there is a player on it.
  */
-
 public class Cell implements Serializable {
 
     private final int posX;
@@ -21,12 +21,12 @@ public class Cell implements Serializable {
     private int height;
     private boolean isDome;
 
+
     /**
      * Constructor
      * @param x column of the Cell in the Battlefield
      * @param y raw of the Cell in the Battlefield
      */
-
     public Cell (int x, int y) {
 
         this.posX = x;
@@ -35,10 +35,6 @@ public class Cell implements Serializable {
         this.height = 0;
         this.isDome = false;
     }
-
-    /*
-     * GETTER
-     */
 
     public int getPosX() {
         return this.posX;
@@ -60,11 +56,10 @@ public class Cell implements Serializable {
         return this.isDome;
     }
 
-    /*   SETTER     */
-
     public void setHeight(int newHeight) {
         this.height=newHeight;
     }
+
 
     /**
      * Used when a player put a Token in this Cell
@@ -73,12 +68,14 @@ public class Cell implements Serializable {
         this.thereIsPlayer = true;
     }
 
+
     /**
      * Used when a player move his token away from this cell
      */
     public void setFree() {
         this.thereIsPlayer = false;
     }
+
 
     /**
      * Make a Cell un-buildable.
@@ -99,11 +96,11 @@ public class Cell implements Serializable {
         return this.getPosX()==targetCell.getPosX() && this.getPosY()==targetCell.getPosY();
     }
 
+
     /**
      * Increment the height of a Cell by one.
      * The height start from zero and can be incremented up to 3.
      * If a cell with an height of 3 is incremented it becomes a dome and become un-buildable
-     *
      * @throws ReachHeightLimitException if try to increment a Cell that is a dome
      * @throws CellHeightException if the height of a cell is out of 0<=height<=3 parameters
      */

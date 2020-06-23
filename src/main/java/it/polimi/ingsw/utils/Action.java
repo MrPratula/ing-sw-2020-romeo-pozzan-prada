@@ -3,10 +3,11 @@ package it.polimi.ingsw.utils;
 
 import java.io.Serializable;
 
+
 /**
- * This enum is an element that each PlayerAction and ServerResponse must have.
- * It specify what kind of action has ben made or what kind or information the server needs in
- * order to let the game routine run properly.
+ * This enum is an element that each PlayerAction and Pack must have.
+ * It specify what kind of action has ben made or what kind or information the server needs
+ * in order to let the game routine run properly.
  */
 public enum Action implements Serializable {
 
@@ -53,8 +54,7 @@ public enum Action implements Serializable {
     // ERROR MESSAGES
     CONNECTION_CLOSE("Connection closed from SERVER side!");
 
-
-    private String info;
+    private final String info;
 
     Action(String info){ this.info = info;}
 

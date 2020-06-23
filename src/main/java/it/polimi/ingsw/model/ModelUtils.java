@@ -5,8 +5,8 @@ import java.util.List;
 
 
 /**
- * Class used to pass some utils from the Model, such as
- * the battlefield, the turn, and a list of the Players in game
+ * It extract from the model the battlefield, the turn and all player.
+ * Then it is sent to the client.
  */
 public class ModelUtils implements Serializable {
 
@@ -17,7 +17,6 @@ public class ModelUtils implements Serializable {
     public ModelUtils(Battlefield battlefield) {
         this.battlefield = battlefield;
     }
-
 
     public Battlefield getBattlefield() {
         return battlefield;

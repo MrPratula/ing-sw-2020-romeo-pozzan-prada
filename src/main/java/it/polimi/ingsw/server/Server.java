@@ -101,10 +101,7 @@ public class Server  {
                 // Accept a client who requires for this port
                 Socket socket = serverSocket.accept();
 
-
                 System.out.println("Someone connected on address ---->      "+socket.getRemoteSocketAddress().toString());
-
-                
 
                 // Create a Connection for that specific client
                 Connection connection = new Connection(socket, this);

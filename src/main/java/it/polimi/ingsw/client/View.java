@@ -15,14 +15,18 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
     private Player player;
     private int savedToken;
 
+
+    /**
+     * Create a new view and print SANTORINI with ascii art.
+     */
     public View() {
-        // Prints santorini in ASCII ART
         printSANTORINI();
     }
 
     protected Player getPlayer(){
         return player;
     }
+
 
     /**
      * Get a input from stdin and divide it when there is a comma.
@@ -52,7 +56,10 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
         }
     }
 
-
+    /**
+     * Once a player has performed his move, it is notified to the client.
+     * @param playerAction move to send to the client. He will send it into the socket.
+     */
     public void notifyClient(PlayerAction playerAction) throws CellOutOfBattlefieldException, ReachHeightLimitException, CellHeightException, IOException, ImpossibleTurnException, WrongNumberPlayerException {
         notify(playerAction);
     }
@@ -60,13 +67,14 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
     /**
      * This method moves the mechanic of the game: it receives the
-     * response from the server, and creates the respective action of the player.
-     * @param serverResponse: response from the server containing al the necessary informations
+     * response from the server, parse it to identify the kind of action and ask the user to insert the
+     * correct input.
+     * @param serverResponse: response received from the server containing al the necessary information.
      */
     @Override
     public void update(ServerResponse serverResponse) throws ImpossibleTurnException, IOException, CellHeightException, WrongNumberPlayerException, ReachHeightLimitException, CellOutOfBattlefieldException {
 
-        System.out.println("\nExecuting "+serverResponse.getPack().getAction().getName().toUpperCase());
+        //System.out.println("\nExecuting "+serverResponse.getPack().getAction().getName().toUpperCase());
 
         switch (serverResponse.getPack().getAction()) {
 
@@ -685,6 +693,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                 break;
             }
 
+
             case GAME_OVER:{
 
                 Pack pack = serverResponse.getPack();
@@ -699,6 +708,12 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
     }
 
 
+    /**
+     * When a player insert an input for move a token, here is identified which token a player want to move.
+     * @param inputs String[] that should contain something like ["2","3"].
+     * @param player the player who gave the String[] input.
+     * @return the token ID of that player in that position. 0 if something goes wrong.
+     */
     public int getToken(String[] inputs, Player player){
 
         int selectX, selectY;
@@ -715,6 +730,12 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
     }
 
 
+    /**
+     * Get an input from a player and return the corresponding cell of the battlefield.
+     * @param inputs String[] that should contain something like ["2","3"].
+     * @param battlefield the model's battlefield copy received in server response.
+     * @return the cell of the battlefield with the coordinates written in inputs. Null if something goes wrong.
+     */
     public Cell getCell(String[] inputs, Battlefield battlefield){
 
         int selectX, selectY;
@@ -729,6 +750,13 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
     }
 
 
+    /**
+     * Ask if a target cell of the battlefield is free or not.
+     * It is free if there is not a token on it nor a dome.
+     * @param targetCell a cell we are asking for.
+     * @param modelCopy model copy received from the server.
+     * @return true if that cell is free, false else.
+     */
     public boolean isFree(Cell targetCell, ModelUtils modelCopy){
 
         List<Player> allPlayers = modelCopy.getAllPlayers();
@@ -754,11 +782,21 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
     }
 
 
+    /**
+     * Since Hestia can't make her second build on a perimeter space, we check for this condition.
+     * A perimeter space is a cell that has x==0 || x==4 || y==0 || y==4.
+     * @param targetCell cell we are asking for.
+     * @return true if that cell is not on a perimeter zone of the battlefield.
+     */
     public boolean notPerimeterCell(Cell targetCell){
         return ((targetCell.getPosX()!=4 && targetCell.getPosY()!=4) && (targetCell.getPosX()!=0 && targetCell.getPosY()!=0));
     }
 
 
+    /**
+     * Get a user input and parse it.
+     * @return true if he write something similar to yes, false else.
+     */
     public boolean askYesOrNot(){
 
         Scanner in = new Scanner(System.in);
@@ -769,7 +807,6 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
         } catch (Exception e){
             return false;
         }
-
         return input.equals("Y") || input.equals("YE") || input.equals("YES") || input.equals("TRUE") || input.equals("SI");
     }
 
@@ -816,7 +853,6 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
     }
 
 
-
     /**
      * Here i print the CLI for the user, depending on the parameter validMoves;
      *   -if it is null, i print the normal battlefield with the tokens on, with
@@ -824,8 +860,8 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
      *    and the background in the color of the token on it (if present);
      *   -otherwise i print even a green backgrounds behind the cells in the ValidMoves param.
      *
-     * @param validMoves: cells that have to be printed on a green background (can be null)
-     * @param modelCopy: contains the the board of the game and the players in the game
+     * @param validMoves: cells that have to be printed on a green background (can be null).
+     * @param modelCopy: contains the the board of the game and the players in the game.
      */
      public void printCLI(ModelUtils modelCopy, List<Cell> validMoves) throws ReachHeightLimitException, CellOutOfBattlefieldException {
 
@@ -867,12 +903,12 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
 
     /**
-     * Auxiliary method to print the CLI, here i check the token position's
-     * @param battlefield: the board of the game
-     * @param allPlayers: the players in the game
-     * @param validMoves: cells that have to be printed on a green background (can be null)
-     * @param x: position x of the battlefield
-     * @param y: position y of the battlefield
+     * Auxiliary method to print the CLI, here i check the token position's.
+     * @param battlefield: the board of the game.
+     * @param allPlayers: the players in the game.
+     * @param validMoves: cells that have to be printed on a green background (can be null).
+     * @param x: position x of the battlefield.
+     * @param y: position y of the battlefield.
      */
     private void printInnerCLI(Battlefield battlefield, List<Player> allPlayers, List<Cell> validMoves, int x, int y) throws CellOutOfBattlefieldException, ReachHeightLimitException {
 
@@ -912,10 +948,10 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
     /**
      * Auxiliary method to color the background according to
-     * the color of the token on that precise position
-     * @param battlefield: the board of the game
-     * @param x: position x of the battlefield
-     * @param y: position y of the battlefield
+     * the color of the token on that precise position.
+     * @param battlefield: the board of the game.
+     * @param x: position x of the battlefield.
+     * @param y: position y of the battlefield.
      */
     private void colorBackground(Battlefield battlefield, int x, int y, Player p) throws CellOutOfBattlefieldException {
         System.out.print("\033[047m");          //on a white board
@@ -930,7 +966,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
 
     /**
-     * Prints SANTORINI in ascii art
+     * Prints SANTORINI in ascii art.
      */
     public void printSANTORINI(){
 
@@ -1035,23 +1071,25 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
         System.out.println();
 
         System.out.println();
-
     }
 
+
     /**
-     * prints n times a space on the reset color backgrund
+     * prints n times a space on the reset color background.
      * @param n times
      */
     public void printNResetSpaces(int n){
 
         for(int i = 0; i < n; i++) {
-            System.out.print("\033[049m");             //reset
+            System.out.print("\033[049m");
+            //Reset
             System.out.print(" ");
         }
     }
 
+
     /**
-     * Prints n times a space on a blue background
+     * Prints n times a space on a blue background.
      * @param n times
      */
     public void printNBlueSpaces(int n){
@@ -1060,10 +1098,8 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
             System.out.print("\033[044m");
             System.out.print(" "); //2i
         }
-
-        System.out.print("\033[049m");             //reset
+        System.out.print("\033[049m");
+        //Reset
         System.out.print("  ");
     }
-
-
 }

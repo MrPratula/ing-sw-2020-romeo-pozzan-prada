@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import java.io.Serializable;
 
+
 /**
  * A TokenColor object has the purpose to identify which player has which tokens.
  * Each token and each player has a proper TokenColor and if it is the same
@@ -15,7 +16,7 @@ public enum TokenColor implements Serializable {
 
     static final String RESET = "\033[049m";
 
-    private String escape;
+    private final String escape;
 
     TokenColor(String escape) {
         this.escape = escape;
@@ -29,5 +30,4 @@ public enum TokenColor implements Serializable {
     public String toString(){
         return escape;
     }
-
 }

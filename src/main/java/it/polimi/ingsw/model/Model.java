@@ -162,7 +162,6 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                 break;
             index++;
         }
-
         return allPlayers.get(index+1);
     }
 
@@ -1313,10 +1312,15 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
             ServerResponse serverResponse;
 
+            /*
             if (looser.getUsername().toUpperCase().equals(name.toUpperCase()))
                 serverResponse = gameOver(getNextPlayer().getUsername());
             else
                 serverResponse = gameOver(name);
+             */
+
+
+            serverResponse = gameOver(name);
 
             notify(serverResponse);
         }

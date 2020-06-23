@@ -28,6 +28,7 @@ public class Controller implements Observer<PlayerAction> {
         gameOver = true;
     }
 
+
     /**
      * It gets a PlayerAction and parse it.
      * The switch selects the Action that a player intends to perform and calls
