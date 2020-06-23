@@ -1,4 +1,3 @@
-  
 #IGNORE EVERYTHING
 *
 
@@ -14,3 +13,4 @@
 !deliveries/uml/**
 !deliveries/battlefieldTest/**
 !src/**
+!deliveries/JAR/**
