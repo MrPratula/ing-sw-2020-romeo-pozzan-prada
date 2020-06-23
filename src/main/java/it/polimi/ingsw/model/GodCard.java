@@ -2,6 +2,11 @@ package it.polimi.ingsw.model;
 
 import java.io.Serializable;
 
+
+/**
+ * Those are all God Cards playable.
+ * Each one contains the info about their power.
+ */
 public enum GodCard implements Serializable {
 
     APOLLO("Your Worker may move into an opponent Worker’s space by forcing their Worker to the space yours just vacated"),
@@ -20,7 +25,7 @@ public enum GodCard implements Serializable {
     LIMUS("Opponents Workers can not build on spaces neighboring your workers, unless building a dome to create a Complete Tower");
 
 
-    private String info;
+    private final String info;
 
     GodCard(String info) {
         this.info = info;
@@ -34,10 +39,4 @@ public enum GodCard implements Serializable {
     public String toString(){
         return info;
     }
-
-
-
-
-
-
 }

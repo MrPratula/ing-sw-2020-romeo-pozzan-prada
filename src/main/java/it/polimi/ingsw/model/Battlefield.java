@@ -3,6 +3,7 @@ import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
 
 import java.io.Serializable;
 
+
 /**
  * A Battlefield is a matrix of Cell.
  * It has a list with all the Players that are currently play on that Battlefield.
@@ -28,6 +29,7 @@ public class Battlefield implements Serializable {
         }
         this.battlefield = battlefield;
     }
+
 
     /**
      * It is used to get a Cell of the battlefield when the x-coords and y-coords are known.

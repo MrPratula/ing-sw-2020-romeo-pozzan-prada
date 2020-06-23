@@ -7,14 +7,16 @@ import it.polimi.ingsw.model.TokenColor;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class ClientApp {
+public class ClientAppCLI {
 
     public static void main(String[] args) {
 
-        Client client = null;
-        String ip = "192.168.1.93";
-        String localHostFede = "192.168.1.149";
-        String localHostRichi = "192.168.1.7";
+        Client client=null;
+        String ip;
+
+        String localHost = "127.0.0.1";
+        String LANFede = "192.168.1.149";
+        String LANRichi = "192.168.1.7";
 
         boolean needToLoop = true;
 
@@ -44,10 +46,10 @@ public class ClientApp {
         }
              */
 
-        client = new Client(localHostFede, 12345);
+        client = new Client(localHost, 12345);
 
         try{
-            client.run();
+            client.run(false);
         }catch (IOException e){
             System.err.println("Can not start the client. May be a wrong IP?");
         }

@@ -17,9 +17,15 @@ import java.util.*;
 public class Controller implements Observer<PlayerAction> {
 
     private final Model model;
+    private static boolean gameOver;
 
     public Controller (Model model) {
         this.model = model;
+        gameOver = false;
+    }
+
+    public static void setGameOver(){
+        gameOver = true;
     }
 
 
@@ -34,6 +40,9 @@ public class Controller implements Observer<PlayerAction> {
     public void update(PlayerAction playerAction) throws CellOutOfBattlefieldException, CellHeightException, ReachHeightLimitException, WrongNumberPlayerException, ImpossibleTurnException, IOException {
 
         if (model.isPlayerTurn(playerAction.getPlayer())){
+
+            if (gameOver)
+                return;
 
             switch(playerAction.getAction()){
 

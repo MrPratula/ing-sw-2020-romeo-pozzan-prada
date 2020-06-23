@@ -29,9 +29,6 @@ public class RemoteView extends Observable<PlayerAction> implements Observer<Ser
         return this.player;
     }
 
-    /**
-     *
-     */
     public void setServer(Server server){
         this.server = server;
     }
@@ -71,17 +68,4 @@ public class RemoteView extends Observable<PlayerAction> implements Observer<Ser
             sendAction(playerAction);
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

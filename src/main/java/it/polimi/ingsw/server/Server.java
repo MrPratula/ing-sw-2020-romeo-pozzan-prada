@@ -20,22 +20,22 @@ public class Server  {
     // This is for the Singleton pattern
     private static Server singleServer = null;
     private static int numberOfPlayers;
-    private List<String> names = new ArrayList<>();
+    private final List<String> names = new ArrayList<>();
 
     private boolean firstTime;
     private static final int PORT = 12345;
-    private ServerSocket serverSocket;
+    private final ServerSocket serverSocket;
 
-    private ExecutorService executor = Executors.newFixedThreadPool(128);
+    private final ExecutorService executor = Executors.newFixedThreadPool(128);
 
     // All the connection that are linked
-    private List<Connection> connections = new ArrayList<Connection>();
+    private final List<Connection> connections = new ArrayList<>();
 
     // All the connection active for a game session
-    private Map<String, Connection> playingConnection = new HashMap<>();
+    private final Map<String, Connection> playingConnection = new HashMap<>();
 
     // All the connection in queue for a game
-    private Map<String, Connection> waitingConnection = new HashMap<>();
+    private final Map<String, Connection> waitingConnection = new HashMap<>();
 
     private Model model;
     private Controller controller;
@@ -76,6 +76,13 @@ public class Server  {
         numberOfPlayers = number;
     }
 
+    /**
+     * Used from connection to call the disconnection method when a player disconnect.
+     * @return the model.
+     */
+    public Model getModel(){
+        return this.model;
+    }
 
     /**
      * The servers starts and waits for clients to connect.
@@ -94,10 +101,7 @@ public class Server  {
                 // Accept a client who requires for this port
                 Socket socket = serverSocket.accept();
 
-
                 System.out.println("Someone connected on address ---->      "+socket.getRemoteSocketAddress().toString());
-
-                
 
                 // Create a Connection for that specific client
                 Connection connection = new Connection(socket, this);

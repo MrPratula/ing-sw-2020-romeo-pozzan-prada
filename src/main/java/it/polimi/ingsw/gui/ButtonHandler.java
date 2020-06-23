@@ -104,27 +104,38 @@ public class ButtonHandler implements ActionListener {
                 Cell targetCell;
                 try {
                     targetCell = currentServerResponse.getPack().getModelCopy().getBattlefield().getCell(cellButton.getCell().getPosX(),cellButton.getCell().getPosY());
-                    if(!swingView.wantToUsePower()) {
-                        if (swingView.getPlayer().getMyGodCard() == GodCard.DEMETER || swingView.getPlayer().getMyGodCard() == GodCard.HESTIA || swingView.getPlayer().getMyGodCard() == GodCard.HEPHAESTUS || swingView.getPlayer().getMyGodCard() == GodCard.ATLAS) {
-                            swingView.setFirst_cell(targetCell);
-                            List<Cell> validBuilds = swingView.newValidBuilds(targetCell);
-                            if (validBuilds != null) {
-                                new AskToUseTheGodsPower(swingView, currentServerResponse, targetCell);
-                            } else {
-                                PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, swingView.getPlayer(), null, null, swingView.getSavedToken(), 0, targetCell, null, false, null);
-                                swingView.notifyClient(playerAction);
+                    if(targetCell != null && swingView.cellIsInValidCells(targetCell,swingView.getCurrentValidBuilds())){
+                        try {
+                            if(!swingView.wantToUsePower()) {
+                                if (swingView.getPlayer().getMyGodCard() == GodCard.DEMETER || swingView.getPlayer().getMyGodCard() == GodCard.HESTIA || swingView.getPlayer().getMyGodCard() == GodCard.HEPHAESTUS || swingView.getPlayer().getMyGodCard() == GodCard.ATLAS) {
+                                    swingView.setFirst_cell(targetCell);
+                                    List<Cell> validBuilds = swingView.newValidBuilds(targetCell);
+                                    if (validBuilds != null) {
+                                        new AskToUseTheGodsPower(swingView, currentServerResponse, targetCell);
+                                    } else {
+                                        PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, swingView.getPlayer(), null, null, swingView.getSavedToken(), 0, targetCell, null, false, null);
+                                        swingView.notifyClient(playerAction);
+                                    }
+                                }
+                                //In case the god's player isn't one of them (upper if).
+                                else {
+                                    PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, swingView.getPlayer(), null, null, swingView.getSavedToken(), 0, targetCell, null, false, null);
+                                    swingView.notifyClient(playerAction);
+                                }
                             }
-                        }
-                        //In case the god's player isn't one of them (upper if).
-                        else {
-                            PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, swingView.getPlayer(), null, null, swingView.getSavedToken(), 0, targetCell, null, false, null);
-                            swingView.notifyClient(playerAction);
+                            else{
+                                swingView.buildGod(currentServerResponse.getPack(),targetCell);
+                            }
+                        } catch (CellOutOfBattlefieldException | IOException | WrongNumberPlayerException | ReachHeightLimitException | CellHeightException | ImpossibleTurnException e) {
+                            e.printStackTrace();
                         }
                     }
                     else{
-                        swingView.buildGod(currentServerResponse.getPack(),targetCell);
+                        final JDialog dialog = new JDialog();
+                        dialog.setAlwaysOnTop(true);
+                        JOptionPane.showMessageDialog(dialog, "You can't build here! That cell is not a valid build!", "Error", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());
                     }
-                } catch (CellOutOfBattlefieldException | IOException | WrongNumberPlayerException | ReachHeightLimitException | CellHeightException | ImpossibleTurnException e) {
+                } catch (CellOutOfBattlefieldException e) {
                     e.printStackTrace();
                 }
             }

@@ -354,6 +354,7 @@ public class SwingView extends View {
                     if (pack.getPlayer() != null)
                         this.player = pack.getPlayer();
 
+                    setValidBuilds(serverResponse.getPack().getValidBuilds());
                     this.power = false;
                     final JDialog dialog = new JDialog();
                     dialog.setAlwaysOnTop(true);
@@ -417,6 +418,15 @@ public class SwingView extends View {
                 else{
                     displayInnerGui(battlefieldGUI, newBattlefield, allPlayers, y, x);
                 }
+
+                //disattiva i bottoni se se non è il proprio turno
+                if(!player.getTokenColor().equals(currentServerResponse.getTurn())){
+                    battlefieldGUI[x][y].setEnabled(false);
+                }
+                else{
+                    battlefieldGUI[x][y].setEnabled(true);
+                }
+
             }
         }
 
@@ -763,5 +773,4 @@ public class SwingView extends View {
         setValidBuilds(getCurrentServerResponse().getPack().getValidBuilds());
         return getCurrentServerResponse().getPack().getValidBuilds();
     }
-
 }

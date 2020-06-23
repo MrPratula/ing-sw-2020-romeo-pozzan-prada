@@ -7,7 +7,7 @@ import java.io.Serializable;
  *  A Player is an object that has an unique view.
  *  It is an observable for the controller and
  *  it is an observer of the controller.
- *  It interact with the network
+ *  It interact with the network.
  *  and notify the observer of the controller to let the game run.
  */
 public class Player implements Serializable {
@@ -19,9 +19,8 @@ public class Player implements Serializable {
 
     /**
      * A new player is created when it connect to the server
-     *
-     * @param username    the name of the player. It should be unique
-     * @param color       the color that identify the player and his tokens
+     * @param username the name of the player. It should be unique.
+     * @param color the color that identify the player and his tokens.
      */
     public Player(String username, TokenColor color) {
         this.username = username;
@@ -43,7 +42,6 @@ public class Player implements Serializable {
         }
     }
 
-    /*  GETTER  */
     public Token getToken1() {
         return this.token1;
     }
@@ -59,9 +57,6 @@ public class Player implements Serializable {
     public GodCard getMyGodCard() {
         return this.myGodCard;
     }
-
-
-    /*  SETTER  */
 
     public void setToken1(Token token1) {
         this.token1 = token1;
@@ -79,7 +74,7 @@ public class Player implements Serializable {
     /**
      * Used to return a player color to let
      * game know if it is the player's turn
-     * @return the color of the player
+     * @return the color of the player.
      */
     public TokenColor getTokenColor() {
         return this.tokenColor;

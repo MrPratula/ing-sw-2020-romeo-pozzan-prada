@@ -191,14 +191,19 @@ public class Connection extends Observable<PlayerAction> implements Runnable{
             while(isActive()){
 
                 PlayerAction playerAction = (PlayerAction) objectInputStream.readObject();
-                // notify the RemoteView(messageReceiver)
                 System.out.println(playerAction.getAction().getName().toUpperCase()+" from "+thisConnection.name);
 
+                // notify the RemoteView(messageReceiver)
                 notify(playerAction);
             }
 
         } catch(IOException | CellOutOfBattlefieldException | ImpossibleTurnException | ReachHeightLimitException | CellHeightException | WrongNumberPlayerException | ClassNotFoundException e){
-            System.err.println(name.toUpperCase()+" has disconnected!");
+            System.err.println(name.toUpperCase()+" has disconnected!\n He will loose the game!");
+            try {
+                server.getModel().disconnected(name);
+            } catch (ImpossibleTurnException | IOException | CellHeightException | WrongNumberPlayerException | ReachHeightLimitException | CellOutOfBattlefieldException impossibleTurnException) {
+                System.err.println("Can't make a player loose...");
+            }
         } finally {
             close();
         }

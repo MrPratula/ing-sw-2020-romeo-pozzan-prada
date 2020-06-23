@@ -8,6 +8,12 @@ import it.polimi.ingsw.model.Player;
 import java.io.Serializable;
 import java.util.List;
 
+
+/**
+ * A pack is an object that pairs with a TokenColor and both make a server response.
+ * It contains all the info needed to let a player know what it's happened to the model
+ * and to let him know what he has to do.
+ */
 public class Pack implements Serializable {
 
     private final Action action;
@@ -25,7 +31,6 @@ public class Pack implements Serializable {
     private Player player;
 
     private int numberOfPlayers;
-
 
     public Pack(Action action){
         this.action = action;

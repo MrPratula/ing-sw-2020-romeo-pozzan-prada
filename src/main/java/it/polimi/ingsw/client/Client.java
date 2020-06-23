@@ -110,22 +110,7 @@ public class Client extends Observable<ServerResponse> implements Observer<Playe
      * A client create a Socket to communicate and
      * one Thread to always listen to the socket.
      */
-    public void run() throws IOException {
-
-        //TEMPORANEO per decidere se cli o gui (solo inizialmente)
-        System.out.println("1 to use Cli, 2 to use Gui");
-        Scanner scanner = new Scanner(System.in);
-        int number;
-        try{
-             number = scanner.nextInt();
-            while(number != 1 && number != 2){
-                System.out.println("Wrong number, try again: ");
-                System.out.println("1 per Cli, 2 per Gui");
-                number = scanner.nextInt();
-            }
-        } catch (Exception e){
-            number = 1;
-        }
+    public void run(boolean useGUI) throws IOException {
 
         Socket socket = new Socket(ip, port);
         System.out.println("Connection established!");
@@ -137,8 +122,10 @@ public class Client extends Observable<ServerResponse> implements Observer<Playe
         View view;
 
         // Create a view for this client and set up the observers
-        if(number==1) { view = new View(); }
-        else{ view = new SwingView(); }
+        if(!useGUI)
+            view = new View();
+        else
+            view = new SwingView();
 
         view.addObserver(this);
         addObserver(view);

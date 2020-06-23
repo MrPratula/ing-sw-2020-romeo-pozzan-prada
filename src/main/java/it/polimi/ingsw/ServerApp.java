@@ -6,9 +6,8 @@ import java.io.IOException;
 
 
 /**
- * This class creates the server and runs it
+ * This class creates the server and runs it.
  */
-
 public class ServerApp
 {
     public static void main( String[] args ) {

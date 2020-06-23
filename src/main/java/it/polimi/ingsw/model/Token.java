@@ -2,10 +2,11 @@ package it.polimi.ingsw.model;
 
 import java.io.Serializable;
 
+
 /**
  * Each Player has 2 tokens.
  * They are created with no position and when it is assigned they always have a position.
- * Each token can move in any adiacent cell, with any exceptions.
+ * Each token can move in any adjacent cell, with any exceptions.
  * it can not move on a cell occupied by another token,
  * it can not move on a cell that is a dome,
  * it can not move on a cell that has a delta-height >= 2.
@@ -17,6 +18,7 @@ public class Token implements Serializable {
     private Cell tokenPosition;
     private int oldHeight;
 
+
     /**
      * A token is created with a color, which is the same as it's owner.
      * @param color color identifier.
@@ -25,9 +27,6 @@ public class Token implements Serializable {
         this.tokenColor = color;
         this.tokenPosition = null;
     }
-
-
-    /*   GETTER   */
 
     public Cell getTokenPosition() {
         return tokenPosition;
@@ -45,9 +44,6 @@ public class Token implements Serializable {
         return this.tokenColor;
     }
 
-
-    /*   SETTER   */
-
     public void setTokenPosition(Cell tokenPosition) {
         this.tokenPosition = tokenPosition;
     }
@@ -60,6 +56,3 @@ public class Token implements Serializable {
         this.id = id;
     }
 }
-
-
-
