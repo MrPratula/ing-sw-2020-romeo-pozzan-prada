@@ -11,8 +11,10 @@ public class ClientAppGUI {
 
     public static void main(String[] args) {
 
-        Client client=null;
-        String ip;
+        Client client = null;
+        String ip = "192.168.1.93";
+        String localHostFede = "192.168.1.149";
+        String localHostRichi = "192.168.1.7";
 
         String localHost = "127.0.0.1";
         String LANFede = "192.168.1.149";
@@ -47,7 +49,6 @@ public class ClientAppGUI {
              */
 
         client = new Client(localHost, 12345);
-
         try{
             client.run(true);
         }catch (IOException e){
