@@ -17,7 +17,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
 
     /**
-     * Create a new view and print SANTORINI with ascii art.
+     * Creates a new view and prints SANTORINI with ascii art.
      */
     public View() {
         printSANTORINI();
@@ -88,19 +88,25 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                 // Print hello
                 System.out.println(serverResponse.getPack().getAction().toString());
 
+                String nameDetail = "";
+                String retype = "";
+
                 boolean needToLoop = true;
 
                 while (needToLoop){
-                    System.out.println("Please type your name...");
+                    System.out.println(nameDetail + "Please "+ retype + "type your name...");
                     Scanner scanner = new Scanner(System.in);
                     String name = scanner.nextLine();
 
-                    if (isAGoodName(name)){
+                    nameDetail = isAGoodName(name);
+
+                    if (nameDetail.equals("Ok")){
                         playerAction = new PlayerAction(Action.MY_NAME, null, null, null, 0, 0, null, null, false, name);
-                        needToLoop=false;
+                        needToLoop = false;
                     }
                     else
-                        needToLoop=true;
+                        needToLoop = true;
+                        retype = "re";
                 }
 
                 notifyClient(playerAction);
@@ -835,21 +841,38 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
      * @param name string to ckeck. It is the user input for his username.
      * @return true if it is not empty, too long(<=16) or with spaces.
      */
-    public boolean isAGoodName(String name){
+    public String isAGoodName(String name){
 
-        if (name==null)
-            return false;
+        StringBuilder error = new StringBuilder("Error! ");
 
-        if (name.isEmpty())
-            return false;
+        if (name==null) {
+            error.append("Null name! ");
+            return error.toString();
+        }
 
-        if (name.contains(" "))
-            return false;
+        if (name.isEmpty()) {
+            error.append("Empty name! ");
+            return error.toString();
+        }
 
-        if (name.contains("\n"))
-            return false;
+        if(name.length()>20){
+            error.append("Your name is too long! ");
+            return error.toString();
+        }
 
-        return name.length() <= 16;
+        if (name.contains("\n")) {
+            error.append("Invalid name! ");
+            return error.toString();
+        }
+
+        /*   let them do this
+        if (name.contains(" ")) {
+            error.append("It contains an empty space! ");
+            error.append("Please retry...");
+            return error.toString();
+        } */
+
+        return "Ok";
     }
 
 
@@ -865,6 +888,16 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
      */
      public void printCLI(ModelUtils modelCopy, List<Cell> validMoves) throws ReachHeightLimitException, CellOutOfBattlefieldException {
 
+         //bash:
+         // 47 white bg
+         // 37 white written
+         // 30 black written
+         // 49 reset (black bg)
+
+         //test
+         //for (int i = 30; i < 50; i++)
+         //    System.out.println("\033[0"+i+"m" + "  colore  "+i);
+
          Battlefield battlefield = modelCopy.getBattlefield();
          List<Player> allPlayers = modelCopy.getAllPlayers();
 
@@ -872,7 +905,9 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
          for (int y = 4; y > -1; y--) {
 
-            System.out.print("\033[030m");          //white written
+            //System.out.print("\033[030m");          // intellij white written
+             System.out.print("\033[039m");             //default written
+             //System.out.print("\033[030m");          // intellij white written
             System.out.print(y + " ");
 
             for (int x = 0; x < 5; x++) {
@@ -896,8 +931,10 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
             System.out.print("\033[049m");             //on a black board
             System.out.print("\n");
         }
-        System.out.print("\033[030m");             //white written
-        System.out.print("\033[049m");             //on a black board
+        //System.out.print("\033[030m");           // intellij white written
+        //System.out.print("\033[037m");             //bash white written
+         System.out.print("\033[039m");             //default written
+         System.out.print("\033[049m");             //on a black board
         System.out.print("   0  1  2  3  4\n");
     }
 
@@ -915,7 +952,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
         // we check if exists a token of any player in this position
         if (!battlefield.getCell(x, y).getThereIsPlayer()) {
             System.out.print("\033[030m");          //black written
-            System.out.print("\033[047m");          //on white board
+            //System.out.print("\033[039m");             //default written
             System.out.print("\033[047m");          //on a white board
             System.out.print(" ");
             if (battlefield.getCell(x, y).getIsDome()) {
@@ -955,6 +992,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
      */
     private void colorBackground(Battlefield battlefield, int x, int y, Player p) throws CellOutOfBattlefieldException {
         System.out.print("\033[047m");          //on a white board
+        //System.out.print("\033[039m");             //default written
         System.out.print("\033[030m");          //white written
         TokenColor t = p.getTokenColor();
         System.out.print(t.getEscape());        //on a board of the player color

@@ -1035,8 +1035,8 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         else{
             updateTurn();
 
-            String inTurnMessage = String.format("%s is now your turn!",getPlayerInTurn().getUsername().toUpperCase());
-            String opponentMessage = String.format("Is now %s turn!",getPlayerInTurn().getUsername().toUpperCase());
+            String inTurnMessage = String.format("%s it is now your turn!",getPlayerInTurn().getUsername().toUpperCase());
+            String opponentMessage = String.format("It is now %s turn!",getPlayerInTurn().getUsername().toUpperCase());
             Pack pack = new Pack(Action.ASK_FOR_SELECT_TOKEN);
             pack.setGodCards(getGodCards(allPlayers));
             pack.setMessageOpponents(opponentMessage);
