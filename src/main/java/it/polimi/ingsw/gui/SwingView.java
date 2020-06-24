@@ -280,6 +280,7 @@ public class SwingView extends View {
                         //dialog.setAlwaysOnTop(true);
                         //JOptionPane.showMessageDialog(dialog,pack.getAction().getName().toUpperCase(),"AGAIN YOUR TURN! PLACE YOUR SECOND TOKEN! "+getPlayer().getUsername(), JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
                         displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
+                        this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.PLACE_YOUR_TOKEN.getPath()))));
                     }
                 }
                 break;
