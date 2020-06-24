@@ -22,7 +22,7 @@ Inside this folder you can find the following:
 ###### UML
 Part of this project are also UML diagrams.
 
-[Here]() you can find an high level diagrams to show high level links between classes and [here]() some low level UML diagrams to show more accurately some classes details.
+[Here]() you can find an high level diagrams to show high level links between classes and [here](https://github.com/MrPratula/ing-sw-2020-romeo-pozzan-prada/blob/recover/deliveries/uml/uml_full.jpg) some low level UML diagrams to show more accurately some classes details.
 
 ###### JAR
 Inside the JAR folder there are 3 different .jar files.
