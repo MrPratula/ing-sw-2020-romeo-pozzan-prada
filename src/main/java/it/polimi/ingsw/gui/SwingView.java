@@ -758,30 +758,6 @@ public class SwingView extends View {
                 getCurrentServerResponse().getPack().setValidBuilds(targetCells);
                 break;
             }
-
-            case HEPHAESTUS:{
-                for (Cell c: valid){
-                    if(c.getPosY()==selectedCell.getPosY() && c.getPosX()==selectedCell.getPosX()){
-                        if(c.getHeight()>=2){
-                            targetCells.add(c);
-                        }
-                    }
-                }
-                getCurrentServerResponse().getPack().setValidBuilds(targetCells);
-                break;
-            }
-
-            case ATLAS:{
-                for(Cell c: valid){
-                    if(c.getPosY()==selectedCell.getPosY() && c.getPosX()==selectedCell.getPosX()){
-                        if(c.getHeight()==3){
-                            targetCells.add(c);
-                        }
-                    }
-                }
-                getCurrentServerResponse().getPack().setValidBuilds(targetCells);
-                break;
-            }
             default:
                 throw new IllegalStateException("Unexpected value: " + player.getMyGodCard());
         }
