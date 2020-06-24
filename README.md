@@ -15,18 +15,19 @@ This one is entirely implemented using the MVC pattern.
 - 5 Advanced Gods.
 
 ## Deliveries
-Inside this folder you can find the following:
+Inside this folder you can find the following things:
 - UML diagrams;
-- JAR.
+- JAR;
+- Presentation.
 
 ###### UML
 Part of this project are also UML diagrams.
 
-[Here]() you can find an high level diagrams to show high level links between classes and [here]() some low level UML diagrams to show more accurately some classes details.
+[Here](https://github.com/MrPratula/ing-sw-2020-romeo-pozzan-prada/blob/recover/deliveries/uml/uml_mvc.jpg) you can find an high level diagram to show links between classes and how MVC works, [here](https://github.com/MrPratula/ing-sw-2020-romeo-pozzan-prada/blob/recover/deliveries/uml/uml_full.jpg) a low level UML diagram to show more accurately all classes details.
 
 ###### JAR
 Inside the JAR folder there are 3 different .jar files.
-Each one have to be launched opening a terminal and typing the following: 
+Each one has to be launched opening a terminal and typing the following: 
 ```
 java -jar path/to/file.jar
 ```
@@ -36,18 +37,11 @@ It is the server that hosts the game.
 
 - ClientCLI.jar
 
-It is the client that use the terminal to play. It is higly recommended not to use cmd terminal.
+It is the client that run a terminal to play. It is higly recommended not to use cmd.
 
 - ClientGUI.jar 
 
 It is the client for using a graphic interface. It can be run by double clicking on it or exactly as the ClientCLI.jar in the terminal.
 
-
-
-
-
-
-
-
-
-
+###### PRESENTATION
+[This](https://github.com/MrPratula/ing-sw-2020-romeo-pozzan-prada/tree/recover/deliveries/slide) is the small presentation we used to explain how our project works during the project presentation.
