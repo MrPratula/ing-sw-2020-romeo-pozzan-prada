@@ -1,8 +1,5 @@
 package it.polimi.ingsw.cli;
 
-import it.polimi.ingsw.controller.CellHeightException;
-import it.polimi.ingsw.controller.ReachHeightLimitException;
-
 import it.polimi.ingsw.model.Cell;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,7 +27,7 @@ public class CellTest {
      * A cell should pass from height 2 to 3.
      */
     @Test
-    public void normalIncrementHeightTest() throws Exception {
+    public void normalIncrementHeightTest() {
         setUp();
         cell.setHeight(2);
         cell.incrementHeight();
@@ -58,17 +55,14 @@ public class CellTest {
 
     /**
      * If a cell is a dome it can nob be built anymore and it remains unchanged.
-     * @throws Exception when try to increment a height of a dome.
      */
     @Test
-    public void incrementADome() throws Exception {
+    public void incrementADome()  {
         setUp();
         cell.setHeight(3);
         cell.setIsDome();
 
-        try {
-            cell.incrementHeight();
-        } catch (ReachHeightLimitException ignore){}
+        cell.incrementHeight();
 
         assertEquals(3, cell.getHeight());
         assertTrue(cell.getIsDome());
@@ -76,24 +70,17 @@ public class CellTest {
 
 
     /**
-     * I'm not even sure this is a test, but it check for the exception, soi leave it here.
-     * @throws CellHeightException if the height of s cell is not 0=<height<=3
+     * I'm not even sure this is a test, but it check for the exception, so leave it here.
      * It check for height <0 and height >3.
      */
     @Test
-    public void wrongIncrementInput() throws CellHeightException, ReachHeightLimitException {
+    public void wrongIncrementInput() {
         setUp();
         cell.setHeight(-1);
-
-        try{
-            cell.incrementHeight();
-        } catch (CellHeightException ignore){}
+        cell.incrementHeight();
         assertTrue(true);
-
         cell.setHeight(4);
-        try{
-            cell.incrementHeight();
-        } catch (CellHeightException ignore){}
+        cell.incrementHeight();
         assertTrue(true);
     }
 

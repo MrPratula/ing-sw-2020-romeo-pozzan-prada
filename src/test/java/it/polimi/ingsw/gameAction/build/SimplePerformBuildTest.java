@@ -1,8 +1,5 @@
 package it.polimi.ingsw.gameAction.build;
 
-import it.polimi.ingsw.controller.CellHeightException;
-import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
-import it.polimi.ingsw.controller.ReachHeightLimitException;
 import it.polimi.ingsw.gameAction.Utility;
 import it.polimi.ingsw.model.Battlefield;
 import it.polimi.ingsw.model.Cell;
@@ -30,7 +27,7 @@ public class SimplePerformBuildTest {
      * This set up a standard battlefieldTest.
      * It also set up 2 different tokens in 2,2 and 1,1.
      */
-    @BeforeEach void setUp() throws CellOutOfBattlefieldException {
+    @BeforeEach void setUp() {
 
         battlefield = Utility.setUpForTest1();
 
@@ -48,7 +45,7 @@ public class SimplePerformBuildTest {
     /**
      *  Perform a build on a cell height 0.
      */
-    @Test void groundBuildTest() throws CellOutOfBattlefieldException, CellHeightException, ReachHeightLimitException {
+    @Test void groundBuildTest() {
 
         Cell targetCell = battlefield.getCell(3,1);
 
@@ -65,7 +62,7 @@ public class SimplePerformBuildTest {
     /**
      *  Perform a build on a cell height 1.
      */
-    @Test void level1BuildTest() throws CellOutOfBattlefieldException, CellHeightException, ReachHeightLimitException {
+    @Test void level1BuildTest() {
 
         Cell targetCell = battlefield.getCell(1,2);
 
@@ -82,7 +79,7 @@ public class SimplePerformBuildTest {
     /**
      *  Perform a build on a cell height 1.
      */
-    @Test void level2BuildTest() throws CellOutOfBattlefieldException, CellHeightException, ReachHeightLimitException {
+    @Test void level2BuildTest() {
 
         Cell targetCell = battlefield.getCell(1,3);
 
@@ -99,7 +96,7 @@ public class SimplePerformBuildTest {
     /**
      *  Perform a build on a cell height 1.
      */
-    @Test void level3BuildTest() throws CellOutOfBattlefieldException, CellHeightException, ReachHeightLimitException {
+    @Test void level3BuildTest() {
 
         Cell targetCell = battlefield.getCell(2,3);
 

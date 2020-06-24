@@ -1,8 +1,5 @@
 package it.polimi.ingsw.gameAction.build;
 
-import it.polimi.ingsw.controller.CellHeightException;
-import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
-import it.polimi.ingsw.controller.ReachHeightLimitException;
 import it.polimi.ingsw.model.Battlefield;
 import it.polimi.ingsw.model.Cell;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +15,7 @@ class HestiaBuildTest {
     int high_first_cell, high_second_cell;
 
     @BeforeEach
-    void setUp() throws CellOutOfBattlefieldException {
+    void setUp() {
         battlefield = new Battlefield();
         first_cell = battlefield.getCell(3,4);
         second_cell = battlefield.getCell(2,2);
@@ -30,7 +27,7 @@ class HestiaBuildTest {
      * The high of the first_cell and second_cell have to increase by one.
      */
     @Test
-    void HestiaperfomeBuild() throws CellHeightException, ReachHeightLimitException {
+    void HestiaPerformBuild() {
         first_cell.setHeight(1);
         second_cell.setHeight(2);
         high_first_cell = first_cell.getHeight();
@@ -42,15 +39,16 @@ class HestiaBuildTest {
         BuildContext thisBuild = new BuildContext(new HestiaBuild());
         thisBuild.executePerformBuild(first_cell, second_cell, battlefield);
 
-        assertTrue(first_cell.getHeight()==high_first_cell+1);
-        assertTrue(second_cell.getHeight()==high_second_cell+1);
+        assertEquals(first_cell.getHeight(), high_first_cell + 1);
+        assertEquals(second_cell.getHeight(), high_second_cell + 1);
     }
+
 
     /**
      * If you increase a cell with high "3", it has to have a dome and the same high ("3").
      */
     @Test
-    void HestiaformeBuildDome() throws CellHeightException, ReachHeightLimitException {
+    void HestiaformeBuildDome(){
         first_cell.setHeight(3);
         second_cell.setHeight(2);
         high_first_cell = first_cell.getHeight();
@@ -62,9 +60,8 @@ class HestiaBuildTest {
         BuildContext thisBuild = new BuildContext(new DemeterBuild());
         thisBuild.executePerformBuild(first_cell, second_cell, battlefield);
 
-        assertTrue(first_cell.getHeight()==3);
+        assertEquals(3, first_cell.getHeight());
         assertTrue(first_cell.getIsDome());
-        assertTrue(second_cell.getHeight()==high_second_cell+1);
+        assertEquals(second_cell.getHeight(), high_second_cell + 1);
     }
-
 }

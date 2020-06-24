@@ -1,6 +1,5 @@
 package it.polimi.ingsw.gui;
 
-import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.PlayerAction;
 
@@ -44,7 +43,7 @@ public class AskPrometheusPowerWindow extends JDialog {
                     view.setWantToUsePower(true);
                     view.notifyClient(playerAction);
                     AskPrometheusPowerWindow.this.dispose();
-                } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException ex) {
+                } catch ( IOException ex) {
                     ex.printStackTrace();
                 }
             }
@@ -58,7 +57,7 @@ public class AskPrometheusPowerWindow extends JDialog {
                     view.setWantToUsePower(false);
                     view.notifyClient(playerAction);
                     AskPrometheusPowerWindow.this.dispose();
-                } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException ex) {
+                } catch (IOException ex) {
                     ex.printStackTrace();
                 }
             }
@@ -72,8 +71,4 @@ public class AskPrometheusPowerWindow extends JDialog {
         pack();
         setVisible(true);
     }
-
-
-
-
 }

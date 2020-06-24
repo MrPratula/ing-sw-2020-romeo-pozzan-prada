@@ -1,8 +1,5 @@
 package it.polimi.ingsw.gameAction.build;
 
-import it.polimi.ingsw.controller.CellHeightException;
-import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
-import it.polimi.ingsw.controller.ReachHeightLimitException;
 import it.polimi.ingsw.model.Battlefield;
 import it.polimi.ingsw.model.Cell;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +24,7 @@ public class AtlasBuildTest {
     /**
      * Create a new battlefield and get a target cell to test.
      */
-    @BeforeEach void setUp() throws CellOutOfBattlefieldException {
+    @BeforeEach void setUp() {
         battlefield = new Battlefield();
         targetCell = battlefield.getCell(2,3);
     }
@@ -36,7 +33,7 @@ public class AtlasBuildTest {
     /**
      * A cell with height 1 must have the same height but has to be a dome.
      */
-    @Test void atlasPerformBuild1 () throws CellHeightException, ReachHeightLimitException, CellOutOfBattlefieldException {
+    @Test void atlasPerformBuild1 () {
 
         targetCell.setHeight(1);
         assertFalse(targetCell.getIsDome());
@@ -53,7 +50,7 @@ public class AtlasBuildTest {
      * If I try to build on a dome nothing change.
      * It should be the controller that make this not possible.
      */
-    @Test void atlasPerformBuildDome () throws CellHeightException, ReachHeightLimitException {
+    @Test void atlasPerformBuildDome () {
 
         targetCell.setHeight(3);
         targetCell.setIsDome();
@@ -64,5 +61,4 @@ public class AtlasBuildTest {
         assertTrue(targetCell.getIsDome());
         assertEquals(3, targetCell.getHeight());
     }
-
 }

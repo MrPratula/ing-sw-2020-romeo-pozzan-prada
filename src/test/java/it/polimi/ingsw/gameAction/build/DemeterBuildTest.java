@@ -1,8 +1,5 @@
 package it.polimi.ingsw.gameAction.build;
 
-import it.polimi.ingsw.controller.CellHeightException;
-import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
-import it.polimi.ingsw.controller.ReachHeightLimitException;
 import it.polimi.ingsw.model.Battlefield;
 import it.polimi.ingsw.model.Cell;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +16,7 @@ class DemeterBuildTest {
     int high_first_cell, high_second_cell;
 
     @BeforeEach
-    void setUp() throws CellOutOfBattlefieldException {
+    void setUp() {
         battlefield = new Battlefield();
         first_cell = battlefield.getCell(3,4);
         second_cell = battlefield.getCell(2,2);
@@ -31,7 +28,7 @@ class DemeterBuildTest {
      * The high of the first_cell and second_cell have to increase by one.
      */
     @Test
-    void DemeterperfomeBuild() throws CellHeightException, ReachHeightLimitException {
+    void DemeterperfomeBuild() {
         first_cell.setHeight(1);
         second_cell.setHeight(2);
         high_first_cell = first_cell.getHeight();
@@ -51,7 +48,7 @@ class DemeterBuildTest {
      * If you increase a cell with high "3", it has to have a dome and the same high ("3").
      */
     @Test
-    void DemeterperformeBuildDome() throws CellHeightException, ReachHeightLimitException {
+    void DemeterperformeBuildDome() {
         first_cell.setHeight(3);
         second_cell.setHeight(2);
         high_first_cell = first_cell.getHeight();

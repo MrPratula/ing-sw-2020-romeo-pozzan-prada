@@ -41,7 +41,7 @@ public class FullGame6HestiaChronusTest {
      * Player 2 -> CHRONUS
      */
     @Test
-    void test6 () throws CellOutOfBattlefieldException, ImpossibleTurnException, ReachHeightLimitException, CellHeightException, WrongNumberPlayerException, IOException {
+    void test6 () throws IOException {
 
         player1God = GodCard.HESTIA;
         player2God = GodCard.CHRONUS;

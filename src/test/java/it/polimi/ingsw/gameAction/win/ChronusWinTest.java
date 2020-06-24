@@ -1,6 +1,5 @@
 package it.polimi.ingsw.gameAction.win;
 
-import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
 import it.polimi.ingsw.gameAction.Utility;
 import it.polimi.ingsw.model.Battlefield;
 import org.junit.Assert;
@@ -30,7 +29,7 @@ public class ChronusWinTest {
     /**
      * Test with exactly 5 full towers.
      */
-    @Test void fiveFullTowerTest() throws CellOutOfBattlefieldException {
+    @Test void fiveFullTowerTest() {
 
         battlefield.getCell(4,0).setHeight(3);
         battlefield.getCell(4,0).setIsDome();
@@ -54,7 +53,7 @@ public class ChronusWinTest {
      * Test with more than 5 full towers.
      * Don't even know if this can happen (maybe not).
      */
-    @Test void allFullTowerTest() throws CellOutOfBattlefieldException {
+    @Test void allFullTowerTest() {
 
         for(int x=0; x<5; x++) {
             for(int y=0; y<5; y++) {
@@ -74,7 +73,7 @@ public class ChronusWinTest {
      * Test with less than 5 full builds, but with some Atlas dome.
      * They are more than 5 and full builds less than 5.
      */
-    @Test void AtlasDomeFullTowerFailTest() throws CellOutOfBattlefieldException {
+    @Test void AtlasDomeFullTowerFailTest() {
 
         battlefield = Utility.setUpForTest1();
 
@@ -95,7 +94,7 @@ public class ChronusWinTest {
      * Test with more than 5 full builds, but with some Atlas dome.
      * They are more than 5 and full builds more than 5.
      */
-    @Test void AtlasDomeFullTowerSuccessTest() throws CellOutOfBattlefieldException {
+    @Test void AtlasDomeFullTowerSuccessTest() {
 
         battlefield = Utility.setUpForTest1();
 
@@ -124,7 +123,7 @@ public class ChronusWinTest {
      * Test with less than 5 full builds.
      * It is used the TestBattlefield.
      */
-    @Test void lessThanFiveFullTowerTest() throws CellOutOfBattlefieldException {
+    @Test void lessThanFiveFullTowerTest() {
 
         battlefield = Utility.setUpForTest1();
 

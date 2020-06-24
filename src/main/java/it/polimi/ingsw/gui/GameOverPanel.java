@@ -14,5 +14,4 @@ public class GameOverPanel extends JPanel {
         super.paintComponent(g);
         g.drawImage(Pics.GAMEENDED.getImageIcon().getImage(),0,0,this.getWidth(),this.getHeight(),this);
     }
-
 }

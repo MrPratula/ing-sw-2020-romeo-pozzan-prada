@@ -1,8 +1,5 @@
 package it.polimi.ingsw.gameAction.build;
 
-import it.polimi.ingsw.controller.CellHeightException;
-import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
-import it.polimi.ingsw.controller.ReachHeightLimitException;
 import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
@@ -15,12 +12,11 @@ public class LimusBuild implements BuildBehavior {
     /**
      * This function is called right after the calculation of the valid builds.
      * Here we create a list of cells near Limus' tokens, except if it has height 3,
-     * that the caller has to remove from the provvisory valid builds
-     * @param : same as normal computeValidBuilds
+     * that the caller has to remove from the given valid builds.
      * @return a list oh cells that we have to remove from valid builds
      */
     @Override
-    public List<Cell> computeValidBuilds(Token selectedToken, Token otherToken, List<Token> enemyTokens, List<GodCard> enemyGodCards, Battlefield battlefield, List<Player> allPlayers) throws CellOutOfBattlefieldException {
+    public List<Cell> computeValidBuilds(Token selectedToken, Token otherToken, List<Token> enemyTokens, List<GodCard> enemyGodCards, Battlefield battlefield, List<Player> allPlayers) {
 
         List<Cell> toRemove = new ArrayList<>();
 
@@ -50,6 +46,6 @@ public class LimusBuild implements BuildBehavior {
     }
 
     @Override
-    public void performBuild(Cell targetCell, Cell second_cell, Battlefield battlefield) throws CellHeightException, ReachHeightLimitException {
+    public void performBuild(Cell targetCell, Cell second_cell, Battlefield battlefield) {
     }
 }

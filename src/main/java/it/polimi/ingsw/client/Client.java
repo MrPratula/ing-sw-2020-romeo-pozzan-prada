@@ -1,13 +1,11 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.gui.SwingView;
 
 import it.polimi.ingsw.utils.*;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.Scanner;
 
 
 public class Client extends Observable<ServerResponse> implements Observer<PlayerAction> {
@@ -73,7 +71,7 @@ public class Client extends Observable<ServerResponse> implements Observer<Playe
                             throw new IllegalArgumentException();
                         }
                     }
-                } catch (IOException | ImpossibleTurnException | ClassNotFoundException | CellHeightException | WrongNumberPlayerException | ReachHeightLimitException | CellOutOfBattlefieldException e) {
+                } catch (IOException | ClassNotFoundException e) {
                     System.err.println("Connection closed, the server shouted down!");
                     setActive(false);
                 }
@@ -148,7 +146,7 @@ public class Client extends Observable<ServerResponse> implements Observer<Playe
      * The view receive the serverResponse and send it to the View.
      * @param serverResponse the message to send to the view.
      */
-    public void notifyView(ServerResponse serverResponse) throws ImpossibleTurnException, IOException, CellHeightException, WrongNumberPlayerException, ReachHeightLimitException, CellOutOfBattlefieldException {
+    public void notifyView(ServerResponse serverResponse) throws IOException {
         notify(serverResponse);
     }
 

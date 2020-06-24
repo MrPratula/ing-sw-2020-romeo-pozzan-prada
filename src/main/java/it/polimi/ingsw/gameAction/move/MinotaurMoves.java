@@ -1,6 +1,5 @@
 package it.polimi.ingsw.gameAction.move;
 
-import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
 import it.polimi.ingsw.model.Battlefield;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.GodCard;
@@ -21,7 +20,7 @@ public class MinotaurMoves implements MoveBehavior{
      * only in the case the cell behind him (in that direction) is unoccupied
      */
     @Override
-    public List<Cell> computeValidMoves(Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield, List<Cell> moveToCheck) throws CellOutOfBattlefieldException {
+    public List<Cell> computeValidMoves(Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield, List<Cell> moveToCheck) {
 
         List<Cell> allMoves = new ArrayList<>();
         int provX, provY;
@@ -76,7 +75,7 @@ public class MinotaurMoves implements MoveBehavior{
      * @param () the same as the simple perform move.
      */
     @Override
-    public void performMove(Token selectedToken, Token otherToken, List<Token> enemyTokens, Cell targetCell, List<GodCard> enemyGodCards, Battlefield battlefield) throws CellOutOfBattlefieldException {
+    public void performMove(Token selectedToken, Token otherToken, List<Token> enemyTokens, Cell targetCell, List<GodCard> enemyGodCards, Battlefield battlefield){
 
         int deltaX, deltaY;
         Cell copy = selectedToken.getTokenPosition();

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.gameAction.move;
 
-import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
 import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;

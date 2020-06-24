@@ -41,7 +41,7 @@ public class FullGame1ApolloArtemisTest {
      * Player 2 -> ARTEMIS
      */
     @Test
-    void test1 () throws CellOutOfBattlefieldException, ImpossibleTurnException, ReachHeightLimitException, CellHeightException, WrongNumberPlayerException, IOException {
+    void test1 () throws IOException {
 
         player1God = GodCard.APOLLO;
         player2God = GodCard.ARTEMIS;

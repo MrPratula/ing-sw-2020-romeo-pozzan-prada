@@ -1,6 +1,5 @@
 package it.polimi.ingsw.gameAction.build;
 
-import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
 import it.polimi.ingsw.model.*;
 
 import java.util.List;
@@ -21,7 +20,7 @@ public class AtlasBuild implements BuildBehavior{
      * It should never be called.
      */
     @Override
-    public List<Cell> computeValidBuilds(Token selectedToken, Token otherToken, List<Token> enemyTokens, List<GodCard> enemyGodCards, Battlefield battlefield, List<Player> allPlayers) throws CellOutOfBattlefieldException {
+    public List<Cell> computeValidBuilds(Token selectedToken, Token otherToken, List<Token> enemyTokens, List<GodCard> enemyGodCards, Battlefield battlefield, List<Player> allPlayers) {
         return null;
     }
 

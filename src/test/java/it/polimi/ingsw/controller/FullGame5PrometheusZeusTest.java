@@ -40,7 +40,7 @@ public class FullGame5PrometheusZeusTest {
      * Player 2 -> PROMETHEUS
      */
     @Test
-    void test5 () throws CellOutOfBattlefieldException, ImpossibleTurnException, ReachHeightLimitException, CellHeightException, WrongNumberPlayerException, IOException {
+    void test5 () throws IOException {
 
         player1God = GodCard.ZEUS;
         player2God = GodCard.PROMETHEUS;

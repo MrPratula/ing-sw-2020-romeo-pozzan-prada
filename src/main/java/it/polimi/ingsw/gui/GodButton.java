@@ -18,5 +18,4 @@ public class GodButton extends JButton {
     public void setGodCard(GodCard godCard) {
         this.godCard = godCard;
     }
-
 }

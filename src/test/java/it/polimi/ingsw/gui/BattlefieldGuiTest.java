@@ -141,8 +141,5 @@ public class BattlefieldGuiTest {
         // we don't care passing the selected token,
         // we just have to print the valid moves around him
     }
-
-
-
 }
 */

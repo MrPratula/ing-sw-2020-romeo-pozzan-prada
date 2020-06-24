@@ -30,6 +30,4 @@ public class GameOverDialog extends JDialog {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
     }
-
-
 }

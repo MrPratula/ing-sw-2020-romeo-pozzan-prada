@@ -16,5 +16,4 @@ public class PrometheusPanel extends JPanel {
         super.paintComponents(g);
         g.drawImage(Pics.ASKFORPROMETHEUSPOWER.getImageIcon().getImage(),0,0,this.getWidth(),this.getHeight(),this);
     }
-
 }

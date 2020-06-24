@@ -189,7 +189,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * If not then it is asked to the next player what god he wants.
      * @param playerAction the action to parse in order to get the name of the chosen god.
      */
-    public void computeGodChoices(PlayerAction playerAction) throws WrongNumberPlayerException, ImpossibleTurnException, CellOutOfBattlefieldException, ReachHeightLimitException, CellHeightException, IOException {
+    public void computeGodChoices(PlayerAction playerAction) throws IOException {
 
         if (firstTime){
             firstTime=false;
@@ -323,7 +323,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * else it requested the same thing to the next player.
      * @param playerAction package message with all the info.
      */
-    public void placeToken(PlayerAction playerAction) throws WrongNumberPlayerException, ImpossibleTurnException, CellOutOfBattlefieldException, ReachHeightLimitException, CellHeightException, IOException {
+    public void placeToken(PlayerAction playerAction) throws IOException {
 
         Cell targetCell = playerAction.getFirstCell();
         ServerResponse serverResponse;
@@ -408,7 +408,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      *
      * @param playerAction the message from the observer that contain all the information.
      */
-    public void validMoves(PlayerAction playerAction) throws CellOutOfBattlefieldException, WrongNumberPlayerException, ImpossibleTurnException, CellHeightException, IOException, ReachHeightLimitException {
+    public void validMoves(PlayerAction playerAction) throws IOException {
 
         Token selectedToken, otherToken = null;
         int selectedTokenId;
@@ -482,7 +482,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * The token he want to move is saved for his next answer.
      * @param playerAction the packet with all the info
      */
-    public void askForPrometheus(PlayerAction playerAction) throws ImpossibleTurnException, IOException, CellHeightException, WrongNumberPlayerException, ReachHeightLimitException, CellOutOfBattlefieldException {
+    public void askForPrometheus(PlayerAction playerAction) throws IOException {
 
         // Set default value
         didPrometheusUsePower = false;
@@ -535,7 +535,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     }
 
 
-    public void prometheusFirstBuild() throws CellOutOfBattlefieldException, ReachHeightLimitException, CellHeightException, IOException, ImpossibleTurnException, WrongNumberPlayerException {
+    public void prometheusFirstBuild() throws IOException {
 
         didPrometheusUsePower = true;
 
@@ -615,7 +615,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * If that god card do not modify the move than it calls the default move.
      * More JavaDOC inside the ad-hoc method.
      */
-    public List<Cell> computeValidMoves(Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield) throws CellOutOfBattlefieldException {
+    public List<Cell> computeValidMoves(Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield) {
 
         List<Cell> validMoves;
 
@@ -660,7 +660,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * move phase.
      * It works exactly like the computeValidMoves but there is no need to check that there are no valid moves.
      */
-    public List<Cell> askValidMoves (PlayerAction playerAction) throws CellOutOfBattlefieldException {
+    public List<Cell> askValidMoves (PlayerAction playerAction){
 
         Player playerActive = playerAction.getPlayer();
 
@@ -689,9 +689,8 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * if 3 this player is removed from the game.
      * @return the correct ServerResponse to let the game routine run properly.
      * It could be a TOKEN_NOT_MOVABLE, GAME_OVER or PLAYER_LOST.
-     * @throws CellOutOfBattlefieldException if something goes wrong.
      */
-    public ServerResponse checkLoseForMove(Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Token selectedToken) throws CellOutOfBattlefieldException {
+    public ServerResponse checkLoseForMove(Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Token selectedToken) {
 
         // If there is no 2nd token
         if (otherToken == null) {
@@ -741,7 +740,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * if not the game continue normally.
      * @param playerAction the message from the observer that contain all the information.
      */
-    public void performMove (PlayerAction playerAction) throws CellOutOfBattlefieldException, ReachHeightLimitException, CellHeightException, IOException, ImpossibleTurnException, WrongNumberPlayerException {
+    public void performMove (PlayerAction playerAction) throws IOException {
 
         Player playerActive = getPlayerInTurn();
         GodCard myGodCard = playerActive.getMyGodCard();
@@ -876,7 +875,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * where there is a dome.
      * @return a List of Cell in which the token just moved can build.
      */
-    public List<Cell> validBuilds (Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield) throws CellOutOfBattlefieldException {
+    public List<Cell> validBuilds (Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield) {
 
         List<Cell> validBuilds;
 
@@ -928,7 +927,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * @param playerAction the message from the observer that contain all the information.
      * @return a list of Cell in which a player can build.
      */
-    public List<Cell> askForValidBuilds (PlayerAction playerAction) throws CellOutOfBattlefieldException {
+    public List<Cell> askForValidBuilds (PlayerAction playerAction) {
 
         Player playerActive = playerAction.getPlayer();
 
@@ -953,7 +952,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * After a build has been made, the turn is updated.
      * @param playerAction the message from the observer that contain all the information.
      */
-    public void performBuild (PlayerAction playerAction) throws WrongNumberPlayerException, ImpossibleTurnException, CellHeightException, ReachHeightLimitException, CellOutOfBattlefieldException, IOException {
+    public void performBuild (PlayerAction playerAction) throws IOException {
 
         Player playerActive = getPlayerInTurn();
         GodCard myGodCard = playerActive.getMyGodCard();
@@ -1056,7 +1055,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * @param movedToken the token to check if he verify the win condition
      * @return true if the token's owner win, false else.
      */
-    public boolean checkWin (Token movedToken, GodCard myGodCard, List<GodCard> enemyGodCards) throws CellOutOfBattlefieldException {
+    public boolean checkWin (Token movedToken, GodCard myGodCard, List<GodCard> enemyGodCards) {
 
         boolean didIWin;
 
@@ -1238,7 +1237,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * It is called by the controller to notify the player-in-turn that he has insert a wrong or
      * a non expected input.
      */
-    public void notifyWrongInput() throws ImpossibleTurnException, IOException, CellHeightException, WrongNumberPlayerException, ReachHeightLimitException, CellOutOfBattlefieldException {
+    public void notifyWrongInput() throws IOException {
 
         System.out.println("WrongInput caught");
 
@@ -1301,7 +1300,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * else he is removed from the game and the game goes on.
      * @param name name of the player who disconnect.
      */
-    public void disconnected(String name) throws ImpossibleTurnException, IOException, CellHeightException, WrongNumberPlayerException, ReachHeightLimitException, CellOutOfBattlefieldException {
+    public void disconnected(String name) throws IOException {
 
         Player looser = null;
         Player winner = null;

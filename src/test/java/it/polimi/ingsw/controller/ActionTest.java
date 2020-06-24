@@ -63,7 +63,7 @@ public class ActionTest {
      * is assigned to that player till there are no more players without a god card
      */
     @Test
-    void CHOSE_GOD_CARD_test() throws WrongNumberPlayerException, IOException, CellHeightException, ImpossibleTurnException, ReachHeightLimitException, CellOutOfBattlefieldException {
+    void CHOSE_GOD_CARD_test() throws IOException {
 
         String choice = "apollo";
         model.setTurn(TokenColor.RED);
@@ -94,7 +94,7 @@ public class ActionTest {
      * than player2 do the same in 3,3 and 4,4.
      */
     @Test
-    void TOKEN_PLACED_test() throws CellOutOfBattlefieldException, ImpossibleTurnException, ReachHeightLimitException, CellHeightException, WrongNumberPlayerException, IOException {
+    void TOKEN_PLACED_test() throws IOException {
 
         model.setTurn(TokenColor.RED);
 
@@ -150,7 +150,7 @@ public class ActionTest {
      * The correctness of the methods are tested in the gameAction section
      */
     @Test
-    void TOKEN_SELECTED_test() throws CellOutOfBattlefieldException, ImpossibleTurnException, ReachHeightLimitException, CellHeightException, WrongNumberPlayerException, IOException {
+    void TOKEN_SELECTED_test() throws IOException {
 
         model.setTurn(TokenColor.RED);
         model.setBattlefield(Utility.setUpForTest2());
@@ -182,7 +182,7 @@ public class ActionTest {
      * It is tested when it is YES or NO.
      */
     @Test
-    void PROMETHEUS_ANSWER_test() throws WrongNumberPlayerException, IOException, CellHeightException, ImpossibleTurnException, ReachHeightLimitException, CellOutOfBattlefieldException {
+    void PROMETHEUS_ANSWER_test() throws IOException{
 
         model.setTurn(TokenColor.RED);
         model.setBattlefield(Utility.setUpForTest2());
@@ -210,7 +210,7 @@ public class ActionTest {
 
 
     @Test
-    void WHERE_TO_MOVE_SELECTED_test() throws WrongNumberPlayerException, IOException, CellHeightException, ImpossibleTurnException, ReachHeightLimitException, CellOutOfBattlefieldException {
+    void WHERE_TO_MOVE_SELECTED_test() throws IOException {
 
         model.setTurn(TokenColor.RED);
         model.setBattlefield(Utility.setUpForTest2());
@@ -240,7 +240,7 @@ public class ActionTest {
     }
 
     @Test
-    void WHERE_TO_BUILD_SELECTED_test() throws CellOutOfBattlefieldException, ImpossibleTurnException, ReachHeightLimitException, CellHeightException, WrongNumberPlayerException, IOException {
+    void WHERE_TO_BUILD_SELECTED_test() throws IOException {
 
         model.setTurn(TokenColor.RED);
         model.setBattlefield(Utility.setUpForTest2());
@@ -269,7 +269,7 @@ public class ActionTest {
 
 
     @Test
-    void WHERE_TO_BUILD_SELECTED_hestiaTest() throws CellOutOfBattlefieldException, ImpossibleTurnException, ReachHeightLimitException, CellHeightException, WrongNumberPlayerException, IOException {
+    void WHERE_TO_BUILD_SELECTED_hestiaTest() throws IOException {
 
         model.setTurn(TokenColor.RED);
         model.setBattlefield(Utility.setUpForTest2());

@@ -15,5 +15,4 @@ public class NickNamePanel extends JPanel {
         super.paintComponent(g);
         g.drawImage(Pics.NICKNAME.getImageIcon().getImage(),0,0,this.getWidth(),this.getHeight(),this);
     }
-
 }

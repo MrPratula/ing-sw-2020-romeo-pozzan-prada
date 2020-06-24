@@ -1,8 +1,5 @@
 package it.polimi.ingsw.gameAction.build;
 
-import it.polimi.ingsw.controller.CellHeightException;
-import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
-import it.polimi.ingsw.controller.ReachHeightLimitException;
 import it.polimi.ingsw.model.Battlefield;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Token;
@@ -29,7 +26,7 @@ public class ZeusBuildTest {
      * Create a new battlefield, get a target cell to test.
      */
     @BeforeEach
-    public void init() throws CellOutOfBattlefieldException {
+    public void init() {
         battlefield = new Battlefield();
         targetCell = battlefield.getCell(2,3);
         targetCell.setFree();
@@ -41,7 +38,7 @@ public class ZeusBuildTest {
      * because zeus can build under himself
      */
     @Test
-    public void ZeusValidMoves() throws CellOutOfBattlefieldException {
+    public void ZeusValidMoves() {
 
         token = new Token(TokenColor.YELLOW);
         token.setTokenPosition(targetCell);
@@ -59,7 +56,7 @@ public class ZeusBuildTest {
      * and the target cell can be equal to the token position
      */
     @Test
-    public void ZeusPerformBuild() throws CellHeightException, ReachHeightLimitException, CellOutOfBattlefieldException {
+    public void ZeusPerformBuild() {
 
         targetCell.setHeight(1);
         targetCellOldHeight = targetCell.getHeight();
@@ -77,7 +74,7 @@ public class ZeusBuildTest {
      * Here we test that Zeus can build even under itself, so we instanciate a token;
      */
     @Test
-    public void ZeusPerformBuildSamePosition() throws CellHeightException, ReachHeightLimitException, CellOutOfBattlefieldException {
+    public void ZeusPerformBuildSamePosition() {
 
         token = new Token(TokenColor.BLUE);
         token.setTokenPosition(targetCell);
@@ -95,8 +92,6 @@ public class ZeusBuildTest {
 
         assertEquals(targetCell,token.getTokenPosition());
     }
-
-
 }
 
 

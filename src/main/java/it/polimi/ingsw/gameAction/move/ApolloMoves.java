@@ -1,6 +1,5 @@
 package it.polimi.ingsw.gameAction.move;
 
-import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
 import it.polimi.ingsw.model.Battlefield;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.GodCard;
@@ -23,20 +22,20 @@ public class ApolloMoves implements MoveBehavior {
      * The swap is handled by the performMove.
      */
     @Override
-    public List<Cell> computeValidMoves(Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield, List<Cell> moveToCheck) throws CellOutOfBattlefieldException {
+    public List<Cell> computeValidMoves(Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield, List<Cell> moveToCheck) {
 
         List<Cell> allMoves = new ArrayList<>();
 
         int provX, provY;
 
-        for (int i=-1; i<2; i++) {                                                   // ciclo di +-1 intorno alla posizione del token
-            provX = selectedToken.getTokenPosition().getPosX() + i;                            // per poter ottenere le 8 caselle in cui
-            for (int j = -1; j < 2; j++) {                                               // posso muovere
+        for (int i=-1; i<2; i++) {
+            provX = selectedToken.getTokenPosition().getPosX() + i;
+            for (int j = -1; j < 2; j++) {
                 provY = selectedToken.getTokenPosition().getPosY() + j;
-                if ((provX >= 0 && provX < 5) && (provY >= 0 && provY < 5) &&                     // la cella provv è dentro le dimensioni del battlefield
-                        (battlefield.getCell(provX, provY).getHeight() -              // l'altezza della cella provv -
-                                selectedToken.getTokenPosition().getHeight() <= 1) &&            // l'altezza del token <= 1
-                        (!battlefield.getCell(provX, provY).getIsDome())) {         // non deve essere una cupola
+                if ((provX >= 0 && provX < 5) && (provY >= 0 && provY < 5) &&
+                        (battlefield.getCell(provX, provY).getHeight() -
+                                selectedToken.getTokenPosition().getHeight() <= 1) &&
+                        (!battlefield.getCell(provX, provY).getIsDome())) {
                     allMoves.add(battlefield.getCell(provX, provY));
                 }
             }
@@ -61,7 +60,7 @@ public class ApolloMoves implements MoveBehavior {
      * @param () the same as the simple perform move.
      */
     @Override
-    public void performMove(Token selectedToken, Token otherToken, List<Token> enemyTokens, Cell targetCell, List<GodCard> enemyGodCards, Battlefield battlefield) throws CellOutOfBattlefieldException {
+    public void performMove(Token selectedToken, Token otherToken, List<Token> enemyTokens, Cell targetCell, List<GodCard> enemyGodCards, Battlefield battlefield) {
 
         Token swapToken = null;
 

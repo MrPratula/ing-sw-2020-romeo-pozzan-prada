@@ -115,7 +115,7 @@ public class ChooseGodCardWindow extends JDialog {
                     JOptionPane.showMessageDialog(dialog,new ImageIcon(new File(startPath +((GodButton) e.getSource()).getGodCard().name().toLowerCase()+ ".png").getAbsolutePath()),"You Selected: "+((GodButton) e.getSource()).getGodCard().name(), JOptionPane.INFORMATION_MESSAGE,Pics.DONE.getImageIcon());
                     swingView.notifyClient(playerAction);
                     mainFrame.dispose();
-                } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException ex) {
+                } catch (IOException ex) {
                     ex.printStackTrace();
                 }
                 dispose();
@@ -132,7 +132,7 @@ public class ChooseGodCardWindow extends JDialog {
                     JOptionPane.showMessageDialog(dialog,new ImageIcon(new File(startPath +((GodButton) e.getSource()).getGodCard().name().toLowerCase()+ ".png").getAbsolutePath()),"You Selected: "+((GodButton) e.getSource()).getGodCard().name(), JOptionPane.INFORMATION_MESSAGE,Pics.DONE.getImageIcon());
                     swingView.notifyClient(playerAction);
                     mainFrame.dispose();
-                } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException ex) {
+                } catch (IOException ex) {
                     ex.printStackTrace();
                 }
                 dispose();
@@ -152,7 +152,7 @@ public class ChooseGodCardWindow extends JDialog {
                         JOptionPane.showMessageDialog(dialog, new ImageIcon(new File(startPath + ((GodButton) e.getSource()).getGodCard().name().toLowerCase() + ".png").getAbsolutePath()), "You Selected: " + ((GodButton) e.getSource()).getGodCard().name(), JOptionPane.INFORMATION_MESSAGE, Pics.DONE.getImageIcon());
                         swingView.notifyClient(playerAction);
                         mainFrame.dispose();
-                    } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException ex) {
+                    } catch (IOException ex) {
                         ex.printStackTrace();
                     }
                     dispose();
@@ -237,6 +237,4 @@ public class ChooseGodCardWindow extends JDialog {
         }
         return godsToDisplay;
     }
-
-
 }

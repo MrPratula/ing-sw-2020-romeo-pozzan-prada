@@ -44,7 +44,7 @@ public class ButtonHandler implements ActionListener {
                         try {
                             swingView.notifyClient(playerAction);
                             //mainframe.dispose();// non dovrei disposarlo
-                        } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException e) {
+                        } catch (IOException e) {
                             e.printStackTrace();
                         }
                     }
@@ -53,7 +53,7 @@ public class ButtonHandler implements ActionListener {
                         dialog.setAlwaysOnTop(true);
                         JOptionPane.showMessageDialog(dialog, "You can't place your token here! Already occupied!", "Error", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());
                     }
-                } catch (CellOutOfBattlefieldException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 break;
@@ -67,7 +67,7 @@ public class ButtonHandler implements ActionListener {
                     PlayerAction playerAction = new PlayerAction(Action.TOKEN_SELECTED, swingView.getPlayer(), null, null, selectedToken, 0, null, null, false, null);
                     try {
                         swingView.notifyClient(playerAction);
-                    } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException e) {
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
@@ -87,7 +87,7 @@ public class ButtonHandler implements ActionListener {
                     PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_MOVE_SELECTED, swingView.getPlayer(), null, null, swingView.getSavedToken(), 0, targetCell, null, false, null);
                     try {
                         swingView.notifyClient(playerAction);
-                    } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | ImpossibleTurnException | WrongNumberPlayerException e) {
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
@@ -126,7 +126,7 @@ public class ButtonHandler implements ActionListener {
                             else{
                                 swingView.buildGod(currentServerResponse.getPack(),targetCell);
                             }
-                        } catch (CellOutOfBattlefieldException | IOException | WrongNumberPlayerException | ReachHeightLimitException | CellHeightException | ImpossibleTurnException e) {
+                        } catch (IOException e) {
                             e.printStackTrace();
                         }
                     }
@@ -135,12 +135,13 @@ public class ButtonHandler implements ActionListener {
                         dialog.setAlwaysOnTop(true);
                         JOptionPane.showMessageDialog(dialog, "You can't build here! That cell is not a valid build!", "Error", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());
                     }
-                } catch (CellOutOfBattlefieldException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }
     }
+
 
     /**
      * It calculates which image to display, based on the params:
@@ -180,14 +181,11 @@ public class ButtonHandler implements ActionListener {
     }
 
 
-
     /**
      * It sets che correct image of the height level,
      * before calling the real method that update the model.
-     * @throws CellHeightException
-     * @throws ReachHeightLimitException
      */
-    public void incrementHeight() throws CellHeightException, ReachHeightLimitException {
+    public void incrementHeight(){
 
         if(cellButton.getCell().getIsDome()){
             final JDialog dialog = new JDialog();
@@ -228,8 +226,6 @@ public class ButtonHandler implements ActionListener {
             }
         }
     }
-
-
 }
 
 

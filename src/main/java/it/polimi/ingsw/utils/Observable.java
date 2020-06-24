@@ -1,7 +1,5 @@
 package it.polimi.ingsw.utils;
 
-import it.polimi.ingsw.controller.*;
-
 import java.io.IOException;
 import java.util.*;
 
@@ -21,14 +19,13 @@ public class Observable<Message> {
         }
     }
 
-    protected void notify(Message message) throws CellOutOfBattlefieldException, ImpossibleTurnException, ReachHeightLimitException, CellHeightException, WrongNumberPlayerException, IOException {
+    protected void notify(Message message) throws IOException {
         synchronized (observers) {
             for (Observer<Message> observer : observers) {
                 observer.update(message);
             }
         }
     }
-
 }
 
 

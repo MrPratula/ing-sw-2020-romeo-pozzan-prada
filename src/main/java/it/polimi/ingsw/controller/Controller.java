@@ -37,7 +37,7 @@ public class Controller implements Observer<PlayerAction> {
      * @param playerAction the message from the observer that contains all the information.
      */
     @Override
-    public void update(PlayerAction playerAction) throws CellOutOfBattlefieldException, CellHeightException, ReachHeightLimitException, WrongNumberPlayerException, ImpossibleTurnException, IOException {
+    public void update(PlayerAction playerAction) throws IOException {
 
         if (model.isPlayerTurn(playerAction.getPlayer())){
 

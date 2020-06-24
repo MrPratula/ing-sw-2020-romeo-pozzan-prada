@@ -1,7 +1,6 @@
 package it.polimi.ingsw.gameAction.move;
 
 
-import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
 import it.polimi.ingsw.gameAction.Utility;
 import it.polimi.ingsw.model.Battlefield;
 import it.polimi.ingsw.model.Cell;
@@ -45,7 +44,7 @@ public class ArtemisMoveTest {
      * Test with an empty battlefield if all the cell except the initial one are legal moves.
      * The token is in the center of the battlefield.
      */
-    @Test void twentyFiveValidMoves() throws CellOutOfBattlefieldException {
+    @Test void twentyFiveValidMoves() {
 
         battlefield = new Battlefield();
 
@@ -72,7 +71,7 @@ public class ArtemisMoveTest {
      * Test with some tokens and builds around.
      * The battlefield is the BattlefieldTest.
      */
-    @Test void validMovesTest() throws CellOutOfBattlefieldException {
+    @Test void validMovesTest() {
 
         battlefield = Utility.setUpForTest1();
 

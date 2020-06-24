@@ -40,7 +40,7 @@ public class FullGame2AthenaAtlasTest {
      * Player 2 -> ATHENA
      */
     @Test
-    void test2() throws CellOutOfBattlefieldException, ImpossibleTurnException, ReachHeightLimitException, CellHeightException, WrongNumberPlayerException, IOException {
+    void test2() throws IOException {
 
         player1God = GodCard.ATLAS;
         player2God = GodCard.ATHENA;

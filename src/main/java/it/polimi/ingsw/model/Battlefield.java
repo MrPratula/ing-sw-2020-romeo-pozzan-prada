@@ -1,5 +1,4 @@
 package it.polimi.ingsw.model;
-import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
 
 import java.io.Serializable;
 
@@ -33,20 +32,22 @@ public class Battlefield implements Serializable {
 
     /**
      * It is used to get a Cell of the battlefield when the x-coords and y-coords are known.
-     *
      * @param posX column of the battlefield.
      * @param posY raw of the battlefield.
-     * @return the Cell with specified coords.
+     * @return the Cell with specified coords. Null else.
      */
-    public Cell getCell(int posX, int posY) throws CellOutOfBattlefieldException {
-        return battlefield[posX][posY];
+    public Cell getCell(int posX, int posY) {
+        try{
+            return battlefield[posX][posY];
+        } catch (NullPointerException e){
+            return null;
+        }
     }
 
 
     /**
      * It is used when I have a Cell (usually of the Token) and I want to locate
      * it on the Battlefield.
-     *
      * @param cell the cell i want to locate.
      * @return the Cell with the same coords that is part of the battlefield.
      */

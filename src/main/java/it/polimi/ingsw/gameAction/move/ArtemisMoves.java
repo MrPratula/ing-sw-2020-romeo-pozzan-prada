@@ -1,6 +1,5 @@
 package it.polimi.ingsw.gameAction.move;
 
-import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
 import it.polimi.ingsw.model.Battlefield;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.GodCard;
@@ -22,7 +21,7 @@ public class ArtemisMoves implements MoveBehavior {
      * Other cell restriction such as height limitation or cell occupied still applies.
      */
     @Override
-    public List<Cell> computeValidMoves(Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield, List<Cell> moveToCheck) throws CellOutOfBattlefieldException {
+    public List<Cell> computeValidMoves(Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield, List<Cell> moveToCheck) {
 
         List<Cell> allMoves = new ArrayList<>();
 
@@ -111,6 +110,5 @@ public class ArtemisMoves implements MoveBehavior {
      */
     @Override
     public void performMove(Token selectedToken, Token otherToken, List<Token> enemyTokens, Cell targetCell, List<GodCard> enemyGodCards, Battlefield battlefield) {
-
     }
 }

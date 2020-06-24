@@ -16,5 +16,4 @@ public class ConfirmButton extends JButton {
         super.paintComponent(g);
         g.drawImage(Pics.BUTTON.getImageIcon().getImage(),0,0,this.getWidth(),20,this);
     }
-
 }

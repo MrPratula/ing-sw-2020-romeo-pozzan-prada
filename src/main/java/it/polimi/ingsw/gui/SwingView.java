@@ -134,14 +134,9 @@ public class SwingView extends View {
     /**
      * Calls the notify to make update the observers
      * @param playerAction
-     * @throws CellOutOfBattlefieldException
-     * @throws ReachHeightLimitException
-     * @throws CellHeightException
      * @throws IOException
-     * @throws ImpossibleTurnException
-     * @throws WrongNumberPlayerException
      */
-    public void notifyClient(PlayerAction playerAction) throws CellOutOfBattlefieldException, ReachHeightLimitException, CellHeightException, IOException, ImpossibleTurnException, WrongNumberPlayerException {
+    public void notifyClient(PlayerAction playerAction) throws IOException {
         notify(playerAction);
     }
 
@@ -152,7 +147,7 @@ public class SwingView extends View {
      * @param serverResponse: response from the server containing al the necessary informations
      */
     @Override
-    public void update(ServerResponse serverResponse) throws CellOutOfBattlefieldException {
+    public void update(ServerResponse serverResponse) {
 
         this.currentServerResponse = serverResponse;
 
@@ -396,7 +391,7 @@ public class SwingView extends View {
      * @param validMoves: cells that have to be printed on a green background (can be null)
      * @param modelCopy: contains the the board of the game and the players in the game
      */
-    public void displayGui(CellButton[][] battlefieldGUI, ModelUtils modelCopy, List<Cell> validMoves) throws CellOutOfBattlefieldException {
+    public void displayGui(CellButton[][] battlefieldGUI, ModelUtils modelCopy, List<Cell> validMoves) {
 
         Battlefield newBattlefield = modelCopy.getBattlefield();
         List<Player> allPlayers = modelCopy.getAllPlayers();
@@ -432,6 +427,7 @@ public class SwingView extends View {
 
     }
 
+
     /**
      * Auxiliary method to print the GUI, here i check the token position's
      * @param battlefield: the board of the game
@@ -439,7 +435,7 @@ public class SwingView extends View {
      * @param x: position x of the battlefield
      * @param y: position y of the battlefield
      */
-    public void displayInnerGui(CellButton[][] battlefieldGUI, Battlefield battlefield, List<Player> allPlayers, int y, int x) throws CellOutOfBattlefieldException {
+    public void displayInnerGui(CellButton[][] battlefieldGUI, Battlefield battlefield, List<Player> allPlayers, int y, int x){
 
         // we check if exists a token of any player in this position
         if(!battlefield.getCell(x, y).getThereIsPlayer()){
@@ -477,6 +473,7 @@ public class SwingView extends View {
         }
     }
 
+
     /**
      * It selects the right text image depending on the characteristic
      * @param cell: the cell in wich i have to put the icon
@@ -492,6 +489,7 @@ public class SwingView extends View {
         else
             return switchOnHeight(cell.getHeight(), Pics.LEVEL0TEXT, Pics.LEVEL1TEXT, Pics.LEVEL2TEXT, Pics.LEVEL3TEXT);
     }
+
 
     /**
      * It selects the right image depending on the characteristics
@@ -543,6 +541,7 @@ public class SwingView extends View {
         return toReturn;
     }
 
+
     /**
      * Switch on dynamic images to choose which one has to be displayed
      * @param height of this cell
@@ -593,10 +592,11 @@ public class SwingView extends View {
 
         try {
             return battlefield.getCell(selectX, selectY);
-        } catch (CellOutOfBattlefieldException e) {
+        } catch (Exception e) {
             return null;
         }
     }
+
 
     /**
      * Tells if a cell got from user is a valid cell.
@@ -660,7 +660,7 @@ public class SwingView extends View {
      * the second call the playerAction is sent.
      * @param targetCell the selected cell in which the player wants to build
      */
-    public void buildGod(Pack pack, Cell targetCell) throws ImpossibleTurnException, IOException, CellHeightException, WrongNumberPlayerException, ReachHeightLimitException, CellOutOfBattlefieldException {
+    public void buildGod(Pack pack, Cell targetCell) throws IOException{
 
         count --;
         switch (player.getMyGodCard()) {

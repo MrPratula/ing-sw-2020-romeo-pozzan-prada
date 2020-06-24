@@ -1,6 +1,5 @@
 package it.polimi.ingsw.gameAction.move;
 
-import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
 import it.polimi.ingsw.model.*;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +21,7 @@ public class MinotaurMoveTest {
 
 
     @BeforeEach
-    public void init() throws CellOutOfBattlefieldException {
+    public void init() {
 
         battlefield = new Battlefield();
 
@@ -41,7 +40,7 @@ public class MinotaurMoveTest {
      * because the cell behind that one is free, in order to host the puhed token.
      */
     @Test
-    void minotaurValidMovesBehindCell1() throws CellOutOfBattlefieldException {
+    void minotaurValidMovesBehindCell1() {
 
         otherToken = new Token(TokenColor.RED);
         otherToken.setTokenPosition(battlefield.getCell(1,2));
@@ -67,7 +66,7 @@ public class MinotaurMoveTest {
      * because the cell behind that one is occupied.
      */
     @Test
-    void minotaurValidMovesBehindCell2() throws CellOutOfBattlefieldException {
+    void minotaurValidMovesBehindCell2() {
 
         otherToken = new Token(TokenColor.RED);
         otherToken.setTokenPosition(battlefield.getCell(1,2));
@@ -94,7 +93,7 @@ public class MinotaurMoveTest {
      * not occupied by any token.
      */
     @Test
-    public void minotaurPerformMoveNormally() throws CellOutOfBattlefieldException {
+    public void minotaurPerformMoveNormally() {
 
         targetCell = battlefield.getCell(2,3);
         targetCell.setFree();
@@ -108,14 +107,14 @@ public class MinotaurMoveTest {
 
 
 
-    // The following tests go throught all the possible action that a minotaur can push //
+    // The following tests go thought all the possible action that a minotaur can push //
 
     /**
      * Here i test an impossible move: pushing my other token.
      * The valid moves in this case shouldn't contain the target cell.
      */
     @Test
-    public void minotaurValidMovesNotPushMyOtherToken() throws CellOutOfBattlefieldException {
+    public void minotaurValidMovesNotPushMyOtherToken() {
 
         Cell freeCell = battlefield.getCell(0,2);
         freeCell.setFree();
@@ -142,7 +141,7 @@ public class MinotaurMoveTest {
      * The valid moves in this case shouldn't contain the target cell.
      */
     @Test
-    public void minotaurValidMovesDomeBehind() throws CellOutOfBattlefieldException {
+    public void minotaurValidMovesDomeBehind() {
 
         Cell freeCell = battlefield.getCell(0,2);
         freeCell.setFree();
@@ -177,7 +176,7 @@ public class MinotaurMoveTest {
      * enemy token, which i have to push VERTICALLY to the next cell
      */
     @Test
-    public void minotaurPerformMovePushingVertically() throws CellOutOfBattlefieldException {
+    public void minotaurPerformMovePushingVertically() {
 
         targetCell = battlefield.getCell(2,1);
         battlefield.getCell(2,1).setOccupied();
@@ -204,7 +203,7 @@ public class MinotaurMoveTest {
      * enemy token, which i have to push HORIZONTALLY to the next cell
      */
     @Test
-    public void minotaurPerformMovePushingHorizontally() throws CellOutOfBattlefieldException {
+    public void minotaurPerformMovePushingHorizontally() {
 
         targetCell = battlefield.getCell(3,2);
         targetCell.setOccupied();
@@ -231,7 +230,7 @@ public class MinotaurMoveTest {
      * enemy token, which i have to push DIAGONALLY to the next cell
      */
     @Test
-    public void minotaurPerformMovePushingDiagonally() throws CellOutOfBattlefieldException {
+    public void minotaurPerformMovePushingDiagonally() {
 
         targetCell = battlefield.getCell(1,1);
         targetCell.setOccupied();
@@ -251,8 +250,5 @@ public class MinotaurMoveTest {
         Assert.assertEquals(myToken.getTokenPosition().getPosY(),1);
         Assert.assertFalse(battlefield.getCell(2,2).getThereIsPlayer());
     }
-
-
-
 }
 

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.gameAction.win;
 
-import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
 import it.polimi.ingsw.model.Battlefield;
 import it.polimi.ingsw.model.Token;
 import it.polimi.ingsw.model.TokenColor;
@@ -30,7 +29,7 @@ public class SimpleWinTest {
     /**
      * Test a token up from 2 to 3.
      */
-    @Test void from2to3() throws CellOutOfBattlefieldException {
+    @Test void from2to3() {
 
         movedToken.setOldHeight(2);
         movedToken.setTokenPosition(battlefield.getCell(2,3));
@@ -46,7 +45,7 @@ public class SimpleWinTest {
     /**
      * Test a token up from 1 to 2.
      */
-    @Test void from1to2() throws CellOutOfBattlefieldException {
+    @Test void from1to2() {
 
         movedToken.setOldHeight(1);
         movedToken.setTokenPosition(battlefield.getCell(2,3));
@@ -62,7 +61,7 @@ public class SimpleWinTest {
     /**
      * Test a token up from 3 to 3.
      */
-    @Test void from3to3() throws CellOutOfBattlefieldException {
+    @Test void from3to3() {
 
         movedToken.setOldHeight(3);
         movedToken.setTokenPosition(battlefield.getCell(2,3));
@@ -78,7 +77,7 @@ public class SimpleWinTest {
     /**
      * Test a token up from 3 to 3.
      */
-    @Test void from3to0() throws CellOutOfBattlefieldException {
+    @Test void from3to0() {
 
         movedToken.setOldHeight(3);
         movedToken.setTokenPosition(battlefield.getCell(2,3));

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.gameAction.move;
 
-import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
 import it.polimi.ingsw.model.Battlefield;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Token;
@@ -36,7 +35,7 @@ public class SimpleValidMoveTest {
     /**
      * This test a token with nobody around him.
      */
-    @Test void validMovesOnlyToken() throws CellOutOfBattlefieldException {
+    @Test void validMovesOnlyToken() {
         battlefield = new Battlefield();
 
         selectedToken.setTokenPosition(battlefield.getCell(3,3));
@@ -60,13 +59,10 @@ public class SimpleValidMoveTest {
     }
 
 
-
-
-
     /**
      * This test if a token is near a perimeter space.
      */
-    @Test void validMovesNearPerimeter() throws CellOutOfBattlefieldException {
+    @Test void validMovesNearPerimeter() {
         battlefield = new Battlefield();
 
         selectedToken.setTokenPosition(battlefield.getCell(0,0));
@@ -87,7 +83,7 @@ public class SimpleValidMoveTest {
     /**
      * This test a token with some domes around him.
      */
-    @Test void validMovesWithDome() throws CellOutOfBattlefieldException {
+    @Test void validMovesWithDome()  {
         battlefield = new Battlefield();
 
         selectedToken.setTokenPosition(battlefield.getCell(2,2));
@@ -114,7 +110,7 @@ public class SimpleValidMoveTest {
      * Test for my token in a centered position near one other mine token
      * and 2 different enemies token.
      */
-    @Test void validMoves2enemy2mine() throws CellOutOfBattlefieldException {
+    @Test void validMoves2enemy2mine() {
 
         selectedToken.setTokenPosition(battlefield.getCell(1,1));
         selectedToken.getTokenPosition().setOccupied();
@@ -146,7 +142,7 @@ public class SimpleValidMoveTest {
     /**
      * Test for cell too height and dome.
      */
-    @Test void validMovesHeight() throws CellOutOfBattlefieldException {
+    @Test void validMovesHeight() {
 
         battlefield.getCell(1,1).setHeight(1);
         battlefield.getCell(1,2).setHeight(2);

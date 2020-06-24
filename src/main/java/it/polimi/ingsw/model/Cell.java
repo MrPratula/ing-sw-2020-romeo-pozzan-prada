@@ -1,8 +1,5 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.controller.CellHeightException;
-import it.polimi.ingsw.controller.ReachHeightLimitException;
-
 import java.io.Serializable;
 
 
@@ -101,15 +98,12 @@ public class Cell implements Serializable {
      * Increment the height of a Cell by one.
      * The height start from zero and can be incremented up to 3.
      * If a cell with an height of 3 is incremented it becomes a dome and become un-buildable
-     * @throws ReachHeightLimitException if try to increment a Cell that is a dome
-     * @throws CellHeightException if the height of a cell is out of 0<=height<=3 parameters
      */
-    public void incrementHeight() throws ReachHeightLimitException, CellHeightException{
+    public void incrementHeight(){
 
-        if (this.isDome) {
-            throw new ReachHeightLimitException(
-                    String.format("Cell at (%d,%d) is a dome and can't be built anymore", this.getPosX(), this.getPosY()));
-        }
+        if (this.isDome)
+            return;
+
         if (this.height == 3) {
             this.setIsDome();
             return;
@@ -117,7 +111,5 @@ public class Cell implements Serializable {
         if (0<=this.height && this.height<3) {
             this.height++;
         }
-        else throw new CellHeightException(
-                String.format("Cell at (%d,%d) has height = %d out of range [0,3]", this.getPosX(), this.getPosY(), this.getHeight()));
     }
 }

@@ -1,11 +1,8 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.client.Client;
-import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
-import it.polimi.ingsw.model.TokenColor;
 
 import java.io.IOException;
-import java.util.Scanner;
 
 public class ClientAppCLI {
 

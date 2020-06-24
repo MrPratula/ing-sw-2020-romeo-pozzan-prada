@@ -60,7 +60,7 @@ public class NickNameWindow extends JDialog{
                     try {
                         view.notifyClient(playerAction);
                         NickNameWindow.this.dispose();
-                    } catch (CellOutOfBattlefieldException | WrongNumberPlayerException | ImpossibleTurnException | IOException | CellHeightException | ReachHeightLimitException ex) {
+                    } catch (IOException ex) {
                         ex.printStackTrace();
                     }
                 }
@@ -77,6 +77,4 @@ public class NickNameWindow extends JDialog{
         pack();
         setVisible(true);
     }
-
-
 }

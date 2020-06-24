@@ -1,8 +1,5 @@
 package it.polimi.ingsw.gameAction.build;
 
-import it.polimi.ingsw.controller.CellHeightException;
-import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
-import it.polimi.ingsw.controller.ReachHeightLimitException;
 import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
@@ -26,7 +23,7 @@ public class SimpleBuild implements BuildBehavior{
      * @return a list of cell in which a player can build.
      */
     @Override
-    public List<Cell> computeValidBuilds(Token selectedToken, Token otherToken, List<Token> enemyTokens, List<GodCard> enemyGodCards, Battlefield battlefield, List<Player> allPlayers) throws CellOutOfBattlefieldException {
+    public List<Cell> computeValidBuilds(Token selectedToken, Token otherToken, List<Token> enemyTokens, List<GodCard> enemyGodCards, Battlefield battlefield, List<Player> allPlayers){
 
         int provX, provY;
         List<Cell> buildableCells = new ArrayList<Cell>();
@@ -72,7 +69,7 @@ public class SimpleBuild implements BuildBehavior{
      * @param battlefield the model's battlefield.
      */
     @Override
-    public void performBuild(Cell targetCell, Cell second_cell, Battlefield battlefield) throws CellHeightException, ReachHeightLimitException {
+    public void performBuild(Cell targetCell, Cell second_cell, Battlefield battlefield) {
         battlefield.getCell(targetCell).incrementHeight();
     }
 }

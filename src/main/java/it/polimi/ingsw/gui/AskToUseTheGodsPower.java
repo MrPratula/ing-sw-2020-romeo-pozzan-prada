@@ -1,6 +1,5 @@
 package it.polimi.ingsw.gui;
 
-import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.PlayerAction;
@@ -15,17 +14,17 @@ import java.io.IOException;
 public class AskToUseTheGodsPower extends JDialog{
 
     private final SwingView view;
-    Cell targetcell;
+    Cell targetCell;
 
     /**
      * JDialog that asks if the player wants to use his god's power
      * @param swingView
      * @param serverResponse
      */
-    public AskToUseTheGodsPower(final SwingView swingView, final ServerResponse serverResponse, final Cell targetcell){
+    public AskToUseTheGodsPower(final SwingView swingView, final ServerResponse serverResponse, final Cell targetCell){
 
         this.view = swingView;
-        this.targetcell = targetcell;
+        this.targetCell = targetCell;
 
         setTitle("GOD'S POWER");
         setLocationRelativeTo(null);
@@ -48,9 +47,9 @@ public class AskToUseTheGodsPower extends JDialog{
                 try {
                     view.setWantToUsePower(true);
                     view.displayGui(view.getBattlefieldGUI(),serverResponse.getPack().getModelCopy(), swingView.getCurrentValidBuilds());
-                    swingView.buildGod(serverResponse.getPack(),targetcell);
+                    swingView.buildGod(serverResponse.getPack(), targetCell);
                     dispose();
-                } catch (CellOutOfBattlefieldException | IOException | WrongNumberPlayerException | CellHeightException | ImpossibleTurnException | ReachHeightLimitException ex) {
+                } catch (IOException ex) {
                     ex.printStackTrace();
                 }
             }
@@ -59,10 +58,10 @@ public class AskToUseTheGodsPower extends JDialog{
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, view.getPlayer(), null, null, view.getSavedToken(), 0, targetcell, null, false, null);
+                    PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, view.getPlayer(), null, null, view.getSavedToken(), 0, targetCell, null, false, null);
                     view.notifyClient(playerAction);
                     dispose();
-                } catch (CellOutOfBattlefieldException | IOException | WrongNumberPlayerException | ReachHeightLimitException | CellHeightException | ImpossibleTurnException ex) {
+                } catch (IOException ex) {
                     ex.printStackTrace();
                 }
             }

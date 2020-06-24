@@ -1,6 +1,5 @@
 package it.polimi.ingsw.gameAction.move;
 
-import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
 import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
@@ -17,10 +16,9 @@ public class PrometheusMove implements MoveBehavior {
      * This override doesn't allow the token to move up.
      * @param () the same as the normal computeValidMoves.
      * @return a list of cell in which a player can move his token. It is null if he can not move that token
-     * @throws CellOutOfBattlefieldException if something goes wrong.
      */
     @Override
-    public List<Cell> computeValidMoves(Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield, List<Cell> moveToCheck) throws CellOutOfBattlefieldException {
+    public List<Cell> computeValidMoves(Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield, List<Cell> moveToCheck){
 
         List<Cell> allMoves = new ArrayList<>();
 

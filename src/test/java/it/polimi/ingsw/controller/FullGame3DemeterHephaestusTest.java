@@ -42,7 +42,7 @@ public class FullGame3DemeterHephaestusTest {
      * Player 2 -> HEPHAESTUS
      */
     @Test
-    void test3() throws CellOutOfBattlefieldException, ImpossibleTurnException, ReachHeightLimitException, CellHeightException, WrongNumberPlayerException, IOException {
+    void test3() throws IOException {
 
         player1God = GodCard.DEMETER;
         player2God = GodCard.HEPHAESTUS;

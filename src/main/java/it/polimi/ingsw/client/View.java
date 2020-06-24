@@ -60,7 +60,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
      * Once a player has performed his move, it is notified to the client.
      * @param playerAction move to send to the client. He will send it into the socket.
      */
-    public void notifyClient(PlayerAction playerAction) throws CellOutOfBattlefieldException, ReachHeightLimitException, CellHeightException, IOException, ImpossibleTurnException, WrongNumberPlayerException {
+    public void notifyClient(PlayerAction playerAction) throws IOException {
         notify(playerAction);
     }
 
@@ -72,7 +72,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
      * @param serverResponse: response received from the server containing al the necessary information.
      */
     @Override
-    public void update(ServerResponse serverResponse) throws ImpossibleTurnException, IOException, CellHeightException, WrongNumberPlayerException, ReachHeightLimitException, CellOutOfBattlefieldException {
+    public void update(ServerResponse serverResponse) throws IOException {
 
         //System.out.println("\nExecuting "+serverResponse.getPack().getAction().getName().toUpperCase());
 
@@ -748,9 +748,9 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
         selectX = Integer.parseInt(inputs[0]);
         selectY = Integer.parseInt(inputs[1]);
 
-        try {
+        try{
             return battlefield.getCell(selectX, selectY);
-        } catch (CellOutOfBattlefieldException e) {
+        } catch (NullPointerException e) {
             return null;
         }
     }
@@ -886,7 +886,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
      * @param validMoves: cells that have to be printed on a green background (can be null).
      * @param modelCopy: contains the the board of the game and the players in the game.
      */
-     public void printCLI(ModelUtils modelCopy, List<Cell> validMoves) throws ReachHeightLimitException, CellOutOfBattlefieldException {
+     public void printCLI(ModelUtils modelCopy, List<Cell> validMoves) {
 
          //bash:
          // 47 white bg
@@ -947,7 +947,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
      * @param x: position x of the battlefield.
      * @param y: position y of the battlefield.
      */
-    private void printInnerCLI(Battlefield battlefield, List<Player> allPlayers, List<Cell> validMoves, int x, int y) throws CellOutOfBattlefieldException, ReachHeightLimitException {
+    private void printInnerCLI(Battlefield battlefield, List<Player> allPlayers, List<Cell> validMoves, int x, int y) {
 
         // we check if exists a token of any player in this position
         if (!battlefield.getCell(x, y).getThereIsPlayer()) {
@@ -960,8 +960,6 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
             } else {                                                      // else
                 if (battlefield.getCell(x, y).getHeight() <= 3) {
                     System.out.print(battlefield.getCell(x, y).getHeight());
-                } else {
-                    throw new ReachHeightLimitException("Illegal height");
                 }
             }
             System.out.print(" ");
@@ -990,7 +988,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
      * @param x: position x of the battlefield.
      * @param y: position y of the battlefield.
      */
-    private void colorBackground(Battlefield battlefield, int x, int y, Player p) throws CellOutOfBattlefieldException {
+    private void colorBackground(Battlefield battlefield, int x, int y, Player p) {
         System.out.print("\033[047m");          //on a white board
         //System.out.print("\033[039m");             //default written
         System.out.print("\033[030m");          //white written

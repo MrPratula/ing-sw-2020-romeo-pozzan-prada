@@ -41,7 +41,7 @@ public class FullGame7LimusHeraTest {
      * Player 2 -> LIMUS
      */
     @Test
-    void test7 () throws CellOutOfBattlefieldException, ImpossibleTurnException, ReachHeightLimitException, CellHeightException, WrongNumberPlayerException, IOException {
+    void test7 () throws IOException {
 
         player1God = GodCard.HERA;
         player2God = GodCard.LIMUS;

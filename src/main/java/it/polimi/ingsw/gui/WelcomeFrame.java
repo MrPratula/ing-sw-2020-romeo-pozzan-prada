@@ -41,6 +41,4 @@ public class WelcomeFrame {
         mainFrame.pack();
         mainFrame.setVisible(true);
     }
-
-
 }

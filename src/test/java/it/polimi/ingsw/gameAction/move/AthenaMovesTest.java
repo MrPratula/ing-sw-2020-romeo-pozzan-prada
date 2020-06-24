@@ -1,6 +1,5 @@
 package it.polimi.ingsw.gameAction.move;
 
-import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
 import it.polimi.ingsw.gameAction.Utility;
 import it.polimi.ingsw.model.*;
 import org.junit.Assert;
@@ -42,7 +41,7 @@ public class AthenaMovesTest {
     /**
      * Test an empty battlefield with normal moves.
      */
-    @Test void validMovesEmptyTest() throws CellOutOfBattlefieldException {
+    @Test void validMovesEmptyTest() {
 
         battlefield = new Battlefield();
 
@@ -67,7 +66,7 @@ public class AthenaMovesTest {
      * Test the TestBattlefield with some tokens on it.
      * It is added a build on 3,1 to test the move on the same height too.
      */
-    @Test void validMovesReductionTest() throws CellOutOfBattlefieldException {
+    @Test void validMovesReductionTest() {
 
         battlefield = Utility.setUpForTest1();
 
@@ -102,7 +101,7 @@ public class AthenaMovesTest {
     /**
      * Test if athena moves up and the value in the model is correctly changed.
      */
-    @Test void performMoveMovingUpTest() throws CellOutOfBattlefieldException {
+    @Test void performMoveMovingUpTest() {
 
         battlefield = Utility.setUpForTest1();
         selectedToken.setTokenPosition(battlefield.getCell(2,2));
@@ -122,7 +121,7 @@ public class AthenaMovesTest {
     /**
      * Test if athena moves down and the value in the model is correctly changed.
      */
-    @Test void performMoveMovingDownTest() throws CellOutOfBattlefieldException {
+    @Test void performMoveMovingDownTest() {
 
         battlefield = Utility.setUpForTest1();
         selectedToken.setTokenPosition(battlefield.getCell(2,2));
@@ -142,7 +141,7 @@ public class AthenaMovesTest {
     /**
      * Test if athena moves on the same level and the value in the model is correctly changed.
      */
-    @Test void performMoveMovingSameHeightTest() throws CellOutOfBattlefieldException {
+    @Test void performMoveMovingSameHeightTest() {
 
         battlefield = Utility.setUpForTest1();
         selectedToken.setTokenPosition(battlefield.getCell(2,2));

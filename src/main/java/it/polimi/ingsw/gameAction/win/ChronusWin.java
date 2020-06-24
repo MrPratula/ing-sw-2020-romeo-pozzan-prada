@@ -1,6 +1,5 @@
 package it.polimi.ingsw.gameAction.win;
 
-import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
 import it.polimi.ingsw.model.Battlefield;
 import it.polimi.ingsw.model.Token;
 
@@ -23,7 +22,7 @@ public class ChronusWin implements WinBehavior{
      * @return true if there are at leas 5 Complete Builds on the battlefield.
      */
     @Override
-    public boolean checkWin(Token movedToken, Battlefield battlefield) throws CellOutOfBattlefieldException {
+    public boolean checkWin(Token movedToken, Battlefield battlefield){
 
         int completeTowers = 0;
 

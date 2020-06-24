@@ -30,5 +30,4 @@ public class CellButton extends JButton {
         repaint();
         revalidate();
     }
-
 }

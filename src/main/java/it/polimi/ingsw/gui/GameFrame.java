@@ -26,7 +26,6 @@ public class GameFrame extends JFrame {
     private List<Player> allPlayers = new ArrayList<>();
 
 
-
     /**
      * Constructor of the main frame where the user will see the battlefield and can play on it
      */
@@ -65,14 +64,11 @@ public class GameFrame extends JFrame {
         setVisible(true);
     }
 
-
-
     /*     GETTER      */
 
     public InnerMainPanel getInnerMainPanel(){
         return this.innerMainPanel;
     }
-
 
     public void setRolloverIconCell(CellButton cellButton, int height, boolean dome) {
 
@@ -200,5 +196,4 @@ public class GameFrame extends JFrame {
             }
         }
     }
-
 }

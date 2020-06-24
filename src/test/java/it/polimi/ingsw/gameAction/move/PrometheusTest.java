@@ -1,6 +1,5 @@
 package it.polimi.ingsw.gameAction.move;
 
-import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
 import it.polimi.ingsw.model.*;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +22,7 @@ public class PrometheusTest {
 
 
     @BeforeEach
-    public void init() throws CellOutOfBattlefieldException {
+    public void init() {
 
         battlefield = new Battlefield();
         validMoves = new ArrayList<>();
@@ -43,7 +42,7 @@ public class PrometheusTest {
      * previously choose to build before (and after)
      */
     @Test
-    public void PrometheusValidMovesNotUp() throws CellOutOfBattlefieldException {
+    public void PrometheusValidMovesNotUp() {
 
         targetCell = battlefield.getCell(3,2);
         targetCell.setHeight(3);
@@ -56,7 +55,4 @@ public class PrometheusTest {
 
         Assert.assertFalse(validMoves.contains(targetCell));
     }
-
-
-
 }

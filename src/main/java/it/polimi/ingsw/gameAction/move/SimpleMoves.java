@@ -1,6 +1,5 @@
 package it.polimi.ingsw.gameAction.move;
 
-import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
 import it.polimi.ingsw.model.Battlefield;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.GodCard;
@@ -34,10 +33,9 @@ public class SimpleMoves implements MoveBehavior {
      * @param enemyGodCards a list of all enemy god cards.
      * @param battlefield the model's battlefield.
      * @return a list of cell in which a player can move his token. It is null if he can not move that token
-     * @throws CellOutOfBattlefieldException if something goes wrong.
      */
     @Override
-    public List<Cell> computeValidMoves(Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield, List<Cell> moveToCheck) throws CellOutOfBattlefieldException {
+    public List<Cell> computeValidMoves(Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield, List<Cell> moveToCheck){
 
         List<Cell> allMoves = new ArrayList<>();
 

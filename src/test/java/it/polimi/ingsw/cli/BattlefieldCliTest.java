@@ -1,7 +1,5 @@
 package it.polimi.ingsw.cli;
 import it.polimi.ingsw.client.View;
-import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
-import it.polimi.ingsw.controller.ReachHeightLimitException;
 import it.polimi.ingsw.model.*;
 import org.junit.After;
 import org.junit.Before;
@@ -12,7 +10,7 @@ import java.util.*;
 public class BattlefieldCliTest {
 
     @After
-    public void tearDown() throws Exception { }
+    public void tearDown() { }
 
     Battlefield battlefield;
     Player p1,p2,p3;
@@ -22,7 +20,7 @@ public class BattlefieldCliTest {
     View view;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
 
         battlefield = new Battlefield();
         model = new Model();
@@ -90,7 +88,7 @@ public class BattlefieldCliTest {
      * with some different heights and tokens
      */
     @Test
-    public void printCLITest() throws ReachHeightLimitException, CellOutOfBattlefieldException {
+    public void printCLITest() {
         view.printCLI(model.getCopy(), null);
     }
 
@@ -100,7 +98,7 @@ public class BattlefieldCliTest {
      * valid moves (GREEN CELLS) for the selected token
      */
     @Test
-    public void printCLITestWithValidMoves(/* List<Cell> validMoves */) throws CellOutOfBattlefieldException, ReachHeightLimitException {
+    public void printCLITestWithValidMoves(/* List<Cell> validMoves */) {
 
         List<Cell> validMoves = new ArrayList<>(); //saranno passate come parametro
         validMoves.add(battlefield.getCell(3,1));
@@ -115,5 +113,4 @@ public class BattlefieldCliTest {
         // we don't care passing the selected token,
         // we just have to print the valid moves around him
     }
-
 }

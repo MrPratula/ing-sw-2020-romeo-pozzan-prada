@@ -47,7 +47,7 @@ public class NumberOfPlayersWindow extends JDialog{
                 try {
                     view.notifyClient(playerAction);
                     NumberOfPlayersWindow.this.dispose();
-                } catch (CellOutOfBattlefieldException | WrongNumberPlayerException | ImpossibleTurnException | IOException | CellHeightException | ReachHeightLimitException ex) {
+                } catch (IOException ex) {
                     ex.printStackTrace();
                 }
             }

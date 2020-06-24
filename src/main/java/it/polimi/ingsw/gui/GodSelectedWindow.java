@@ -70,5 +70,4 @@ public class GodSelectedWindow extends JFrame{
         }
         return godsSeparated;
     }
-
 }

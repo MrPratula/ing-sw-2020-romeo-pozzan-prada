@@ -1,7 +1,6 @@
 package it.polimi.ingsw.gameAction.move;
 
 
-import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
 import it.polimi.ingsw.model.Battlefield;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Token;
@@ -41,7 +40,7 @@ public class SimplePerformMoveTest {
      * from 2,1 to 1,2
      * are no tested because the controller make those kind of moves illegal.
      */
-    @BeforeEach void setUp() throws CellOutOfBattlefieldException {
+    @BeforeEach void setUp() {
 
         battlefield = new Battlefield();
         selectedToken = new Token(TokenColor.RED);
@@ -58,7 +57,7 @@ public class SimplePerformMoveTest {
     /**
      * Test a move from 0 to 0 height.
      */
-    @Test void from0to0() throws CellOutOfBattlefieldException {
+    @Test void from0to0(){
 
         selectedToken.setTokenPosition(battlefield.getCell(2,1));
         battlefield.getCell(2,1).setOccupied();
@@ -79,7 +78,7 @@ public class SimplePerformMoveTest {
     /**
      * Test a move from 0 to 1 height.
      */
-    @Test void from0to1() throws CellOutOfBattlefieldException {
+    @Test void from0to1() {
 
         selectedToken.setTokenPosition(battlefield.getCell(2,1));
         battlefield.getCell(2,1).setOccupied();
@@ -100,7 +99,7 @@ public class SimplePerformMoveTest {
     /**
      * Test a move from 3 to 0 height.
      */
-    @Test void from3to0() throws CellOutOfBattlefieldException {
+    @Test void from3to0() {
 
         selectedToken.setTokenPosition(battlefield.getCell(2,2));
         battlefield.getCell(2,2).setOccupied();

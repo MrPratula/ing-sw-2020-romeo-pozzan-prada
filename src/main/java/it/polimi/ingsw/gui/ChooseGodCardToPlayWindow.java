@@ -71,7 +71,7 @@ public class ChooseGodCardToPlayWindow {
                                 try {
                                     view.notifyClient(playerAction);
                                     mainFrame.dispose();
-                                } catch (CellOutOfBattlefieldException | ReachHeightLimitException | CellHeightException | IOException | WrongNumberPlayerException | ImpossibleTurnException ex) {
+                                } catch (IOException ex) {
                                     ex.printStackTrace();
                                 }
                             }
@@ -89,9 +89,7 @@ public class ChooseGodCardToPlayWindow {
             });
 
             buttonGroup.add(buttonGod[i]);
-
             mainPanel.add(buttonGod[i]);
-
         }
 
         mainFrame.add(mainPanel,BorderLayout.CENTER);
@@ -171,6 +169,5 @@ public class ChooseGodCardToPlayWindow {
         }
         return godsToDisplay;
     }
-
 }
 

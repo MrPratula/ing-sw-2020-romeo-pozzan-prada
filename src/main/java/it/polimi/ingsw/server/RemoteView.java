@@ -51,7 +51,7 @@ public class RemoteView extends Observable<PlayerAction> implements Observer<Ser
      * to the controller.
      * @param playerAction the action to send.
      */
-    public void sendAction(PlayerAction playerAction) throws ImpossibleTurnException, IOException, CellHeightException, WrongNumberPlayerException, ReachHeightLimitException, CellOutOfBattlefieldException {
+    public void sendAction(PlayerAction playerAction) throws IOException {
         notify(playerAction);
     }
 
@@ -64,7 +64,7 @@ public class RemoteView extends Observable<PlayerAction> implements Observer<Ser
     public class MessageReceiver implements Observer<PlayerAction> {
 
         @Override
-        public void update(PlayerAction playerAction) throws CellOutOfBattlefieldException, CellHeightException, ReachHeightLimitException, WrongNumberPlayerException, ImpossibleTurnException, IOException {
+        public void update(PlayerAction playerAction) throws IOException {
             sendAction(playerAction);
         }
     }

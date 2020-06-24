@@ -1,6 +1,5 @@
 package it.polimi.ingsw.gameAction;
 
-import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
 import it.polimi.ingsw.model.Battlefield;
 
 public class Utility {
@@ -13,7 +12,7 @@ public class Utility {
      * The token you can see in the image are not placed in the battlefield yet.
      * @return the battlefield.
      */
-    public static Battlefield setUpForTest1() throws CellOutOfBattlefieldException {
+    public static Battlefield setUpForTest1() {
 
         Battlefield battlefield = new Battlefield();
 
@@ -30,7 +29,7 @@ public class Utility {
         return battlefield;
     }
 
-    public static Battlefield setUpForTest2() throws CellOutOfBattlefieldException {
+    public static Battlefield setUpForTest2() {
 
         Battlefield battlefield = new Battlefield();
 

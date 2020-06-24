@@ -1,7 +1,5 @@
 package it.polimi.ingsw.cli;
 import it.polimi.ingsw.client.View;
-import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
-import it.polimi.ingsw.controller.ReachHeightLimitException;
 import it.polimi.ingsw.model.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -106,8 +104,7 @@ public class BattlefieldLimitTest {
      * with some different heights and tokens
      */
     @Test
-    public void PrintCLITest() throws ReachHeightLimitException, CellOutOfBattlefieldException {
+    public void PrintCLITest() {
         view.printCLI(model.getCopy(), null);
     }
-
 }

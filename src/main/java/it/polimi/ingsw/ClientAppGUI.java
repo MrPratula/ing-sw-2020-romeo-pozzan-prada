@@ -1,11 +1,8 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.client.Client;
-import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
-import it.polimi.ingsw.model.TokenColor;
 
 import java.io.IOException;
-import java.util.Scanner;
 
 public class ClientAppGUI {
 
@@ -13,8 +10,6 @@ public class ClientAppGUI {
 
         Client client = null;
         String ip = "192.168.1.93";
-        String localHostFede = "192.168.1.149";
-        String localHostRichi = "192.168.1.7";
 
         String localHost = "127.0.0.1";
         String LANFede = "192.168.1.149";

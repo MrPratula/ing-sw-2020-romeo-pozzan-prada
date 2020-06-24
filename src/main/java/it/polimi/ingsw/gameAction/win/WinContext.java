@@ -1,6 +1,5 @@
 package it.polimi.ingsw.gameAction.win;
 
-import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
 import it.polimi.ingsw.model.Battlefield;
 import it.polimi.ingsw.model.Token;
 
@@ -11,14 +10,13 @@ import it.polimi.ingsw.model.Token;
  */
 public class WinContext {
 
-    private WinBehavior winStrategy;
+    private final WinBehavior winStrategy;
 
     public WinContext(WinBehavior winStrategy) {
         this.winStrategy = winStrategy;
     }
 
-    public boolean executeCheckWin (Token movedToken, Battlefield battlefield) throws CellOutOfBattlefieldException {
+    public boolean executeCheckWin (Token movedToken, Battlefield battlefield){
         return winStrategy.checkWin(movedToken, battlefield);
     }
-
 }

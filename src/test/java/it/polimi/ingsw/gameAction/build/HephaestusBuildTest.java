@@ -1,8 +1,5 @@
 package it.polimi.ingsw.gameAction.build;
 
-import it.polimi.ingsw.controller.CellHeightException;
-import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
-import it.polimi.ingsw.controller.ReachHeightLimitException;
 import it.polimi.ingsw.gameAction.Utility;
 import it.polimi.ingsw.model.Battlefield;
 import it.polimi.ingsw.model.Cell;
@@ -25,7 +22,7 @@ class HephaestusBuildTest {
     Token selectedToken;
 
     @BeforeEach
-    void setUp() throws CellOutOfBattlefieldException {
+    void setUp() {
 
         battlefield = Utility.setUpForTest1();
         enemyTokens = new ArrayList<>();
@@ -37,7 +34,7 @@ class HephaestusBuildTest {
      * The high of first_cell has to increase by two.
      */
     @Test
-    void HephaestusPerformBuild() throws CellHeightException, ReachHeightLimitException, CellOutOfBattlefieldException {
+    void HephaestusPerformBuild() {
         //setup for this method
         battlefield = new Battlefield();
         first_cell = battlefield.getCell(2,3);
@@ -58,7 +55,7 @@ class HephaestusBuildTest {
      * This test the valid builds with almost each kind of limitation.
      */
     @Test
-    void HephaestusValidBuilds() throws CellOutOfBattlefieldException {
+    void HephaestusValidBuilds() {
         selectedToken.setTokenPosition(battlefield.getCell(2,2));
         battlefield.getCell(2,2).setOccupied();
         enemyTokens.get(0).setTokenPosition(battlefield.getCell(1,1));

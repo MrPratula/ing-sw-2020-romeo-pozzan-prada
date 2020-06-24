@@ -41,7 +41,7 @@ public class FullGame4MinotaurPanTest {
      * Player 2 -> PAN
      */
     @Test
-    void test4 () throws CellOutOfBattlefieldException, ImpossibleTurnException, ReachHeightLimitException, CellHeightException, WrongNumberPlayerException, IOException {
+    void test4 () throws IOException {
 
         player1God = GodCard.MINOTAUR;
         player2God = GodCard.PAN;

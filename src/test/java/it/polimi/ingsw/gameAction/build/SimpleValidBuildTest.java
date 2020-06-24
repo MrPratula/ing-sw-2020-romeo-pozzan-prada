@@ -1,6 +1,5 @@
 package it.polimi.ingsw.gameAction.build;
 
-import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
 import it.polimi.ingsw.gameAction.Utility;
 import it.polimi.ingsw.model.Battlefield;
 import it.polimi.ingsw.model.Cell;
@@ -29,7 +28,7 @@ public class SimpleValidBuildTest {
     /**
      * This set up a standard battlefieldTest
      */
-    @BeforeEach void setUp() throws CellOutOfBattlefieldException {
+    @BeforeEach void setUp() {
 
         battlefield = Utility.setUpForTest1();
 
@@ -42,7 +41,7 @@ public class SimpleValidBuildTest {
     /**
      * This test the valid builds with almost each kind of limitation.
      */
-    @Test void validBuildsTest() throws CellOutOfBattlefieldException {
+    @Test void validBuildsTest()  {
 
         selectedToken.setTokenPosition(battlefield.getCell(2,2));
         battlefield.getCell(2,2).setOccupied();

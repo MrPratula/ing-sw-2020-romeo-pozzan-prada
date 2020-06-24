@@ -1,7 +1,6 @@
 package it.polimi.ingsw.gameAction.move;
 
 
-import it.polimi.ingsw.controller.CellOutOfBattlefieldException;
 import it.polimi.ingsw.model.Battlefield;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Token;
@@ -44,7 +43,7 @@ public class ApolloMoveTest {
     /**
      * In the valid moves must be present even the opponent's token position.
      */
-    @Test void apolloValidMoves() throws CellOutOfBattlefieldException {
+    @Test void apolloValidMoves() {
 
         selectedToken.setTokenPosition(battlefield.getCell(2,2));
         battlefield.getCell(2,2).setOccupied();
@@ -64,7 +63,7 @@ public class ApolloMoveTest {
     /**
      * Test a token swap with an enemy token on a different height level.
      */
-    @Test void apolloPerformMove() throws CellOutOfBattlefieldException {
+    @Test void apolloPerformMove() {
 
         selectedToken.setTokenPosition(battlefield.getCell(1,1));
         battlefield.getCell(1,1).setOccupied();
