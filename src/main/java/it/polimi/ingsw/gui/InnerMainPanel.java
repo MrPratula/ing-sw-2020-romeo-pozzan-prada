@@ -24,8 +24,8 @@ public class InnerMainPanel {
     private JPanel battlefieldPanel;
     private JPanel godPanel;
     private JLabel messageLabel  = new JLabel(new ImageIcon(ImageIO.read(getClass().getResource(Pics.WELCOMEMESSAGE.getPath()))));
-    private final CellButton[][] battlefieldGUI = new CellButton[5][5];
-    private final SwingView swingView;
+    private CellButton[][] battlefieldGUI = new CellButton[5][5];
+    private SwingView swingView;
 
 
     public InnerMainPanel(SwingView swingView) throws IOException {

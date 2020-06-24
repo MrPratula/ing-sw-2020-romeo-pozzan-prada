@@ -22,12 +22,10 @@ public class SwingView extends View {
 
     private int contPlaceToken = 0;
     private GameFrame gameFrame = null;
-    //private CellButton[][] battlefieldGUI; //maybe delete
     private ServerResponse currentServerResponse;
-    List<Cell> currentValidBuilds=null;
+    private List<Cell> currentValidBuilds = null;
 
     private int savedToken;
-
     private int count = 2;
     private Cell firstCell;
     Boolean power = null;

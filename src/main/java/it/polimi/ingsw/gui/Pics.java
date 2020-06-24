@@ -42,7 +42,7 @@ public enum Pics {
         LEVEL0TOKENBLUEVALIDMOVE("/level0tokenBlueValidMove.png"), //22
         LEVEL0TOKENYELLOWVALIDMOVE("/level0tokenYellowValidMove.png"), //22
         LEVEL1VALIDMOVE("/level1ValidMove.png"), //23
-        LEVEL1TOKENREDVALIDMOVE("/level1TokenRedValidMove.png"), //23
+        LEVEL1TOKENREDVALIDMOVE("/level1tokenRedValidMove.png"), //23
         LEVEL1TOKENBLUEVALIDMOVE("/level1tokenBlueValidMove.png"), //23
         LEVEL1TOKENYELLOWVALIDMOVE("/level1tokenYellowValidMove.png"), //23
         LEVEL2VALIDMOVE("/level2ValidMove.png"), //24
@@ -55,12 +55,12 @@ public enum Pics {
         LEVEL3TOKENYELLOWVALIDMOVE("/level3tokenYellowValidMove.png"), //24
 
         // GODCARDS
-        APOLLO("./apollo.png"),  //0
+        APOLLO("/apollo.png"),  //0
         APOLLOPANEL("/apolloPanel.png"),  //0
         ARTEMIS("/artemis.png"),   //1
         ARTEMISPANEL("/artemisPanel.png"),   //1
         ATHENA("/athena.png"),  //2
-        ATHENAPANEL("./athenaPanel.png"),  //2
+        ATHENAPANEL("/athenaPanel.png"),  //2
         ATLAS("/atlas.png"),  //3
         ATLASPANEL("/atlasPanel.png"),  //3
         CHRONUS("/chronus.png"), //4
@@ -115,7 +115,7 @@ public enum Pics {
         NICKNAME("/nickname.png"),
         NUMBEROFPLAYERS("/howmanyplayers.png"),
         GODPOWER("/godpower.png"),
-        ASKFORPROMETHEUSPOWER("/prometheus.png"),
+        ASKFORPROMETHEUSPOWER("/prometheusPower.png"),
 
         // MESSAGES
         WELCOMEMESSAGE("/welcomeMessage.png"),

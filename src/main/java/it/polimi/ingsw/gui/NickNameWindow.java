@@ -57,8 +57,13 @@ public class NickNameWindow extends JDialog{
         confirmButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(!nicknameTextField.getText().trim().isEmpty()){
-                    PlayerAction playerAction = new PlayerAction(Action.MY_NAME,null,null, null, 0, 0, null, null, false, nicknameTextField.getText());
+
+                String name = nicknameTextField.getText();
+                String validOrNot = isAGoodName(name);
+
+                if(validOrNot.equals("Ok")){
+
+                    PlayerAction playerAction = new PlayerAction(Action.MY_NAME,null,null, null, 0, 0, null, null, false, name);
                     try {
                         view.notifyClient(playerAction);
                         NickNameWindow.this.dispose();
@@ -67,10 +72,11 @@ public class NickNameWindow extends JDialog{
                     }
                 }
                 else {
+
                     try {
                         final JDialog dialog = new JDialog();
                         dialog.setAlwaysOnTop(true);
-                        JOptionPane.showMessageDialog(dialog, "You have to type a name!", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.ERRORICON.getPath()))));
+                        JOptionPane.showMessageDialog(dialog, validOrNot, "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.ERRORICON.getPath()))));
                     } catch (IOException ioException) {
                         ioException.printStackTrace();
                     }
@@ -84,6 +90,45 @@ public class NickNameWindow extends JDialog{
         validate();
         pack();
         setVisible(true);
+    }
+
+
+    /**
+     * @param name string to ckeck. It is the user input for his username.
+     * @return true if it is not empty, too long(<=16) or with spaces.
+     */
+    public String isAGoodName(String name){
+
+        StringBuilder error = new StringBuilder("Error! ");
+
+        if (name==null) {
+            error.append("Null name! ");
+            return error.toString();
+        }
+
+        if (name.isEmpty()) {
+            error.append("Empty name! ");
+            return error.toString();
+        }
+
+        if(name.length()>20){
+            error.append("Your name is too long! ");
+            return error.toString();
+        }
+
+        if (name.contains("\n")) {
+            error.append("Invalid name! ");
+            return error.toString();
+        }
+
+        /*   let them do this
+        if (name.contains(" ")) {
+            error.append("It contains an empty space! ");
+            error.append("Please retry...");
+            return error.toString();
+        } */
+
+        return "Ok";
     }
 
 
