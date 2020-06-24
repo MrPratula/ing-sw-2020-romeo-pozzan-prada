@@ -92,6 +92,7 @@ public class InnerMainPanel {
                 @Override
                 public void mouseEntered(MouseEvent e) {
                     playerText.setBackground(selectPlayerColor(allPlayers.get(finalI).getTokenColor()));
+                    playerText.setOpaque(true);
                     playerText.setText("Player " + allPlayers.get(finalI).getUsername().toUpperCase() );
                 }
                 @Override
@@ -118,7 +119,7 @@ public class InnerMainPanel {
                 return Color.RED;
             }
             case BLUE:{
-                return  Color.BLUE;
+                return Color.BLUE;
             }
             case YELLOW:{
                 return Color.YELLOW;

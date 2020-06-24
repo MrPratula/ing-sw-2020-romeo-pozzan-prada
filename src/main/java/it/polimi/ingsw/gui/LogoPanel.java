@@ -5,6 +5,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
+
+/**
+ * Initial frame in which the user has to click paly to start the game
+ */
 public class LogoPanel extends JPanel {
 
     public LogoPanel() {
@@ -15,7 +19,7 @@ public class LogoPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         try {
-            g.drawImage(new ImageIcon(ImageIO.read(getClass().getResource(Pics.OLYMPUS.getPath()))).getImage(),0,0, this.getWidth(), this.getHeight(),this);
+            g.drawImage(new ImageIcon(ImageIO.read(getClass().getResource(Pics.MAINBG.getPath()))).getImage(),0,0, this.getWidth(), this.getHeight(),this);
         } catch (IOException e) {
             e.printStackTrace();
         }
