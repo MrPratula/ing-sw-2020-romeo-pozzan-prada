@@ -1,8 +1,11 @@
 package it.polimi.ingsw.gui;
 
 import it.polimi.ingsw.utils.Pack;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 /**
  * Dialog window showing winning or losing messages
@@ -10,10 +13,10 @@ import java.awt.*;
 public class GameOverDialog extends JDialog {
 
 
-    public GameOverDialog(Pack pack, boolean hasWin) {
+    public GameOverDialog(Pack pack, boolean hasWin) throws IOException {
 
         setTitle("Game Over");
-        setIconImage(Pics.GAMEOVERICON.getImageIcon().getImage());
+        setIconImage(new ImageIcon(ImageIO.read(getClass().getResource(Pics.GAMEOVERICON.getPath()))).getImage());
         GameOverPanel p = new GameOverPanel();
         JLabel winner = new JLabel();
         if(hasWin)

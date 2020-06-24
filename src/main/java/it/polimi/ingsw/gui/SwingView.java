@@ -2,31 +2,36 @@ package it.polimi.ingsw.gui;
 
 import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.utils.*;
 import it.polimi.ingsw.utils.Action;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 
+/**
+ * Class that implements the user view of the game,
+ * if he selects to use the Graphic User Interface
+ */
 public class SwingView extends View {
+
+    private Player player;
 
     private int contPlaceToken = 0;
     private GameFrame gameFrame = null;
-    private CellButton[][] battlefieldGUI; //maybe delete
+    //private CellButton[][] battlefieldGUI; //maybe delete
     private ServerResponse currentServerResponse;
     List<Cell> currentValidBuilds=null;
 
-    private Player player;
     private int savedToken;
 
     private int count = 2;
-    private Cell first_cell;
+    private Cell firstCell;
     Boolean power = null;
+    private CellButton[][] battlefieldGUI;
 
 
     /**
@@ -35,14 +40,23 @@ public class SwingView extends View {
     public SwingView(){
     }
 
-    public void setFirst_cell(Cell targetcell){
-        this.first_cell = targetcell;
+
+    /*     SETTER     */
+
+    public void setFirstCell(Cell targetcell){
+        this.firstCell = targetcell;
     }
 
-    public void setWantToUsePower(Boolean power){this.power = power;}
+    public void setWantToUsePower(Boolean power){
+        this.power = power;
+    }
 
     public void setValidBuilds(List<Cell>valid){
         currentValidBuilds = valid;
+    }
+
+    public void savedToken(int selectedToken){
+        savedToken = selectedToken;
     }
 
 
@@ -60,26 +74,29 @@ public class SwingView extends View {
         return currentServerResponse;
     }
 
-    public void setBattlefieldGUI(CellButton[][] battlefieldGUI) {
-        this.battlefieldGUI = battlefieldGUI;
-    }
-
-    public Boolean wantToUsePower(){return power;}
-
     public List<Cell> getCurrentValidBuilds(){
         return currentValidBuilds;
     }
+
+    public int getSavedToken(){
+        return savedToken;
+    }
+
+
+    public Boolean wantToUsePower(){
+        return power;
+    }
+
 
 
     /**
      * When needed, it returns the token that has just been selected from the user,
      * and even the not selected one (it can be useful).
-     * @param serverResponse: the response passed through the observers from the server.
      * @param posX: the first input of the user, i.e. the column of the battlefield.
      * @param posY: the second input of the user, i.e. the row of the battlefield.
      * @return a list containing the selected and the not selected token.
      */
-    public List<Token> computeTokens(ServerResponse serverResponse, int posX, int posY){
+    public List<Token> computeTokens(int posX, int posY){
 
         Token selectedToken, otherToken;
         if (getPlayer().getToken1().getTokenPosition().getPosX() == posX &&
@@ -116,7 +133,7 @@ public class SwingView extends View {
             if(players.get(0).equals(getPlayer()))  opp1 = players.get(1);
             else opp1 = players.get(0);
         }
-        if(numberOfPlayers==3){                             ///si potrebbe fare meglio
+        if(numberOfPlayers==3){
             for(int i=0; i<3; i++){
                 if(players.get(i).equals(getPlayer())){
                     opp1 = players.get(1);
@@ -133,7 +150,7 @@ public class SwingView extends View {
 
     /**
      * Calls the notify to make update the observers
-     * @param playerAction
+     * @param playerAction action of the player
      * @throws IOException
      */
     public void notifyClient(PlayerAction playerAction) throws IOException {
@@ -147,7 +164,7 @@ public class SwingView extends View {
      * @param serverResponse: response from the server containing al the necessary informations
      */
     @Override
-    public void update(ServerResponse serverResponse) {
+    public void update(ServerResponse serverResponse) throws IOException {
 
         this.currentServerResponse = serverResponse;
 
@@ -165,7 +182,7 @@ public class SwingView extends View {
 
                 final JDialog dialog = new JDialog();
                 dialog.setAlwaysOnTop(true);
-                JOptionPane.showMessageDialog(dialog,"Your name is invalid, retry.","Error", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());
+                JOptionPane.showMessageDialog(dialog,"Your name is invalid, retry.","Error", JOptionPane.ERROR_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.ERRORICON.getPath()))));
                 new NickNameWindow(this);
                 break;
             }
@@ -186,7 +203,7 @@ public class SwingView extends View {
 
                 final JDialog dialog = new JDialog();
                 dialog.setAlwaysOnTop(true);
-                JOptionPane.showMessageDialog(dialog,serverResponse.getPack().getAction().toString(),"NUMBER RECEIVED", JOptionPane.INFORMATION_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
+                JOptionPane.showMessageDialog(dialog,serverResponse.getPack().getAction().toString(),"NUMBER RECEIVED", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
                 break;
             }
 
@@ -204,7 +221,7 @@ public class SwingView extends View {
                 player = serverResponse.getPack().getPlayer();
                 final JDialog dialog = new JDialog();
                 dialog.setAlwaysOnTop(true);
-                JOptionPane.showMessageDialog(dialog,serverResponse.getPack().getAction().toString(),"WAIT AND SAVE PLAYER FROM SERVER", JOptionPane.INFORMATION_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
+                JOptionPane.showMessageDialog(dialog,serverResponse.getPack().getAction().toString(),"WAIT AND SAVE PLAYER FROM SERVER", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
                 break;
             }
 
@@ -219,7 +236,7 @@ public class SwingView extends View {
                 if (!this.player.getTokenColor().equals(serverResponse.getTurn())){
                     final JDialog dialog = new JDialog();
                     dialog.setAlwaysOnTop(true);
-                    JOptionPane.showMessageDialog(dialog,pack.getMessageOpponents(),"NOT YOUR TURN! PLEASE WAIT!", JOptionPane.WARNING_MESSAGE, Pics.ERRORICON.getImageIcon());
+                    JOptionPane.showMessageDialog(dialog,pack.getMessageOpponents(),"NOT YOUR TURN! PLEASE WAIT!", JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.ERRORICON.getPath()))));
                 }
                 // else he has to pick his god card
                 else {
@@ -238,13 +255,9 @@ public class SwingView extends View {
                     //se non è null quindi se ha già posizionato i token, si aggiorna la board
                     if(this.gameFrame != null){
                         displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
-                        this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(Pics.NOT_YOUR_TURN.getImageIcon());
-
-                        ////////////////////////////player  e god assegnato todo
-
+                        this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.NOT_YOUR_TURN.getPath()))));
                     }
                     //altrimenti crea la board così può vedere dove l'altro posiziona i token
-                    //per fare una cosa fatta bene dobbiamo disabilitare i bottoni a questo player
                     else{
                         this.gameFrame = new GameFrame(serverResponse,this);
                         this.battlefieldGUI = getBattlefieldGUI();
@@ -258,16 +271,16 @@ public class SwingView extends View {
                     if(contPlaceToken == 0){
                         final JDialog dialog = new JDialog();
                         dialog.setAlwaysOnTop(true);
-                        JOptionPane.showMessageDialog(dialog, pack.getAction().getName().toUpperCase(),"IT'S YOUR TURN! PLACE YOUR FIRST TOKEN!"+getPlayer().getUsername(), JOptionPane.WARNING_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
+                        JOptionPane.showMessageDialog(dialog, pack.getAction().getName().toUpperCase(),"IT'S YOUR TURN! PLACE YOUR FIRST TOKEN!"+getPlayer().getUsername(), JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
                         this.gameFrame = new GameFrame(serverResponse,this);
                         this.battlefieldGUI = getBattlefieldGUI();
-                        this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(Pics.PLACE_YOUR_TOKEN.getImageIcon());
+                        this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.PLACE_YOUR_TOKEN.getPath()))));
                         contPlaceToken++;
                     }
                     else{
                         final JDialog dialog = new JDialog();
                         dialog.setAlwaysOnTop(true);
-                        JOptionPane.showMessageDialog(dialog,pack.getAction().getName().toUpperCase(),"AGAIN YOUR TURN! PLACE YOUR SECOND TOKEN! "+getPlayer().getUsername(), JOptionPane.WARNING_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
+                        JOptionPane.showMessageDialog(dialog,pack.getAction().getName().toUpperCase(),"AGAIN YOUR TURN! PLACE YOUR SECOND TOKEN! "+getPlayer().getUsername(), JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
                         displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
                     }
                 }
@@ -281,7 +294,7 @@ public class SwingView extends View {
                 Pack pack = serverResponse.getPack();
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
-                    this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(Pics.NOT_YOUR_TURN.getImageIcon());
+                    this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.NOT_YOUR_TURN.getPath()))));
                     //JOptionPane.showMessageDialog(new JFrame(),pack.getMessageOpponents(),"NOT YOUR TURN!! PLEASE WAIT!", JOptionPane.WARNING_MESSAGE, Pics.ERRORICON.getImageIcon());
                 }
                 else {
@@ -289,9 +302,9 @@ public class SwingView extends View {
                         this.player = pack.getPlayer();
                     final JDialog dialog = new JDialog();
                     dialog.setAlwaysOnTop(true);
-                    JOptionPane.showMessageDialog(dialog, pack.getAction().getName().toUpperCase(), "YOUR TURN, "+getPlayer().getUsername(), JOptionPane.WARNING_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
+                    JOptionPane.showMessageDialog(dialog, pack.getAction().getName().toUpperCase(), "YOUR TURN, "+getPlayer().getUsername(), JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
 
-                    this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(Pics.ASK_FOR_SELECT_TOKEN.getImageIcon());
+                    this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.ASK_FOR_SELECT_TOKEN.getPath()))));
 
                 }
                 displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
@@ -321,14 +334,14 @@ public class SwingView extends View {
                 Pack pack = serverResponse.getPack();
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
-                    this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(Pics.NOT_YOUR_TURN.getImageIcon());
+                    this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.NOT_YOUR_TURN.getPath()))));
                     displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
                 }
                 else{
-                    this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(Pics.ASK_FOR_WHERE_TO_MOVE.getImageIcon());
+                    this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.ASK_FOR_WHERE_TO_MOVE.getPath()))));
                     final JDialog dialog = new JDialog();
                     dialog.setAlwaysOnTop(true);
-                    JOptionPane.showMessageDialog(dialog, pack.getAction().getName().toUpperCase(), "YOUR TURN, "+getPlayer().getUsername(), JOptionPane.WARNING_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
+                    JOptionPane.showMessageDialog(dialog, pack.getAction().getName().toUpperCase(), "YOUR TURN, "+getPlayer().getUsername(), JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
                     displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), pack.getValidMoves());
                 }
                 break;
@@ -341,10 +354,9 @@ public class SwingView extends View {
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
                     displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null); //edit
-                    this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(Pics.ANOTHERPLAYERISBUILDING.getImageIcon());
+                    this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.ANOTHERPLAYERISBUILDING.getPath()))));
                 }
                 else{
-
                     // Refresh the player so the token position is updated
                     if (pack.getPlayer() != null)
                         this.player = pack.getPlayer();
@@ -353,8 +365,8 @@ public class SwingView extends View {
                     this.power = false;
                     final JDialog dialog = new JDialog();
                     dialog.setAlwaysOnTop(true);
-                    JOptionPane.showMessageDialog(dialog, pack.getAction().getName().toUpperCase(), "YOUR TURN, "+getPlayer().getUsername(), JOptionPane.WARNING_MESSAGE, Pics.INFORMATIONICON.getImageIcon());
-                    this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(Pics.ASK_FOR_BUILD.getImageIcon());
+                    JOptionPane.showMessageDialog(dialog, pack.getAction().getName().toUpperCase(), "YOUR TURN, "+getPlayer().getUsername(), JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
+                    this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.ASK_FOR_BUILD.getPath()))));
                     displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), pack.getValidBuilds());
                 }
                 break;
@@ -367,7 +379,7 @@ public class SwingView extends View {
                 if(!serverResponse.getTurn().equals(player.getTokenColor())){
                     final JDialog dialog = new JDialog();
                     dialog.setAlwaysOnTop(true);
-                    JOptionPane.showMessageDialog(dialog,"" , "GAME OVER ", JOptionPane.WARNING_MESSAGE, Pics.GAMEOVERICON.getImageIcon());
+                    JOptionPane.showMessageDialog(dialog,"" , "GAME OVER ", JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.GAMEOVERICON.getPath()))));
                     displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
                     new GameOverDialog(pack,false);
                 }
@@ -391,7 +403,7 @@ public class SwingView extends View {
      * @param validMoves: cells that have to be printed on a green background (can be null)
      * @param modelCopy: contains the the board of the game and the players in the game
      */
-    public void displayGui(CellButton[][] battlefieldGUI, ModelUtils modelCopy, List<Cell> validMoves) {
+    public void displayGui(CellButton[][] battlefieldGUI, ModelUtils modelCopy, List<Cell> validMoves) throws IOException {
 
         Battlefield newBattlefield = modelCopy.getBattlefield();
         List<Player> allPlayers = modelCopy.getAllPlayers();
@@ -435,7 +447,7 @@ public class SwingView extends View {
      * @param x: position x of the battlefield
      * @param y: position y of the battlefield
      */
-    public void displayInnerGui(CellButton[][] battlefieldGUI, Battlefield battlefield, List<Player> allPlayers, int y, int x){
+    public void displayInnerGui(CellButton[][] battlefieldGUI, Battlefield battlefield, List<Player> allPlayers, int y, int x) throws IOException {
 
         // we check if exists a token of any player in this position
         if(!battlefield.getCell(x, y).getThereIsPlayer()){
@@ -480,7 +492,7 @@ public class SwingView extends View {
      * @param isDome dome or not
      * @return ImageIcon of the cell to display
      */
-    public ImageIcon selectRolloverIcon(Cell cell, boolean isDome) {
+    public ImageIcon selectRolloverIcon(Cell cell, boolean isDome) throws IOException {
 
         //display dome text  height
         if(isDome)
@@ -494,11 +506,11 @@ public class SwingView extends View {
     /**
      * It selects the right image depending on the characteristics
      * @param player: if it's not null, that one is the player on that cell
-     * @param cell: the cell in wich i have to put the icon
+     * @param cell: the cell in which i have to put the icon
      * @param iHaveToDisplayValidMoves auto explicative
      * @return ImageIcon of the cell to display
      */
-    public ImageIcon selectIcon(Player player, Cell cell, boolean isDome, boolean iHaveToDisplayValidMoves) {
+    public ImageIcon selectIcon(Player player, Cell cell, boolean isDome, boolean iHaveToDisplayValidMoves) throws IOException {
 
         ImageIcon toReturn = new ImageIcon();
 
@@ -547,54 +559,26 @@ public class SwingView extends View {
      * @param height of this cell
      * @return the right imageicon, or error icon
      */
-    public ImageIcon switchOnHeight(int height, Pics p1, Pics p2, Pics p3, Pics p4) {
+    public ImageIcon switchOnHeight(int height, Pics p1, Pics p2, Pics p3, Pics p4) throws IOException {
 
             switch (height) {
                 case 0: {
-                    return p1.getImageIcon();
+                    return new ImageIcon(ImageIO.read(getClass().getResource(p1.getPath())));
                 }
                 case 1: {
-                    return p2.getImageIcon();
+                    return new ImageIcon(ImageIO.read(getClass().getResource(p2.getPath())));
                 }
                 case 2: {
-                    return p3.getImageIcon();
+                    return new ImageIcon(ImageIO.read(getClass().getResource(p3.getPath())));
                 }
                 case 3: {
-                    return p4.getImageIcon();
+                    return new ImageIcon(ImageIO.read(getClass().getResource(p4.getPath())));
                 }
                 default: { //error
-                    return Pics.ERRORICON.getImageIcon();
+                    return new ImageIcon(ImageIO.read(getClass().getResource(Pics.ERRORICON.getPath())));
                 }
             }
 
-    }
-
-    public int getToken(int posx, int posy, Player player){
-
-        int selectX, selectY;
-        selectX = posx;
-        selectY = posy;
-
-        if (player.getToken1().getTokenPosition().getPosX() == selectX && player.getToken1().getTokenPosition().getPosY() == selectY){
-            return player.getToken1().getId();
-        }
-        else if (player.getToken2().getTokenPosition().getPosX() == selectX && player.getToken2().getTokenPosition().getPosY() == selectY){
-            return player.getToken2().getId();
-        }
-        else return 0;
-    }
-
-    public Cell getCell(int posx, int posy, Battlefield battlefield){
-
-        int selectX, selectY;
-        selectX = posx;
-        selectY = posy;
-
-        try {
-            return battlefield.getCell(selectX, selectY);
-        } catch (Exception e) {
-            return null;
-        }
     }
 
 
@@ -617,10 +601,25 @@ public class SwingView extends View {
         return false;
     }
 
+
+    /**
+     * Since Hestia can't make her second build on a perimeter space, we check for this condition.
+     * A perimeter space is a cell that has x==0 || x==4 || y==0 || y==4.
+     * @param targetCell cell we are asking for.
+     * @return true if that cell is not on a perimeter zone of the battlefield.
+     */
     public boolean notPerimeterCell(Cell targetCell){
         return ((targetCell.getPosX()!=4 && targetCell.getPosY()!=4) && (targetCell.getPosX()!=0 && targetCell.getPosY()!=0));
     }
 
+
+    /**
+     * Ask if a target cell of the battlefield is free or not.
+     * It is free if there is not a token on it nor a dome.
+     * @param targetCell a cell we are asking for.
+     * @param modelCopy model copy received from the server.
+     * @return true if that cell is free, false else.
+     */
     public boolean isFree(Cell targetCell, ModelUtils modelCopy){
 
         List<Player> allPlayers = modelCopy.getAllPlayers();
@@ -645,13 +644,7 @@ public class SwingView extends View {
         return !battlefield.getCell(targetCell).getIsDome();
     }
 
-    public void savedToken(int selectedToken){
-        savedToken = selectedToken;
-    }
 
-    public int getSavedToken(){
-        return savedToken;
-    }
 
 
     /**
@@ -667,12 +660,12 @@ public class SwingView extends View {
             case DEMETER: {
                 if (count == 1) {
                     SwingView.this.displayGui(getBattlefieldGUI(), pack.getModelCopy(), pack.getValidBuilds());
-                    first_cell = targetCell;
+                    firstCell = targetCell;
                     break;
                 }
                 if (count == 0) {
                     //if the two selected cell are different (different coordinate)
-                    if(targetCell.getPosX()!=first_cell.getPosX() || targetCell.getPosY() != first_cell.getPosY()) {
+                    if(targetCell.getPosX()!= firstCell.getPosX() || targetCell.getPosY() != firstCell.getPosY()) {
                         count = 2;
 
                         List<Cell> newValidBuilds = new ArrayList<>();
@@ -682,15 +675,15 @@ public class SwingView extends View {
                         }
                         SwingView.this.displayGui(getBattlefieldGUI(), pack.getModelCopy(), newValidBuilds);
 
-                        this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(Pics.SECOND_BUILD.getImageIcon());
+                        this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.SECOND_BUILD.getPath()))));
 
-                        PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, player, null, null, savedToken, 0, first_cell, targetCell, true, null);
+                        PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, player, null, null, savedToken, 0, firstCell, targetCell, true, null);
                         notifyClient(playerAction);
-                        first_cell = null;
+                        firstCell = null;
                     }
                     else{
                         count = 1;
-                        JOptionPane.showMessageDialog(new JFrame(), "You can't build twice in the same cell", "Error", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());
+                        JOptionPane.showMessageDialog(new JFrame(), "You can't build twice in the same cell", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.ERRORICON.getPath()))));
                     }
                     break;
                 }
@@ -698,7 +691,7 @@ public class SwingView extends View {
             }
             case HESTIA:{
                 if(count == 1){
-                    first_cell = targetCell;
+                    firstCell = targetCell;
                     break;
                 }
                 if(count == 0){
@@ -706,13 +699,13 @@ public class SwingView extends View {
                     //the cell of the second buil can't be a perimeter cell.
                     if(notPerimeterCell(targetCell)) {
                         count = 2;
-                        PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, player, null, null, savedToken, 0, first_cell, targetCell, true, null);
+                        PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, player, null, null, savedToken, 0, firstCell, targetCell, true, null);
                         notifyClient(playerAction);
-                        first_cell = null;
+                        firstCell = null;
                     }
                     else{
                         count = 1;
-                        JOptionPane.showMessageDialog(new JFrame(), "You can't select a perimeter cell", "Error", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());
+                        JOptionPane.showMessageDialog(new JFrame(), "You can't select a perimeter cell", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.ERRORICON.getPath()))));
                     }
                     break;
                 }
@@ -720,10 +713,20 @@ public class SwingView extends View {
         }
     }
 
+
+    /**
+     * Recalculates the new valid builds in case one of
+     * these gods decided to use his power, and modifies
+     * the next mvoe
+     * @param selectedCell cell that has been selected to perform build generallty
+     * @return the new vlid builds
+     */
     public List<Cell> newValidBuilds(Cell selectedCell){
+
         List<Cell> valid = getCurrentServerResponse().getPack().getValidBuilds();
         List<Cell> targetCells = new ArrayList<>();
         Cell targetcell = null;
+
         switch (player.getMyGodCard()){
             case DEMETER:{
                 for(Cell c: valid){
@@ -736,6 +739,7 @@ public class SwingView extends View {
                 getCurrentServerResponse().getPack().setValidBuilds(valid);
                 break;
             }
+
             case HESTIA:{
                 for(Cell c: valid){
                     if(notPerimeterCell(c)){
@@ -745,6 +749,7 @@ public class SwingView extends View {
                 getCurrentServerResponse().getPack().setValidBuilds(targetCells);
                 break;
             }
+
             case HEPHAESTUS:{
                 for (Cell c: valid){
                     if(c.getPosY()==selectedCell.getPosY() && c.getPosX()==selectedCell.getPosX()){
@@ -756,6 +761,7 @@ public class SwingView extends View {
                 getCurrentServerResponse().getPack().setValidBuilds(targetCells);
                 break;
             }
+
             case ATLAS:{
                 for(Cell c: valid){
                     if(c.getPosY()==selectedCell.getPosY() && c.getPosX()==selectedCell.getPosX()){
@@ -770,7 +776,48 @@ public class SwingView extends View {
             default:
                 throw new IllegalStateException("Unexpected value: " + player.getMyGodCard());
         }
+
         setValidBuilds(getCurrentServerResponse().getPack().getValidBuilds());
+
         return getCurrentServerResponse().getPack().getValidBuilds();
     }
+
+
+    public int getToken(int posx, int posy, Player player){
+
+        int selectX, selectY;
+        selectX = posx;
+        selectY = posy;
+
+        if (player.getToken1().getTokenPosition().getPosX() == selectX && player.getToken1().getTokenPosition().getPosY() == selectY){
+            return player.getToken1().getId();
+        }
+        else if (player.getToken2().getTokenPosition().getPosX() == selectX && player.getToken2().getTokenPosition().getPosY() == selectY){
+            return player.getToken2().getId();
+        }
+        else return 0;
+    }
+
+    /**
+     * Get an input from a player and return the corresponding cell of the battlefield.
+     * @param posx x
+     * @param posy y
+     * @param battlefield the model's battlefield copy received in server response.
+     * @return the cell of the battlefield with the coordinates written in inputs. Null if something goes wrong.
+     */
+    public Cell getCell(int posx, int posy, Battlefield battlefield){
+
+        int selectX, selectY;
+        selectX = posx;
+        selectY = posy;
+
+        try {
+            return battlefield.getCell(selectX, selectY);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+
+
 }

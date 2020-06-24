@@ -1,17 +1,19 @@
 package it.polimi.ingsw.gui;
 
-import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.PlayerAction;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
 
+/**
+ * Frame for recognising the user
+ */
 public class NickNameWindow extends JDialog{
 
     private final JTextField nicknameTextField;
@@ -23,7 +25,7 @@ public class NickNameWindow extends JDialog{
      * Dialog windows that opens when a player click on PLAY
      * and here he has to put his name
      */
-    public NickNameWindow(SwingView swingView) {
+    public NickNameWindow(SwingView swingView) throws IOException {
 
         this.view = swingView;
 
@@ -31,7 +33,7 @@ public class NickNameWindow extends JDialog{
         setResizable(true);
         setPreferredSize(new Dimension(600,300));
         setLocationRelativeTo(null);
-        setIconImage(Pics.PLAYERICON.getImageIcon().getImage());
+        setIconImage(new ImageIcon(ImageIO.read(getClass().getResource(Pics.PLAYERICON.getPath()))).getImage());
         setBackground(Color.BLACK);
 
         //Nickname's panel
@@ -65,7 +67,13 @@ public class NickNameWindow extends JDialog{
                     }
                 }
                 else {
-                    JOptionPane.showMessageDialog(new JFrame(), "You have to type a name!", "Error", JOptionPane.ERROR_MESSAGE, Pics.ERRORICON.getImageIcon());
+                    try {
+                        final JDialog dialog = new JDialog();
+                        dialog.setAlwaysOnTop(true);
+                        JOptionPane.showMessageDialog(dialog, "You have to type a name!", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.ERRORICON.getPath()))));
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
                 }
             }
         });
@@ -77,4 +85,6 @@ public class NickNameWindow extends JDialog{
         pack();
         setVisible(true);
     }
+
+
 }

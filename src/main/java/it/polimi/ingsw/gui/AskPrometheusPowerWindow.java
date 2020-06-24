@@ -3,6 +3,7 @@ package it.polimi.ingsw.gui;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.PlayerAction;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -15,15 +16,15 @@ public class AskPrometheusPowerWindow extends JDialog {
 
     /**
      * JDialog thats asks if the player wants to use prometheus' power
-     * @param swingView
+     * @param swingView gui view of mvc
      */
-    public AskPrometheusPowerWindow(SwingView swingView) {
+    public AskPrometheusPowerWindow(SwingView swingView) throws IOException {
 
         this.view = swingView;
 
         setTitle("Prometheus Power");
         setResizable(false);
-        setIconImage(Pics.PLAYERICON.getImageIcon().getImage());
+        setIconImage(new ImageIcon(ImageIO.read(getClass().getResource(Pics.PLAYERICON.getPath()))).getImage());
         setPreferredSize(new Dimension(600,300));
 
         PrometheusPanel main = new PrometheusPanel();

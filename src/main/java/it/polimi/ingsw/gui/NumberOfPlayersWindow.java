@@ -1,6 +1,5 @@
 package it.polimi.ingsw.gui;
 
-import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.PlayerAction;
 
@@ -10,8 +9,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-public class NumberOfPlayersWindow extends JDialog{
 
+/**
+ * Little frame to let the first user select
+ * the number of players he wants to play with [2/3]
+ */
+public class NumberOfPlayersWindow extends JDialog{
 
     private final JComboBox<Integer> numberOfPlayersBox;
     private final SwingView view;
@@ -56,4 +59,5 @@ public class NumberOfPlayersWindow extends JDialog{
         pack();
         setVisible(true);
     }
+
 }

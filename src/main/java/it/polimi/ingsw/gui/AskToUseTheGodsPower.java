@@ -5,6 +5,7 @@ import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.PlayerAction;
 import it.polimi.ingsw.utils.ServerResponse;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -14,22 +15,20 @@ import java.io.IOException;
 public class AskToUseTheGodsPower extends JDialog{
 
     private final SwingView view;
-    Cell targetCell;
 
     /**
      * JDialog that asks if the player wants to use his god's power
-     * @param swingView
-     * @param serverResponse
+     * @param swingView gui view
+     * @param serverResponse response of the server
      */
-    public AskToUseTheGodsPower(final SwingView swingView, final ServerResponse serverResponse, final Cell targetCell){
+    public AskToUseTheGodsPower(final SwingView swingView, final ServerResponse serverResponse, final Cell targetCell) throws IOException {
 
         this.view = swingView;
-        this.targetCell = targetCell;
 
         setTitle("GOD'S POWER");
         setLocationRelativeTo(null);
         setResizable(false);
-        setIconImage(Pics.PLAYERICON.getImageIcon().getImage());
+        setIconImage(new ImageIcon(ImageIO.read(getClass().getResource(Pics.PLAYERICON.getPath()))).getImage());
         setPreferredSize(new Dimension(600,300));
 
         PowerPanel panel = new PowerPanel();
@@ -74,4 +73,7 @@ public class AskToUseTheGodsPower extends JDialog{
         pack();
         setVisible(true);
     }
+
+
 }
+

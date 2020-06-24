@@ -1,11 +1,14 @@
 package it.polimi.ingsw.gui;
 
 import it.polimi.ingsw.model.GodCard;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,12 +18,12 @@ import java.util.List;
 public class GodSelectedWindow extends JFrame{
 
 
-    public GodSelectedWindow(String s) {
+    public GodSelectedWindow(String s) throws IOException {
 
         setTitle("These are the GodCards for the game:");
         setSize(600,500);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setIconImage(Pics.PLAYERICON.getImageIcon().getImage());
+        setIconImage(new ImageIcon(ImageIO.read(getClass().getResource(Pics.PLAYERICON.getPath()))).getImage());
 
         List<GodCard> godsInGame = recognizeGodInGame(s);
 
@@ -28,7 +31,7 @@ public class GodSelectedWindow extends JFrame{
         selectedGodsPanel.setLayout(new GridLayout(1, godsInGame.size()));
 
         for (GodCard godCard : godsInGame) {
-            final JLabel playerText = new JLabel(new ImageIcon(new File("./src/main/images/godcards/" + godCard.name().toLowerCase() + "Panel.png").getAbsolutePath()));
+            final JLabel playerText = new JLabel(new ImageIcon(ImageIO.read(getClass().getResource("/" + godCard.name().toLowerCase() + "Panel.png"))));
             selectedGodsPanel.add(playerText);
         }
 
@@ -49,7 +52,7 @@ public class GodSelectedWindow extends JFrame{
 
 
     /**
-     * Links a string of god names separeted by spaces
+     * Links a string of god names separeted by commas
      * into the real GodCards corresponding to them
      * @param godCardsForTheGame: String of god names
      * @return GodCards in game

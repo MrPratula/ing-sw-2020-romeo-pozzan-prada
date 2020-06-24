@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.utils.*;
 
@@ -10,6 +9,11 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+
+/**
+ * Class that implements the user view of the game,
+ * if he selects to use the Command Line Interface
+ */
 public class View extends Observable<PlayerAction> implements Observer<ServerResponse>  {
 
     private Player player;
@@ -22,6 +26,8 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
     public View() {
         printSANTORINI();
     }
+
+    /*     GETTER     */
 
     protected Player getPlayer(){
         return player;

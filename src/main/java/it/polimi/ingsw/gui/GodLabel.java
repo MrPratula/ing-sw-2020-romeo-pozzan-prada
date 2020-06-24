@@ -1,14 +1,16 @@
 package it.polimi.ingsw.gui;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 
 public class GodLabel extends JLabel {
 
-    private ImageIcon img = Pics.ATHENAPANEL.getImageIcon();
+    private ImageIcon img = new ImageIcon(ImageIO.read(getClass().getResource(Pics.ATHENAPANEL.getPath())));
 
-    public GodLabel() {
+    public GodLabel() throws IOException {
         super();
     }
 
