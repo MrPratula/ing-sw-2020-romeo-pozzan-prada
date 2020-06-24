@@ -708,6 +708,18 @@ public class SwingView extends View {
                     break;
                 }
             }
+            case HEPHAESTUS:
+            case ATLAS:{
+                PlayerAction playerAction;
+                if(targetCell.getHeight() < 3){
+                    playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, player, null, null, getSavedToken(), 0, targetCell, null, true, null);
+                }
+                else{
+                    playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, player, null, null, getSavedToken(), 0, targetCell, null, false, null);
+                }
+                notifyClient(playerAction);
+                break;
+            }
         }
     }
 
@@ -715,9 +727,9 @@ public class SwingView extends View {
     /**
      * Recalculates the new valid builds in case one of
      * these gods decided to use his power, and modifies
-     * the next mvoe
+     * the next move
      * @param selectedCell cell that has been selected to perform build generallty
-     * @return the new vlid builds
+     * @return the new valid builds
      */
     public List<Cell> newValidBuilds(Cell selectedCell){
 
@@ -734,7 +746,6 @@ public class SwingView extends View {
                     }
                 }
                 valid.remove(targetcell);
-                getCurrentServerResponse().getPack().setValidBuilds(valid);
                 break;
             }
 
@@ -777,10 +788,21 @@ public class SwingView extends View {
 
         setValidBuilds(getCurrentServerResponse().getPack().getValidBuilds());
 
-        return getCurrentServerResponse().getPack().getValidBuilds();
+        if(currentValidBuilds.isEmpty()){
+            return null;
+        }
+        else {
+            return getCurrentServerResponse().getPack().getValidBuilds();
+        }
     }
 
-
+    /**
+     * This method is called when a player selected the token he wants to move and return the ID of that token.
+     * @param posx The x position of the token selected in the board
+     * @param posy The y position of the token selected in the board
+     * @param player the player that selected the token
+     * @return the ID of the token of that player in that position. 0 if something went wrong.
+     */
     public int getToken(int posx, int posy, Player player){
 
         int selectX, selectY;
