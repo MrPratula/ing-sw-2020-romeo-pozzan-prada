@@ -180,7 +180,7 @@ public class SwingView extends View {
 
                 final JDialog dialog = new JDialog();
                 dialog.setAlwaysOnTop(true);
-                JOptionPane.showMessageDialog(dialog,"Your name is invalid, retry.","Error", JOptionPane.ERROR_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.ERRORICON.getPath()))));
+                JOptionPane.showMessageDialog(dialog,"Another player has already selected this name, retry.","Error", JOptionPane.ERROR_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.ERRORICON.getPath()))));
                 new NickNameWindow(this);
                 break;
             }
@@ -199,9 +199,9 @@ public class SwingView extends View {
             case WAIT_OTHER_PLAYERS_TO_CONNECT:
             case NUMBER_RECEIVED: {
 
-                final JDialog dialog = new JDialog();
-                dialog.setAlwaysOnTop(true);
-                JOptionPane.showMessageDialog(dialog,serverResponse.getPack().getAction().toString(),"NUMBER RECEIVED", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
+                //final JDialog dialog = new JDialog();
+                //dialog.setAlwaysOnTop(true);
+                //JOptionPane.showMessageDialog(dialog,serverResponse.getPack().getAction().toString(),"NUMBER RECEIVED", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
                 break;
             }
 
@@ -217,9 +217,9 @@ public class SwingView extends View {
             case WAIT_AND_SAVE_PLAYER_FROM_SERVER:{
 
                 player = serverResponse.getPack().getPlayer();
-                final JDialog dialog = new JDialog();
-                dialog.setAlwaysOnTop(true);
-                JOptionPane.showMessageDialog(dialog,serverResponse.getPack().getAction().toString(),"WAIT AND SAVE PLAYER FROM SERVER", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
+                //final JDialog dialog = new JDialog();
+                //dialog.setAlwaysOnTop(true);
+                //JOptionPane.showMessageDialog(dialog,serverResponse.getPack().getAction().toString(),"WAIT AND SAVE PLAYER FROM SERVER", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
                 break;
             }
 
@@ -232,9 +232,9 @@ public class SwingView extends View {
 
                 // If the player is not in turn he is just notified to wait
                 if (!this.player.getTokenColor().equals(serverResponse.getTurn())){
-                    final JDialog dialog = new JDialog();
-                    dialog.setAlwaysOnTop(true);
-                    JOptionPane.showMessageDialog(dialog,pack.getMessageOpponents(),"NOT YOUR TURN! PLEASE WAIT!", JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.ERRORICON.getPath()))));
+                    //final JDialog dialog = new JDialog();
+                    //dialog.setAlwaysOnTop(true);
+                    //JOptionPane.showMessageDialog(dialog,pack.getMessageOpponents(),"NOT YOUR TURN! PLEASE WAIT!", JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.ERRORICON.getPath()))));
                 }
                 // else he has to pick his god card
                 else {
@@ -267,18 +267,18 @@ public class SwingView extends View {
                         this.player = serverResponse.getPack().getPlayer();
 
                     if(contPlaceToken == 0){
-                        final JDialog dialog = new JDialog();
-                        dialog.setAlwaysOnTop(true);
-                        JOptionPane.showMessageDialog(dialog, pack.getAction().getName().toUpperCase(),"IT'S YOUR TURN! PLACE YOUR FIRST TOKEN!"+getPlayer().getUsername(), JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
+                        //final JDialog dialog = new JDialog();
+                        //dialog.setAlwaysOnTop(true);
+                        //JOptionPane.showMessageDialog(dialog, pack.getAction().getName().toUpperCase(),"IT'S YOUR TURN! PLACE YOUR FIRST TOKEN!"+getPlayer().getUsername(), JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
                         this.gameFrame = new GameFrame(serverResponse,this);
                         this.battlefieldGUI = getBattlefieldGUI();
                         this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.PLACE_YOUR_TOKEN.getPath()))));
                         contPlaceToken++;
                     }
                     else{
-                        final JDialog dialog = new JDialog();
-                        dialog.setAlwaysOnTop(true);
-                        JOptionPane.showMessageDialog(dialog,pack.getAction().getName().toUpperCase(),"AGAIN YOUR TURN! PLACE YOUR SECOND TOKEN! "+getPlayer().getUsername(), JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
+                        //final JDialog dialog = new JDialog();
+                        //dialog.setAlwaysOnTop(true);
+                        //JOptionPane.showMessageDialog(dialog,pack.getAction().getName().toUpperCase(),"AGAIN YOUR TURN! PLACE YOUR SECOND TOKEN! "+getPlayer().getUsername(), JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
                         displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
                     }
                 }
@@ -298,9 +298,9 @@ public class SwingView extends View {
                 else {
                     if(pack.getPlayer()!=null)
                         this.player = pack.getPlayer();
-                    final JDialog dialog = new JDialog();
-                    dialog.setAlwaysOnTop(true);
-                    JOptionPane.showMessageDialog(dialog, pack.getAction().getName().toUpperCase(), "YOUR TURN, "+getPlayer().getUsername(), JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
+                    //final JDialog dialog = new JDialog();
+                    //dialog.setAlwaysOnTop(true);
+                    //JOptionPane.showMessageDialog(dialog, pack.getAction().getName().toUpperCase(), "YOUR TURN, "+getPlayer().getUsername(), JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
 
                     this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.ASK_FOR_SELECT_TOKEN.getPath()))));
 
@@ -337,9 +337,9 @@ public class SwingView extends View {
                 }
                 else{
                     this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.ASK_FOR_WHERE_TO_MOVE.getPath()))));
-                    final JDialog dialog = new JDialog();
-                    dialog.setAlwaysOnTop(true);
-                    JOptionPane.showMessageDialog(dialog, pack.getAction().getName().toUpperCase(), "YOUR TURN, "+getPlayer().getUsername(), JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
+                    //final JDialog dialog = new JDialog();
+                    //dialog.setAlwaysOnTop(true);
+                    //JOptionPane.showMessageDialog(dialog, pack.getAction().getName().toUpperCase(), "YOUR TURN, "+getPlayer().getUsername(), JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
                     displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), pack.getValidMoves());
                 }
                 break;
@@ -361,9 +361,9 @@ public class SwingView extends View {
 
                     setValidBuilds(serverResponse.getPack().getValidBuilds());
                     this.power = false;
-                    final JDialog dialog = new JDialog();
-                    dialog.setAlwaysOnTop(true);
-                    JOptionPane.showMessageDialog(dialog, pack.getAction().getName().toUpperCase(), "YOUR TURN, "+getPlayer().getUsername(), JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
+                    //final JDialog dialog = new JDialog();
+                    //dialog.setAlwaysOnTop(true);
+                    //JOptionPane.showMessageDialog(dialog, pack.getAction().getName().toUpperCase(), "YOUR TURN, "+getPlayer().getUsername(), JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
                     this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.ASK_FOR_BUILD.getPath()))));
                     displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), pack.getValidBuilds());
                 }
@@ -375,9 +375,9 @@ public class SwingView extends View {
                 Pack pack = serverResponse.getPack();
 
                 if(!serverResponse.getTurn().equals(player.getTokenColor())){
-                    final JDialog dialog = new JDialog();
-                    dialog.setAlwaysOnTop(true);
-                    JOptionPane.showMessageDialog(dialog,"" , "GAME OVER ", JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.GAMEOVERICON.getPath()))));
+                    //final JDialog dialog = new JDialog();
+                    //dialog.setAlwaysOnTop(true);
+                    //JOptionPane.showMessageDialog(dialog,"" , "GAME OVER ", JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.GAMEOVERICON.getPath()))));
                     displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
                     new GameOverDialog(pack,false);
                 }
