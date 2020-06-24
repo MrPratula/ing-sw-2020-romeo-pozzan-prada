@@ -13,19 +13,17 @@ import java.io.IOException;
 public class GameOverDialog extends JDialog {
 
 
-    public GameOverDialog(Pack pack, boolean hasWin) throws IOException {
+    public GameOverDialog(boolean hasWin) throws IOException {
 
-        setTitle("Game Over");
+        setTitle("Game Ended");
         setIconImage(new ImageIcon(ImageIO.read(getClass().getResource(Pics.GAMEOVERICON.getPath()))).getImage());
-        GameOverPanel p = new GameOverPanel();
-        JLabel winner = new JLabel();
-        if(hasWin)
-            winner.setText(pack.getMessageInTurn());
-        else
-            winner.setText(pack.getMessageOpponents());
-        winner.setAlignmentX(Component.CENTER_ALIGNMENT);
-        winner.setHorizontalTextPosition(SwingConstants.CENTER);
-        p.add(winner);
+        JPanel p;
+        if(hasWin){
+            p = new GameWonPanel();
+        }
+        else{
+            p = new GameLostPanel();
+        }
         add(p);
         setSize(1000,800);
         setVisible(true);
