@@ -55,7 +55,8 @@ public class AthenaMoves implements MoveBehavior{
 
         int oldHeight, newHeight;
 
-        oldHeight = selectedToken.getTokenPosition().getHeight();
+        oldHeight = battlefield.getCell(selectedToken.getTokenPosition()).getHeight();
+        selectedToken.setOldHeight(oldHeight);
         battlefield.getCell(selectedToken.getTokenPosition()).setFree();
         selectedToken.setTokenPosition(battlefield.getCell(targetCell));
         newHeight = battlefield.getCell(selectedToken.getTokenPosition()).getHeight();
