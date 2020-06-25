@@ -91,9 +91,16 @@ public class InnerMainPanel {
             playerText.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
-                    playerText.setBackground(selectPlayerColor(allPlayers.get(finalI).getTokenColor()));
+
+                    Color color = selectPlayerColor(allPlayers.get(finalI).getTokenColor());
+                    playerText.setBackground(color);
                     playerText.setOpaque(true);
-                    playerText.setText("Player " + allPlayers.get(finalI).getUsername().toUpperCase() );
+                    if(color.equals(Color.BLUE) || color.equals(Color.RED))
+                        playerText.setForeground(Color.WHITE);
+                    else
+                        playerText.setForeground(Color.BLACK);
+                    playerText.setText(allPlayers.get(finalI).getUsername().toUpperCase() );
+
                 }
                 @Override
                 public void mouseExited(MouseEvent e) {

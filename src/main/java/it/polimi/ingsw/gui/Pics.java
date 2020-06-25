@@ -109,6 +109,8 @@ public enum Pics {
         INFORMATIONICON("/informationIcon.png"),
         PLAYERICON("/playerIcon.png"),
         GAMEOVERICON("/gameover.png"),
+        GAMELOST("/gameLost.png"),
+        GAMEWON("/gameWon.png"),
         BUTTON("/btn_purple.png"),
         SANTORINI("/Santorini.png"),
         PLAYBUTTON("/buttonPlay.png"),
@@ -124,7 +126,7 @@ public enum Pics {
         ASK_FOR_WHERE_TO_MOVE("/ASK_FOR_WHERE_TO_MOVE.png"),
         PLACE_YOUR_TOKEN("/PLACE_YOUR_TOKEN.png"),
         NOT_YOUR_TURN("/NOT_YOUR_TURN.png"),
-        GAMEENDED("/gameover.png"),
+        GAMEENDED("/gameEnded.png"),
         ANOTHERPLAYERISBUILDING("/another chosing build.png"),
         SECOND_BUILD("/SECOND_BUILD.png"),
 

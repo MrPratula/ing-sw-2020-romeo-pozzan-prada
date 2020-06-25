@@ -123,7 +123,11 @@ public class ButtonHandler implements ActionListener {
                     if(targetCell != null && swingView.cellIsInValidCells(targetCell,swingView.getCurrentValidBuilds())){
                         try {
                             if(!swingView.wantToUsePower()) {
-                                if (swingView.getPlayer().getMyGodCard() == GodCard.DEMETER || swingView.getPlayer().getMyGodCard() == GodCard.HESTIA || swingView.getPlayer().getMyGodCard() == GodCard.HEPHAESTUS || swingView.getPlayer().getMyGodCard() == GodCard.ATLAS) {
+                                if(swingView.getPlayer().getMyGodCard() == GodCard.HEPHAESTUS || swingView.getPlayer().getMyGodCard() == GodCard.ATLAS)
+                                {
+                                    new AskToUseTheGodsPower(swingView, currentServerResponse, targetCell);
+                                }
+                                else if (swingView.getPlayer().getMyGodCard() == GodCard.DEMETER || swingView.getPlayer().getMyGodCard() == GodCard.HESTIA) {
                                     swingView.setFirstCell(targetCell);
                                     List<Cell> validBuilds = swingView.newValidBuilds(targetCell);
                                     if (validBuilds != null) {

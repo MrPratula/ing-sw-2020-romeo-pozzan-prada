@@ -8,9 +8,9 @@ import java.io.IOException;
 /**
  * Panel which displays that the player lost
  */
-public class GameOverPanel extends JPanel {
+public class GameLostPanel extends JPanel {
 
-    public GameOverPanel() {
+    public GameLostPanel() {
         super();
     }
 
@@ -18,7 +18,7 @@ public class GameOverPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         try {
-            g.drawImage(new ImageIcon(ImageIO.read(getClass().getResource(Pics.GAMEENDED.getPath()))).getImage(),0,0,this.getWidth(),this.getHeight(),this);
+            g.drawImage(new ImageIcon(ImageIO.read(getClass().getResource(Pics.GAMELOST.getPath()))).getImage(),0,0,this.getWidth(),this.getHeight(),this);
         } catch (IOException e) {
             e.printStackTrace();
         }

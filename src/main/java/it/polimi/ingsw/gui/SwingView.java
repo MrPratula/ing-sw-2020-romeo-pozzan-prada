@@ -80,6 +80,9 @@ public class SwingView extends View {
         return savedToken;
     }
 
+    public GameFrame getGameFrame() {
+        return gameFrame;
+    }
 
     public Boolean wantToUsePower(){
         return power;
@@ -199,9 +202,9 @@ public class SwingView extends View {
             case WAIT_OTHER_PLAYERS_TO_CONNECT:
             case NUMBER_RECEIVED: {
 
-                //final JDialog dialog = new JDialog();
-                //dialog.setAlwaysOnTop(true);
-                //JOptionPane.showMessageDialog(dialog,serverResponse.getPack().getAction().toString(),"NUMBER RECEIVED", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
+                final JDialog dialog = new JDialog();
+                dialog.setAlwaysOnTop(true);
+                JOptionPane.showMessageDialog(dialog,"JUST WAIT FOR OTHER PLAYERS TO CONNECT","NUMBER RECEIVED", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
                 break;
             }
 
@@ -228,7 +231,7 @@ public class SwingView extends View {
 
             case SELECT_YOUR_GOD_CARD:{
 
-                Pack pack = serverResponse.getPack();
+                //Pack pack = serverResponse.getPack();
 
                 // If the player is not in turn he is just notified to wait
                 if (!this.player.getTokenColor().equals(serverResponse.getTurn())){
@@ -280,6 +283,7 @@ public class SwingView extends View {
                         //dialog.setAlwaysOnTop(true);
                         //JOptionPane.showMessageDialog(dialog,pack.getAction().getName().toUpperCase(),"AGAIN YOUR TURN! PLACE YOUR SECOND TOKEN! "+getPlayer().getUsername(), JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
                         displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
+                        this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.PLACE_YOUR_TOKEN.getPath()))));
                     }
                 }
                 break;
@@ -372,18 +376,21 @@ public class SwingView extends View {
 
 
             case GAME_OVER:{
-                Pack pack = serverResponse.getPack();
 
                 if(!serverResponse.getTurn().equals(player.getTokenColor())){
                     //final JDialog dialog = new JDialog();
                     //dialog.setAlwaysOnTop(true);
                     //JOptionPane.showMessageDialog(dialog,"" , "GAME OVER ", JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.GAMEOVERICON.getPath()))));
                     displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
-                    new GameOverDialog(pack,false);
+                    this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.GAMEENDED.getPath()))));
+                    new GameOverDialog(false);
+                    this.getGameFrame().dispose();
                 }
                 else{
                     displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
-                    new GameOverDialog(pack,true);
+                    this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.GAMEENDED.getPath()))));
+                    new GameOverDialog(true);
+                    this.getGameFrame().dispose();
                 }
 
                 break;
@@ -413,7 +420,7 @@ public class SwingView extends View {
                 if (validMoves != null) {
                     if (validMoves.contains(newBattlefield.getCell(x, y))) {
                         battlefieldGUI[x][y].getCell().setHeight(newBattlefield.getCell(x, y).getHeight());
-                        battlefieldGUI[x][y].changeImageIcon(selectIcon(player, newBattlefield.getCell(x, y),false, true));
+                        battlefieldGUI[x][y].changeImageIcon(selectIcon(allPlayers, player, newBattlefield.getCell(x, y),false, true));
                         battlefieldGUI[x][y].setRolloverIcon(selectRolloverIcon(newBattlefield.getCell(x,y),false));
                     }
                     else{
@@ -424,13 +431,8 @@ public class SwingView extends View {
                     displayInnerGui(battlefieldGUI, newBattlefield, allPlayers, y, x);
                 }
 
-                //disattiva i bottoni se se non è il proprio turno
-                if(!player.getTokenColor().equals(currentServerResponse.getTurn())){
-                    battlefieldGUI[x][y].setEnabled(false);
-                }
-                else{
-                    battlefieldGUI[x][y].setEnabled(true);
-                }
+                //disable every button if it's not your turn
+                battlefieldGUI[x][y].setEnabled(player.getTokenColor().equals(currentServerResponse.getTurn()));
 
             }
         }
@@ -454,12 +456,12 @@ public class SwingView extends View {
 
                 battlefieldGUI[x][y].getCell().setHeight(battlefield.getCell(x, y).getHeight());
                 battlefieldGUI[x][y].getCell().setIsDome();
-                battlefieldGUI[x][y].changeImageIcon(selectIcon(null, battlefield.getCell(x, y), true,false));
+                battlefieldGUI[x][y].changeImageIcon(selectIcon(null, null, battlefield.getCell(x, y), true,false));
                 battlefieldGUI[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x, y), true));
             }
             else {
                 battlefieldGUI[x][y].getCell().setHeight(battlefield.getCell(x, y).getHeight());
-                battlefieldGUI[x][y].changeImageIcon(selectIcon(null, battlefield.getCell(x, y), false,false));
+                battlefieldGUI[x][y].changeImageIcon(selectIcon(null, null, battlefield.getCell(x, y), false,false));
                 battlefieldGUI[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x, y),false));
             }
         }
@@ -468,14 +470,14 @@ public class SwingView extends View {
                 if (p.getToken1().getTokenPosition() != null && p.getToken1().getTokenPosition()!=null) {                                  //if he has the first token
                     if (p.getToken1().getTokenPosition().equals(battlefield.getCell(x, y))) {
                         battlefieldGUI[x][y].getCell().setHeight(battlefield.getCell(x, y).getHeight());
-                        battlefieldGUI[x][y].changeImageIcon(selectIcon(p, battlefield.getCell(x, y),false, false));
+                        battlefieldGUI[x][y].changeImageIcon(selectIcon(allPlayers, p, battlefield.getCell(x, y),false, false));
                         battlefieldGUI[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x,y),false));
                     }
                 }
                 if (p.getToken2().getTokenPosition() != null && p.getToken2().getTokenPosition()!=null) {                                  //if he has the first token
                     if (p.getToken2().getTokenPosition().equals(battlefield.getCell(x, y))) {
                         battlefieldGUI[x][y].getCell().setHeight(battlefield.getCell(x, y).getHeight());
-                        battlefieldGUI[x][y].changeImageIcon(selectIcon(p, battlefield.getCell(x, y),false, false));
+                        battlefieldGUI[x][y].changeImageIcon(selectIcon(allPlayers, p, battlefield.getCell(x, y),false, false));
                         battlefieldGUI[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x,y),false));
                     }
                 }
@@ -508,13 +510,13 @@ public class SwingView extends View {
      * @param iHaveToDisplayValidMoves auto explicative
      * @return ImageIcon of the cell to display
      */
-    public ImageIcon selectIcon(Player player, Cell cell, boolean isDome, boolean iHaveToDisplayValidMoves) throws IOException {
+    public ImageIcon selectIcon(List<Player> allPlayers, Player player, Cell cell, boolean isDome, boolean iHaveToDisplayValidMoves) throws IOException {
 
         ImageIcon toReturn = new ImageIcon();
 
         //player not present
         if(!cell.getThereIsPlayer() ){
-            //valid moves to display
+
             if(iHaveToDisplayValidMoves)
                 return switchOnHeight(cell.getHeight(), Pics.LEVEL0VALIDMOVE, Pics.LEVEL1VALIDMOVE, Pics.LEVEL2VALIDMOVE, Pics.LEVEL3VALIDMOVE);
             else {
@@ -527,13 +529,18 @@ public class SwingView extends View {
 
         //player present
         else{
-            switch(player.getTokenColor()){
+
+            TokenColor playerOnThiscell = recognizeTokenColorOnThisCell(cell, allPlayers);
+
+            switch(playerOnThiscell){
+
                 case RED:{
                     if(!iHaveToDisplayValidMoves)
                         return switchOnHeight(cell.getHeight(), Pics.LEVEL0TOKENRED, Pics.LEVEL1TOKENRED, Pics.LEVEL2TOKENRED, Pics.LEVEL3TOKENRED);
                     else
                         return switchOnHeight(cell.getHeight(), Pics.LEVEL0TOKENREDVALIDMOVE, Pics.LEVEL1TOKENREDVALIDMOVE, Pics.LEVEL2TOKENREDVALIDMOVE, Pics.LEVEL3TOKENREDVALIDMOVE);
                 }
+
                 case BLUE:{
                     if(!iHaveToDisplayValidMoves)
                         return switchOnHeight(cell.getHeight(), Pics.LEVEL0TOKENBLUE, Pics.LEVEL1TOKENBLUE, Pics.LEVEL2TOKENBLUE, Pics.LEVEL3TOKENBLUE);
@@ -541,6 +548,7 @@ public class SwingView extends View {
                         return switchOnHeight(cell.getHeight(), Pics.LEVEL0TOKENBLUEVALIDMOVE, Pics.LEVEL1TOKENBLUEVALIDMOVE, Pics.LEVEL2TOKENBLUEVALIDMOVE, Pics.LEVEL3TOKENBLUEVALIDMOVE);
                 }
                 case YELLOW:{
+
                     if(!iHaveToDisplayValidMoves)
                         return switchOnHeight(cell.getHeight(), Pics.LEVEL0TOKENYELLOW, Pics.LEVEL1TOKENYELLOW, Pics.LEVEL2TOKENYELLOW, Pics.LEVEL3TOKENYELLOW);
                     else
@@ -549,6 +557,32 @@ public class SwingView extends View {
             }
         }
         return toReturn;
+    }
+
+
+    /**
+     * Recognizes which player is o this cell, in ordder
+     * to display the correct token color of the token
+     * @param cell targetcell
+     * @param allPlayers all players in game
+     * @return the right color
+     */
+    private TokenColor recognizeTokenColorOnThisCell(Cell cell, List<Player> allPlayers) {
+
+        for(Player p : allPlayers) {
+            if (p.getToken1().getTokenPosition() != null && p.getToken1().getTokenPosition()!=null) {                                  //if he has the first token
+                if (p.getToken1().getTokenPosition().equals(cell)) {
+                    return p.getTokenColor();
+                }
+            }
+            if (p.getToken2().getTokenPosition() != null && p.getToken2().getTokenPosition()!=null) {                                  //if he has the first token
+                if (p.getToken2().getTokenPosition().equals(cell)) {
+                    return p.getTokenColor();
+                }
+            }
+        }
+        //never happens
+        return TokenColor.RED;
     }
 
 
@@ -708,6 +742,18 @@ public class SwingView extends View {
                     break;
                 }
             }
+            case HEPHAESTUS:
+            case ATLAS:{
+                PlayerAction playerAction;
+                if(targetCell.getHeight() < 3){
+                    playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, player, null, null, getSavedToken(), 0, targetCell, null, true, null);
+                }
+                else{
+                    playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, player, null, null, getSavedToken(), 0, targetCell, null, false, null);
+                }
+                notifyClient(playerAction);
+                break;
+            }
         }
     }
 
@@ -715,9 +761,9 @@ public class SwingView extends View {
     /**
      * Recalculates the new valid builds in case one of
      * these gods decided to use his power, and modifies
-     * the next mvoe
+     * the next move
      * @param selectedCell cell that has been selected to perform build generallty
-     * @return the new vlid builds
+     * @return the new valid builds
      */
     public List<Cell> newValidBuilds(Cell selectedCell){
 
@@ -734,7 +780,6 @@ public class SwingView extends View {
                     }
                 }
                 valid.remove(targetcell);
-                getCurrentServerResponse().getPack().setValidBuilds(valid);
                 break;
             }
 
@@ -747,40 +792,27 @@ public class SwingView extends View {
                 getCurrentServerResponse().getPack().setValidBuilds(targetCells);
                 break;
             }
-
-            case HEPHAESTUS:{
-                for (Cell c: valid){
-                    if(c.getPosY()==selectedCell.getPosY() && c.getPosX()==selectedCell.getPosX()){
-                        if(c.getHeight()>=2){
-                            targetCells.add(c);
-                        }
-                    }
-                }
-                getCurrentServerResponse().getPack().setValidBuilds(targetCells);
-                break;
-            }
-
-            case ATLAS:{
-                for(Cell c: valid){
-                    if(c.getPosY()==selectedCell.getPosY() && c.getPosX()==selectedCell.getPosX()){
-                        if(c.getHeight()==3){
-                            targetCells.add(c);
-                        }
-                    }
-                }
-                getCurrentServerResponse().getPack().setValidBuilds(targetCells);
-                break;
-            }
             default:
                 throw new IllegalStateException("Unexpected value: " + player.getMyGodCard());
         }
 
         setValidBuilds(getCurrentServerResponse().getPack().getValidBuilds());
 
-        return getCurrentServerResponse().getPack().getValidBuilds();
+        if(currentValidBuilds.isEmpty()){
+            return null;
+        }
+        else {
+            return getCurrentServerResponse().getPack().getValidBuilds();
+        }
     }
 
-
+    /**
+     * This method is called when a player selected the token he wants to move and return the ID of that token.
+     * @param posx The x position of the token selected in the board
+     * @param posy The y position of the token selected in the board
+     * @param player the player that selected the token
+     * @return the ID of the token of that player in that position. 0 if something went wrong.
+     */
     public int getToken(int posx, int posy, Player player){
 
         int selectX, selectY;
