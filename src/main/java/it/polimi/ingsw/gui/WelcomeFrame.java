@@ -33,7 +33,7 @@ public class WelcomeFrame {
         JButton playButton = new JButton(new ImageIcon(ImageIO.read(getClass().getResource(Pics.PLAYBUTTON.getPath()))));
         playButton.setContentAreaFilled(false);
         playButton.setBorderPainted(false);
-        playButton.setBorder(BorderFactory.createEmptyBorder());
+        playButton.setBorder(null);
         playButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -46,7 +46,7 @@ public class WelcomeFrame {
             }
         });
 
-        mainPanel.add(playButton, BorderLayout.PAGE_END);
+        mainPanel.add(playButton, BorderLayout.SOUTH);
         mainFrame.add(mainPanel);
 
         mainFrame.pack();

@@ -10,13 +10,13 @@ import java.io.IOException;
  */
 public class ConfirmButton extends JButton {
 
-    public ConfirmButton(String text) {
-        super(text);
+    public ConfirmButton() {
+        super();
         setBorderPainted(false);
         setContentAreaFilled(false);
     }
 
-    @Override
+    /*@Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         try {
@@ -24,5 +24,7 @@ public class ConfirmButton extends JButton {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
+
+
 }

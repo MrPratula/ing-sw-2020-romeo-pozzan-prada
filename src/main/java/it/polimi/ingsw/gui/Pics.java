@@ -111,7 +111,7 @@ public enum Pics {
         GAMEOVERICON("/gameover.png"),
         GAMELOST("/gameLost.png"),
         GAMEWON("/gameWon.png"),
-        BUTTON("/btn_purple.png"),
+        BUTTON("/btn2.png"),
         SANTORINI("/Santorini.png"),
         PLAYBUTTON("/buttonPlay.png"),
         NICKNAME("/nickname.png"),

@@ -27,7 +27,7 @@ public class GodSelectedWindow extends JFrame{
 
         List<GodCard> godsInGame = recognizeGodInGame(s);
 
-        JPanel selectedGodsPanel = new JPanel();
+        GodPanel selectedGodsPanel = new GodPanel(true);
         selectedGodsPanel.setLayout(new GridLayout(1, godsInGame.size()));
 
         for (GodCard godCard : godsInGame) {
@@ -35,7 +35,9 @@ public class GodSelectedWindow extends JFrame{
             selectedGodsPanel.add(playerText);
         }
 
-        ConfirmButton c = new ConfirmButton("OK");
+        ConfirmButton c = new ConfirmButton();
+        c.setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.BUTTON.getPath()))));
+        c.setBounds(10,20,80,25);
         c.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

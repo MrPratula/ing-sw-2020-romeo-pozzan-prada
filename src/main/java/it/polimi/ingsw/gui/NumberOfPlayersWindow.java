@@ -3,6 +3,7 @@ package it.polimi.ingsw.gui;
 import it.polimi.ingsw.utils.Action;
 import it.polimi.ingsw.utils.PlayerAction;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -19,7 +20,7 @@ public class NumberOfPlayersWindow extends JDialog{
     private final JComboBox<Integer> numberOfPlayersBox;
     private final SwingView view;
 
-    public NumberOfPlayersWindow(SwingView swingView) {
+    public NumberOfPlayersWindow(SwingView swingView) throws IOException {
 
         this.view = swingView;
 
@@ -39,8 +40,10 @@ public class NumberOfPlayersWindow extends JDialog{
         add(numberOfPlayersPanel,BorderLayout.CENTER);
 
         //the button to confirm the selection
-        ConfirmButton confirmButton = new ConfirmButton("Confirm");
+        ConfirmButton confirmButton = new ConfirmButton();
+        confirmButton.setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.BUTTON.getPath()))));
         confirmButton.setBounds(10,20,80,25);
+
         add(confirmButton, BorderLayout.PAGE_END);
 
         confirmButton.addActionListener(new ActionListener() {

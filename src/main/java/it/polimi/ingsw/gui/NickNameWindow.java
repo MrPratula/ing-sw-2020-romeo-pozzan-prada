@@ -51,8 +51,9 @@ public class NickNameWindow extends JDialog{
         nicknamePanel.add(nicknameTextField, BorderLayout.SOUTH);
 
         //the button to confirm the selection
-        ConfirmButton confirmButton = new ConfirmButton("Confirm");
-        confirmButton.setBounds(10,20,30,10);
+        ConfirmButton confirmButton = new ConfirmButton();
+        confirmButton.setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.BUTTON.getPath()))));
+        confirmButton.setBounds(10,20,50,20);
 
         confirmButton.addActionListener(new ActionListener() {
             @Override
