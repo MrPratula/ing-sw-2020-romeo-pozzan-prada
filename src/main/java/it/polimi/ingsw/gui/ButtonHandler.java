@@ -65,7 +65,8 @@ public class ButtonHandler implements ActionListener {
                 break;
             }
 
-
+            case PLAYER_LOST:
+            case TOKEN_NOT_MOVABLE:
             case ASK_FOR_SELECT_TOKEN:{
                 int selectedToken = swingView.getToken(cellButton.getCell().getPosX(),cellButton.getCell().getPosY(), swingView.getPlayer());
                 if(selectedToken != 0){
