@@ -13,5 +13,5 @@
 !deliveries/uml/**
 !deliveries/battlefieldTest/**
 !src/**
-!deliveries/JAR/**
+#!deliveries/JAR/**
 !deliveries/slide/**
