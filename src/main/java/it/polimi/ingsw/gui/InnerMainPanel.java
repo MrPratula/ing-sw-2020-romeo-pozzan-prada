@@ -7,6 +7,8 @@ import it.polimi.ingsw.model.TokenColor;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -84,10 +86,17 @@ public class InnerMainPanel {
         godPanel = new JPanel();
         godPanel.setLayout(new GridLayout(godsInGame.size(),1));
 
+
+
         for(int i = 0; i<godsInGame.size(); i++){
-            final JLabel playerText = new JLabel(new ImageIcon(ImageIO.read(getClass().getResource("/" + godsInGame.get(i).name().toLowerCase() + "Panel.png"))));
 
             final int finalI = i;
+
+            final JButton playerText = new JButton(new ImageIcon(ImageIO.read(getClass().getResource("/" + godsInGame.get(i).name().toLowerCase() + "Panel.png"))));
+            playerText.setContentAreaFilled(false);
+            playerText.setBorderPainted(false);
+            playerText.setBorder(BorderFactory.createEmptyBorder());
+
             playerText.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
@@ -107,6 +116,22 @@ public class InnerMainPanel {
                     playerText.setText(" ");
                 }
             });
+
+            playerText.addActionListener( new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+
+                    JDialog dialog = new JDialog();
+                    dialog.setAlwaysOnTop(true);
+                    try {
+                        JOptionPane.showMessageDialog(dialog, godsInGame.get(finalI).name(),"Here is your God Power",JOptionPane.INFORMATION_MESSAGE,new ImageIcon(ImageIO.read(getClass().getResource("/" + godsInGame.get(finalI).name().toLowerCase() + "Text.png"))) );
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
+                }
+            });
+
+            //playerText.add(transparentButton);
             godPanel.add(playerText);
         }
 

@@ -294,6 +294,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                     Cell targetCell = null;
 
                     if (pack.getMessageInTurn()!=null){
+                        printColorId(serverResponse.getTurn().getEscape());
                         System.out.println(pack.getMessageInTurn());
                     }
 
@@ -337,6 +338,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                     // Update the player
                     this.player = pack.getPlayer();
                     if (pack.getMessageInTurn() != null){
+                        printColorId(serverResponse.getTurn().getEscape());
                         System.out.println(pack.getMessageInTurn());
                     }
 
@@ -415,6 +417,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                     while (needToLoop){
 
                         printCLI(pack.getModelCopy(), pack.getValidMoves());
+                        printColorId(serverResponse.getTurn().getEscape());
                         System.out.println(pack.getAction().toString());
 
                         try{
@@ -467,6 +470,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                             Cell otherCell = null;
 
                             printCLI(pack.getModelCopy(), pack.getValidBuilds());
+                            printColorId(serverResponse.getTurn().getEscape());
                             System.out.println(pack.getAction().toString());
 
                             // Choose the first build
@@ -493,6 +497,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                             // Choose the second build
                             while (needToLoop) {
 
+                                printColorId(serverResponse.getTurn().getEscape());
                                 System.out.println("Now select where you want to make your second build.\nRemember you can not choose the same cell.\nType 'no' or nothing if you don't want to make a second build.");
 
                                 try {
@@ -566,6 +571,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                             // Choose the second build
                             while (needToLoop) {
 
+                                printColorId(serverResponse.getTurn().getEscape());
                                 System.out.println("Now select where you want to make your second build.\nRemember you can not choose a cell on the perimeter.\nType 'no' or nothing if you don't want to make a second build.");
 
                                 try {
@@ -676,6 +682,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                             while (needToLoop) {
 
                                 printCLI(pack.getModelCopy(), pack.getValidBuilds());
+                                printColorId(serverResponse.getTurn().getEscape());
                                 System.out.println(pack.getAction().toString());
 
                                 try {
@@ -712,11 +719,22 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                 printCLI(pack.getModelCopy(), pack.getValidBuilds());
                 System.out.println(pack.getMessageInTurn());
 
+                printColorId(serverResponse.getTurn().getEscape());
                 System.out.println("GAME OVER!");
 
                 break;
             }
         }
+    }
+
+
+    /**
+     * Prints a space with your color, in order to
+     * remember your color
+     * @param escape: ansi code
+     */
+    private void printColorId(String escape) {
+        System.out.print(escape + " > " + "\033[049m" + "\033[039m");
     }
 
 
@@ -912,8 +930,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
          for (int y = 4; y > -1; y--) {
 
             //System.out.print("\033[030m");          // intellij white written
-             System.out.print("\033[039m");             //default written
-             //System.out.print("\033[030m");          // intellij white written
+            System.out.print("\033[039m");             //default written
             System.out.print(y + " ");
 
             for (int x = 0; x < 5; x++) {

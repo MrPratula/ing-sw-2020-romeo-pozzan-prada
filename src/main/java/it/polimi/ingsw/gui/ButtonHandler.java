@@ -124,16 +124,17 @@ public class ButtonHandler implements ActionListener {
                     if(targetCell != null && swingView.cellIsInValidCells(targetCell,swingView.getCurrentValidBuilds())){
                         try {
                             if(!swingView.wantToUsePower()) {
-                                if(swingView.getPlayer().getMyGodCard() == GodCard.HEPHAESTUS || swingView.getPlayer().getMyGodCard() == GodCard.ATLAS)
-                                {
+                                if(swingView.getPlayer().getMyGodCard() == GodCard.HEPHAESTUS || swingView.getPlayer().getMyGodCard() == GodCard.ATLAS) {
                                     new AskToUseTheGodsPower(swingView, currentServerResponse, targetCell);
                                 }
                                 else if (swingView.getPlayer().getMyGodCard() == GodCard.DEMETER || swingView.getPlayer().getMyGodCard() == GodCard.HESTIA) {
                                     swingView.setFirstCell(targetCell);
                                     List<Cell> validBuilds = swingView.newValidBuilds(targetCell);
+
                                     if (validBuilds != null) {
                                         new AskToUseTheGodsPower(swingView, currentServerResponse, targetCell);
-                                    } else {
+                                    }
+                                    else {
                                         PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, swingView.getPlayer(), null, null, swingView.getSavedToken(), 0, targetCell, null, false, null);
                                         swingView.notifyClient(playerAction);
                                     }
@@ -154,7 +155,7 @@ public class ButtonHandler implements ActionListener {
                     else{
                         final JDialog dialog = new JDialog();
                         dialog.setAlwaysOnTop(true);
-                        JOptionPane.showMessageDialog(dialog, "You can't build here! That cell is not a valid build!", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.ERRORICON.getPath()))));
+                        JOptionPane.showMessageDialog(dialog, "You can't build here! This cell is not a valid build!", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.ERRORICON.getPath()))));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

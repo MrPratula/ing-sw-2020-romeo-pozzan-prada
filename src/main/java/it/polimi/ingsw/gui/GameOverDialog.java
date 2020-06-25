@@ -1,16 +1,13 @@
 package it.polimi.ingsw.gui;
 
-import it.polimi.ingsw.utils.Pack;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
 import java.io.IOException;
 
 /**
  * Dialog window showing winning or losing messages
  */
-public class GameOverDialog extends JDialog {
+public class GameOverDialog extends JFrame {
 
 
     public GameOverDialog(boolean hasWin) throws IOException {
@@ -24,11 +21,20 @@ public class GameOverDialog extends JDialog {
         else{
             p = new GameLostPanel();
         }
+
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                System.exit(0);
+            }
+        });
+
         add(p);
+
         setSize(1000,800);
         setVisible(true);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
 
     }
 }
