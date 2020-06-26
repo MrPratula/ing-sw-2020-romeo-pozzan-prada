@@ -1095,6 +1095,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
         Pack pack = new Pack(Action.GAME_OVER);
         String message = winner.toUpperCase()+" won the game!";
+        pack.setWinnerOrPlayerLost(winner);
         pack.setMessageInTurn(message);
         pack.setModelCopy(getCopy());
         Controller.setGameOver();
@@ -1117,6 +1118,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         message = message+"\nIs now "+getPlayerInTurn().getUsername()+" turn!";
 
         pack.setMessageInTurn(message+"\nPlease select which token do you want to move...");
+        pack.setWinnerOrPlayerLost(looser.getUsername());
         pack.setMessageOpponents(message);
         pack.setModelCopy(getCopy());
         pack.setPlayer(getPlayerInTurn());

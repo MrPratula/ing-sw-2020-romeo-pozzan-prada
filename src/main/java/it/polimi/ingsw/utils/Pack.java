@@ -28,6 +28,7 @@ public class Pack implements Serializable {
 
     private List<GodCard> godCards;
 
+    private String winnerOrPlayerLost = null;
     private Player player;
 
     private int numberOfPlayers;
@@ -102,5 +103,13 @@ public class Pack implements Serializable {
 
     public void setNumberOfPlayers(int numberOfPlayers) {
         this.numberOfPlayers = numberOfPlayers;
+    }
+
+    public String getWinnerOrPlayerLost() {
+        return winnerOrPlayerLost;
+    }
+
+    public void setWinnerOrPlayerLost(String winnerOrPlayerLost) {
+        this.winnerOrPlayerLost = winnerOrPlayerLost;
     }
 }

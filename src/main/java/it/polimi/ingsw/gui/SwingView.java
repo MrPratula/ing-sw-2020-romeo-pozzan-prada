@@ -290,17 +290,24 @@ public class SwingView extends View {
                     if(pack.getPlayer()!=null)
                         this.player = pack.getPlayer();
 
-                    /*if(serverResponse.getPack().getAction() == Action.PLAYER_LOST) {
+                    if(pack.getAction() == Action.PLAYER_LOST) {
+                        if (pack.getWinnerOrPlayerLost().toUpperCase().equals(player.getUsername().toUpperCase())) {
+                            this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.PLAYER_LOST.getPath()))));
+                            displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
+                            new GameOverDialog(this, false);
+                            final JDialog dialog = new JDialog();
+                            dialog.setAlwaysOnTop(true);
+                            JOptionPane.showMessageDialog(dialog, "You can remain and watch the game, if you want", "You Lost ", JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
+                        }
+                        else{
+                            displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
+                            final JDialog dialog = new JDialog();
+                            dialog.setAlwaysOnTop(true);
+                            JOptionPane.showMessageDialog(dialog, "Now it's a 2 players game!",pack.getWinnerOrPlayerLost()+" lost!" ,JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
+                        }
+                    }
 
-                        this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.PLAYER_LOST.getPath()))));
-                        displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
-                        new GameOverDialog(false);
-                        final JDialog dialog = new JDialog();
-                        dialog.setAlwaysOnTop(true);
-                        JOptionPane.showMessageDialog(dialog, "You can remain and watch the game, if you want", "You Lost ", JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
-                    }*/
-
-                    if(serverResponse.getPack().getAction() == Action.TOKEN_NOT_MOVABLE){
+                    if(pack.getAction() == Action.TOKEN_NOT_MOVABLE){
                         final JDialog dialog = new JDialog();
                         dialog.setAlwaysOnTop(true);
                         JOptionPane.showMessageDialog(dialog,"Select another one!","Error! Not Movable token! ", JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.ERRORICON.getPath()))));
@@ -371,7 +378,8 @@ public class SwingView extends View {
 
             case GAME_OVER:{
 
-                if(!serverResponse.getTurn().equals(player.getTokenColor())){
+                //winner contains the name of the winner
+                if(!serverResponse.getPack().getWinnerOrPlayerLost().toUpperCase().equals(player.getUsername().toUpperCase())){
                     displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
                     this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.GAMEENDED.getPath()))));
                     new GameOverDialog(this,false);
