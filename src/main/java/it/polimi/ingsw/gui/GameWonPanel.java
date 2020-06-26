@@ -1,5 +1,7 @@
 package it.polimi.ingsw.gui;
 
+import it.polimi.ingsw.model.Player;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;

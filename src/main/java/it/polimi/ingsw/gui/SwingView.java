@@ -374,13 +374,13 @@ public class SwingView extends View {
                 if(!serverResponse.getTurn().equals(player.getTokenColor())){
                     displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
                     this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.GAMEENDED.getPath()))));
-                    new GameOverDialog(false);
+                    new GameOverDialog(this,false);
                     this.getGameFrame().dispose();
                 }
                 else{
                     displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
                     this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.GAMEENDED.getPath()))));
-                    new GameOverDialog(true);
+                    new GameOverDialog(this,true);
                     this.getGameFrame().dispose();
                 }
 
