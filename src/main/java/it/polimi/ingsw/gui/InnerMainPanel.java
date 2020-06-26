@@ -124,7 +124,7 @@ public class InnerMainPanel {
                     JDialog dialog = new JDialog();
                     dialog.setAlwaysOnTop(true);
                     try {
-                        JOptionPane.showMessageDialog(dialog, godsInGame.get(finalI).name(),"Here is your God Power",JOptionPane.INFORMATION_MESSAGE,new ImageIcon(ImageIO.read(getClass().getResource("/" + godsInGame.get(finalI).name().toLowerCase() + "Text.png"))) );
+                        JOptionPane.showMessageDialog(dialog,"","Here is "+godsInGame.get(finalI).name()+"'s Power",JOptionPane.INFORMATION_MESSAGE,new ImageIcon(ImageIO.read(getClass().getResource("/" + godsInGame.get(finalI).name().toLowerCase() + "Text.png"))) );
                     } catch (IOException ioException) {
                         ioException.printStackTrace();
                     }

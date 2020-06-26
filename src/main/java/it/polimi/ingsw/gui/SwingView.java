@@ -276,6 +276,7 @@ public class SwingView extends View {
                 break;
             }
 
+            ///////////////////////////////////
             case PLAYER_LOST:
             case TOKEN_NOT_MOVABLE:
             case ASK_FOR_SELECT_TOKEN: {
@@ -289,10 +290,20 @@ public class SwingView extends View {
                     if(pack.getPlayer()!=null)
                         this.player = pack.getPlayer();
 
+                    /*if(serverResponse.getPack().getAction() == Action.PLAYER_LOST) {
+
+                        this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.PLAYER_LOST.getPath()))));
+                        displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
+                        new GameOverDialog(false);
+                        final JDialog dialog = new JDialog();
+                        dialog.setAlwaysOnTop(true);
+                        JOptionPane.showMessageDialog(dialog, "You can remain and watch the game, if you want", "You Lost ", JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
+                    }*/
+
                     if(serverResponse.getPack().getAction() == Action.TOKEN_NOT_MOVABLE){
                         final JDialog dialog = new JDialog();
                         dialog.setAlwaysOnTop(true);
-                        JOptionPane.showMessageDialog(dialog,pack.getMessageOpponents(),"This token can't be moved, select the other one!", JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.ERRORICON.getPath()))));
+                        JOptionPane.showMessageDialog(dialog,"Select another one!","Error! Not Movable token! ", JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.ERRORICON.getPath()))));
                     }
 
                     this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.ASK_FOR_SELECT_TOKEN.getPath()))));
@@ -666,7 +677,7 @@ public class SwingView extends View {
      * the second call the playerAction is sent.
      * @param pack Pack of the serverResponse
      * @param targetCell The selected cell in which the player wants to build
-     * @throws IOException
+     * @throws IOException if image is missing
      */
     public void buildGod(Pack pack, Cell targetCell) throws IOException{
 
@@ -698,7 +709,7 @@ public class SwingView extends View {
                     }
                     else{
                         count = 1;
-                        JOptionPane.showMessageDialog(new JFrame(), "You can't build twice in the same cell", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.ERRORICON.getPath()))));
+                        JOptionPane.showMessageDialog(new JFrame(), "You can't build twice in the same cell!", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.ERRORICON.getPath()))));
                     }
                     break;
                 }

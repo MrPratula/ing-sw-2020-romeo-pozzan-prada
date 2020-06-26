@@ -13,7 +13,7 @@ public class GameOverDialog extends JFrame {
     public GameOverDialog(boolean hasWin) throws IOException {
 
         setTitle("Game Ended");
-        setIconImage(new ImageIcon(ImageIO.read(getClass().getResource(Pics.GAMEOVERICON.getPath()))).getImage());
+        setIconImage(new ImageIcon(ImageIO.read(getClass().getResource(Pics.LOST_ICON.getPath()))).getImage());
         JPanel p;
         if(hasWin){
             p = new GameWonPanel();

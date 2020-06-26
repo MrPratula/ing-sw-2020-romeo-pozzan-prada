@@ -75,6 +75,7 @@ public class ChooseGodCardToPlayWindow {
 
                                 try {
                                     new GodSelectedWindow(godStringToSplit.toString());
+
                                 } catch (IOException ioException) {
                                     ioException.printStackTrace();
                                 }

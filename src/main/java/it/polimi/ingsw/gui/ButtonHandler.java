@@ -79,10 +79,9 @@ public class ButtonHandler implements ActionListener {
                     }
                 }
                 else{
-                    final JDialog dialog = new JDialog();
-                    dialog.setAlwaysOnTop(true);
                     try {
-                        JOptionPane.showMessageDialog(dialog, "You have to select one of your tokens!", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.ERRORICON.getPath()))));
+                        final JDialog dialog = new JDialog();
+                        dialog.setAlwaysOnTop(true); JOptionPane.showMessageDialog(dialog, "You have to select one of your tokens!", "Error", JOptionPane.ERROR_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.ERRORICON.getPath()))));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
