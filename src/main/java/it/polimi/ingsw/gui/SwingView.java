@@ -289,6 +289,12 @@ public class SwingView extends View {
                     if(pack.getPlayer()!=null)
                         this.player = pack.getPlayer();
 
+                    if(serverResponse.getPack().getAction() == Action.TOKEN_NOT_MOVABLE){
+                        final JDialog dialog = new JDialog();
+                        dialog.setAlwaysOnTop(true);
+                        JOptionPane.showMessageDialog(dialog,pack.getMessageOpponents(),"This token can't be moved, select the other one!", JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.ERRORICON.getPath()))));
+                    }
+
                     this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.ASK_FOR_SELECT_TOKEN.getPath()))));
 
                 }
