@@ -136,6 +136,20 @@ public class Server  {
         connections.remove(connection);
         playingConnection.get(connection.getName()).closeConnection();
         playingConnection.remove(connection.getName());
+        if (connections.isEmpty()){
+            try{
+                System.exit(0);
+            } catch (Exception e){
+                System.out.println("Can not shut down the server!");
+            }
+        }
+        if (playingConnection.isEmpty()){
+            try{
+                System.exit(0);
+            } catch (Exception e){
+                System.out.println("Can not shut down the server!");
+            }
+        }
     }
 
 

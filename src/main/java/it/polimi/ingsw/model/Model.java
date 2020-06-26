@@ -227,7 +227,6 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             ServerResponse serverResponse = new ServerResponse(turn, pack);
             lastSentServerResponse = serverResponse;
             notify(serverResponse);
-
         }
         else {
 
@@ -276,6 +275,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                     ServerResponse serverResponse = new ServerResponse(getTurn(), pack);
                     lastSentServerResponse = serverResponse;
                     notify(serverResponse);
+
                 }
 
                 /*
@@ -1051,6 +1051,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             serverResponse = new ServerResponse(getTurn(), pack);
             lastSentServerResponse = serverResponse;
             notify(serverResponse);
+
         }
     }
 
@@ -1353,18 +1354,4 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             }
         }
     }
-
-    public void shutDown(){
-
-        for (Player p: allPlayers){
-
-        }
-
-
-
-
-
-    }
-
-
 }
