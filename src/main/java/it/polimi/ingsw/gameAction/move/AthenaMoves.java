@@ -55,13 +55,25 @@ public class AthenaMoves implements MoveBehavior{
 
         int oldHeight, newHeight;
 
+        //Compute old height to check if athena moved up
         oldHeight = battlefield.getCell(selectedToken.getTokenPosition()).getHeight();
+
+        //Store old height
         selectedToken.setOldHeight(oldHeight);
+
+        //Set free the cell
         battlefield.getCell(selectedToken.getTokenPosition()).setFree();
+
+        //Update the position
         selectedToken.setTokenPosition(battlefield.getCell(targetCell));
+
+        //Compute new height
         newHeight = battlefield.getCell(selectedToken.getTokenPosition()).getHeight();
+
+        //Set the new cell occupied
         battlefield.getCell(selectedToken.getTokenPosition()).setOccupied();
 
+        //Compute if athena moved up
         Model.athenaMovedUp(oldHeight - newHeight < 0);
     }
 }
