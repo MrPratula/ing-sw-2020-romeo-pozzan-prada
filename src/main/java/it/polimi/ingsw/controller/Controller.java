@@ -41,8 +41,12 @@ public class Controller implements Observer<PlayerAction> {
 
         if (model.isPlayerTurn(playerAction.getPlayer())){
 
-            if (gameOver)
-                return;
+            if (gameOver){
+                System.out.println("The game is over.\nThe Server is shutting down!");
+                System.exit(0);
+
+            }
+
 
             switch(playerAction.getAction()){
 
@@ -166,7 +170,7 @@ public class Controller implements Observer<PlayerAction> {
             }
         }
         else {
-            System.out.println("BAAAAAAAAAAAD");
+            System.out.println("Not correct player turn!");
             model.notifyWrongInput();
         }
     }

@@ -167,8 +167,6 @@ public class Connection extends Observable<PlayerAction> implements Runnable{
                                 needToLoop = false;
                             }
                         }
-
-
                     }
                 // This is for empty waiting connection when the first player connect
                 } else {

@@ -162,7 +162,12 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                 break;
             index++;
         }
-        return allPlayers.get(index+1);
+
+        try{
+            return allPlayers.get(index+1);
+        } catch (IndexOutOfBoundsException e){
+            return allPlayers.get(0);
+        }
     }
 
 
@@ -1348,4 +1353,18 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             }
         }
     }
+
+    public void shutDown(){
+
+        for (Player p: allPlayers){
+
+        }
+
+
+
+
+
+    }
+
+
 }
