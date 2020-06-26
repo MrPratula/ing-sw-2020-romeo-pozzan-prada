@@ -33,7 +33,7 @@ public class ButtonHandler implements ActionListener {
 
     /**
      * Depending on the event, it makes the choice and send the
-     * right Playeraction the the server
+     * right Playeraction to the server
      * @param clickedButtonEvent clicked button
      */
     @Override
