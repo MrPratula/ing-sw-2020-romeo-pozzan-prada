@@ -270,7 +270,7 @@ public class ChooseGodCardWindow extends JDialog {
                     break;
                 }
                 case HERA:{
-                    godsToDisplay.add(new ImageIcon(ImageIO.read(getClass().getResource(Pics.HERATEXT.getPath()))));
+                    godsToDisplay.add(new ImageIcon(ImageIO.read(getClass().getResource(Pics.HERA.getPath()))));
                     break;
                 }
                 case HESTIA:{

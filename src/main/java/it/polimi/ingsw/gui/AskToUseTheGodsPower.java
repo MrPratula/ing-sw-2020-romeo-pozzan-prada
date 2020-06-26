@@ -16,10 +16,12 @@ public class AskToUseTheGodsPower extends JDialog{
 
     private final SwingView view;
 
+
     /**
-     * JDialog that asks if the player wants to use his god's power
+     * JDialog that asks if the player wantw to use his god's power
      * @param swingView gui view
      * @param serverResponse response of the server
+     * @param targetCell cell selected
      */
     public AskToUseTheGodsPower(final SwingView swingView, final ServerResponse serverResponse, final Cell targetCell) throws IOException {
 

@@ -39,12 +39,16 @@ public class ZeusBuild implements BuildBehavior {
         }
 
         // Then all cell where is a token are removed
-        if (otherToken!=null) buildableCells.remove(otherToken.getTokenPosition());
+        if (otherToken!=null)
+            buildableCells.remove(otherToken.getTokenPosition());
 
         try{
             for (Token t: enemyTokens) {
                 buildableCells.remove(t.getTokenPosition());
             }
+            //he can't build under himself if he's al level 3
+            if(battlefield.getCell(selectedToken.getTokenPosition()).getHeight()==3)
+                buildableCells.remove(selectedToken.getTokenPosition());
         } catch(NullPointerException ignore){}
 
 

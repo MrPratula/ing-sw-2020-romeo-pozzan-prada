@@ -88,8 +88,6 @@ public class SwingView extends View {
         return power;
     }
 
-
-
     /**
      * When needed, it returns the token that has just been selected from the user,
      * and even the not selected one (it can be useful).
@@ -220,9 +218,6 @@ public class SwingView extends View {
             case WAIT_AND_SAVE_PLAYER_FROM_SERVER:{
 
                 player = serverResponse.getPack().getPlayer();
-                //final JDialog dialog = new JDialog();
-                //dialog.setAlwaysOnTop(true);
-                //JOptionPane.showMessageDialog(dialog,serverResponse.getPack().getAction().toString(),"WAIT AND SAVE PLAYER FROM SERVER", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
                 break;
             }
 
@@ -230,8 +225,6 @@ public class SwingView extends View {
             // SINCE NOW ALL THE MESSAGES ARE BROADCAST-RECEIVED
 
             case SELECT_YOUR_GOD_CARD:{
-
-                //Pack pack = serverResponse.getPack();
 
                 // If the player is not in turn he is just notified to wait
                 if (!this.player.getTokenColor().equals(serverResponse.getTurn())){
@@ -253,12 +246,12 @@ public class SwingView extends View {
                 Pack pack = serverResponse.getPack();
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
-                    //se non è null quindi se ha già posizionato i token, si aggiorna la board
+                    //if gameframe isn't null he has already placed his token and the board is updated
                     if(this.gameFrame != null){
                         displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
                         this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.NOT_YOUR_TURN.getPath()))));
                     }
-                    //altrimenti crea la board così può vedere dove l'altro posiziona i token
+                    //otherwise his "personal" board frame is created
                     else{
                         this.gameFrame = new GameFrame(serverResponse,this);
                         this.battlefieldGUI = getBattlefieldGUI();
@@ -270,18 +263,12 @@ public class SwingView extends View {
                         this.player = serverResponse.getPack().getPlayer();
 
                     if(contPlaceToken == 0){
-                        //final JDialog dialog = new JDialog();
-                        //dialog.setAlwaysOnTop(true);
-                        //JOptionPane.showMessageDialog(dialog, pack.getAction().getName().toUpperCase(),"IT'S YOUR TURN! PLACE YOUR FIRST TOKEN!"+getPlayer().getUsername(), JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
                         this.gameFrame = new GameFrame(serverResponse,this);
                         this.battlefieldGUI = getBattlefieldGUI();
                         this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.PLACE_YOUR_TOKEN.getPath()))));
                         contPlaceToken++;
                     }
                     else{
-                        //final JDialog dialog = new JDialog();
-                        //dialog.setAlwaysOnTop(true);
-                        //JOptionPane.showMessageDialog(dialog,pack.getAction().getName().toUpperCase(),"AGAIN YOUR TURN! PLACE YOUR SECOND TOKEN! "+getPlayer().getUsername(), JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
                         displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
                         this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.PLACE_YOUR_TOKEN.getPath()))));
                     }
@@ -297,14 +284,16 @@ public class SwingView extends View {
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
                     this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.NOT_YOUR_TURN.getPath()))));
-                    //JOptionPane.showMessageDialog(new JFrame(),pack.getMessageOpponents(),"NOT YOUR TURN!! PLEASE WAIT!", JOptionPane.WARNING_MESSAGE, Pics.ERRORICON.getImageIcon());
                 }
                 else {
                     if(pack.getPlayer()!=null)
                         this.player = pack.getPlayer();
-                    //final JDialog dialog = new JDialog();
-                    //dialog.setAlwaysOnTop(true);
-                    //JOptionPane.showMessageDialog(dialog, pack.getAction().getName().toUpperCase(), "YOUR TURN, "+getPlayer().getUsername(), JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
+
+                    if(serverResponse.getPack().getAction() == Action.TOKEN_NOT_MOVABLE){
+                        final JDialog dialog = new JDialog();
+                        dialog.setAlwaysOnTop(true);
+                        JOptionPane.showMessageDialog(dialog,pack.getMessageOpponents(),"This token can't be moved, select the other one!", JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.ERRORICON.getPath()))));
+                    }
 
                     this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.ASK_FOR_SELECT_TOKEN.getPath()))));
 
@@ -341,9 +330,6 @@ public class SwingView extends View {
                 }
                 else{
                     this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.ASK_FOR_WHERE_TO_MOVE.getPath()))));
-                    //final JDialog dialog = new JDialog();
-                    //dialog.setAlwaysOnTop(true);
-                    //JOptionPane.showMessageDialog(dialog, pack.getAction().getName().toUpperCase(), "YOUR TURN, "+getPlayer().getUsername(), JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
                     displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), pack.getValidMoves());
                 }
                 break;
@@ -365,9 +351,6 @@ public class SwingView extends View {
 
                     setValidBuilds(serverResponse.getPack().getValidBuilds());
                     this.power = false;
-                    //final JDialog dialog = new JDialog();
-                    //dialog.setAlwaysOnTop(true);
-                    //JOptionPane.showMessageDialog(dialog, pack.getAction().getName().toUpperCase(), "YOUR TURN, "+getPlayer().getUsername(), JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
                     this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.ASK_FOR_BUILD.getPath()))));
                     displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), pack.getValidBuilds());
                 }
@@ -378,9 +361,6 @@ public class SwingView extends View {
             case GAME_OVER:{
 
                 if(!serverResponse.getTurn().equals(player.getTokenColor())){
-                    //final JDialog dialog = new JDialog();
-                    //dialog.setAlwaysOnTop(true);
-                    //JOptionPane.showMessageDialog(dialog,"" , "GAME OVER ", JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.GAMEOVERICON.getPath()))));
                     displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
                     this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.GAMEENDED.getPath()))));
                     new GameOverDialog(false);
@@ -679,11 +659,14 @@ public class SwingView extends View {
 
 
 
+
     /**
      * In case a player wants to use the power of Demeter or Hestia (the cases where you can build
      * twice) the buttonHandler call this method (twice) to save the two targetCell. At the end of
      * the second call the playerAction is sent.
-     * @param targetCell the selected cell in which the player wants to build
+     * @param pack Pack of the serverResponse
+     * @param targetCell The selected cell in which the player wants to build
+     * @throws IOException
      */
     public void buildGod(Pack pack, Cell targetCell) throws IOException{
 
@@ -728,7 +711,7 @@ public class SwingView extends View {
                 }
                 if(count == 0){
 
-                    //the cell of the second buil can't be a perimeter cell.
+                    //the cell of the second built can't be a perimeter cell.
                     if(notPerimeterCell(targetCell)) {
                         count = 2;
                         PlayerAction playerAction = new PlayerAction(Action.WHERE_TO_BUILD_SELECTED, player, null, null, savedToken, 0, firstCell, targetCell, true, null);
@@ -847,7 +830,4 @@ public class SwingView extends View {
             return null;
         }
     }
-
-
-
 }
