@@ -181,7 +181,7 @@ public class SwingView extends View {
 
                 final JDialog dialog = new JDialog();
                 dialog.setAlwaysOnTop(true);
-                JOptionPane.showMessageDialog(dialog,"Another player has already selected this name, retry.","Error", JOptionPane.ERROR_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.ERRORICON.getPath()))));
+                JOptionPane.showMessageDialog(dialog,"Another player has already selected this name.","Error", JOptionPane.ERROR_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.ERRORICON.getPath()))));
                 new NickNameWindow(this);
                 break;
             }
@@ -202,7 +202,7 @@ public class SwingView extends View {
 
                 final JDialog dialog = new JDialog();
                 dialog.setAlwaysOnTop(true);
-                JOptionPane.showMessageDialog(dialog,"JUST WAIT FOR OTHER PLAYERS TO CONNECT","NUMBER RECEIVED", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
+                JOptionPane.showMessageDialog(dialog,"WAIT FOR OTHER PLAYERS TO CONNECT","NUMBER RECEIVED", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
                 break;
             }
 
@@ -336,7 +336,7 @@ public class SwingView extends View {
                 Pack pack = serverResponse.getPack();
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
-                    this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.NOT_YOUR_TURN.getPath()))));
+                    this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.ANOTHER_PLAYER_IS_MOVING.getPath()))));
                     displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
                 }
                 else{
@@ -353,7 +353,7 @@ public class SwingView extends View {
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
                     displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null); //edit
-                    this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.ANOTHERPLAYERISBUILDING.getPath()))));
+                    this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.ANOTHER_PLAYER_IS_BUILDING.getPath()))));
                 }
                 else{
                     // Refresh the player so the token position is updated

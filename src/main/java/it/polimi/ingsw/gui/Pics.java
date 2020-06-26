@@ -129,7 +129,8 @@ public enum Pics {
         PLAYER_LOST("/PLAYER_LOST.png"),
         NOT_YOUR_TURN("/NOT_YOUR_TURN.png"),
         GAMEENDED("/gameEnded.png"),
-        ANOTHERPLAYERISBUILDING("/another chosing build.png"),
+        ANOTHER_PLAYER_IS_BUILDING("/another chosing build.png"),
+        ANOTHER_PLAYER_IS_MOVING("/another chosing move.png"),
         SECOND_BUILD("/SECOND_BUILD.png"),
 
         // BACKGROUNDS
