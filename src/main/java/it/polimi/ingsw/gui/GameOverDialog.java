@@ -10,9 +10,9 @@ import java.io.IOException;
 public class GameOverDialog extends JFrame {
 
 
-    public GameOverDialog(boolean hasWin) throws IOException {
+    public GameOverDialog(SwingView swingView, boolean hasWin) throws IOException {
 
-        setTitle("Game Ended");
+        setTitle("Game Ended  |  "+swingView.getPlayer().getUsername());
         setIconImage(new ImageIcon(ImageIO.read(getClass().getResource(Pics.LOST_ICON.getPath()))).getImage());
         JPanel p;
         if(hasWin){
