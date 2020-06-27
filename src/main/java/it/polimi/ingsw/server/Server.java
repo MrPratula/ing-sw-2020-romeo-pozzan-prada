@@ -138,6 +138,7 @@ public class Server  {
         playingConnection.remove(connection.getName());
         if (connections.isEmpty()){
             try{
+                System.out.println("The game is over.\nServer is shutting down!");
                 System.exit(0);
             } catch (Exception e){
                 System.out.println("Can not shut down the server!");
@@ -145,6 +146,7 @@ public class Server  {
         }
         if (playingConnection.isEmpty()){
             try{
+                System.out.println("The game is over.\nServer is shutting down!");
                 System.exit(0);
             } catch (Exception e){
                 System.out.println("Can not shut down the server!");
