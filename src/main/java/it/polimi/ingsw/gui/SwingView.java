@@ -53,7 +53,7 @@ public class SwingView extends View {
         currentValidBuilds = valid;
     }
 
-    public void savedToken(int selectedToken){
+    public void setSavedToken(int selectedToken){
         savedToken = selectedToken;
     }
 

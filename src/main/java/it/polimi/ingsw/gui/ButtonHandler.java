@@ -70,7 +70,7 @@ public class ButtonHandler implements ActionListener {
             case ASK_FOR_SELECT_TOKEN:{
                 int selectedToken = swingView.getToken(cellButton.getCell().getPosX(),cellButton.getCell().getPosY(), swingView.getPlayer());
                 if(selectedToken != 0){
-                    swingView.savedToken(selectedToken);
+                    swingView.setSavedToken(selectedToken);
                     PlayerAction playerAction = new PlayerAction(Action.TOKEN_SELECTED, swingView.getPlayer(), null, null, selectedToken, 0, null, null, false, null);
                     try {
                         swingView.notifyClient(playerAction);
