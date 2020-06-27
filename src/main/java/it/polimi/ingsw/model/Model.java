@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.controller.*;
 import it.polimi.ingsw.gameAction.build.*;
 import it.polimi.ingsw.gameAction.move.*;
 import it.polimi.ingsw.gameAction.win.PanWin;
@@ -19,81 +18,178 @@ import java.util.*;
 
 
 /**
- * The model contains a battlefield and the info to let the game run properly.
- * It also has all the methods to change itself and to check if a move is valid or not.
+ * The model contains a battlefield and the info to let the game run properly
+ * It also has all the methods to change itself and to check if a move is valid or not
  */
 public class Model extends Observable<ServerResponse> implements Cloneable {
 
-    private static boolean didAthenaMovedUp;
-    private static boolean didPrometheusUsePower;
+    /**
+     * The battlefield of this game
+     */
     private Battlefield battlefield;
+
+    /**
+     * The color of the player that has to play
+     */
     private TokenColor turn;
+
+    /**
+     * All player in game (not spectators)
+     */
     private final List<Player> allPlayers = new ArrayList<>();
+
+    /**
+     * All God cards in play
+     */
     private final List<GodCard> allGodCards = new ArrayList<>();
+
+    /**
+     * In computeGodChoices the first time it runs need to be done different things
+     */
     private boolean firstTime = true;
+
+    /**
+     * Tells if Athena moved up during her last turn
+     */
+    private static boolean athenaMovedUp;
+
+    /**
+     * Tells if Prometheus has used his power or not
+     */
+    private static boolean prometheusUsePower;
+
+    /**
+     * Store Prometheus's token between the move and the build
+     */
     private Token prometheusToken;
+
+    /**
+     * Store the last sent server response for re-send it if wrong input is caught
+     */
     private ServerResponse lastSentServerResponse;
 
+    /**
+     * List of valid builds or valid moves
+     * It is used in test to store and print them
+     */
+    private List<Cell> validCells;
+
+
+    /**
+     * Create a new model and instance a new battlefield
+     */
     public Model() {
         this.battlefield = new Battlefield();
     }
 
-    /*    GETTER     */
 
+    /**
+     * It is used in test to set a custom battlefield
+     * @param battlefield the battlefield to link to this model
+     */
     public void setBattlefield(Battlefield battlefield){
         this.battlefield = battlefield;
     }
 
+
+    /**
+     * @return all players in game
+     */
     public List<Player> getAllPlayers() {
         return allPlayers;
     }
 
+
+    /**
+     * @return the battlefield
+     */
     public Battlefield getBattlefield() {
         return this.battlefield;
     }
 
+
+    /**
+     * @return the color of the player that has to play
+     */
     public TokenColor getTurn() {
         return turn;
     }
 
+
+    /**
+     * Set a new color for the turn
+     * @param turn the new color
+     */
     public void setTurn(TokenColor turn) {
         this.turn = turn;
     }
 
+
+    /**
+     * Add a god to the god in game list
+     * @param god the god to be added
+     */
     public void addGod(GodCard god) {
         allGodCards.add(god);
     }
 
+
+    /**
+     * Set the value for didAthenaMovedUp
+     * @param trueOrFalse the value to set
+     */
     public static void athenaMovedUp(Boolean trueOrFalse) {
-        didAthenaMovedUp = trueOrFalse;
+        athenaMovedUp = trueOrFalse;
     }
 
-    // Only needed for test in AthenaMovesTest.
-    public static boolean isDidAthenaMovedUp() {
-        return didAthenaMovedUp;
+    /**
+     * @return the value  of athenaMovedUp
+     */
+    public static boolean isAthenaMovedUp() {
+        return athenaMovedUp;
     }
 
-    // Only needed for test in TOKEN_SELECTED_test
+
+    /**
+     * Used in test
+     * @return the prometheus token
+     */
     public Token getPrometheusToken(){
         return this.prometheusToken;
     }
 
-    // Only needed for test in PROMETHEUS_ANSWER_test
+
+    /**
+     * Used in test
+     * @param token set a token as prometheus token
+     */
     public void setPrometheusToken(Token token){
         this.prometheusToken = token;
     }
 
-    public static boolean isDidPrometheusUsePower() {
-        return didPrometheusUsePower;
+
+    /**
+     * @return the value of prometheusUsePower
+     */
+    public static boolean isPrometheusUsePower() {
+        return prometheusUsePower;
     }
 
+
+    /**
+     * Set the value of prometheusUsePower
+     * @param trueOrFalse value to be set
+     */
     public static void prometheusUsePower (Boolean trueOrFalse) {
-        didPrometheusUsePower = trueOrFalse;
+        prometheusUsePower = trueOrFalse;
     }
 
-    //Test use only
-    private List<Cell> validCells;
 
+    /**
+     * It is used in test to get the valid cells to print
+     * It return the value and delete it
+     * @return the valid cells stored
+     */
     public List<Cell> getValidCells(){
         List<Cell> returnCell = validCells;
         validCells = null;
@@ -111,10 +207,10 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
 
     /**
-     * compare the current turn with a player's color.
+     * Compare the current turn with a player's color
      * if they match then it is that player's turn
      * @param player the player to ask for color
-     * @return true if it is it's turn, false otherwise.
+     * @return true if it is it's turn, false otherwise
      */
     public boolean isPlayerTurn(Player player) {
         return turn == player.getTokenColor();
@@ -162,7 +258,6 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                 break;
             index++;
         }
-
         try{
             return allPlayers.get(index+1);
         } catch (IndexOutOfBoundsException e){
@@ -172,9 +267,8 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
 
     /**
-     * It returns a partial copy of the model.
-     * It contains the battlefield ready to be printed, the turn and the players
-     *
+     * It returns a partial copy of the model
+     * It contains the battlefield ready to be printed, the turn and the player
      * @return modelCopy
      */
     public ModelUtils getCopy() {
@@ -188,11 +282,12 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
     /**
      * It parse the player action to get the chosen God,
-     * then that God is set to that player and removed from the allGodCards list.
+     * then that God is set to that player and removed from the allGodCards list
      * After this if the list is empty it is started the routine for let players place their tokens
-     * and the allGodCards list is re-created.
-     * If not then it is asked to the next player what God he wants.
-     * @param playerAction the action to parse in order to get the name of the chosen God.
+     * and the allGodCards list is re-created
+     * If not then it is asked to the next player what God he wants
+     * @param playerAction the action to parse in order to get the name of the chosen God
+     * @throws IOException if can't send object into the socket
      */
     public void computeGodChoices(PlayerAction playerAction) throws IOException {
 
@@ -322,11 +417,12 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
 
     /**
-     * Check if the message is correct, if not it is requested the same to the same player.
+     * Check if the message is correct, if not it is requested the same to the same player
      * If it is, then if the same player has another token to place it is requested the same thing to that player,
      * else it checks if all the player have placed their tokens. If so then the game can start,
-     * else it requests the same thing to the next player.
-     * @param playerAction package message with all the info.
+     * else it requests the same thing to the next player
+     * @param playerAction package message with all the info
+     * @throws IOException if can't send object into the socket
      */
     public void placeToken(PlayerAction playerAction) throws IOException {
 
@@ -401,17 +497,16 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
 
     /**
-     * It calculates the valid moves that a player can make.
-     * A token CAN move one Cell around himself.
+     * It calculates the valid moves that a player can make
+     * A token CAN move one Cell around himself
      * A token can NOT move out of the battlefield,
      * where there is another token (himself too),
      * on a build higher than 1 of it's own,
-     * where there is a dome.
-     *
+     * where there is a dome
      * This takes all the values needed for call the properly method based on the God card and
-     * and call the methods passing it all the parameters.
-     *
-     * @param playerAction the message from the observer that contains all the information.
+     * and call the methods passing it all the parameters
+     * @param playerAction the message from the observer that contains all the information
+     * @throws IOException if can't send object into the socket
      */
     public void validMoves(PlayerAction playerAction) throws IOException {
 
@@ -483,14 +578,15 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
     /**
      * When the controller receives a TOKEN_SELECTED if the owner has Prometheus,
-     * I ask him if he wants to use his power or not.
-     * The token he wants to move is saved for his next answer.
+     * I ask him if he wants to use his power or not
+     * The token he wants to move is saved for his next answer
      * @param playerAction the packet with all the info
+     * @throws IOException if can't send object into the socket
      */
     public void askForPrometheus(PlayerAction playerAction) throws IOException {
 
         // Set default value
-        didPrometheusUsePower = false;
+        prometheusUsePower = false;
 
         List<Player> opponents = getOpponents(getPlayerInTurn());
         List<Token> enemyTokens = getTokens(opponents);
@@ -540,9 +636,14 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     }
 
 
+    /**
+     * If Prometheus want to use his power he has to make a build as a first action
+     * Than all parameters are updated to let prometheus build, move not going up and build again
+     * @throws IOException if can't send object into the socket
+     */
     public void prometheusFirstBuild() throws IOException {
 
-        didPrometheusUsePower = true;
+        prometheusUsePower = true;
 
         Pack pack = new Pack(Action.ASK_FOR_BUILD);
         pack.setPlayer(getPlayerInTurn());
@@ -569,8 +670,8 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
 
     /**
-     * @param players a list of players.
-     * @return all the tokens of those players.
+     * @param players a list of players
+     * @return all the tokens of those players
      */
     public List<Token> getTokens(List<Player> players) {
         List<Token> tokens = new ArrayList<>();
@@ -585,8 +686,8 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
 
     /**
-     * @param players a list of players.
-     * @return a list of all those players God cards.
+     * @param players a list of players
+     * @return a list of all those players God cards
      */
     public List<GodCard> getGodCards(List<Player> players) {
         List<GodCard> godCards = new ArrayList<>();
@@ -600,7 +701,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
 
     /**
-     * @param tokenId a unique identifier of a token.
+     * @param tokenId a unique identifier of a token
      * @return the token who is associated with that token id. Null if there is no token with that id
      */
     public Token parseToken(int tokenId) {
@@ -615,10 +716,10 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
 
     /**
-     * Here there is the ad-hoc call for the computeValidMoves method.
-     * It is based on the player-in-turn God card.
-     * If that God card does not modify the move than it calls the default move.
-     * More JavaDOC inside the ad-hoc method.
+     * Here there is the ad-hoc call for the computeValidMoves method
+     * It is based on the player-in-turn God card
+     * If that God card does not modify the move than it calls the default move
+     * More JavaDOC inside the ad-hoc method
      */
     public List<Cell> computeValidMoves(Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield) {
 
@@ -651,7 +752,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             }
         }
 
-        if (enemyGodCards.contains(GodCard.ATHENA) && didAthenaMovedUp) {
+        if (enemyGodCards.contains(GodCard.ATHENA) && athenaMovedUp) {
             MoveContext thisMove = new MoveContext(new AthenaMoves());
             validMoves = thisMove.executeValidMoves(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, battlefield, validMoves);
         }
@@ -662,8 +763,9 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
     /**
      * This is called by the controller just to check that the real player has given an appropriate input in the
-     * move phase.
-     * It works exactly like the computeValidMoves but there is no need to check that there are no valid moves.
+     * move phase
+     * It works exactly like the computeValidMoves but there is no need to check that there are no valid moves
+     * @param playerAction the last action made bu a player
      */
     public List<Cell> askValidMoves (PlayerAction playerAction){
 
@@ -686,14 +788,19 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
 
     /**
-     * This method is called when I check the valid moves of a player.
+     * This method is called when I check the valid moves of a player
      * If the return of that method is null I check if that player has lost the game or
-     * if he can move the other token.
-     * If he lost it checks how many player there are.
+     * if he can move the other token
+     * If he lost it checks how many player there are
      * If 2 the other one wins the game,
-     * if 3 this player is removed from the game.
-     * @return the correct ServerResponse to let the game routine run properly.
-     * It could be a TOKEN_NOT_MOVABLE, GAME_OVER or PLAYER_LOST.
+     * if 3 this player is removed from the game
+     * @param otherToken other players in turn token
+     * @param enemyTokens enemy tokens on the battlefield
+     * @param myGodCard player in turn god card
+     * @param enemyGodCards enemies god cards
+     * @param selectedToken the token player in turn selected
+     * @return the correct ServerResponse to let the game routine run properly
+     * It could be a TOKEN_NOT_MOVABLE, GAME_OVER or PLAYER_LOST
      */
     public ServerResponse checkLoseForMove(Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Token selectedToken) {
 
@@ -738,12 +845,13 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
 
     /**
-     * Here is where the move is parsed for ad-hoc method.
-     * The check for the legal move is made by the controller.
-     * After a player has moved his token, that token is checked for the win condition.
+     * Here is where the move is parsed for ad-hoc method
+     * The check for the legal move is made by the controller
+     * After a player has moved his token, that token is checked for the win condition
      * If true a message is sent to the client,
-     * if not the game continue normally.
-     * @param playerAction the message from the observer that contain all the information.
+     * if not the game continue normally
+     * @param playerAction the message from the observer that contain all the information
+     * @throws IOException if can't send object into the socket
      */
     public void performMove (PlayerAction playerAction) throws IOException {
 
@@ -873,12 +981,13 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
 
     /**
-     * It parses the input to get the correct method based on the God card.
-     * A player CAN build around the token he moved.
+     * It parses the input to get the correct method based on the God card
+     * A player CAN build around the token he moved
      * A token can NOT build out of the battlefield,
      * where there is a token (himself too),
-     * where there is a dome.
-     * @return a List of Cell in which the token just moved can build.
+     * where there is a dome
+     * More detailed JavaDoc into each ad-hoc methods
+     * @return a List of Cell in which the token just moved can build
      */
     public List<Cell> validBuilds (Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield) {
 
@@ -927,10 +1036,10 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
 
     /**
-     * This is called by the controller just to check if the real player has given a correct value.
-     * It works exactly like the validBuilds method.
-     * @param playerAction the message from the observer that contain all the information.
-     * @return a list of Cell in which a player can build.
+     * This is called by the controller just to check if the real player has given a correct value
+     * It works exactly like the validBuilds method
+     * @param playerAction the message from the observer that contain all the information
+     * @return a list of Cell in which a player can build
      */
     public List<Cell> askForValidBuilds (PlayerAction playerAction) {
 
@@ -953,9 +1062,10 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
 
     /**
-     * It calls the incrementHeight on the cell that a player has chosen to build.
-     * After a build has been made, the turn is updated.
-     * @param playerAction the message from the observer that contains all the information.
+     * It calls the incrementHeight on the cell that a player has chosen to build
+     * After a build has been made, the turn is updated
+     * @param playerAction the message from the observer that contains all the information
+     * @throws IOException if can't send object into the socket
      */
     public void performBuild (PlayerAction playerAction) throws IOException {
 
@@ -1033,7 +1143,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         ServerResponse serverResponse;
 
         // If it was Prometheus first build need to make him move and build again
-        if (getPlayerInTurn().getMyGodCard().equals(GodCard.PROMETHEUS) && didPrometheusUsePower){
+        if (getPlayerInTurn().getMyGodCard().equals(GodCard.PROMETHEUS) && prometheusUsePower){
             validMoves(playerAction);
         }
         else{
@@ -1051,7 +1161,6 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             serverResponse = new ServerResponse(getTurn(), pack);
             lastSentServerResponse = serverResponse;
             notify(serverResponse);
-
         }
     }
 
@@ -1087,9 +1196,9 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
 
     /**
-     * This method creates a GAME OVER message because someone won the game.
-     * @param winner the player who win.
-     * @return the correct ServerResponse.
+     * This method creates a GAME OVER message because someone won the game
+     * @param winner the player who win
+     * @return the correct ServerResponse
      */
     public ServerResponse gameOver (String winner) {
 
@@ -1098,15 +1207,14 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         pack.setWinnerOrPlayerLost(winner);
         pack.setMessageInTurn(message);
         pack.setModelCopy(getCopy());
-        Controller.setGameOver();
         return new ServerResponse (getTurn(), pack);
     }
 
 
     /**
-     * This method removes a player from the game because there are 3 player and one lost.
-     * @param looser is the player who lost.
-     * @return the correct ServerResponse.
+     * This method removes a player from the game because there are 3 player and one lost
+     * @param looser is the player who lost
+     * @return the correct ServerResponse
      */
     public ServerResponse playerLost (Player looser) {
 
@@ -1128,8 +1236,8 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
 
     /**
-     * It removes a player from the game and set free the cells where he has his tokens.
-     * @param player the player who has to be removed.
+     * It removes a player from the game and set free the cells where he has his tokens
+     * @param player the player who has to be removed
      */
     public void removeFromTheGame (Player player) {
 
@@ -1139,7 +1247,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
         // Reset didAthenaMovedUp
         if(player.getMyGodCard().equals(GodCard.ATHENA))
-            didAthenaMovedUp=false;
+            athenaMovedUp =false;
 
         // Remove the tokens if they exist
         try{
@@ -1156,11 +1264,11 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
 
     /**
-     * It updates the current turn:
-     * if it is red than it updates to blue,
-     * if it is blue it checks the number of players. If 2 than it is red again,
-     * if it is 3 it changes to yellow.
-     * if it is yellow it updates to red.
+     * It updates the current turn
+     * if it is red than it updates to blue
+     * if it is blue it checks the number of players. If 2 than it is red again
+     * if it is 3 it changes to yellow
+     * if it is yellow it updates to red
      */
     public void updateTurn() {
 
@@ -1243,7 +1351,8 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
     /**
      * It is called by the controller to notify the player-in-turn that he inserted a wrong or
-     * a non expected input.
+     * a non expected input
+     * @throws IOException if can't send object into the socket
      */
     public void notifyWrongInput() throws IOException {
 
@@ -1284,7 +1393,9 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
 
     /**
-     * Check if the two cells have different coordinates.
+     * Check if the two cells have different coordinates
+     * @param firstCell one of the two cells
+     * @param secondCell second of the two cells
      */
     public boolean differentCell(Cell firstCell, Cell secondCell){
         if (firstCell==null || secondCell == null)
@@ -1294,7 +1405,8 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
 
     /**
-     * Check if the targetCell is a perimeter cell.
+     * Check if the targetCell is a perimeter cell
+     * @param targetCell the cell to check for
      */
     public boolean notPerimeterCell(Cell targetCell){
         if(targetCell == null)
@@ -1305,8 +1417,9 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
     /**
      * When a player disconnected if there are 2 players the last one win the game,
-     * else he is removed from the game and the game goes on.
-     * @param name name of the player who disconnect.
+     * else he is removed from the game and the game goes on
+     * @param name name of the player who disconnect
+     * @throws IOException if can't send object into the socket
      */
     public void disconnected(String name) throws IOException {
 

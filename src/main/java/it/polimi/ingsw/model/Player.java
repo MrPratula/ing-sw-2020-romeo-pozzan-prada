@@ -12,15 +12,30 @@ import java.io.Serializable;
  */
 public class Player implements Serializable {
 
+    /**
+     * Unique name of the player
+     */
     private final String username;
+
+    /**
+     * A color of this player and his tokens
+     */
     private final TokenColor tokenColor;
+
+    /**
+     * The tokens of this player
+     */
     private Token token1, token2;
+
+    /**
+     * The god card of this player
+     */
     private GodCard myGodCard;
 
     /**
      * A new player is created when it connect to the server
-     * @param username the name of the player. It should be unique.
-     * @param color the color that identify the player and his tokens.
+     * @param username the name of the player. It should be unique
+     * @param color the color that identify the player and his tokens
      */
     public Player(String username, TokenColor color) {
         this.username = username;
@@ -42,38 +57,68 @@ public class Player implements Serializable {
         }
     }
 
+
+    /**
+     * @return the first token
+     */
     public Token getToken1() {
         return this.token1;
     }
 
+
+    /**
+     * @return the second token
+     */
     public Token getToken2() {
         return this.token2;
     }
 
+
+    /**
+     * @return the username of the player
+     */
     public String getUsername() {
         return this.username;
     }
 
+
+    /**
+     * @return the player's god card
+     */
     public GodCard getMyGodCard() {
         return this.myGodCard;
     }
 
+
+    /**
+     * Set a token as this player first token
+     * @param token1 token to set
+     */
     public void setToken1(Token token1) {
         this.token1 = token1;
     }
 
+
+    /**
+     * Set a token as this player second token
+     * @param token2 token to set
+     */
     public void setToken2(Token token2) {
         this.token2 = token2;
     }
 
+
+    /**
+     * Set a god card as this player god card
+     * @param godCard card to set
+     */
     public void setMyGodCard(GodCard godCard){
         this.myGodCard = godCard;
     }
 
 
     /**
-     * Used to return a player color to let
-     * game know if it is the player's turn
+     * Used to return a player color to let game know if it is the player's turn
      * @return the color of the player.
      */
     public TokenColor getTokenColor() {

@@ -4,18 +4,24 @@ import java.io.Serializable;
 
 
 /**
- * A Battlefield is a matrix of Cell.
- * It has a list with all the Players that are currently play on that Battlefield.
+ * A Battlefield is a matrix of Cell
+ * It has a list with all the Players that are currently play on that Battlefield
  */
 public class Battlefield implements Serializable {
 
+    /**
+     * The battlefield size of Santorini is 5
+     */
     private static final int battlefieldSize = 5;
+
+    /**
+     * The matrix of cells
+     */
     private final Cell[][] battlefield;
-    private boolean didAthenaMovedUp;
 
 
     /**
-     * The constructor create a matrix N*N of Cell, where N is the battlefieldSize.
+     * The constructor create a matrix N*N of Cell, where N is the battlefieldSize
      */
     public Battlefield() {
 
@@ -31,10 +37,10 @@ public class Battlefield implements Serializable {
 
 
     /**
-     * It is used to get a Cell of the battlefield when the x-coords and y-coords are known.
-     * @param posX column of the battlefield.
-     * @param posY raw of the battlefield.
-     * @return the Cell with specified coords. Null else.
+     * It is used to get a Cell of the battlefield when the x-coords and y-coords are known
+     * @param posX column of the battlefield
+     * @param posY raw of the battlefield
+     * @return the Cell with specified coords. Null else
      */
     public Cell getCell(int posX, int posY) {
         try{
@@ -47,9 +53,9 @@ public class Battlefield implements Serializable {
 
     /**
      * It is used when I have a Cell (usually of the Token) and I want to locate
-     * it on the Battlefield.
-     * @param cell the cell i want to locate.
-     * @return the Cell with the same coords that is part of the battlefield.
+     * it on the Battlefield
+     * @param cell the cell i want to locate
+     * @return the Cell with the same coords that is part of the battlefield
      */
     public Cell getCell(Cell cell) {
         int inputX = cell.getPosX();
@@ -57,7 +63,9 @@ public class Battlefield implements Serializable {
         return battlefield[inputX][inputY];
     }
 
-
+    /**
+     * @return a copy of this battlefield
+     */
     protected final Battlefield getCopy() {
 
         final Battlefield battlefieldClone = new Battlefield();

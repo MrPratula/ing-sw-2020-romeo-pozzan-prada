@@ -54,7 +54,7 @@ public class AthenaMovesTest {
         MoveContext thisMove = new MoveContext(new SimpleMoves());
         validMoves = thisMove.executeValidMoves(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, battlefield, null);
 
-        if (enemyGodCards.contains(GodCard.ATHENA) && Model.isDidAthenaMovedUp()) {
+        if (enemyGodCards.contains(GodCard.ATHENA) && Model.isAthenaMovedUp()) {
             MoveContext thisMove2 = new MoveContext(new AthenaMoves());
             validMoves = thisMove2.executeValidMoves(selectedToken, null, null, null, null, battlefield, validMoves);
         }
@@ -88,7 +88,7 @@ public class AthenaMovesTest {
         MoveContext thisMove = new MoveContext(new SimpleMoves());
         validMoves = thisMove.executeValidMoves(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, battlefield, null);
 
-        if (enemyGodCards.contains(GodCard.ATHENA) && Model.isDidAthenaMovedUp()) {
+        if (enemyGodCards.contains(GodCard.ATHENA) && Model.isAthenaMovedUp()) {
             MoveContext thisMove2 = new MoveContext(new AthenaMoves());
             validMoves = thisMove2.executeValidMoves(selectedToken, null, null, null, null, battlefield, validMoves);
         }
@@ -111,7 +111,7 @@ public class AthenaMovesTest {
         MoveContext thisMove = new MoveContext(new AthenaMoves());
         thisMove.executeMove(selectedToken, otherToken, enemyTokens, targetCell, enemyGodCards, battlefield);
 
-        Assert.assertTrue(Model.isDidAthenaMovedUp());
+        Assert.assertTrue(Model.isAthenaMovedUp());
         Assert.assertTrue(battlefield.getCell(1,3).getThereIsPlayer());
         Assert.assertFalse(battlefield.getCell(2,2).getThereIsPlayer());
         Assert.assertTrue(selectedToken.getTokenPosition().equals(battlefield.getCell(1,3)));
@@ -131,7 +131,7 @@ public class AthenaMovesTest {
         MoveContext thisMove = new MoveContext(new AthenaMoves());
         thisMove.executeMove(selectedToken, otherToken, enemyTokens, targetCell, enemyGodCards, battlefield);
 
-        Assert.assertFalse(Model.isDidAthenaMovedUp());
+        Assert.assertFalse(Model.isAthenaMovedUp());
         Assert.assertTrue(battlefield.getCell(3,1).getThereIsPlayer());
         Assert.assertFalse(battlefield.getCell(2,2).getThereIsPlayer());
         Assert.assertTrue(selectedToken.getTokenPosition().equals(battlefield.getCell(3,1)));
@@ -151,7 +151,7 @@ public class AthenaMovesTest {
         MoveContext thisMove = new MoveContext(new AthenaMoves());
         thisMove.executeMove(selectedToken, otherToken, enemyTokens, targetCell, enemyGodCards, battlefield);
 
-        Assert.assertFalse(Model.isDidAthenaMovedUp());
+        Assert.assertFalse(Model.isAthenaMovedUp());
         Assert.assertTrue(battlefield.getCell(1,2).getThereIsPlayer());
         Assert.assertFalse(battlefield.getCell(2,2).getThereIsPlayer());
         Assert.assertTrue(selectedToken.getTokenPosition().equals(battlefield.getCell(1,2)));

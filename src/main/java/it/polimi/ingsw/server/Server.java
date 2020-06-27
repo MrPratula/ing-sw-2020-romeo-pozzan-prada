@@ -15,35 +15,80 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+
+/**
+ * A server initiate a connection between some client and link them with a remote view
+ * Each player that connect is put into a lobby
+ * When there are enough players to play the game start
+ */
 public class Server  {
 
-    // This is for the Singleton pattern
+    /**
+     * Parameter to instantiate only one server
+     */
     private static Server singleServer = null;
-    private static int numberOfPlayers;
-    private final List<String> names = new ArrayList<>();
-
-    private boolean firstTime;
-    private static final int PORT = 12345;
-    private final ServerSocket serverSocket;
-
-    private final ExecutorService executor = Executors.newFixedThreadPool(128);
-
-    // All the connection that are linked
-    private final List<Connection> connections = new ArrayList<>();
-
-    // All the connection active for a game session
-    private final Map<String, Connection> playingConnection = new HashMap<>();
-
-    // All the connection in queue for a game
-    private final Map<String, Connection> waitingConnection = new HashMap<>();
-
-    private Model model;
-    private Controller controller;
 
     /**
-     * Singleton constructor.
-     * If it do not exist it create a new one.
-     * @return an instance of server.
+     * Number of players the first player want to play with
+     */
+    private static int numberOfPlayers;
+
+    /**
+     * Names of all the player connected
+     */
+    private final List<String> names = new ArrayList<>();
+
+    /**
+     * The first time a player goes into the lobby he has to to different things
+     */
+    private boolean firstTime;
+
+    /**
+     * Port of the server
+     */
+    private static final int PORT = 12345;
+
+    /**
+     * Server socket
+     */
+    private final ServerSocket serverSocket;
+
+    /**
+     * Executor service of the server
+     */
+    private final ExecutorService executor = Executors.newFixedThreadPool(128);
+
+    /**
+     * Connections that are linked
+     */
+    private final List<Connection> connections = new ArrayList<>();
+
+    /**
+     * Map of name and connection of that player that are in lobby
+     */
+    private final Map<String, Connection> playingConnection = new HashMap<>();
+
+    /**
+     * Map of name and connection of that player that are in waiting
+     */
+    private final Map<String, Connection> waitingConnection = new HashMap<>();
+
+    /**
+     * A model of the game that is going to be created
+     */
+    private Model model;
+
+    /**
+     * A controller of the game that is going to be created
+     */
+    private Controller controller;
+
+
+    /**
+     * Singleton constructor
+     * If it do not exist it create a new one
+     * @return an instance of server
+     * @throws IOException if can't send object into the socket
      */
     public static Server getInstance() throws IOException {
         if (singleServer == null)
@@ -53,11 +98,13 @@ public class Server  {
 
 
     /**
-     * Private constructor that is called by the getInstance.
+     * Private constructor that is called by the getInstance
+     * @throws IOException if can't send object into the socket
      */
     Server() throws IOException {
         this.serverSocket = new ServerSocket(PORT);
     }
+
 
     /**
      * Return the name of all player in waiting room to avoid have players with same name
@@ -68,26 +115,29 @@ public class Server  {
         return new ArrayList<>(waitingConnection.keySet());
     }
 
+
     /**
-     * Set up the number of players.
-     * It is received from the first remoteView.
+     * Set up the number of players
+     * It is received from the first remoteView
      */
     public static void setNumberOfPlayers(int number) {
         numberOfPlayers = number;
     }
 
+
     /**
-     * Used from connection to call the disconnection method when a player disconnect.
-     * @return the model.
+     * Used from connection to call the disconnection method when a player disconnect
+     * @return the model
      */
     public Model getModel(){
         return this.model;
     }
 
+
     /**
-     * The servers starts and waits for clients to connect.
+     * The servers starts and waits for clients to connect
      * When a client join a server it is registered (save connection)
-     * and it's connection is started in a asynchronous thread.
+     * and it's connection is started in a asynchronous thread
      */
     public void run() {
 
@@ -119,8 +169,8 @@ public class Server  {
 
 
     /**
-     * Add a connection (which is unique for each client) to the connections list.
-     * @param connection the connection to add.
+     * Add a connection (which is unique for each client) to the connections list
+     * @param connection the connection to add
      */
     private synchronized void registerConnection(Connection connection){
         connections.add(connection);
@@ -128,9 +178,9 @@ public class Server  {
 
 
     /**
-     * It removes a Connection from the server.
-     * The connection is removed from the list and removed from playingConnection.
-     * @param connection the connection to remove.
+     * It removes a Connection from the server
+     * The connection is removed from the list and removed from playingConnection
+     * @param connection the connection to remove
      */
     public synchronized void deregisterConnection(Connection connection) {
         connections.remove(connection);
@@ -156,10 +206,10 @@ public class Server  {
 
 
     /**
-     * The lobby receives a connection and a name.
-     * Those are put in waitingConnection.
-     * When there are 2 or 3 players in the waiting connection,
-     * the game is set up and it starts.
+     * The lobby receives a connection and a name
+     * Those are put in waitingConnection
+     * When there are 2 or 3 players in the waiting connection
+     * the game is set up and it starts
      */
     public synchronized void lobby(Connection connection, String name) {
 
@@ -230,9 +280,9 @@ public class Server  {
 
 
     /**
-     * The first player who join the lobby is asked for how much players he want to play.
-     * When he answer other players can join the lobby.
-     * Here are created the model, the controller and the remote view and all are linked up.
+     * The first player who join the lobby is asked for how much players he want to play
+     * When he answer other players can join the lobby
+     * Here are created the model, the controller and the remote view and all are linked up
      */
     public void setUpFirstPlayer () {
 
@@ -240,7 +290,7 @@ public class Server  {
 
         Player player1 = new Player(names.get(0), TokenColor.RED);
         RemoteView remoteView1 = new RemoteView(c1, player1);
-        remoteView1.setServer(this);
+        remoteView1.setServer();
 
         // Create the model (and battlefield) and the controller for the current game
         model = new Model();
@@ -288,7 +338,7 @@ public class Server  {
 
     /**
      * Set the turn on first player, than create a random list of 2 or 3 god cards
-     * and update the turn to the second player.
+     * and update the turn to the second player
      * Ask the second player what god he want to use and send a wait message to the 1st and 3rd players.
      */
     public void initGame() {
@@ -359,10 +409,10 @@ public class Server  {
 
 
     /**
-     * It receive the deck and the subDeck.
-     * It draws a card from deck and add it to the subDeck.
-     * @param godsDeck the deck.
-     * @param godInGame the subDeck.
+     * It receive the deck and the subDeck
+     * It draws a card from deck and add it to the subDeck
+     * @param godsDeck the deck
+     * @param godInGame the subDeck
      */
     public void drawAGod (List<GodCard> godsDeck, List<GodCard>godInGame){
 

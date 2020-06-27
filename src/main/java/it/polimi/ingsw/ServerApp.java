@@ -6,7 +6,9 @@ import java.io.IOException;
 
 
 /**
- * This class creates the server and runs it.
+ * This class creates the server and runs it
+ * Only one server can run at the same time
+ * The server will shut down when there are no players connected after a player connect
  */
 public class ServerApp
 {
@@ -16,8 +18,6 @@ public class ServerApp
         Server server;
 
         try {
-            // The Server is not created by new Server because it is Singleton, so
-            // it calls the getInstance Method that create a server if it doesn't exist
             server = Server.getInstance();
             server.run();
 

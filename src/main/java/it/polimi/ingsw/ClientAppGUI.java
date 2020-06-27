@@ -4,6 +4,10 @@ import it.polimi.ingsw.client.Client;
 
 import java.io.IOException;
 
+
+/**
+ * Main class to run a game and play it with a GUI
+ */
 public class ClientAppGUI {
 
     public static void main(String[] args) {

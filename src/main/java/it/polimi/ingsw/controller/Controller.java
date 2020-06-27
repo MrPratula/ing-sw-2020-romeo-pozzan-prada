@@ -10,31 +10,34 @@ import java.util.*;
 
 
 /**
- * The Controller contains the game logic.
- * It receives a PlayerMove from the Server.
- * The Controller modifies the Model via ad-hoc method selected by the playerAction.
+ * The Controller contains the game logic
+ * It receives a PlayerMove from the Server
+ * The Controller modifies the Model via ad-hoc method selected by the playerAction
  */
 public class Controller implements Observer<PlayerAction> {
 
+    /**
+     * The model that this controller controls
+     */
     private final Model model;
-    private static boolean gameOver;
 
+
+    /**
+     * Create a new controller linked to this model
+     * @param model the model to be controlled
+     */
     public Controller (Model model) {
         this.model = model;
-        gameOver = false;
-    }
-
-    public static void setGameOver(){
-        gameOver = true;
     }
 
 
     /**
-     * It gets a PlayerAction and parse it.
-     * The switch selects the Action that a player intends to perform and calls
-     * the appropriate method in the model.
-     * The controller needs to check the correct format of the input and always pass valid arguments to the model.
-     * @param playerAction the message from the observer that contains all the information.
+     * It gets a PlayerAction and parse it
+     * The switch selects the Action that a player intends to perform and calls.
+     * the appropriate method in the model
+     * The controller needs to check the correct format of the input and always pass valid arguments to the model
+     * @param playerAction the message from the observer that contains all the information
+     * @throws IOException if can't send object into the socket
      */
     @Override
     public void update(PlayerAction playerAction) throws IOException {
@@ -95,7 +98,7 @@ public class Controller implements Observer<PlayerAction> {
                         model.notifyWrongInput();
 
                     // Not sure if this is the best place for this, but it works here. Don't touch plz
-                    if (Model.isDidPrometheusUsePower())
+                    if (Model.isPrometheusUsePower())
                         Model.prometheusUsePower(false);
 
                     break;

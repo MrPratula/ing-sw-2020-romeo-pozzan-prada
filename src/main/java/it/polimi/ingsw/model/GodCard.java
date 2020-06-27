@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 
 /**
- * Those are all God Cards playable.
- * Each one contains the info about their power.
+ * All God Cards playable
+ * Each one contains the info about their power
  */
 public enum GodCard implements Serializable {
 
@@ -25,18 +25,25 @@ public enum GodCard implements Serializable {
     LIMUS("Opponents Workers can not build on spaces neighboring your workers, unless building a dome to create a Complete Tower");
 
 
+    /**
+     * The power of the godCard
+     */
     private final String info;
 
+
+    /**
+     * Create a new god card
+     * @param info the power of the god
+     */
     GodCard(String info) {
         this.info = info;
     }
 
-    public String getInfo(){
-        return info;
-    }
 
-    @Override
-    public String toString(){
+    /**
+     * @return the power of the God
+     */
+    public String getInfo(){
         return info;
     }
 }

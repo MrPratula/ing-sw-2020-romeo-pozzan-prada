@@ -22,7 +22,7 @@ public class PrometheusMove implements MoveBehavior {
 
         List<Cell> allMoves = new ArrayList<>();
 
-        boolean canIMoveUp = !Model.isDidPrometheusUsePower();
+        boolean canIMoveUp = !Model.isPrometheusUsePower();
 
         int provX, provY;
 
