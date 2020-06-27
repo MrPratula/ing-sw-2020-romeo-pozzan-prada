@@ -4,7 +4,7 @@ Santorini is a simple table-game playable in 2 or 3 players. Choose your God Car
 Project work for 052510 - INGEGNERIA DEL SOFTWARE
 
 ## Introduction
-This project consist in the implementation of a distribuited system.
+This project consists in the implementation of a distribuited system.
 This one is entirely implemented using the MVC pattern.
 
 ## Features
@@ -37,11 +37,11 @@ It is the server that hosts the game.
 
 - ClientCLI.jar
 
-It is the client that run a terminal to play. It is higly recommended not to use cmd.
+It is the client that runs a terminal to play. It is higly recommended not to use cmd.
 
 - ClientGUI.jar 
 
-It is the client for using a graphic interface. It can be run by double clicking on it or exactly as the ClientCLI.jar in the terminal.
+It is the client to use a graphic interface. It can be run by double clicking on it or exactly as the ClientCLI.jar in the terminal.
 
 ###### PRESENTATION
-[This](https://github.com/MrPratula/ing-sw-2020-romeo-pozzan-prada/tree/recover/deliveries/slide) is the small presentation we used to explain how our project works during the project presentation.
+[This](https://github.com/MrPratula/ing-sw-2020-romeo-pozzan-prada/tree/recover/deliveries/slide) this is a brief presentation we used to explain how our project works during the project exposition.
