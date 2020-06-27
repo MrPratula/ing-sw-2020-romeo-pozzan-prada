@@ -20,7 +20,7 @@ import java.util.*;
 
 /**
  * The model contains a battlefield and the info to let the game run properly.
- * It has also all the methods to change itself and to check if a move is valid or not.
+ * It also has all the methods to change itself and to check if a move is valid or not.
  */
 public class Model extends Observable<ServerResponse> implements Cloneable {
 
@@ -187,12 +187,12 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
 
     /**
-     * It parse the player action to get the chose god from a player,
-     * then that got is set to that player and removed from the allGodCards list.
+     * It parse the player action to get the chosen God,
+     * then that God is set to that player and removed from the allGodCards list.
      * After this if the list is empty it is started the routine for let players place their tokens
      * and the allGodCards list is re-created.
-     * If not then it is asked to the next player what god he wants.
-     * @param playerAction the action to parse in order to get the name of the chosen god.
+     * If not then it is asked to the next player what God he wants.
+     * @param playerAction the action to parse in order to get the name of the chosen God.
      */
     public void computeGodChoices(PlayerAction playerAction) throws IOException {
 
@@ -322,10 +322,10 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
 
     /**
-     * Check if the message is correct. If not is requested the same thing to the same player.
+     * Check if the message is correct, if not it is requested the same to the same player.
      * If it is, then if the same player has another token to place it is requested the same thing to that player,
-     * else it check if all the player have placed their tokens. If so then the game can start,
-     * else it requested the same thing to the next player.
+     * else it checks if all the player have placed their tokens. If so then the game can start,
+     * else it requests the same thing to the next player.
      * @param playerAction package message with all the info.
      */
     public void placeToken(PlayerAction playerAction) throws IOException {
@@ -405,13 +405,13 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * A token CAN move one Cell around himself.
      * A token can NOT move out of the battlefield,
      * where there is another token (himself too),
-     * on a build height more than 1 of it's own,
+     * on a build higher than 1 of it's own,
      * where there is a dome.
      *
-     * This take all the values needed for call the properly method based on the god card and
+     * This takes all the values needed for call the properly method based on the God card and
      * and call the methods passing it all the parameters.
      *
-     * @param playerAction the message from the observer that contain all the information.
+     * @param playerAction the message from the observer that contains all the information.
      */
     public void validMoves(PlayerAction playerAction) throws IOException {
 
@@ -482,9 +482,9 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
 
     /**
-     * When the controller receive a TOKEN_SELECTED if the owner has Prometheus,
-     * I ask him if he want to use his power or not.
-     * The token he want to move is saved for his next answer.
+     * When the controller receives a TOKEN_SELECTED if the owner has Prometheus,
+     * I ask him if he wants to use his power or not.
+     * The token he wants to move is saved for his next answer.
      * @param playerAction the packet with all the info
      */
     public void askForPrometheus(PlayerAction playerAction) throws IOException {
@@ -528,7 +528,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             pack.setPlayer(getPlayerInTurn());
             pack.setModelCopy(getCopy());
             pack.setGodCards(getGodCards(allPlayers));
-            pack.setMessageOpponents("Another player is choosing if use Prometheus power or not...");
+            pack.setMessageOpponents("Another player is choosing whether to use Prometheus power or not...");
 
             prometheusToken = parseToken(playerAction.getTokenMain());
 
@@ -586,7 +586,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
     /**
      * @param players a list of players.
-     * @return a list of all those players god cards.
+     * @return a list of all those players God cards.
      */
     public List<GodCard> getGodCards(List<Player> players) {
         List<GodCard> godCards = new ArrayList<>();
@@ -616,8 +616,8 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
     /**
      * Here there is the ad-hoc call for the computeValidMoves method.
-     * It is based on the player-in-turn god card.
-     * If that god card do not modify the move than it calls the default move.
+     * It is based on the player-in-turn God card.
+     * If that God card does not modify the move than it calls the default move.
      * More JavaDOC inside the ad-hoc method.
      */
     public List<Cell> computeValidMoves(Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield) {
@@ -686,10 +686,10 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
 
     /**
-     * This method is called when i check the valid moves of a player.
+     * This method is called when I check the valid moves of a player.
      * If the return of that method is null I check if that player has lost the game or
      * if he can move the other token.
-     * If he lost it check how many player there are.
+     * If he lost it checks how many player there are.
      * If 2 the other one wins the game,
      * if 3 this player is removed from the game.
      * @return the correct ServerResponse to let the game routine run properly.
@@ -740,7 +740,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     /**
      * Here is where the move is parsed for ad-hoc method.
      * The check for the legal move is made by the controller.
-     * After a player has moved his token, that token id checked for the win condition.
+     * After a player has moved his token, that token is checked for the win condition.
      * If true a message is sent to the client,
      * if not the game continue normally.
      * @param playerAction the message from the observer that contain all the information.
@@ -873,7 +873,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
 
     /**
-     * It parses the input for get the correct method based on the god card.
+     * It parses the input to get the correct method based on the God card.
      * A player CAN build around the token he moved.
      * A token can NOT build out of the battlefield,
      * where there is a token (himself too),
@@ -953,9 +953,9 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
 
     /**
-     * It call the incrementHeight on the cell that a player has chosen to build.
+     * It calls the incrementHeight on the cell that a player has chosen to build.
      * After a build has been made, the turn is updated.
-     * @param playerAction the message from the observer that contain all the information.
+     * @param playerAction the message from the observer that contains all the information.
      */
     public void performBuild (PlayerAction playerAction) throws IOException {
 
@@ -1057,9 +1057,9 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
 
     /**
-     * A player win the game if he goes up from level 2 to level 3
-     * @param movedToken the token to check if he verify the win condition
-     * @return true if the token's owner win, false else.
+     * A player wins the game if he goes up from level 2 to level 3
+     * @param movedToken the token to be checked to verify the win condition
+     * @return true if the token's owner wins, false else.
      */
     public boolean checkWin (Token movedToken, GodCard myGodCard, List<GodCard> enemyGodCards) {
 
@@ -1087,7 +1087,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
 
     /**
-     * This method creates a GAME OVER message because someone has won the game.
+     * This method creates a GAME OVER message because someone won the game.
      * @param winner the player who win.
      * @return the correct ServerResponse.
      */
@@ -1157,10 +1157,10 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
     /**
      * It updates the current turn:
-     * if it is red than it update to blue,
-     * if it is blue it check for number of players. If 2 than it is red again,
-     * if it is 3 it change to yellow.
-     * if it is yellow it update to red.
+     * if it is red than it updates to blue,
+     * if it is blue it checks the number of players. If 2 than it is red again,
+     * if it is 3 it changes to yellow.
+     * if it is yellow it updates to red.
      */
     public void updateTurn() {
 
@@ -1242,7 +1242,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
 
     /**
-     * It is called by the controller to notify the player-in-turn that he has insert a wrong or
+     * It is called by the controller to notify the player-in-turn that he inserted a wrong or
      * a non expected input.
      */
     public void notifyWrongInput() throws IOException {

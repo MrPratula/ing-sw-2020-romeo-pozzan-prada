@@ -35,9 +35,9 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
 
     /**
-     * Get a input from stdin and divide it when there is a comma.
-     * @return if the input are 2 numbers separated with a comma a String[2] with those numbers in it.
-     *         null else.
+     * Get an input from stdin and divide it when there is a comma.
+     * @return a String[2] with those numbers in it if the input are 2 numbers separated with a comma
+     * null else.
      */
     public String[] getUserInput(){
         Scanner in = new Scanner(System.in);
@@ -62,6 +62,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
         }
     }
 
+
     /**
      * Once a player has performed his move, it is notified to the client.
      * @param playerAction move to send to the client. He will send it into the socket.
@@ -75,7 +76,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
      * This method moves the mechanic of the game: it receives the
      * response from the server, parse it to identify the kind of action and ask the user to insert the
      * correct input.
-     * @param serverResponse: response received from the server containing al the necessary information.
+     * @param serverResponse: response received from the server containing all the necessary information.
      */
     @Override
     public void update(ServerResponse serverResponse) throws IOException {
@@ -195,7 +196,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                                     selectedGods.add(god);
                                 }
                                 else {
-                                    System.out.println("You already choose this god. Please choose another one...");
+                                    System.out.println("You already choose this God. Please choose another one...");
                                 }
                             }
                         }
@@ -729,8 +730,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
 
     /**
-     * Prints a space with your color, in order to
-     * remember your color
+     * Prints a space with your color, to help you to remind it.
      * @param escape: ansi code
      */
     private void printColorId(String escape) {
@@ -739,7 +739,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
 
     /**
-     * When a player insert an input for move a token, here is identified which token a player want to move.
+     * When a player inserts an input to move a token, here is identified which token a player wants to move.
      * @param inputs String[] that should contain something like ["2","3"].
      * @param player the player who gave the String[] input.
      * @return the token ID of that player in that position. 0 if something goes wrong.
@@ -862,7 +862,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
 
     /**
-     * @param name string to ckeck. It is the user input for his username.
+     * @param name string to check. It is the user input for his username.
      * @return true if it is not empty, too long(<=16) or with spaces.
      */
     public String isAGoodName(String name){
@@ -901,14 +901,14 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
 
     /**
-     * Here i print the CLI for the user, depending on the parameter validMoves;
-     *   -if it is null, i print the normal battlefield with the tokens on, with
+     * Here I print the CLI for the user, depending on the parameter validMoves;
+     *   -if it is null, I print the normal battlefield with the tokens on, with
      *    the number on every cell representing the height of that one, X if dome,
      *    and the background in the color of the token on it (if present);
      *   -otherwise i print even a green backgrounds behind the cells in the ValidMoves param.
      *
      * @param validMoves: cells that have to be printed on a green background (can be null).
-     * @param modelCopy: contains the the board of the game and the players in the game.
+     * @param modelCopy: contains the board of the game and the players in the game.
      */
      public void printCLI(ModelUtils modelCopy, List<Cell> validMoves) {
 
@@ -963,7 +963,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
 
     /**
-     * Auxiliary method to print the CLI, here i check the token position's.
+     * Auxiliary method to print the CLI, here I check the token's position.
      * @param battlefield: the board of the game.
      * @param allPlayers: the players in the game.
      * @param validMoves: cells that have to be printed on a green background (can be null).

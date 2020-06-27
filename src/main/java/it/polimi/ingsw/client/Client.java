@@ -28,7 +28,7 @@ public class Client extends Observable<ServerResponse> implements Observer<Playe
 
 
     /**
-     * Tells if the client is active or not
+     * Tells if the client is active or not.
      * @return true or false.
      */
     public synchronized boolean isActive() {
@@ -46,9 +46,9 @@ public class Client extends Observable<ServerResponse> implements Observer<Playe
 
 
     /**
-     * It continues to receive message from the server, till it is received a
+     * It continues to receive messages from the server until it received a
      * GAME_OVER message.
-     * Not a PLAYER_LOST because a player who lost can spectate the other 2.
+     * Not until a PLAYER_LOST arrives because a player who lost can spectate the other 2.
      * @param objectInputStream where to receive the player action.
      * @return the thread that listen to the server.
      */
@@ -72,7 +72,7 @@ public class Client extends Observable<ServerResponse> implements Observer<Playe
                         }
                     }
                 } catch (IOException | ClassNotFoundException e) {
-                    System.err.println("Connection closed, the server shouted down!");
+                    System.err.println("Connection closed, the server shut down!");
                     setActive(false);
                 }
             }
@@ -106,7 +106,7 @@ public class Client extends Observable<ServerResponse> implements Observer<Playe
 
     /**
      * A client create a Socket to communicate and
-     * one Thread to always listen to the socket.
+     * one Thread that always listen to the socket.
      */
     public void run(boolean useGUI) throws IOException {
 
