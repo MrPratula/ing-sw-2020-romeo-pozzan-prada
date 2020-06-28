@@ -17,7 +17,11 @@ public class WelcomeFrame {
     private final JFrame mainFrame;
     private SwingView swingView;
 
-
+    /**
+     * The frame opened when a Gui player is connected to the server
+     * @param swingView The player's Swingview
+     * @throws IOException if can't send object into the socket
+     */
     public WelcomeFrame(final SwingView swingView) throws IOException {
 
         this.swingView = swingView;

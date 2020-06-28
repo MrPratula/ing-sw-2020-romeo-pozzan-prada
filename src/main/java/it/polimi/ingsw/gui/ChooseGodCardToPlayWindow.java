@@ -21,16 +21,26 @@ import java.util.List;
  */
 public class ChooseGodCardToPlayWindow {
 
+    /**
+     * The player's swingview
+     */
     final SwingView view;
 
+    /**
+     * List where save all of the goodcard
+     */
     private final List<GodCard> selectedGods = new ArrayList<>();
 
+    /**
+     * The help to count how many god cards are selected
+     */
     int n, cont;
 
     /**
      * creates the frame with all the god's images and powers
      * @param swingView gui view
      * @param serverResponse response of the server
+     * @exception IOException if something goes wrong
      */
     public ChooseGodCardToPlayWindow(SwingView swingView, ServerResponse serverResponse) throws IOException {
 

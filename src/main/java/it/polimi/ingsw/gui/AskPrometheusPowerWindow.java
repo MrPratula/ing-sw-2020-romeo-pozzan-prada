@@ -21,6 +21,7 @@ public class AskPrometheusPowerWindow extends JDialog {
     /**
      * Creates the JDialog thats asks if the player wants to use prometheus' power
      * @param swingView gui view of mvc
+     * @exception IOException if something goes wrong
      */
     public AskPrometheusPowerWindow(SwingView swingView) throws IOException {
 

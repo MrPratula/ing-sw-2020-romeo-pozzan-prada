@@ -17,6 +17,9 @@ import java.io.IOException;
  */
 public class AskToUseTheGodsPower extends JDialog{
 
+    /**
+     * I saved the player's swingview
+     */
     private final SwingView view;
 
 
@@ -25,6 +28,7 @@ public class AskToUseTheGodsPower extends JDialog{
      * @param swingView gui view
      * @param serverResponse response of the server
      * @param targetCell cell selected
+     * @exception IOException if something goes wrong
      */
     public AskToUseTheGodsPower(final SwingView swingView, final ServerResponse serverResponse, final Cell targetCell) throws IOException {
 

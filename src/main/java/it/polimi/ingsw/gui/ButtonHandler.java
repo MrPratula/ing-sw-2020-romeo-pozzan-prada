@@ -20,11 +20,26 @@ import java.util.List;
  */
 public class ButtonHandler implements ActionListener {
 
+    /**
+     * The button the player clicked
+     */
     final private CellButton cellButton;
+
+    /**
+     * The current ServerResponse
+     */
     private ServerResponse currentServerResponse;
+
+    /**
+     * The player's swingview
+     */
     private final SwingView swingView;
 
-
+    /**
+     * It is created a ActionListener for every button in the board
+     * @param cellButton The board's button associated
+     * @param swingView The player's swingview.
+     */
     public ButtonHandler(CellButton cellButton, SwingView swingView) {
         this.cellButton = cellButton;
         this.swingView = swingView;

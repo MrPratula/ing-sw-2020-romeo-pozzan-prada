@@ -24,9 +24,13 @@ public class ChooseGodCardWindow extends JDialog {
     private final SwingView view;
 
 
+
     /**
      * Window that shows two buttons with two gods:
      * the user must choose one on them.
+     * @param swingView The player's swingview
+     * @param serverResponse The current serverResponse
+     * @exception IOException if something goes wrong
      */
     public ChooseGodCardWindow(final SwingView swingView, final ServerResponse serverResponse) throws IOException {
 
