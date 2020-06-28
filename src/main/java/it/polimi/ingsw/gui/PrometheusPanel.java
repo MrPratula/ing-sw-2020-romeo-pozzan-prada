@@ -18,6 +18,10 @@ public class PrometheusPanel extends JPanel {
         setLayout(new GridLayout(1,2));
     }
 
+    /**
+     * Paints the background
+     * @param g graphic
+     */
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponents(g);

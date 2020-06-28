@@ -44,8 +44,8 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
     /**
      * Get an input from stdin and divide it when there is a comma
-     * @return a String[2] with those numbers in it if the input are 2 numbers separated with a comma
-     * null else
+     * @return a String[2] with those numbers in it if the input
+     * are 2 numbers separated with a comma, null else
      */
     public String[] getUserInput(){
         Scanner in = new Scanner(System.in);
@@ -83,8 +83,8 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
 
     /**
      * This method moves the mechanic of the game: it receives the
-     * response from the server, parse it to identify the kind of action and ask the user to insert the
-     * correct input
+     * response from the server, parse it to identify the kind of action
+     * and ask the user to insert the correct input
      * @param serverResponse: response received from the server containing all the necessary information
      * @throws IOException if can't send object into the socket
      */
@@ -155,7 +155,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                     // Check if the input is 2 or 3
                     if (numberOfPlayers == 2 || numberOfPlayers == 3)
                         break;
-                    System.out.println("Please insert 2 players or 3 players...");
+                    System.out.println("Please insert 2 or 3 players...");
                 }
 
                 playerAction = new PlayerAction(Action.NUMBER_OF_PLAYERS, null, null, null, numberOfPlayers, 0, null, null, false, null);
@@ -744,7 +744,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
      * @param escape: ansi code
      */
     private void printColorId(String escape) {
-        System.out.print(escape + " > " + "\033[049m" + "\033[039m");
+        System.out.print(escape + " >" + "\033[049m" + "\033[039m");
     }
 
 
@@ -913,7 +913,7 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
     /**
      * Here I print the CLI for the user, depending on the parameter validMoves
      * If it is null, I print the normal battlefield with the tokens on, with
-     * the number on every cell representing the height of that one, X if dome,
+     * the number on every cell representing its height, X if dome,
      * and the background in the color of the token on it (if present);
      * Otherwise i print even a green backgrounds behind the cells in the ValidMoves param
      * @param validMoves: cells that have to be printed on a green background (can be null)
@@ -955,9 +955,9 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                         System.out.print(" ");
                         System.out.print("\033[047m");          //on a white board
                     }
-                    else  printInnerCLI(battlefield,allPlayers,validMoves,x,y);
+                    else  printInnerCLI(battlefield,allPlayers,x,y);
                 }
-                else  printInnerCLI(battlefield,allPlayers, null,x,y);
+                else  printInnerCLI(battlefield,allPlayers,x,y);
             }
             System.out.print("\033[039m");             //white written
             System.out.print("\033[049m");             //on a black board
@@ -975,11 +975,10 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
      * Auxiliary method to print the CLI, here I check the token's position
      * @param battlefield: the board of the game
      * @param allPlayers: the players in the game
-     * @param validMoves: cells that have to be printed on a green background (can be null)
      * @param x: position x of the battlefield
      * @param y: position y of the battlefield
      */
-    private void printInnerCLI(Battlefield battlefield, List<Player> allPlayers, List<Cell> validMoves, int x, int y) {
+    private void printInnerCLI(Battlefield battlefield, List<Player> allPlayers, int x, int y) {
 
         // we check if exists a token of any player in this position
         if (!battlefield.getCell(x, y).getThereIsPlayer()) {

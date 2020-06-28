@@ -17,7 +17,7 @@ public class SimpleBuild implements BuildBehavior{
      * Check the said-above conditions and create a list of valid cells.
      * @param selectedToken the token a player want to move,
      * @param otherToken the other player token.
-     * @param enemyTokens a list bof all enemy tokens.
+     * @param enemyTokens a list of all enemy tokens.
      * @param enemyGodCards a list of all enemy god cards.
      * @param battlefield the model's battlefield.
      * @return a list of cell in which a player can build.

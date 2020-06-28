@@ -7,15 +7,22 @@ import java.util.List;
 
 
 /**
- * PROMETHEUS: If your Worker does not move up, it may build both before and after moving.
+ * PROMETHEUS
+ *
+ * If your Worker does not move up, it may build both before and after moving.
  */
 public class PrometheusMove implements MoveBehavior {
 
 
     /**
      * This override doesn't allow the token to move up.
-     * @param () the same as the normal computeValidMoves.
-     * @return a list of cell in which a player can move his token. It is null if he can not move that token
+     * @param selectedToken the token a player want to move,
+     * @param otherToken the other player token.
+     * @param enemyTokens a list of all enemy tokens.
+     * @param enemyGodCards a list of all enemy god cards.
+     * @param battlefield the model's battlefield.
+     * @return a list of cell in which a player can move his token.
+     *         It is null if he can not move that token
      */
     @Override
     public List<Cell> computeValidMoves(Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield, List<Cell> moveToCheck){

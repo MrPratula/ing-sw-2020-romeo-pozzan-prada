@@ -13,7 +13,14 @@ import java.io.IOException;
  */
 public class CellButton extends JButton {
 
+    /**
+     * The owned cell of the button
+     */
     private final Cell cell;
+
+    /**
+     * The starting image at level0
+     */
     private ImageIcon img = new ImageIcon(ImageIO.read(getClass().getResource(Pics.LEVEL0.getPath())));
 
     public CellButton(int x, int y) throws IOException {

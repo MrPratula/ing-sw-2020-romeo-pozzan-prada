@@ -13,23 +13,37 @@ import javax.swing.*;
 
 
 /**
- * Class that implements the user view of the game,
- * if he selects to use the Graphic User Interface
+ * Class that implements the user view of the game, if he selects to use the Graphic User Interface
  */
 public class SwingView extends View {
 
+    /**
+     * The associated Player
+     */
     private Player player;
 
-    private int contPlaceToken = 0;
+
+    /**
+     * Frame where he will play
+     */
     private GameFrame gameFrame = null;
+    private CellButton[][] battlefieldGUI;
+
+    /**
+     * Current response from the server containing the info
+     */
     private ServerResponse currentServerResponse;
+
+    /**
+     * Current valid cells where the token can build
+     */
     private List<Cell> currentValidBuilds = null;
 
     private int savedToken;
+    private int contPlaceToken = 0;
     private int count = 2;
     private Cell firstCell;
     Boolean power = null;
-    private CellButton[][] battlefieldGUI;
 
 
     /**
@@ -87,6 +101,7 @@ public class SwingView extends View {
     public Boolean wantToUsePower(){
         return power;
     }
+
 
     /**
      * When needed, it returns the token that has just been selected from the user,
@@ -150,7 +165,7 @@ public class SwingView extends View {
     /**
      * Calls the notify to make update the observers
      * @param playerAction action of the player
-     * @throws IOException
+     * @throws IOException if something goes wrong
      */
     public void notifyClient(PlayerAction playerAction) throws IOException {
         notify(playerAction);

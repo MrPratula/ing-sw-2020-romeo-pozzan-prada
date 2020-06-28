@@ -10,6 +10,12 @@ import java.io.IOException;
 public class GameOverDialog extends JFrame {
 
 
+    /**
+     * Creates the Dialog window showing winning or losing messages
+     * @param swingView of the user
+     * @param hasWin boolean that tell us to display YOU WON / YOU LOST
+     * @throws IOException if the image is not correctly loaded
+     */
     public GameOverDialog(SwingView swingView, boolean hasWin) throws IOException {
 
         setTitle("Game Ended  |  "+swingView.getPlayer().getUsername());

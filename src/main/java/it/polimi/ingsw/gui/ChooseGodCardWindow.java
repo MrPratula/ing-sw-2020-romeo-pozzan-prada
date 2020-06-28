@@ -18,13 +18,10 @@ import java.util.List;
 
 public class ChooseGodCardWindow extends JDialog {
 
-    private final GodPanel mainPanel;
     private final GodButton buttonGod1;
     private final GodButton buttonGod2;
     private final GodButton buttonGod3;
     private final SwingView view;
-    private ServerResponse serverResponse;
-    private List<GodCard> godInGame;
 
 
     /**
@@ -34,14 +31,13 @@ public class ChooseGodCardWindow extends JDialog {
     public ChooseGodCardWindow(final SwingView swingView, final ServerResponse serverResponse) throws IOException {
 
         this.view = swingView;
-        this.serverResponse = serverResponse;
-        godInGame = serverResponse.getPack().getGodCards();
+        List<GodCard> godInGame = serverResponse.getPack().getGodCards();
 
         final JFrame mainFrame = new JFrame("Which one of these GodCards do you want to use in this game?");
         mainFrame.setIconImage(new ImageIcon(ImageIO.read(getClass().getResource(Pics.GODICON.getPath()))).getImage());
         mainFrame.setPreferredSize(new Dimension(800,500));
 
-        mainPanel = new GodPanel(false);
+        GodPanel mainPanel = new GodPanel(false);
 
         //just to initialise
         buttonGod3 = new GodButton(GodCard.MINOTAUR);

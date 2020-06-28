@@ -14,6 +14,10 @@ public class GameLostPanel extends JPanel {
         super();
     }
 
+    /**
+     * Paints the background
+     * @param g graphics
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

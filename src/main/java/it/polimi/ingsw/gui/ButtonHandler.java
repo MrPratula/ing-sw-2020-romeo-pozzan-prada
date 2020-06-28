@@ -169,7 +169,7 @@ public class ButtonHandler implements ActionListener {
      * It sets che correct image of the height level,
      * before calling the real method that update the model.
      */
-    public void incrementHeight() throws IOException { //fixme deleteme
+    /*public void incrementHeight() throws IOException { //fixme deleteme
 
         if(cellButton.getCell().getIsDome()){
             final JDialog dialog = new JDialog();
@@ -203,7 +203,9 @@ public class ButtonHandler implements ActionListener {
                 }
             }
         }
-    }
+    }*/
+
+
 }
 
 

@@ -17,6 +17,10 @@ public class PowerPanel extends JPanel {
         setLayout(new GridLayout(1,2));
     }
 
+    /**
+     * Paints the background
+     * @param g graphic
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

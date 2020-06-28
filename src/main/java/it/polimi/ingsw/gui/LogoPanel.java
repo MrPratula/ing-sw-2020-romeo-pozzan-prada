@@ -7,7 +7,7 @@ import java.io.IOException;
 
 
 /**
- * Initial frame in which the user has to click paly to start the game
+ * Initial frame in which the user has to click PLAY to start the game
  */
 public class LogoPanel extends JPanel {
 
@@ -15,6 +15,10 @@ public class LogoPanel extends JPanel {
         setLayout(new BorderLayout());
     }
 
+    /**
+     * Paints the background
+     * @param g graphic
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

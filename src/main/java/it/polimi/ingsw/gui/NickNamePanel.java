@@ -6,8 +6,7 @@ import java.awt.*;
 import java.io.IOException;
 
 /**
- * It loads the panel on wich the user has
- * to select his nickname for the game
+ * It loads the panel on wich the user has to select his nickname for the game
  */
 public class NickNamePanel extends JPanel {
 
@@ -16,6 +15,10 @@ public class NickNamePanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     }
 
+    /**
+     * Paints the background
+     * @param g graphic
+     */
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
@@ -25,4 +28,6 @@ public class NickNamePanel extends JPanel {
             e.printStackTrace();
         }
     }
+
+
 }

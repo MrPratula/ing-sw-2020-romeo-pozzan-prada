@@ -1,9 +1,6 @@
 package it.polimi.ingsw.gui;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
-import java.io.IOException;
 
 /**
  * Default button used to confirm choices

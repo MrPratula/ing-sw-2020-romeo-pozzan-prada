@@ -7,7 +7,9 @@ import java.util.List;
 
 
 /**
- * ZEUS: Your Worker may build a block under itself.
+ * ZEUS:
+ *
+ * Your Worker may build a block under itself.
  */
 public class ZeusBuild implements BuildBehavior {
 
@@ -15,7 +17,8 @@ public class ZeusBuild implements BuildBehavior {
     /**
      * Check the said-above conditions and create a list of valid cells.
      * @param () : the same as normal computeValidBuilds
-     * @return a list of cell in which a player can build, including the one of the actual selected token.
+     * @return a list of cell in which a player can build,
+     * including the one of the actual selected token.
      */
     @Override
     public List<Cell> computeValidBuilds(Token selectedToken, Token otherToken, List<Token> enemyTokens, List<GodCard> enemyGodCards, Battlefield battlefield, List<Player> allPlayers) {

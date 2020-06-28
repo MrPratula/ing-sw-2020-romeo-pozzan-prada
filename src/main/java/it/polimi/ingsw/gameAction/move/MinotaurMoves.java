@@ -9,7 +9,9 @@ import java.util.List;
 
 
 /**
- * MINOTAUR: Your Worker move into an opponent Worker’s space, if their Worker can
+ * MINOTAUR
+ *
+ * Your Worker move into an opponent Worker’s space, if their Worker can
  * be forced one space straight backwards to an unoccupied space at any level
  */
 public class MinotaurMoves implements MoveBehavior{
@@ -17,8 +19,14 @@ public class MinotaurMoves implements MoveBehavior{
 
     /**
      * It considers even the cells in which there is on opponent token, but
-     * only in the case the cell behind him (in that direction) is unoccupied
-     */
+     * only in the case the cell behind him (in that direction) is unoccupied/not dome
+     * @param selectedToken the token a player want to move,
+     * @param otherToken the other player token.
+     * @param enemyTokens a list of all enemy tokens.
+     * @param enemyGodCards a list of all enemy god cards.
+     * @param battlefield the model's battlefield.
+     * @return a list of cell in which a player can build.
+     * */
     @Override
     public List<Cell> computeValidMoves(Token selectedToken, Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Battlefield battlefield, List<Cell> moveToCheck) {
 
@@ -72,7 +80,9 @@ public class MinotaurMoves implements MoveBehavior{
      * It set the selected token position to the target cell and, only if there is an
      * enemy token on the target cell, using the deltas of this move, it even moves that token
      * to the next position on that direction
-     * @param () the same as the simple perform move.
+     * @param targetCell the cell to be incremented.
+     * @param battlefield the model's battlefield.
+     *
      */
     @Override
     public void performMove(Token selectedToken, Token otherToken, List<Token> enemyTokens, Cell targetCell, List<GodCard> enemyGodCards, Battlefield battlefield){
@@ -96,6 +106,5 @@ public class MinotaurMoves implements MoveBehavior{
         selectedToken.setTokenPosition(targetCell);
         battlefield.getCell(targetCell).setOccupied();
         battlefield.getCell(copy.getPosX(),copy.getPosY()).setFree();
-        //battlefield.getCell(targetCell.getPosX()-deltaX,targetCell.getPosY()-deltaY).setFree();
     }
 }

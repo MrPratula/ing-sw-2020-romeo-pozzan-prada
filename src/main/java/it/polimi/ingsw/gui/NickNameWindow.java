@@ -12,12 +12,16 @@ import java.io.IOException;
 
 
 /**
- * Frame for recognising the user
+ * Frame for recognising the user from its name,
+ * which will be his username for the game
  */
 public class NickNameWindow extends JDialog{
 
+
+    /**
+     * Textfield where he has to put his name
+     */
     private final JTextField nicknameTextField;
-    private final NickNamePanel nicknamePanel;
     private final SwingView view;
 
 
@@ -37,7 +41,7 @@ public class NickNameWindow extends JDialog{
         setBackground(Color.BLACK);
 
         //Nickname's panel
-        nicknamePanel = new NickNamePanel();
+        NickNamePanel nicknamePanel = new NickNamePanel();
 
         //textfield to let the user type his nickname
         nicknameTextField = new JTextField(15);
@@ -95,8 +99,8 @@ public class NickNameWindow extends JDialog{
 
 
     /**
-     * @param name string to ckeck. It is the user input for his username.
-     * @return true if it is not empty, too long(<=16) or with spaces.
+     * @param name string to check. It is the user input for his username.
+     * @return true if it is not empty, too long(<=16), not null, not invalid.
      */
     public String isAGoodName(String name){
 

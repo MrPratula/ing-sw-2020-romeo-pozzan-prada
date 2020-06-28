@@ -12,13 +12,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
+/**
+ * JDialog that asks if the player wantw to use his god's power
+ */
 public class AskToUseTheGodsPower extends JDialog{
 
     private final SwingView view;
 
 
     /**
-     * JDialog that asks if the player wantw to use his god's power
+     * Creates the JDialog that asks if the player wants to use his god's power
      * @param swingView gui view
      * @param serverResponse response of the server
      * @param targetCell cell selected

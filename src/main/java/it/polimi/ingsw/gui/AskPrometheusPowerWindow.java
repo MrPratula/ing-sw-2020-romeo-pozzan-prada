@@ -10,12 +10,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
+
+/**
+ * JDialog that asks if the player wants to use prometheus' power
+ */
 public class AskPrometheusPowerWindow extends JDialog {
 
     private final SwingView view;
 
     /**
-     * JDialog thats asks if the player wants to use prometheus' power
+     * Creates the JDialog thats asks if the player wants to use prometheus' power
      * @param swingView gui view of mvc
      */
     public AskPrometheusPowerWindow(SwingView swingView) throws IOException {

@@ -139,13 +139,16 @@ public enum Pics {
         COLUMNS("/columns.png"),
         OLYMPUS("/olympus.png");
 
-
+    /**
+    * Path of the image
+    */
     private final String path;
 
     Pics(String path) {
         this.path = path;
     }
 
+    //unused with the change of method to get images
     public ImageIcon getImageIcon(){
         return new ImageIcon(new File(this.getPath()).getAbsolutePath());
     }

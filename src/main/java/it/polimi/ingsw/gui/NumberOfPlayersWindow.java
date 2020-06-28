@@ -17,8 +17,12 @@ import java.io.IOException;
  */
 public class NumberOfPlayersWindow extends JDialog{
 
+    /**
+     * Combo selection for 2 or 3 players
+     */
     private final JComboBox<Integer> numberOfPlayersBox;
     private final SwingView view;
+
 
     public NumberOfPlayersWindow(SwingView swingView) throws IOException {
 

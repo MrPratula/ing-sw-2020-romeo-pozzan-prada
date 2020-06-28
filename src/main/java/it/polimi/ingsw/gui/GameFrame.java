@@ -16,7 +16,9 @@ import java.util.List;
 
 
 /**
- * Main Frame of the game for the Gui
+ * Main Frame of the game for the Gui, where the player can see
+ * all the godcards in game and the relative powers, the tokens
+ * on the field, read messages and play santorini!
  */
 public class GameFrame extends JFrame {
 
@@ -32,6 +34,8 @@ public class GameFrame extends JFrame {
     public GameFrame(ServerResponse serverResponse, SwingView swingView) throws IOException {
 
         super( " Battlefield | " + swingView.getPlayer().getUsername());
+        this.view = swingView;
+
         List<Player> allPlayers = serverResponse.getPack().getModelCopy().getAllPlayers();
         setLayout(new BorderLayout());
         setIconImage(new ImageIcon(ImageIO.read(getClass().getResource(Pics.BATTLEFIELDICON.getPath()))).getImage());
@@ -48,7 +52,6 @@ public class GameFrame extends JFrame {
             }
         });
 
-        this.view = swingView;
         List<GodCard> godsInGame = serverResponse.getPack().getGodCards();
 
         innerMainPanel = new InnerMainPanel(swingView);

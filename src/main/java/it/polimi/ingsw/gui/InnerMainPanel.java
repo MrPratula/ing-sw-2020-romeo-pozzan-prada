@@ -25,9 +25,9 @@ public class InnerMainPanel {
 
     private JPanel battlefieldPanel;
     private JPanel godPanel;
-    private JLabel messageLabel  = new JLabel(new ImageIcon(ImageIO.read(getClass().getResource(Pics.WELCOMEMESSAGE.getPath()))));
-    private CellButton[][] battlefieldGUI = new CellButton[5][5];
-    private SwingView swingView;
+    private final JLabel messageLabel  = new JLabel(new ImageIcon(ImageIO.read(getClass().getResource(Pics.WELCOMEMESSAGE.getPath()))));
+    private final CellButton[][] battlefieldGUI = new CellButton[5][5];
+    private final SwingView swingView;
 
 
     public InnerMainPanel(SwingView swingView) throws IOException {
@@ -86,8 +86,6 @@ public class InnerMainPanel {
         godPanel = new JPanel();
         godPanel.setLayout(new GridLayout(godsInGame.size(),1));
 
-
-
         for(int i = 0; i<godsInGame.size(); i++){
 
             final int finalI = i;
@@ -131,7 +129,6 @@ public class InnerMainPanel {
                 }
             });
 
-            //playerText.add(transparentButton);
             godPanel.add(playerText);
         }
 

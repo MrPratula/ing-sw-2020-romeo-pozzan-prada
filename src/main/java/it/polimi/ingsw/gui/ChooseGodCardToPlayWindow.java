@@ -91,7 +91,9 @@ public class ChooseGodCardToPlayWindow {
                         }
                         else{
                             try {
-                                JOptionPane.showMessageDialog(new JFrame(),"God already selected!","Error",JOptionPane.ERROR_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.ERRORICON.getPath()))));
+                                JDialog jdialog = new JDialog();
+                                jdialog.setAlwaysOnTop(true);
+                                JOptionPane.showMessageDialog(jdialog,"God already selected!","Error",JOptionPane.ERROR_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.ERRORICON.getPath()))));
                             } catch (IOException ioException) {
                                 ioException.printStackTrace();
                             }
@@ -100,7 +102,9 @@ public class ChooseGodCardToPlayWindow {
                     //non dovrebbe mai finire qua
                     else{
                         try {
-                            JOptionPane.showMessageDialog(new JFrame(),"Something went wrong!","Error",JOptionPane.ERROR_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.ERRORICON.getPath()))));
+                            JDialog jdialog = new JDialog();
+                            jdialog.setAlwaysOnTop(true);
+                            JOptionPane.showMessageDialog(jdialog,"Something went wrong!","Error",JOptionPane.ERROR_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.ERRORICON.getPath()))));
                         } catch (IOException ioException) {
                             ioException.printStackTrace();
                         }
@@ -270,5 +274,8 @@ public class ChooseGodCardToPlayWindow {
         }
         return godsToDisplay;
     }
+
+
+
 }
 

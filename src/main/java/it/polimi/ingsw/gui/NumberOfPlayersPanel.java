@@ -20,6 +20,10 @@ public class NumberOfPlayersPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     }
 
+    /**
+     * Paints the background
+     * @param g graphic
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
