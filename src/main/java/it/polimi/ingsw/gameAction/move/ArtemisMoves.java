@@ -10,7 +10,9 @@ import java.util.List;
 
 
 /**
- * ARTEMIS: Your Worker may move one additional time, but not back to its initial space
+ * ARTEMIS
+ *
+ * Your Worker may move one additional time, but not back to its initial space
  */
 public class ArtemisMoves implements MoveBehavior {
 

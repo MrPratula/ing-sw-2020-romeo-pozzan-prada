@@ -25,7 +25,7 @@ public enum GodCard implements Serializable {
     HERA("An opponent can not win by moving on to a perimeter space"),
     HESTIA("Your worker may build one additional time. The additional build can not be on a perimeter space"),
     LIMUS("Opponents Workers can not build on spaces neighboring your workers, unless building a dome to create a Complete Tower"),
-    ZEUS("Your Worker may build a block under itself.");
+    ZEUS("Your Worker may build a block under itself");
 
 
     /**
