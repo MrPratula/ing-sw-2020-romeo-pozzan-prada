@@ -118,11 +118,9 @@ public class InnerMainPanel {
             playerText.addActionListener( new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-
-                    JDialog dialog = new JDialog();
-                    dialog.setAlwaysOnTop(true);
                     try {
-                        JOptionPane.showMessageDialog(dialog,"","Here is "+godsInGame.get(finalI).name()+"'s Power",JOptionPane.INFORMATION_MESSAGE,new ImageIcon(ImageIO.read(getClass().getResource("/" + godsInGame.get(finalI).name().toLowerCase() + "Text.png"))) );
+                        JDialog dialog = new JDialog();
+                        dialog.setAlwaysOnTop(true);JOptionPane.showMessageDialog(dialog,"","Here is "+godsInGame.get(finalI).name()+"'s Power",JOptionPane.INFORMATION_MESSAGE,new ImageIcon(ImageIO.read(getClass().getResource("/" + godsInGame.get(finalI).name().toLowerCase() + "Text.png"))) );
                     } catch (IOException ioException) {
                         ioException.printStackTrace();
                     }
