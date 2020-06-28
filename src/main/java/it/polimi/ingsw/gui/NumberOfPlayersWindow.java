@@ -24,6 +24,12 @@ public class NumberOfPlayersWindow extends JDialog{
     private final SwingView view;
 
 
+    /**
+     * Dialog windows that opens when the first player connected has to choose
+     * how many player he wants to play with
+     * @param swingView The player's Swingview
+     * @throws IOException if can't send object into the socket
+     */
     public NumberOfPlayersWindow(SwingView swingView) throws IOException {
 
         this.view = swingView;

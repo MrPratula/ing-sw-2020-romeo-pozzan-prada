@@ -28,6 +28,8 @@ public class NickNameWindow extends JDialog{
     /**
      * Dialog windows that opens when a player click on PLAY
      * and here he has to put his name
+     * @param swingView The player's Swingview
+     * @throws IOException if can't send object into the socket
      */
     public NickNameWindow(SwingView swingView) throws IOException {
 

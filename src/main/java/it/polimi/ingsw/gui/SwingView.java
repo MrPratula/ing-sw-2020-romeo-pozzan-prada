@@ -39,10 +39,31 @@ public class SwingView extends View {
      */
     private List<Cell> currentValidBuilds = null;
 
+    /**
+     * A token stored to be used in different action
+     */
     private int savedToken;
+
+    /**
+     * countPlaceToken=0 no token placed and game frame not created
+     * countPlaceToken>0 personal game frame created
+     */
+
     private int contPlaceToken = 0;
+
+    /**
+     * I decrement this variable twice if someone's god's power can build two times
+     */
     private int count = 2;
+
+    /**
+     * Saved the first cell where the player wants to build if he wants and can build twice
+     */
     private Cell firstCell;
+
+    /**
+     * boolean variable if the player wants or not to use his god's power
+     */
     Boolean power = null;
 
 
@@ -165,7 +186,7 @@ public class SwingView extends View {
     /**
      * Calls the notify to make update the observers
      * @param playerAction action of the player
-     * @throws IOException if something goes wrong
+     * @throws IOException if can't send object into the socket
      */
     public void notifyClient(PlayerAction playerAction) throws IOException {
         notify(playerAction);
@@ -175,7 +196,8 @@ public class SwingView extends View {
     /**
      * This method moves the mechanic of the game: it receives the
      * response from the server, and creates the respective action of the player.
-     * @param serverResponse: response from the server containing al the necessary informations
+     * @param serverResponse: response received from the server containing all the necessary information
+     * @throws IOException if can't send object into the socket
      */
     @Override
     public void update(ServerResponse serverResponse) throws IOException {
@@ -700,7 +722,7 @@ public class SwingView extends View {
      * the second call the playerAction is sent.
      * @param pack Pack of the serverResponse
      * @param targetCell The selected cell in which the player wants to build
-     * @throws IOException if image is missing
+     * @throws IOException if something goes wrong
      */
     public void buildGod(Pack pack, Cell targetCell) throws IOException{
 

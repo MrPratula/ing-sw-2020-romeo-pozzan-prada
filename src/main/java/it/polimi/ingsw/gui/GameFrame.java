@@ -27,9 +27,13 @@ public class GameFrame extends JFrame {
     private final SwingView view;
 
 
+
     /**
      * Constructor of the main frame where the user
      * will see the battlefield and can play on it
+     * @param serverResponse The current ServerResponse
+     * @param swingView The player's Swingview
+     * @exception IOException if something goes wrong
      */
     public GameFrame(ServerResponse serverResponse, SwingView swingView) throws IOException {
 
