@@ -58,14 +58,13 @@ public class ButtonHandler implements ActionListener {
 
         CellButton c = (CellButton)clickedButtonEvent.getSource();
 
-
         switch(currentServerResponse.getPack().getAction()) {
 
             case PLACE_YOUR_TOKEN:{
                 try {
-                    Cell targetCell = currentServerResponse.getPack().getModelCopy().getBattlefield().getCell(c.getCell().getPosX(),c.getCell().getPosY());
+                    Cell targetCell = currentServerResponse.getPack().getModelCopy().getBattlefield().getCell(cellButton.getCell().getPosX(),cellButton.getCell().getPosY());
                     if(swingView.isFree(targetCell,currentServerResponse.getPack().getModelCopy())){
-                        PlayerAction playerAction = new PlayerAction(Action.TOKEN_PLACED, swingView.getPlayer(), null, null, 0, 0, c.getCell(), null, false, null);
+                        PlayerAction playerAction = new PlayerAction(Action.TOKEN_PLACED, swingView.getPlayer(), null, null, 0, 0, cellButton.getCell(), null, false, null);
                         try {
                             swingView.notifyClient(playerAction);
                         } catch (IOException e) {

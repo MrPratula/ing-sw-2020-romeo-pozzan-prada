@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gui;
 
+import it.polimi.ingsw.model.Battlefield;
 import it.polimi.ingsw.model.GodCard;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.TokenColor;
@@ -22,6 +23,7 @@ import java.util.List;
  */
 public class GameFrame extends JFrame {
 
+    private final Battlefield battlefield;
     private final InnerMainPanel innerMainPanel;
 
     private final SwingView view;
@@ -40,7 +42,6 @@ public class GameFrame extends JFrame {
         super( " Battlefield | " + swingView.getPlayer().getUsername());
         this.view = swingView;
 
-        List<Player> allPlayers = serverResponse.getPack().getModelCopy().getAllPlayers();
         setLayout(new BorderLayout());
         setIconImage(new ImageIcon(ImageIO.read(getClass().getResource(Pics.BATTLEFIELDICON.getPath()))).getImage());
         setSize(1000,950);
@@ -56,6 +57,8 @@ public class GameFrame extends JFrame {
             }
         });
 
+        this.battlefield = serverResponse.getPack().getModelCopy().getBattlefield();
+        List<Player> allPlayers = serverResponse.getPack().getModelCopy().getAllPlayers();
         List<GodCard> godsInGame = serverResponse.getPack().getGodCards();
 
         innerMainPanel = new InnerMainPanel(swingView);
