@@ -1,5 +1,6 @@
 # Santorini
-Final Project of Software Engineering [GC26]
+Final Project of Software Engineering [GC26].
+
 Santorini is a simple table-game playable in 2 or 3 players. 
 Choose your God Card, place your tokens onto the battlefield and get ready to climb the 3rd level before your enemies even notice it.
 
