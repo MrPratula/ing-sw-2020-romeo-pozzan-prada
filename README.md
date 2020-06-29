@@ -22,13 +22,13 @@ Inside this folder you can find the following things:
 - executables JAR;
 - Presentation.
 
-###### UML
+### UML
 Part of this project are also UML diagrams.
 
 [Here](https://github.com/MrPratula/ing-sw-2020-romeo-pozzan-prada/blob/recover/deliveries/uml/uml_mvc.jpg) you can find an high level diagram to show links between classes, and how the MVC pattern works, in order to pass informations beetween server and client.
 [here](https://github.com/MrPratula/ing-sw-2020-romeo-pozzan-prada/blob/recover/deliveries/uml/uml_full.jpg) a low level UML diagram to show more accurately all classes details.
 
-###### JAR
+### JAR
 Inside the JAR folder there are 3 different .jar files.
 Each one has to be launched opening a terminal and typing the following: 
 ```
