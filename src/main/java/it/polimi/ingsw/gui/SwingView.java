@@ -320,29 +320,29 @@ public class SwingView extends View {
 
                 Pack pack = serverResponse.getPack();
 
+                if(pack.getAction() == Action.PLAYER_LOST) {
+                    if (pack.getWinnerOrPlayerLost().toUpperCase().equals(player.getUsername().toUpperCase())) {
+                        //this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.PLAYER_LOST.getPath()))));
+                        this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.GAMEENDED.getPath()))));
+                        displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
+                        new GameOverDialog(this, false);
+                        final JDialog dialog = new JDialog();
+                        dialog.setAlwaysOnTop(true);
+                        JOptionPane.showMessageDialog(dialog, "You can remain and watch the game, if you want", "You Lost ", JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
+                    } else {
+                        displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
+                        final JDialog dialog = new JDialog();
+                        dialog.setAlwaysOnTop(true);
+                        JOptionPane.showMessageDialog(dialog, "Now it's a 2 players game!", pack.getWinnerOrPlayerLost() + " lost!", JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
+                    }
+                }
+
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
                     this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.NOT_YOUR_TURN.getPath()))));
                 }
                 else {
                     if(pack.getPlayer()!=null)
                         this.player = pack.getPlayer();
-
-                    if(pack.getAction() == Action.PLAYER_LOST) {
-                        if (pack.getWinnerOrPlayerLost().toUpperCase().equals(player.getUsername().toUpperCase())) {
-                            this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.PLAYER_LOST.getPath()))));
-                            displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
-                            new GameOverDialog(this, false);
-                            final JDialog dialog = new JDialog();
-                            dialog.setAlwaysOnTop(true);
-                            JOptionPane.showMessageDialog(dialog, "You can remain and watch the game, if you want", "You Lost ", JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
-                        }
-                        else{
-                            displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
-                            final JDialog dialog = new JDialog();
-                            dialog.setAlwaysOnTop(true);
-                            JOptionPane.showMessageDialog(dialog, "Now it's a 2 players game!",pack.getWinnerOrPlayerLost()+" lost!" ,JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
-                        }
-                    }
 
                     if(pack.getAction() == Action.TOKEN_NOT_MOVABLE){
                         final JDialog dialog = new JDialog();
