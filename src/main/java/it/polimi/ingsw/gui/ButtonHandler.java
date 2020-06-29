@@ -56,6 +56,8 @@ public class ButtonHandler implements ActionListener {
 
         currentServerResponse = swingView.getCurrentServerResponse();
 
+        CellButton c = (CellButton)clickedButtonEvent.getSource();
+
         switch(currentServerResponse.getPack().getAction()) {
 
             case PLACE_YOUR_TOKEN:{
