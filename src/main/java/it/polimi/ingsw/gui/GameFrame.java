@@ -18,12 +18,11 @@ import java.util.List;
 
 /**
  * Main Frame of the game for the Gui, where the player can see
- * all the godcards in game and the relative powers, the tokens
+ * all the god cards in game and the relative powers, the tokens
  * on the field, read messages and play santorini!
  */
 public class GameFrame extends JFrame {
 
-    private final Battlefield battlefield;
     private final InnerMainPanel innerMainPanel;
 
     private final SwingView view;
@@ -34,7 +33,7 @@ public class GameFrame extends JFrame {
      * Constructor of the main frame where the user
      * will see the battlefield and can play on it
      * @param serverResponse The current ServerResponse
-     * @param swingView The player's Swingview
+     * @param swingView The player's SwingView
      * @exception IOException if something goes wrong
      */
     public GameFrame(ServerResponse serverResponse, SwingView swingView) throws IOException {
@@ -51,13 +50,12 @@ public class GameFrame extends JFrame {
         setLocationRelativeTo(null);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent we) {
-                int result = JOptionPane.showConfirmDialog(GameFrame.this, "Do you want to Exit? You will automatically lose if you exit", "Exit Confirmation : ", JOptionPane.YES_NO_OPTION);
+                int result = JOptionPane.showConfirmDialog(GameFrame.this, "Do you want to Exit? You will lose if you exit", "Exit Confirmation : ", JOptionPane.YES_NO_OPTION);
                 if (result == JOptionPane.YES_OPTION) GameFrame.this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 else if (result == JOptionPane.NO_OPTION) GameFrame.this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
             }
         });
 
-        this.battlefield = serverResponse.getPack().getModelCopy().getBattlefield();
         List<Player> allPlayers = serverResponse.getPack().getModelCopy().getAllPlayers();
         List<GodCard> godsInGame = serverResponse.getPack().getGodCards();
 
