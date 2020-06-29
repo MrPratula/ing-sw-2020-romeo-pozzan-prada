@@ -98,13 +98,13 @@ public class SimpleMoves implements MoveBehavior {
         selectedToken.setOldHeight(battlefield.getCell(selectedToken.getTokenPosition()).getHeight());
 
         // Set free old position
-        selectedToken.getTokenPosition().setFree();
+        battlefield.getCell(selectedToken.getTokenPosition()).setFree();
 
         // Set new token position
-        selectedToken.setTokenPosition(targetCell);
+        selectedToken.setTokenPosition(battlefield.getCell(targetCell));
 
         // Set new position occupied
-        selectedToken.getTokenPosition().setOccupied();
+        battlefield.getCell(selectedToken.getTokenPosition()).setOccupied();
     }
 }
 

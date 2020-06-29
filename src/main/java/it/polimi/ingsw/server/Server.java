@@ -351,7 +351,7 @@ public class Server  {
         StringBuilder text= new StringBuilder("There are the following Gods available:");
         for (GodCard god: godsDeck) {
             text.append("\n").append(god.name().toUpperCase());
-            text.append("\n").append(god.toString());
+            text.append("\n").append(god.power());
         }
 
         if (waitingConnection.size()==2) {

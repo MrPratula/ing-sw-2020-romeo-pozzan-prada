@@ -19,6 +19,8 @@ public class Battlefield implements Serializable {
      */
     private final Cell[][] battlefield;
 
+    private static Battlefield singleBattlefield;
+
 
     /**
      * The constructor create a matrix N*N of Cell, where N is the battlefieldSize
@@ -33,6 +35,15 @@ public class Battlefield implements Serializable {
             }
         }
         this.battlefield = battlefield;
+    }
+
+
+    public static Battlefield getInstance(){
+
+        if (singleBattlefield==null){
+            singleBattlefield = new Battlefield();
+        }
+        return singleBattlefield;
     }
 
 

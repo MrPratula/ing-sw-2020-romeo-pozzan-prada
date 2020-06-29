@@ -46,7 +46,7 @@ public enum GodCard implements Serializable {
     /**
      * @return the power of the God
      */
-    public String getInfo(){
+    public String power(){
         return info;
     }
 }

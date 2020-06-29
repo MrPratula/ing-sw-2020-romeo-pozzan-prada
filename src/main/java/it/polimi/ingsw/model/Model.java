@@ -36,7 +36,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
     /**
      * All player in game (not spectators)
      */
-    private final List<Player> allPlayers = new ArrayList<>();
+    private List<Player> allPlayers = new ArrayList<>();
 
     /**
      * All God cards in play
@@ -79,7 +79,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * Create a new model and instance a new battlefield
      */
     public Model() {
-        this.battlefield = new Battlefield();
+        this.battlefield = Battlefield.getInstance();
     }
 
 
@@ -311,7 +311,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             StringBuilder text = new StringBuilder("There are the following Gods available:");
             for (GodCard god : allGodCards) {
                 text.append("\n").append(god.name().toUpperCase());
-                text.append("\n").append(god.toString());
+                text.append("\n").append(god.power());
             }
 
             Pack pack = new Pack(Action.SELECT_YOUR_GOD_CARD);
@@ -357,7 +357,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                     for (Player p : allPlayers) {
                         allGodCards.add(p.getMyGodCard());
                         text.append("\n").append(p.getUsername().toUpperCase()).append(" ---> ").append(p.getMyGodCard().name().toUpperCase());
-                        text.append("\n").append(p.getMyGodCard().toString());
+                        text.append("\n").append(p.getMyGodCard().power());
                     }
 
                     Pack pack = new Pack(Action.PLACE_YOUR_TOKEN);
@@ -365,12 +365,11 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                     pack.setGodCards(getGodCards(allPlayers));
                     pack.setModelCopy(getCopy());
                     pack.setMessageInTurn(text.toString());
-                    pack.setMessageOpponents("Another player is placing his tokens on the battlefield. Be patient please...");
+                    pack.setMessageOpponents("Another player is placing his tokens on the battlefield. Wait please...");
 
                     ServerResponse serverResponse = new ServerResponse(getTurn(), pack);
                     lastSentServerResponse = serverResponse;
                     notify(serverResponse);
-
                 }
 
                 /*
@@ -903,7 +902,8 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
         if (validBuilds.isEmpty()) {
             if (allPlayers.size() == 3) {
-                playerLost(playerAction.getPlayer());
+                notify(playerLost(playerAction.getPlayer()));
+
             }
             else if(allPlayers.size() == 2) {
                 updateTurn();
@@ -1218,15 +1218,31 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      */
     public ServerResponse playerLost (Player looser) {
 
+
+
+        Player updatedLooser=null;
+
+        /* The player Looser is not the same as the one saved in the server
+         * They may have the same token in different position because one has already updated his position
+         * So make the looser the player stored in the model, that is guaranteed to be the last updated
+         */
+        for(Player p: allPlayers){
+            if (looser.getUsername().toUpperCase().equals(p.getUsername().toUpperCase())){
+                updatedLooser = p;
+                break;
+            }
+        }
+
+
         Pack pack = new Pack(Action.PLAYER_LOST);
         String message = looser.getUsername().toUpperCase()+" lost the game!";
+        pack.setWinnerOrPlayerLost(looser.getUsername());
 
-        removeFromTheGame(looser);
+        removeFromTheGame(updatedLooser);
 
         message = message+"\nIs now "+getPlayerInTurn().getUsername()+" turn!";
 
         pack.setMessageInTurn(message+"\nPlease select which token do you want to move...");
-        pack.setWinnerOrPlayerLost(looser.getUsername());
         pack.setMessageOpponents(message);
         pack.setModelCopy(getCopy());
         pack.setPlayer(getPlayerInTurn());
@@ -1252,14 +1268,39 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         // Remove the tokens if they exist
         try{
             battlefield.getCell(player.getToken1().getTokenPosition()).setFree();
-        } catch (NullPointerException ignore){}
+        } catch (NullPointerException e){
+            System.err.println(String.format("Can't remove %s token 1",player.getUsername()));
+        }
         try{
             battlefield.getCell(player.getToken2().getTokenPosition()).setFree();
-        } catch (NullPointerException ignore){}
+        } catch (NullPointerException e){
+            System.err.println(String.format("Can't remove %s token 2",player.getUsername()));
+        }
 
         // Remove the player and his god from the game
-        allGodCards.remove(player.getMyGodCard());
-        allPlayers.remove(player);
+        try{
+            allGodCards.remove(player.getMyGodCard());
+        } catch (NullPointerException e){
+            System.err.println(String.format("Can't remove %s God Card from the game",player.getUsername()));
+        }
+
+        Player playerToRemove = null;
+
+        for(Player p: allPlayers){
+            if (p.getTokenColor().equals(player.getTokenColor()))
+                playerToRemove=p;
+            break;
+        }
+
+        assert playerToRemove != null;
+        playerToRemove.setToken1(null);
+        playerToRemove.setToken2(null);
+
+        try {
+            allPlayers.remove(playerToRemove);
+        }catch (NullPointerException e){
+            System.err.println("Can't remove the player from allPlayers!");
+        }
     }
 
 

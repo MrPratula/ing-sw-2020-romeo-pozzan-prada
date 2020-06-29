@@ -166,8 +166,9 @@ public class Controller implements Observer<PlayerAction> {
             }
         }
         else {
-            System.out.println("Not correct player turn!");
-            model.notifyWrongInput();
+            System.out.println("Received a message from "+playerAction.getPlayer().getTokenColor());
+            System.out.println(("It is now "+model.getTurn()+" turn"));
+            //model.notifyWrongInput();
         }
     }
 }
