@@ -16,18 +16,18 @@ public class PlayerAction implements Serializable {
     private final boolean doWantUsePower;
     private final String args;
 
-    private final Cell first_cell;
-    private final Cell second_cell;
+    private final Cell firstCell;
+    private final Cell secondCell;
 
-    public PlayerAction(Action action, Player player, Player oppo1, Player oppo2, int tokenMain, int tokenOther, Cell first_cell, Cell second_cell , boolean doWantUsePower, String args){
+    public PlayerAction(Action action, Player player, Player oppo1, Player oppo2, int tokenMain, int tokenOther, Cell firstCell, Cell secondCell, boolean doWantUsePower, String args){
         this.action = action;
         this.player = player;
         this.oppo1 = oppo1;
         this.oppo2 = oppo2;
         this.tokenMain = tokenMain;
         this.tokenOther = tokenOther;
-        this.first_cell = first_cell;
-        this.second_cell = second_cell;
+        this.firstCell = firstCell;
+        this.secondCell = secondCell;
         this.doWantUsePower = doWantUsePower;
         this.args = args;
     }
@@ -57,11 +57,11 @@ public class PlayerAction implements Serializable {
     }
 
     public Cell getFirstCell() {
-        return this.first_cell;
+        return this.firstCell;
     }
 
     public Cell getSecondCell() {
-        return this.second_cell;
+        return this.secondCell;
     }
 
     public boolean getDoWantUsePower() {
