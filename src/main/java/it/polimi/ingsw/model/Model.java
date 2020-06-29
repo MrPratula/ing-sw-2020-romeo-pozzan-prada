@@ -1180,6 +1180,13 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                 didIWin = thisWin.executeCheckWin(movedToken, null);
                 break;
             }
+            case ARTEMIS: {
+                WinContext thisWin = new WinContext(new ArtemisWin());
+                didIWin = thisWin.executeCheckWin(movedToken, null);
+                break;
+            }
+
+
             default: {
                 WinContext thisWin = new WinContext(new SimpleWin());
                 didIWin = thisWin.executeCheckWin(movedToken, null);
@@ -1218,8 +1225,6 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      */
     public ServerResponse playerLost (Player looser) {
 
-
-
         Player updatedLooser=null;
 
         /* The player Looser is not the same as the one saved in the server
@@ -1233,11 +1238,11 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             }
         }
 
-
         Pack pack = new Pack(Action.PLAYER_LOST);
         String message = looser.getUsername().toUpperCase()+" lost the game!";
         pack.setWinnerOrPlayerLost(looser.getUsername());
 
+        assert updatedLooser != null;
         removeFromTheGame(updatedLooser);
 
         message = message+"\nIs now "+getPlayerInTurn().getUsername()+" turn!";
@@ -1287,9 +1292,10 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         Player playerToRemove = null;
 
         for(Player p: allPlayers){
-            if (p.getTokenColor().equals(player.getTokenColor()))
-                playerToRemove=p;
-            break;
+            if (p.getTokenColor().equals(player.getTokenColor())) {
+                playerToRemove = p;
+                break;
+            }
         }
 
         assert playerToRemove != null;
