@@ -3,6 +3,7 @@ package it.polimi.ingsw.gui;
 import it.polimi.ingsw.model.GodCard;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.TokenColor;
+import it.polimi.ingsw.utils.ServerResponse;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -41,7 +42,7 @@ public class InnerMainPanel {
      * @return the battlefield containing cellbuttons
      * @throws IOException in case of image errors in loading
      */
-    public JPanel createBattlefieldPanel() throws IOException {
+    public JPanel createBattlefieldPanel(ServerResponse serverResponse) throws IOException {
 
         battlefieldPanel = new JPanel();
         battlefieldPanel.setLayout(new GridLayout(5,5,0,0));
@@ -60,6 +61,7 @@ public class InnerMainPanel {
                 ButtonHandler bh = new ButtonHandler(battlefieldGUI[i][j],swingView);
                 battlefieldGUI[i][j].addActionListener(bh);
                 battlefieldPanel.add(battlefieldGUI[i][j]);
+                battlefieldGUI[i][j].setEnabled(swingView.getPlayer().getTokenColor().equals(serverResponse.getTurn()));
             }
         }
         return battlefieldPanel;

@@ -26,6 +26,7 @@ public class GameFrame extends JFrame {
     private final InnerMainPanel innerMainPanel;
 
     private final SwingView view;
+    private final ServerResponse serverResponse;
 
 
 
@@ -40,6 +41,7 @@ public class GameFrame extends JFrame {
 
         super( " Battlefield | " + swingView.getPlayer().getUsername());
         this.view = swingView;
+        this.serverResponse = serverResponse;
 
         setLayout(new BorderLayout());
         setIconImage(new ImageIcon(ImageIO.read(getClass().getResource(Pics.BATTLEFIELDICON.getPath()))).getImage());
@@ -61,7 +63,7 @@ public class GameFrame extends JFrame {
 
         innerMainPanel = new InnerMainPanel(swingView);
 
-        JPanel battlefieldPanel = innerMainPanel.createBattlefieldPanel();
+        JPanel battlefieldPanel = innerMainPanel.createBattlefieldPanel(serverResponse);
         JPanel godPanel = innerMainPanel.createGodPanel(godsInGame, allPlayers);
         JLabel messageLabel = innerMainPanel.createMessageLabel();
 
