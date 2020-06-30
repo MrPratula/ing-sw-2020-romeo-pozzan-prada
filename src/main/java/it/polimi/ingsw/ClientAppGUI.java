@@ -2,7 +2,7 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.client.Client;
 
-import java.io.IOException;
+import java.util.InputMismatchException;
 
 
 /**
@@ -58,8 +58,8 @@ public class ClientAppGUI {
 
         try{
             client.run(true);
-        }catch (IOException e){
-            System.err.println("Can not start the client. May be a wrong IP?");
+        } catch (Exception e) {
+            System.err.println("Can not start the client. Maybe a wrong ip?");
         }
     }
 }

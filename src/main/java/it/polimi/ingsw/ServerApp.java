@@ -10,11 +10,10 @@ import java.io.IOException;
  * Only one server can run at the same time
  * The server will shut down when there are no players connected after a player connect
  */
-public class ServerApp
-{
+public class ServerApp {
+
     public static void main( String[] args ) {
 
-        System.out.println("Hi I am the SERVER");
         Server server;
 
         int port=0;
@@ -43,7 +42,7 @@ public class ServerApp
 
         try {
             server = Server.getInstance(port);
-            server.run();
+            server.run(port);
 
         } catch(IOException exception){
             System.err.println("Error in server launch!");

@@ -2,8 +2,6 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.client.Client;
 
-import java.io.IOException;
-
 
 /**
  * Main class for running a game and play it with a CLI
@@ -54,12 +52,13 @@ public class ClientAppCLI {
 
         client = new Client(ip, port);
 
-        System.out.println(String.format("Trying to connect to %s:%s", ip, port));
+        System.out.println(String.format("Trying to connect to %s:%s",ip,port));
 
-        try{
+        try {
             client.run(false);
-        }catch (IOException e){
-            System.err.println("Can not start the client. May be a wrong IP?");
+        } catch (Exception e) {
+            System.err.println("Can not start the client.");
+            System.err.println(e.getMessage());
         }
     }
 }
