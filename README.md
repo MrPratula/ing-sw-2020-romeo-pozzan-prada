@@ -34,17 +34,48 @@ Each one has to be launched opening a terminal and typing the following:
 ```
 java -jar path/to/file.jar
 ```
+or using some -options, such as
+```
+-ip IP_ADDRESS
+-port PORT_NUMBER
+```
+
 - Server.jar 
 
-It is the server that hosts the game.
+It is the server that hosts the game. It can be runned in different ways:
+-in this case it will be runned on default port 12345:
+```
+java -jar path/to/Server.jar
+```
+-in this case it will be runned port MY_PORT:
+```
+java -jar path/to/Server.jar -port MY_PORT
+```
 
 - ClientCLI.jar
 
-It is the client that runs a terminal to play. It is higly recommended not to use cmd.
+It is the client that runs a terminal to play. It is higly recommended not to use cmd. It can be runned in different ways:
+-in this case it will be runned on localHost and on default port 12345:
+```
+java -jar path/to/ClientCLI.jar
+```
+-in this case it will be runned on address MY_IP_ADDRESS and on port MY_PORT:
+```
+java -jar path/to/ClientCLI.jar -ip MY_IP_ADDRESS -port MY_PORT
+```
 
 - ClientGUI.jar 
 
-It is the client to use a graphic interface. It can be run by double clicking on it or exactly as the ClientCLI.jar in the terminal.
+It is the client to use a graphic interface. 
+It can be run by double clicking on it or exactly as the ClientCLI.jar in the terminal or in different ways:
+-in this case it will be runned on localHost and on default port 12345:
+```
+java -jar path/to/ClientGUI.jar
+```
+-in this case it will be runned on address MY_IP_ADDRESS and on port MY_PORT:
+```
+java -jar path/to/ClientGUI.jar -ip MY_IP_ADDRESS -port MY_PORT
+```
 
 ###### PRESENTATION
 [This](https://github.com/MrPratula/ing-sw-2020-romeo-pozzan-prada/tree/recover/deliveries/slide) is a brief presentation we used to explain how our project works during the project exposition.
