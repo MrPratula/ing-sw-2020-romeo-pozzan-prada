@@ -29,17 +29,8 @@ Part of this project are also UML diagrams.
 [here](https://github.com/MrPratula/ing-sw-2020-romeo-pozzan-prada/blob/recover/deliveries/uml/uml_full.jpg) a low level UML diagram to show more accurately all classes details.
 
 ### JAR
-Inside the JAR folder there are 3 different .jar files.
-Each one has to be launched opening a terminal and typing the following: 
+Inside the JAR folder there are 3 different .jar files:
 ```
-java -jar path/to/file.jar
-```
-or using some -options, such as
-```
--ip IP_ADDRESS
--port PORT_NUMBER
-```
-
 - Server.jar 
 
 It is the server that hosts the game. It can be runned in different ways:
