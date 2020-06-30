@@ -478,7 +478,6 @@ public class SwingView extends View {
                     if (validMoves.contains(newBattlefield.getCell(x, y))) {
                         battlefieldGUI[x][y].getCell().setHeight(newBattlefield.getCell(x, y).getHeight());
                         battlefieldGUI[x][y].changeImageIcon(selectIcon(allPlayers, player, newBattlefield.getCell(x, y),false, true));
-                        battlefieldGUI[x][y].setRolloverIcon(selectRolloverIcon(newBattlefield.getCell(x,y),false));
                     }
                     else{
                         displayInnerGui(battlefieldGUI, newBattlefield, allPlayers, y, x);
@@ -514,12 +513,10 @@ public class SwingView extends View {
                 battlefieldGUI[x][y].getCell().setHeight(battlefield.getCell(x, y).getHeight());
                 battlefieldGUI[x][y].getCell().setIsDome();
                 battlefieldGUI[x][y].changeImageIcon(selectIcon(null, null, battlefield.getCell(x, y), true,false));
-                battlefieldGUI[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x, y), true));
             }
             else {
                 battlefieldGUI[x][y].getCell().setHeight(battlefield.getCell(x, y).getHeight());
                 battlefieldGUI[x][y].changeImageIcon(selectIcon(null, null, battlefield.getCell(x, y), false,false));
-                battlefieldGUI[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x, y),false));
             }
         }
         else{
@@ -528,36 +525,18 @@ public class SwingView extends View {
                     if (p.getToken1().getTokenPosition().equals(battlefield.getCell(x, y))) {
                         battlefieldGUI[x][y].getCell().setHeight(battlefield.getCell(x, y).getHeight());
                         battlefieldGUI[x][y].changeImageIcon(selectIcon(allPlayers, p, battlefield.getCell(x, y),false, false));
-                        battlefieldGUI[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x,y),false));
                     }
                 }
                 if (p.getToken2().getTokenPosition() != null && p.getToken2().getTokenPosition()!=null) {                                  //if he has the first token
                     if (p.getToken2().getTokenPosition().equals(battlefield.getCell(x, y))) {
                         battlefieldGUI[x][y].getCell().setHeight(battlefield.getCell(x, y).getHeight());
                         battlefieldGUI[x][y].changeImageIcon(selectIcon(allPlayers, p, battlefield.getCell(x, y),false, false));
-                        battlefieldGUI[x][y].setRolloverIcon(selectRolloverIcon(battlefield.getCell(x,y),false));
                     }
                 }
             }
         }
     }
 
-
-    /**
-     * It selects the right text image depending on the characteristic
-     * @param cell: the cell in wich i have to put the icon
-     * @param isDome dome or not
-     * @return ImageIcon of the cell to display
-     */
-    public ImageIcon selectRolloverIcon(Cell cell, boolean isDome) throws IOException {
-
-        //display dome text  height
-        if(isDome)
-            return switchOnHeight(cell.getHeight(), Pics.LEVEL0DOMETEXT, Pics.LEVEL1DOMETEXT, Pics.LEVEL2DOMETEXT, Pics.LEVEL3DOMETEXT);
-        //display basic text  height
-        else
-            return switchOnHeight(cell.getHeight(), Pics.LEVEL0TEXT, Pics.LEVEL1TEXT, Pics.LEVEL2TEXT, Pics.LEVEL3TEXT);
-    }
 
 
     /**
