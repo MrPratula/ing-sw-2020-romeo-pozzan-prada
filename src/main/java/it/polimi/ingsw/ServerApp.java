@@ -3,6 +3,8 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.server.Server;
 
 import java.io.IOException;
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
 
 /**
@@ -10,19 +12,44 @@ import java.io.IOException;
  * Only one server can run at the same time
  * The server will shut down when there are no players connected after a player connect
  */
-public class ServerApp
-{
+public class ServerApp {
+
     public static void main( String[] args ) {
 
-        System.out.println("Hi I am the SERVER");
+        boolean needToLoop = true;
+        int port = 0;
         Server server;
+
+        System.out.println("Hi I am the SERVER");
+
+
+        while(needToLoop) {
+
+           if(args.length==2) {
+               if (args[0].equals("-port")) {
+                   try{
+                       port = Integer.parseInt(args[1]);
+                       needToLoop = false;
+                   }catch (InputMismatchException ex){
+                       System.err.println("Not a valid port!");
+                   }
+               }
+               else throw new IllegalArgumentException("The first argument should be '-port' ");
+           }
+           //else throw new IllegalArgumentException("Please insert something like:\n' $ java -jar Server.jar -port YOUR_PORT '");
+
+            else{
+               port = 12345;
+               needToLoop = false;
+           }
+        }
 
         try {
             server = Server.getInstance();
-            server.run();
-
+            server.run(port);
         } catch(IOException exception){
             System.err.println("Error in server launch!");
         }
     }
+
 }

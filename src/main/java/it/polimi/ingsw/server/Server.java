@@ -46,7 +46,7 @@ public class Server  {
     /**
      * Port of the server
      */
-    private static final int PORT = 12345;
+    private int port;
 
     /**
      * Server socket
@@ -102,7 +102,7 @@ public class Server  {
      * @throws IOException if can't send object into the socket
      */
     Server() throws IOException {
-        this.serverSocket = new ServerSocket(PORT);
+        this.serverSocket = new ServerSocket(port);
     }
 
 
@@ -139,25 +139,28 @@ public class Server  {
      * When a client join a server it is registered (save connection)
      * and it's connection is started in a asynchronous thread
      */
-    public void run() {
+    public void run(int port) {
 
-        System.out.println("Server listening on port: " + PORT);
+        this.port = port;
+        System.out.println("Server listening on port: " + port);
         firstTime = true;
 
         while(true){
+
             try {
 
                 // Accept a client who requires for this port
                 Socket socket = serverSocket.accept();
 
-                System.out.println("Someone connected on address ---->      "+socket.getRemoteSocketAddress().toString());
+                System.out.println("Someone connected on address ---->  "+socket.getRemoteSocketAddress().toString());
 
                 // Create a Connection for that specific client
                 Connection connection = new Connection(socket, this);
+
                 // Save this connection in the connections list
                 registerConnection(connection);
-                // Let's start the Connection run() method in an asynchronous thread
 
+                // Let's start the Connection run() method in an asynchronous thread
                 executor.submit(connection);
 
             } catch (IOException e){

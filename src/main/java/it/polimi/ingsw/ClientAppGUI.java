@@ -3,6 +3,7 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.client.Client;
 
 import java.io.IOException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 
@@ -14,54 +15,45 @@ public class ClientAppGUI {
     public static void main(String[] args) {
 
         Client client;
-        String ip = null;
-
         String localHost = "127.0.0.1";
-        String LANFede = "192.168.1.149";
-        String LANRichi = "192.168.1.7";
+        String ip = null;
+        int port = 0;
+
 
         boolean needToLoop = true;
 
+        while (needToLoop) {
 
-        while(needToLoop){
-
-            System.out.println("Insert a LAN ip... 192.168.1.XX");
-
-            try {
-                Scanner scanner = new Scanner(System.in);
-                ip = scanner.nextLine();
-
-                String[] ipArray = ip.split("\\.");
-                if (ipArray[0].length()==3 && ipArray[1].length()==3 && ipArray[2].length()==1 && ipArray[3].length()<=3) {
-
-                    client = new Client(ip, 12345);
-
-                    try{
-                        client.run(true);
-                    }catch (IOException e){
-                        System.err.println("Can not start the client. May be a wrong IP?");
-                    }
-
-                    needToLoop = false;
+            if (args.length == 4) {
+                try {
+                    if (args[0].equals("-ip") && args[2].equals("-port")) {
+                        ip = args[1];
+                        try{
+                            port = Integer.parseInt(args[3]);
+                        }catch (InputMismatchException ex){
+                            System.err.println("Not a valid port!");
+                        }
+                        needToLoop = false;
+                    } else
+                        throw new IllegalArgumentException("Please insert as first option '-ip' and as second option '-port'");
+                } catch (Exception e) {
+                    System.err.println(e.getMessage());
                 }
-
-            }catch (Exception e){
-
-                System.out.println("Insert a LAN ip... 192.168.1.XX");
-                needToLoop=true;
             }
-
+            //else throw new IllegalArgumentException("Please insert something like:\n' $ java -jar ClientGUI.jar (or ClientCli.jar) -ip YOUR_DYNAMIC_IP -port YOUR_PORT ");
+            else {
+                ip = localHost;
+                port = 12345;
+                needToLoop = false;
+            }
         }
 
-
-        /*
-        client = new Client(ip, 12345);
-
-        try{
+        try {
+            client = new Client(ip, port);
             client.run(true);
-        }catch (IOException e){
-            System.err.println("Can not start the client. May be a wrong IP?");
+        } catch (Exception e) {
+            System.err.println("Can not start the client. Maybe a wrong ip?");
         }
-        */
+
     }
 }
