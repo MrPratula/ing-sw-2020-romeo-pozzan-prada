@@ -825,10 +825,19 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                     // If there are 2 players
                     return gameOver(getNextPlayer().getUsername());
                 }
-            // If there are 3 players
-            if (allPlayers.size() == 3) {
+                // If there are 3 players
+                if (allPlayers.size() == 3) {
                     return playerLost(getPlayerInTurn());
                 }
+            }
+        }
+
+        if(myGodCard == GodCard.PROMETHEUS){
+            if(allPlayers.size() == 2){
+                return gameOver(getNextPlayer().getUsername());
+            }
+            if(allPlayers.size() == 3){
+                return  playerLost(getPlayerInTurn());
             }
         }
 

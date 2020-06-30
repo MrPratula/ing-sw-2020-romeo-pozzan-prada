@@ -76,5 +76,9 @@ public class AskPrometheusPowerWindow extends JDialog {
 
         pack();
         setVisible(true);
+        final JDialog dialog = new JDialog();
+        dialog.setAlwaysOnTop(true);
+        JOptionPane.showMessageDialog(dialog, "ATTENTION! If you can only move going up after the build, you will lose!", "ATTENTION", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.ERRORICON.getPath()))));
+
     }
 }
