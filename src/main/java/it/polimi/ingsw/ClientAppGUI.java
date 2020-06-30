@@ -12,42 +12,50 @@ public class ClientAppGUI {
 
     public static void main(String[] args) {
 
-        Client client = null;
-        String ip = "192.168.1.93";
+        Client client;
 
-        String localHost = "127.0.0.1";
-        String LANFede = "192.168.1.149";
-        String LANRichi = "192.168.1.7";
+        String LOCAL_HOST = "127.0.0.1";
+        int DEFAULT_PORT = 12345;
 
-        boolean needToLoop = true;
+        String ip = null;
+        int port = 0;
 
-        /*
-        while(needToLoop){
+        if (args.length==4){
 
-            System.out.println("Insert a LAN ip... 192.168.1.XX");
+            for (int i=0; i<args.length; i++){
 
-            try {
-                Scanner scanner = new Scanner(System.in);
-                ip = scanner.nextLine();
+                switch (args[i]){
 
-                String[] ipArray = ip.split("\\.");
-                if (ipArray[0].length()==3 && ipArray[1].length()==3 && ipArray[2].length()==1 && ipArray[3].length()<=3) {
+                    case "-ip" :{
+                        try{
+                            ip = args[i+1];
+                        } catch (Exception e){
+                            ip = null;
+                        }
+                        break;
+                    }
 
-
-                    client = new Client(ip, 12345);
-                    needToLoop = false;
+                    case "-port": {
+                        try{
+                            port = Integer.parseInt(args[i+1]);
+                        } catch (Exception e){
+                            port = 0;
+                        }
+                        break;
+                    }
                 }
-
-            }catch (Exception e){
-
-                System.out.println("Insert a LAN ip... 192.168.1.XX");
-                needToLoop=true;
             }
-
         }
-             */
 
-        client = new Client(localHost, 12345);
+        if (ip == null)
+            ip = LOCAL_HOST;
+        if (port == 0)
+            port = DEFAULT_PORT;
+
+        client = new Client(ip, port);
+
+        System.out.println(String.format("Trying to connect to %s:%s", ip, port));
+
         try{
             client.run(true);
         }catch (IOException e){
