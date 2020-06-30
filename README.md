@@ -34,11 +34,13 @@ Inside the JAR folder there are 3 different .jar files:
 - Server.jar 
 
 It is the server that hosts the game. It can be runned in different ways:
--in this case it will be runned on default port 12345:
+
+-1: it will be runned on default port 12345:
 ```
 java -jar path/to/Server.jar
 ```
--in this case it will be runned port MY_PORT:
+
+-2: it will be runned port MY_PORT:
 ```
 java -jar path/to/Server.jar -port MY_PORT
 ```
@@ -46,11 +48,13 @@ java -jar path/to/Server.jar -port MY_PORT
 - ClientCLI.jar
 
 It is the client that runs a terminal to play. It is higly recommended not to use cmd. It can be runned in different ways:
--in this case it will be runned on localHost and on default port 12345:
+
+-1: it will be runned on localHost and on default port 12345:
 ```
 java -jar path/to/ClientCLI.jar
 ```
--in this case it will be runned on address MY_IP_ADDRESS and on port MY_PORT:
+
+-2: it will be runned on address MY_IP_ADDRESS and on port MY_PORT:
 ```
 java -jar path/to/ClientCLI.jar -ip MY_IP_ADDRESS -port MY_PORT
 ```
@@ -59,11 +63,13 @@ java -jar path/to/ClientCLI.jar -ip MY_IP_ADDRESS -port MY_PORT
 
 It is the client to use a graphic interface. 
 It can be run by double clicking on it or exactly as the ClientCLI.jar in the terminal or in different ways:
--in this case it will be runned on localHost and on default port 12345:
+
+-2: it will be runned on localHost and on default port 12345:
 ```
 java -jar path/to/ClientGUI.jar
 ```
--in this case it will be runned on address MY_IP_ADDRESS and on port MY_PORT:
+
+2: it will be runned on address MY_IP_ADDRESS and on port MY_PORT:
 ```
 java -jar path/to/ClientGUI.jar -ip MY_IP_ADDRESS -port MY_PORT
 ```
