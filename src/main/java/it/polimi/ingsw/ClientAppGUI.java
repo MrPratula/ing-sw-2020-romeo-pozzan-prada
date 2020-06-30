@@ -3,6 +3,7 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.client.Client;
 
 import java.io.IOException;
+import java.util.Scanner;
 
 
 /**
@@ -12,8 +13,8 @@ public class ClientAppGUI {
 
     public static void main(String[] args) {
 
-        Client client = null;
-        String ip = "192.168.1.93";
+        Client client;
+        String ip = null;
 
         String localHost = "127.0.0.1";
         String LANFede = "192.168.1.149";
@@ -21,7 +22,7 @@ public class ClientAppGUI {
 
         boolean needToLoop = true;
 
-        /*
+
         while(needToLoop){
 
             System.out.println("Insert a LAN ip... 192.168.1.XX");
@@ -45,9 +46,9 @@ public class ClientAppGUI {
             }
 
         }
-             */
 
-        client = new Client(localHost, 12345);
+
+        client = new Client(ip, 12345);
         try{
             client.run(true);
         }catch (IOException e){
