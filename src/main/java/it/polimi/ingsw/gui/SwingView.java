@@ -66,6 +66,11 @@ public class SwingView extends View {
      */
     Boolean power = null;
 
+    /**
+     * If there are 3 player and one loses, he can stay and watch the others
+     */
+    Boolean lose=false;
+
 
     /**
      * Constructor of the client view with Swing GUI
@@ -322,6 +327,7 @@ public class SwingView extends View {
 
                 if(pack.getAction() == Action.PLAYER_LOST) {
                     if (pack.getWinnerOrPlayerLost().toUpperCase().equals(player.getUsername().toUpperCase())) {
+                        this.lose=true;
                         //this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.PLAYER_LOST.getPath()))));
                         this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.GAMEENDED.getPath()))));
                         displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
@@ -338,7 +344,12 @@ public class SwingView extends View {
                 }
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
-                    this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.NOT_YOUR_TURN.getPath()))));
+                    if(lose){
+                        this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.GAMEENDED.getPath()))));
+                    }
+                    else {
+                        this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.NOT_YOUR_TURN.getPath()))));
+                    }
                     displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
                 }
                 else {
@@ -364,6 +375,12 @@ public class SwingView extends View {
                 Pack pack = serverResponse.getPack();
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
+                    if(lose){
+                        this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.GAMEENDED.getPath()))));
+                    }
+                    else {
+                        this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.NOT_YOUR_TURN.getPath()))));
+                    }
                     displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
                 }
                 else {
@@ -381,7 +398,12 @@ public class SwingView extends View {
                 Pack pack = serverResponse.getPack();
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
-                    this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.ANOTHER_PLAYER_IS_MOVING.getPath()))));
+                    if(lose){
+                        this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.GAMEENDED.getPath()))));
+                    }
+                    else {
+                        this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.ANOTHER_PLAYER_IS_MOVING.getPath()))));
+                    }
                     displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null);
                 }
                 else{
@@ -397,8 +419,13 @@ public class SwingView extends View {
                 Pack pack = serverResponse.getPack();
 
                 if (!player.getTokenColor().equals(serverResponse.getTurn())){
+                    if(lose){
+                        this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.GAMEENDED.getPath()))));
+                    }
+                    else {
+                        this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.ANOTHER_PLAYER_IS_BUILDING.getPath()))));
+                    }
                     displayGui(getBattlefieldGUI(), serverResponse.getPack().getModelCopy(), null); //edit
-                    this.gameFrame.getInnerMainPanel().getMessageLabel().setIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.ANOTHER_PLAYER_IS_BUILDING.getPath()))));
                 }
                 else{
                     // Refresh the player so the token position is updated
