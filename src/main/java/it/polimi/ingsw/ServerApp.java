@@ -17,8 +17,32 @@ public class ServerApp
         System.out.println("Hi I am the SERVER");
         Server server;
 
+        int port=0;
+        int DEFAULT_PORT = 12345;
+
+        if (args.length==2){
+
+            for (int i=0; i<args.length; i++){
+
+                switch (args[i]){
+
+                    case "-port": {
+                        try{
+                            port = Integer.parseInt(args[i+1]);
+                        } catch (Exception e){
+                            port = 0;
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (port==0)
+            port = DEFAULT_PORT;
+
         try {
-            server = Server.getInstance();
+            server = Server.getInstance(port);
             server.run();
 
         } catch(IOException exception){

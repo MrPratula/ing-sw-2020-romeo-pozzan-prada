@@ -44,9 +44,9 @@ public class Server  {
     private boolean firstTime;
 
     /**
-     * Port of the server
+     *  Port of the server
      */
-    private static final int PORT = 12345;
+    private int PORT;
 
     /**
      * Server socket
@@ -90,9 +90,9 @@ public class Server  {
      * @return an instance of server
      * @throws IOException if can't send object into the socket
      */
-    public static Server getInstance() throws IOException {
+    public static Server getInstance(int port) throws IOException {
         if (singleServer == null)
-            singleServer = new Server();
+            singleServer = new Server(port);
         return singleServer;
     }
 
@@ -101,8 +101,9 @@ public class Server  {
      * Private constructor that is called by the getInstance
      * @throws IOException if can't send object into the socket
      */
-    Server() throws IOException {
-        this.serverSocket = new ServerSocket(PORT);
+    Server(int port) throws IOException {
+        this.PORT=port;
+        this.serverSocket = new ServerSocket(port);
     }
 
 
