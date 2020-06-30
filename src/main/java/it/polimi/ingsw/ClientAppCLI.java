@@ -54,6 +54,8 @@ public class ClientAppCLI {
 
         client = new Client(ip, port);
 
+        System.out.println(String.format("Trying to connect to %s:%s", ip, port));
+
         try{
             client.run(false);
         }catch (IOException e){
