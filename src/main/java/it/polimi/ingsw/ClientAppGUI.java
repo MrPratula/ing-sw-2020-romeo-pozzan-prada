@@ -34,8 +34,14 @@ public class ClientAppGUI {
                 String[] ipArray = ip.split("\\.");
                 if (ipArray[0].length()==3 && ipArray[1].length()==3 && ipArray[2].length()==1 && ipArray[3].length()<=3) {
 
-
                     client = new Client(ip, 12345);
+
+                    try{
+                        client.run(true);
+                    }catch (IOException e){
+                        System.err.println("Can not start the client. May be a wrong IP?");
+                    }
+
                     needToLoop = false;
                 }
 
@@ -48,11 +54,14 @@ public class ClientAppGUI {
         }
 
 
+        /*
         client = new Client(ip, 12345);
+
         try{
             client.run(true);
         }catch (IOException e){
             System.err.println("Can not start the client. May be a wrong IP?");
         }
+        */
     }
 }
