@@ -3,6 +3,7 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.client.Client;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 
@@ -14,11 +15,11 @@ public class ClientAppCLI {
     public static void main(String[] args) {
 
         Client client;
-        String localHost = "127.0.0.1";
+        String localHost = "93.42.45.75";
         String ip = null;
-        int port = 0;
+        int port = 12345;
 
-
+/*
         boolean needToLoop = true;
 
         while (needToLoop) {
@@ -44,12 +45,14 @@ public class ClientAppCLI {
             }
         }
 
+        System.out.println(String.format("Trying to connect to %s:%s",ip,port));
+*/
         try {
-            client = new Client(ip, port);
+            client = new Client(localHost, port);
             client.run(false);
         } catch (Exception e) {
             System.err.println("Can not start the client.");
+            System.err.println(e.getMessage());
         }
-
     }
 }

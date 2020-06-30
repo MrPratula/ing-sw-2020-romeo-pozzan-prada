@@ -17,12 +17,12 @@ public class ServerApp {
     public static void main( String[] args ) {
 
         boolean needToLoop = true;
-        int port = 0;
+        int port = 12345;
         Server server;
 
         System.out.println("Hi I am the SERVER");
 
-
+/*
         while(needToLoop) {
 
            if(args.length==2) {
@@ -43,7 +43,7 @@ public class ServerApp {
                needToLoop = false;
            }
         }
-
+*/
         try {
             server = Server.getInstance();
             server.run(port);

@@ -142,7 +142,7 @@ public class Server  {
     public void run(int port) {
 
         this.port = port;
-        System.out.println("Server listening on port: " + port);
+        System.out.println("Server listening on port: " + this.port);
         firstTime = true;
 
         while(true){
