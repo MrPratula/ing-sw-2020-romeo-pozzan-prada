@@ -5,6 +5,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 
 
@@ -30,7 +32,13 @@ public class WelcomeFrame {
         mainFrame.setResizable(true);
         mainFrame.setIconImage(new ImageIcon(ImageIO.read(getClass().getResource(Pics.PLAYBUTTON.getPath()))).getImage());
         mainFrame.setPreferredSize(new Dimension(1100,800));
-        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent we) {
+                int result = JOptionPane.showConfirmDialog(mainFrame, "Do you want to Exit? You will not enter in the game", "Exit Confirmation : ", JOptionPane.YES_NO_OPTION);
+                if (result == JOptionPane.YES_OPTION) mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                else if (result == JOptionPane.NO_OPTION) mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            }
+        });
 
         LogoPanel mainPanel = new LogoPanel();
 

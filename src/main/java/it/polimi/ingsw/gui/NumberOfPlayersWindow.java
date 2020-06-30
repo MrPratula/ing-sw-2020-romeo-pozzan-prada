@@ -8,6 +8,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 
 
@@ -37,6 +39,14 @@ public class NumberOfPlayersWindow extends JDialog{
         setLocationRelativeTo(null);
         setPreferredSize(new Dimension(600,300));
         setIconImage(new ImageIcon(ImageIO.read(getClass().getResource(Pics.PLAYERICON.getPath()))).getImage());
+
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent we) {
+                int result = JOptionPane.showConfirmDialog(NumberOfPlayersWindow.this, "Do you want to Exit? You will not enter in the game", "Exit Confirmation : ", JOptionPane.YES_NO_OPTION);
+                if (result == JOptionPane.YES_OPTION) NumberOfPlayersWindow.this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                else if (result == JOptionPane.NO_OPTION) NumberOfPlayersWindow.this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            }
+        });
 
         //numberOfPlayersPanel's panel
         NumberOfPlayersPanel numberOfPlayersPanel = new NumberOfPlayersPanel();

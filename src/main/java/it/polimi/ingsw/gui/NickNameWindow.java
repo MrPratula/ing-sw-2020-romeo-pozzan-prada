@@ -8,6 +8,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 
 
@@ -41,6 +43,14 @@ public class NickNameWindow extends JDialog{
         setLocationRelativeTo(null);
         setIconImage(new ImageIcon(ImageIO.read(getClass().getResource(Pics.PLAYERICON.getPath()))).getImage());
         setBackground(Color.BLACK);
+
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent we) {
+                int result = JOptionPane.showConfirmDialog(NickNameWindow.this, "Do you want to Exit? You will not enter in the game", "Exit Confirmation : ", JOptionPane.YES_NO_OPTION);
+                if (result == JOptionPane.YES_OPTION) NickNameWindow.this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                else if (result == JOptionPane.NO_OPTION) NickNameWindow.this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            }
+        });
 
         //Nickname's panel
         NickNamePanel nicknamePanel = new NickNamePanel();
