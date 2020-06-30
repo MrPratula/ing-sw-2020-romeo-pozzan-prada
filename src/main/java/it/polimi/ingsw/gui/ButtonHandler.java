@@ -61,6 +61,7 @@ public class ButtonHandler implements ActionListener {
         switch(currentServerResponse.getPack().getAction()) {
 
             case PLACE_YOUR_TOKEN:{
+
                 try {
                     Cell targetCell = currentServerResponse.getPack().getModelCopy().getBattlefield().getCell(cellButton.getCell().getPosX(),cellButton.getCell().getPosY());
                     if(swingView.isFree(targetCell,currentServerResponse.getPack().getModelCopy())){

@@ -47,7 +47,6 @@ public class InnerMainPanel {
         battlefieldPanel.setLayout(new GridLayout(5,5,0,0));
 
         for (int j = 4; j > -1; j--) {
-
             for (int i = 0; i < 5; i++) {
 
                 //I create a button for every cell

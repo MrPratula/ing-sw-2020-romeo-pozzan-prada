@@ -36,6 +36,7 @@ public class NumberOfPlayersWindow extends JDialog{
 
         setLocationRelativeTo(null);
         setPreferredSize(new Dimension(600,300));
+        setIconImage(new ImageIcon(ImageIO.read(getClass().getResource(Pics.PLAYERICON.getPath()))).getImage());
 
         //numberOfPlayersPanel's panel
         NumberOfPlayersPanel numberOfPlayersPanel = new NumberOfPlayersPanel();
