@@ -803,6 +803,16 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      */
     public ServerResponse checkLoseForMove(Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Token selectedToken) {
 
+        // If prometheus uses his power and he can not move his token he lost
+        if(myGodCard == GodCard.PROMETHEUS && prometheusUsePower){
+            if(allPlayers.size() == 2){
+                return gameOver(getNextPlayer().getUsername());
+            }
+            if(allPlayers.size() == 3){
+                return  playerLost(getPlayerInTurn());
+            }
+        }
+        
         // If there is no 2nd token
         if (otherToken == null) {
             // If there are 2 players
@@ -832,14 +842,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             }
         }
 
-        if(myGodCard == GodCard.PROMETHEUS){
-            if(allPlayers.size() == 2){
-                return gameOver(getNextPlayer().getUsername());
-            }
-            if(allPlayers.size() == 3){
-                return  playerLost(getPlayerInTurn());
-            }
-        }
+
 
         Pack pack = new Pack(Action.TOKEN_NOT_MOVABLE);
 
