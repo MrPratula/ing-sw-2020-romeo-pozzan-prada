@@ -733,6 +733,8 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
                 printColorId(serverResponse.getTurn().getEscape());
                 System.out.println("GAME OVER!");
 
+                printGameOver(this.player.getUsername().equals(pack.getWinnerOrPlayerLost()));
+
                 break;
             }
         }
@@ -1030,6 +1032,156 @@ public class View extends Observable<PlayerAction> implements Observer<ServerRes
         System.out.print(" ");
         System.out.print("\033[047m");          //on a white board
     }
+
+
+    /**
+     * Prints ascii art of "YOU WON" or "YOU LOST", depending on:
+     * @param hasWin true if this player won, else if he lost
+     */
+    public void printGameOver(boolean hasWin){
+
+        System.out.println();
+        System.out.println();
+
+        //first line
+        printNBlueSpaces(2);
+        printNBlueSpaces(2);
+        printNBlueSpaces(6);
+        printNBlueSpaces(2);
+        printNBlueSpaces(2); //you
+        printNResetSpaces(6);
+        if(!hasWin){
+            printNBlueSpaces(2);
+            printNResetSpaces(4);
+            printNBlueSpaces(6);
+            printNBlueSpaces(6);
+            printNBlueSpaces(6);
+        }
+        else{
+            printNBlueSpaces(2);
+            printNResetSpaces(4);
+            printNBlueSpaces(2);
+            printNBlueSpaces(6);
+            printNBlueSpaces(3);
+            printNResetSpaces(1);
+            printNBlueSpaces(2);
+        }
+        System.out.println();
+
+        //second line
+        printNBlueSpaces(2);
+        printNBlueSpaces(2);
+        printNBlueSpaces(2);
+        printNBlueSpaces(2);
+        printNBlueSpaces(2);
+        printNBlueSpaces(2); //you
+        printNResetSpaces(6);
+        if(!hasWin){
+            printNBlueSpaces(2);
+            printNResetSpaces(4);
+            printNBlueSpaces(2);
+            printNBlueSpaces(2);
+            printNBlueSpaces(2);
+            printNResetSpaces(6);
+            printNBlueSpaces(2);
+        }
+        else{
+            printNBlueSpaces(2);
+            printNResetSpaces(4);
+            printNBlueSpaces(2);
+            printNBlueSpaces(2);
+            printNBlueSpaces(2);
+            printNBlueSpaces(4);
+            printNBlueSpaces(2);
+        }
+        System.out.println();
+
+        //third line
+        printNBlueSpaces(6);
+        printNBlueSpaces(2);
+        printNBlueSpaces(2);
+        printNBlueSpaces(2);
+        printNBlueSpaces(2); //you
+        printNResetSpaces(6);
+        if(!hasWin){
+            printNBlueSpaces(2);
+            printNResetSpaces(4);
+            printNBlueSpaces(2);
+            printNBlueSpaces(2);
+            printNBlueSpaces(6);
+            printNResetSpaces(2);
+            printNBlueSpaces(2);
+        }
+        else{
+            printNBlueSpaces(2);
+            printNResetSpaces(4);
+            printNBlueSpaces(2);
+            printNBlueSpaces(2);
+            printNBlueSpaces(2);
+            printNBlueSpaces(2);
+            printNBlueSpaces(4);
+        }
+        System.out.println();
+
+        //fourth line
+        printNResetSpaces(2);
+        printNBlueSpaces(2);
+        printNResetSpaces(2);
+        printNBlueSpaces(2);
+        printNBlueSpaces(2);
+        printNBlueSpaces(2);
+        printNBlueSpaces(2); //you
+        printNResetSpaces(6);
+        if(!hasWin){
+            printNBlueSpaces(2);
+            printNResetSpaces(4);
+            printNBlueSpaces(2);
+            printNBlueSpaces(2);
+            printNResetSpaces(4);
+            printNBlueSpaces(2);
+            printNResetSpaces(2);
+            printNBlueSpaces(2);
+        }
+        else{
+            printNBlueSpaces(2);
+            printNBlueSpaces(2);
+            printNBlueSpaces(2);
+            printNBlueSpaces(2);
+            printNBlueSpaces(2);
+            printNBlueSpaces(2);
+            printNResetSpaces(1);
+            printNBlueSpaces(3);
+        }
+        System.out.println();
+
+        //fifth line
+        printNResetSpaces(2);
+        printNBlueSpaces(2);
+        printNResetSpaces(2);
+        printNBlueSpaces(6);
+        printNBlueSpaces(6); //you
+        printNResetSpaces(6);
+        if(!hasWin){
+            printNBlueSpaces(6);
+            printNBlueSpaces(6);
+            printNBlueSpaces(6);
+            printNResetSpaces(2);
+            printNBlueSpaces(2);
+        }
+        else{
+            printNBlueSpaces(10);
+            printNBlueSpaces(6);
+            printNBlueSpaces(2);
+            printNResetSpaces(2);
+            printNBlueSpaces(2);
+        }
+        System.out.println();
+
+
+        System.out.println();
+
+    }
+
 
 
     /**
