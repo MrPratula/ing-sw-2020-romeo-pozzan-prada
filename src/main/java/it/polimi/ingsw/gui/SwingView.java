@@ -242,9 +242,9 @@ public class SwingView extends View {
             case WAIT_OTHER_PLAYERS_TO_CONNECT:
             case NUMBER_RECEIVED: {
 
-                //final JDialog dialog = new JDialog();
-                //dialog.setAlwaysOnTop(true);
-                //JOptionPane.showMessageDialog(dialog,"WAIT FOR OTHER PLAYERS TO CONNECT","NUMBER RECEIVED", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
+                final JDialog dialog = new JDialog();
+                dialog.setAlwaysOnTop(true);
+                JOptionPane.showMessageDialog(dialog,"WAIT FOR OTHER PLAYERS TO CONNECT","NUMBER RECEIVED", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.INFORMATIONICON.getPath()))));
                 break;
             }
 
