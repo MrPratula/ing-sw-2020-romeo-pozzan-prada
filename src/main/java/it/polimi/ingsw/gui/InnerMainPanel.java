@@ -55,7 +55,6 @@ public class InnerMainPanel {
                 battlefieldGUI[i][j].setBorderPainted(false);
                 battlefieldGUI[i][j].setContentAreaFilled(false);
                 battlefieldGUI[i][j].getCell().setHeight(0);
-                battlefieldGUI[i][j].setRolloverIcon(new ImageIcon(ImageIO.read(getClass().getResource(Pics.LEVEL0TEXT.getPath()))));
                 battlefieldPanel.add(battlefieldGUI[i][j]);
                 ButtonHandler bh = new ButtonHandler(battlefieldGUI[i][j],swingView);
                 battlefieldGUI[i][j].addActionListener(bh);

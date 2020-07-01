@@ -612,23 +612,12 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
 
         List<Cell> validMoves;
         validMoves = computeValidMoves(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, getBattlefield());
-        List<Cell> validBuilds;
-        validBuilds = validBuilds(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, battlefield);
+        //List<Cell> validBuilds;
+        //validBuilds = validBuilds(selectedToken, otherToken, enemyTokens, myGodCard, enemyGodCards, battlefield);
 
         ServerResponse serverResponse;
 
         if (validMoves == null) {
-            if (validBuilds.isEmpty()) {
-                if (allPlayers.size() == 3) {
-                    notify(playerLost(playerAction.getPlayer()));
-
-                }
-                else if(allPlayers.size() == 2) {
-                    updateTurn();
-                    String winner = getPlayerInTurn().getUsername();
-                    notify(gameOver(winner));
-                }
-            }
             serverResponse = checkLoseForMove(otherToken, enemyTokens, myGodCard, enemyGodCards, selectedToken);
         } else {
 
@@ -670,6 +659,17 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
         List<GodCard> enemyGodCards = getGodCards(getOpponents(getPlayerInTurn()));
 
         List<Cell> validBuilds = validBuilds(prometheusToken, token2, enemyTokens, myGodCard, enemyGodCards, getBattlefield());
+
+        if (validBuilds.isEmpty()) {
+            if (allPlayers.size() == 3) {
+                notify(playerLost(getPlayerInTurn()));
+            }
+            else if(allPlayers.size() == 2) {
+                updateTurn();
+                String winner = getPlayerInTurn().getUsername();
+                notify(gameOver(winner));
+            }
+        }
 
         pack.setValidBuilds(validBuilds);
 
@@ -815,7 +815,17 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
      * It could be a TOKEN_NOT_MOVABLE, GAME_OVER or PLAYER_LOST
      */
     public ServerResponse checkLoseForMove(Token otherToken, List<Token> enemyTokens, GodCard myGodCard, List<GodCard> enemyGodCards, Token selectedToken) {
-        
+
+        // If prometheus uses his power and he can not move his token he lost
+        if(myGodCard == GodCard.PROMETHEUS && prometheusUsePower){
+            if(allPlayers.size() == 2){
+                return gameOver(getNextPlayer().getUsername());
+            }
+            if(allPlayers.size() == 3){
+                return  playerLost(getPlayerInTurn());
+            }
+        }
+
         // If there is no 2nd token
         if (otherToken == null) {
             // If there are 2 players
@@ -842,16 +852,6 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                 if (allPlayers.size() == 3) {
                     return playerLost(getPlayerInTurn());
                 }
-            }
-        }
-
-        // If prometheus uses his power and he can not move his token he lost
-        if(myGodCard == GodCard.PROMETHEUS && prometheusUsePower){
-            if(allPlayers.size() == 2){
-                return gameOver(getNextPlayer().getUsername());
-            }
-            if(allPlayers.size() == 3){
-                return  playerLost(getPlayerInTurn());
             }
         }
 
