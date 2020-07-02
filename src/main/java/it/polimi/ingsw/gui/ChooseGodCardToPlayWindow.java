@@ -68,6 +68,7 @@ public class ChooseGodCardToPlayWindow {
         GodPanel mainPanel = new GodPanel();
 
         final List<ImageIcon> godsToDisplay = selectGodsToDisplay(godInGame);
+        //godInGame.sort();
         final List<ImageIcon> textToDisplay = selectTextToDisplay(godInGame);
 
         for(int i=0; i<14; i++) {
