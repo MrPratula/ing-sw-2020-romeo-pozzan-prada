@@ -6,12 +6,11 @@
 
 #EXCEPT THIS
 
+#Folders
+!deliveries/**
+!src/**
+
+#Files
 !.gitignore
 !README.md
 !pom.xml
-!resourses/
-!deliveries/uml/**
-!deliveries/battlefieldTest/**
-!src/**
-#!deliveries/JAR/**
-!deliveries/slide/**
