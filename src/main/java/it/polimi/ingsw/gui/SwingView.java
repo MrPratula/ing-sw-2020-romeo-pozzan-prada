@@ -270,9 +270,7 @@ public class SwingView extends View {
 
                 // If the player is not in turn he is just notified to wait
                 if (!this.player.getTokenColor().equals(serverResponse.getTurn())){
-                    //final JDialog dialog = new JDialog();
-                    //dialog.setAlwaysOnTop(true);
-                    //JOptionPane.showMessageDialog(dialog,pack.getMessageOpponents(),"NOT YOUR TURN! PLEASE WAIT!", JOptionPane.WARNING_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.ERRORICON.getPath()))));
+                    //nothing just wait.
                 }
                 // else he has to pick his god card
                 else {
@@ -836,6 +834,9 @@ public class SwingView extends View {
                     if(notPerimeterCell(c)){
                         targetCells.add(c);
                     }
+                }
+                if(firstCell.getHeight() == 3){
+                    targetCells.remove(firstCell);
                 }
                 getCurrentServerResponse().getPack().setValidBuilds(targetCells);
                 break;
