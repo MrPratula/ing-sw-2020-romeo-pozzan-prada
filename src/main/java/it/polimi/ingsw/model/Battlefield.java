@@ -9,16 +9,22 @@ import java.io.Serializable;
  */
 public class Battlefield implements Serializable {
 
+
     /**
      * The battlefield size of Santorini is 5
      */
     private static final int battlefieldSize = 5;
+
 
     /**
      * The matrix of cells
      */
     private final Cell[][] battlefield;
 
+
+    /**
+     * Value for single instance
+     */
     private static Battlefield singleBattlefield;
 
 
@@ -38,6 +44,10 @@ public class Battlefield implements Serializable {
     }
 
 
+    /**
+     * Method for singleton constructor
+     * @return the battlefield if exist. A new one else
+     */
     public static Battlefield getInstance(){
 
         if (singleBattlefield==null){
