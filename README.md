@@ -1,6 +1,13 @@
-# Santorini
-Final Project of Software Engineering [GC26].
+# Final Project of Software Engineering [GC26].
 
+Lorenzo Prada       10529212        869775
+
+Federico Romeo      10566536        890975 
+
+Riccardo Pozzan     10581128         891097
+
+
+# Santorini
 Santorini is a simple table-game playable in 2 or 3 players.
 Choose your God Card, place your tokens onto the battlefield and get ready to climb the 3rd level before your enemies even notice it.
 
@@ -9,12 +16,24 @@ Choose your God Card, place your tokens onto the battlefield and get ready to cl
 This project consists in the implementation of a distribuited system.
 It is entirely implemented using the MVC pattern.
 
-## Features
-- Complete rules;
-- Command Line Interface;
-- Graphic User Interface with Java Swing;
-- Socket TCP network;
-- Advanced features: 5 Advanced Gods.
+
+
+
+FEATURES | done? |
+--- | --- |
+Complete rules | ![#c5f015](https://via.placeholder.com/15/c5f015/000000?text=+) |
+CLI | ![#c5f015](https://via.placeholder.com/15/c5f015/000000?text=+) | --- |
+GUI | ![#c5f015](https://via.placeholder.com/15/c5f015/000000?text=+) | --- |
+Socket | ![#c5f015](https://via.placeholder.com/15/c5f015/000000?text=+) | --- |
+1 Advanced feature | ![#c5f015](https://via.placeholder.com/15/c5f015/000000?text=+)  | --- |
+2 Advanced feature | ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+)  | --- |
+
+Advanced feature: ADVANCED GODS
+  + Chronus;
+  + Hera;
+  + Hestia;
+  + Limus;
+  + Zeus.
 
 ## Deliveries
 Inside this folder you can find the following things:
@@ -29,50 +48,46 @@ Part of this project are also UML diagrams.
 [here](https://github.com/MrPratula/ing-sw-2020-romeo-pozzan-prada/blob/recover/deliveries/uml/uml_full.jpg) a low level UML diagram to show more accurately all classes details.
 
 ### JAR
-Inside the JAR folder there are 3 different .jar files:
-```
-- Server.jar 
+Inside the JAR folder there will be 3 different .jar files.
+Each one have to be launched by open a terminal and type the corresponding line of code.
 
-It is the server that hosts the game. It can be runned in different ways:
+###### Server.jar 
 
--1: it will be runned on default port 12345:
-```
-java -jar path/to/Server.jar
-```
+It is the server that hosts the game. It can be runned passing the argument -port. If the port is not specified, it uses 12345.
 
--2: it will be runned port MY_PORT:
 ```
-java -jar path/to/Server.jar -port MY_PORT
+   java -jar path/to/Server.jar -port MY_PORT
 ```
 
-- ClientCLI.jar
+###### ClientCLI.jar
 
-It is the client that runs a terminal to play. It is higly recommended not to use cmd. It can be runned in different ways:
+It is the client that runs a terminal to play. It is higly recommended not to use cmd. 
+It can be runned passing the IPv4 address and the port where the server is listening. If those are not specified it uses 127.0.0.1 as IP, and 12345 as port.
 
--1: it will be runned on localHost and on default port 12345:
-```
-java -jar path/to/ClientCLI.jar
-```
-
--2: it will be runned on address MY_IP_ADDRESS and on port MY_PORT:
 ```
 java -jar path/to/ClientCLI.jar -ip MY_IP_ADDRESS -port MY_PORT
 ```
 
-- ClientGUI.jar 
+###### ClientGUI.jar 
 
 It is the client to use a graphic interface. 
-It can be run by double clicking on it or exactly as the ClientCLI.jar in the terminal or in different ways:
+It can be runned passing the IPv4 address and the port where the server is listening. If those are not specified it uses 127.0.0.1 as IP, and 12345 as port.
 
--2: it will be runned on localHost and on default port 12345:
 ```
-java -jar path/to/ClientGUI.jar
-```
-
-2: it will be runned on address MY_IP_ADDRESS and on port MY_PORT:
-```
-java -jar path/to/ClientGUI.jar -ip MY_IP_ADDRESS -port MY_PORT
+   java -jar path/to/ClientGUI.jar -ip MY_IP_ADDRESS -port MY_PORT
 ```
 
-###### PRESENTATION
+#### PRESENTATION
 [This](https://github.com/MrPratula/ing-sw-2020-romeo-pozzan-prada/tree/recover/deliveries/slide) is a brief presentation we used to explain how our project works during the project exposition.
+
+
+
+
+###### The GUI will look like this:
+
+![alt text](https://github.com/MrPratula/ing-sw-2020-romeo-pozzan-prada/blob/superbranch/src/main/resources/gui.png?raw=true)
+
+
+###### The CLI will look like this:
+
+![alt text](https://github.com/MrPratula/ing-sw-2020-romeo-pozzan-prada/blob/superbranch/src/main/resources/CLI.png?raw=true)
