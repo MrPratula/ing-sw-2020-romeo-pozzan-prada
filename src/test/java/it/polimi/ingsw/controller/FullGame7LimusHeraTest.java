@@ -186,7 +186,6 @@ public class FullGame7LimusHeraTest {
 
         view.printCLI(model.getCopy(), model.getValidCells());
 
-
         // Player 2 select where to build
 
         selectedCell = model.getBattlefield().getCell(2,0);
@@ -194,5 +193,7 @@ public class FullGame7LimusHeraTest {
         controller.update(playerAction);
 
         view.printCLI(model.getCopy(), model.getValidCells());
+
+        model.clearBattlefield();
     }
 }

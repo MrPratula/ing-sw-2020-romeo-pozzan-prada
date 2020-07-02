@@ -222,5 +222,7 @@ public class FullGame6HestiaChronusTest {
         controller.update(playerAction);
 
         view.printCLI(model.getCopy(), model.getValidCells());
+
+        model.clearBattlefield();
     }
 }

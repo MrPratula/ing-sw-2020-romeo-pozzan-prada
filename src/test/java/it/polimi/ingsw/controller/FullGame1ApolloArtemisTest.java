@@ -164,5 +164,7 @@ public class FullGame1ApolloArtemisTest {
         controller.update(playerAction);
 
         view.printCLI(model.getCopy(), model.getValidCells());
+
+        model.clearBattlefield();
     }
 }

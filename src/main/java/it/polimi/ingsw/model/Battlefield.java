@@ -74,6 +74,7 @@ public class Battlefield implements Serializable {
         return battlefield[inputX][inputY];
     }
 
+
     /**
      * @return a copy of this battlefield
      */
@@ -85,5 +86,14 @@ public class Battlefield implements Serializable {
             System.arraycopy(battlefield[x], 0, battlefieldClone.battlefield[x], 0, battlefieldSize);
         }
         return battlefieldClone;
+    }
+
+
+    /**
+     * Called ony for test use
+     * It reset the battlefield to run multiple tests at once
+     */
+    public void resetSingleton(){
+        singleBattlefield = null;
     }
 }

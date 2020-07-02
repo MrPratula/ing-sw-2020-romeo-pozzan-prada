@@ -276,10 +276,6 @@ public class FullGame4MinotaurPanTest {
 
         view.printCLI(model.getCopy(), model.getValidCells());
 
-
-
+        model.clearBattlefield();
     }
-
-
-
 }

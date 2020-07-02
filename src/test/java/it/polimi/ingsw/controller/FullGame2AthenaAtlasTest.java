@@ -208,5 +208,6 @@ public class FullGame2AthenaAtlasTest {
 
         view.printCLI(model.getCopy(), model.getValidCells());
 
+        model.clearBattlefield();
     }
 }

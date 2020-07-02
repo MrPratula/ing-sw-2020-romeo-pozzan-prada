@@ -1539,4 +1539,14 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
             }
         }
     }
+
+
+    /**
+     * Just for run multiple tests
+     * The battlefield is a singleton, so it is necessary to clear it before use it again
+     */
+    public void clearBattlefield(){
+        battlefield.resetSingleton();
+        this.battlefield=null;
+    }
 }
