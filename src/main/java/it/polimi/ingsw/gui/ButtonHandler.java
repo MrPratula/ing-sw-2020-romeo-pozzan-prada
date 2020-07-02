@@ -183,47 +183,6 @@ public class ButtonHandler implements ActionListener {
 
 
 
-    /**
-     * It sets che correct image of the height level,
-     * before calling the real method that update the model.
-     */
-    /*public void incrementHeight() throws IOException { //fixme deleteme
-
-        if(cellButton.getCell().getIsDome()){
-            final JDialog dialog = new JDialog();
-            dialog.setAlwaysOnTop(true);
-            JOptionPane.showMessageDialog(dialog,"You can't build over a dome!","Error", JOptionPane.ERROR_MESSAGE, new ImageIcon(ImageIO.read(getClass().getResource(Pics.ERRORICON.getPath()))));  //posso anche mettere un'immagine error
-        }
-
-        else {
-            //if i just selected to increment a cell occupied
-            if (cellButton.getCell().getThereIsPlayer()) {
-            } else{
-                if (cellButton.getCell().getHeight() == 0) {
-                    cellButton.setIcon(Pics.LEVEL1.getImageIcon());
-                    cellButton.getCell().incrementHeight();
-                    cellButton.setRolloverIcon(Pics.LEVEL1TEXT.getImageIcon());
-                }
-                else if (cellButton.getCell().getHeight() == 1) {
-                    cellButton.setIcon(Pics.LEVEL2.getImageIcon());
-                    cellButton.setRolloverIcon(Pics.LEVEL2TEXT.getImageIcon());
-                    cellButton.getCell().incrementHeight();
-                }
-                else if (cellButton.getCell().getHeight() == 2) {
-                    cellButton.setIcon(Pics.LEVEL3.getImageIcon());
-                    cellButton.setRolloverIcon(Pics.LEVEL3TEXT.getImageIcon());
-                    cellButton.getCell().incrementHeight();
-                }
-                else if (cellButton.getCell().getHeight() == 3) {
-                    cellButton.setIcon(Pics.LEVEL3DOME.getImageIcon());
-                    cellButton.setRolloverIcon(Pics.LEVEL3DOMETEXT.getImageIcon());
-                    cellButton.getCell().incrementHeight();
-                }
-            }
-        }
-    }*/
-
-
 }
 
 
