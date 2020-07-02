@@ -381,7 +381,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                     StringBuilder text = new StringBuilder("There are the following Gods available:");
                     for (GodCard god : allGodCards) {
                         text.append("\n").append(god.name().toUpperCase());
-                        text.append("\n").append(god.toString());
+                        text.append("\n").append(god.power());
                     }
 
                     Pack pack = new Pack(Action.SELECT_YOUR_GOD_CARD);
@@ -399,7 +399,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                 StringBuilder text = new StringBuilder("There are the following Gods available:");
                 for (GodCard god : allGodCards) {
                     text.append("\n").append(god.name().toUpperCase());
-                    text.append("\n").append(god.toString());
+                    text.append("\n").append(god.power());
                 }
 
                 Pack pack = new Pack(Action.SELECT_YOUR_GOD_CARD);
