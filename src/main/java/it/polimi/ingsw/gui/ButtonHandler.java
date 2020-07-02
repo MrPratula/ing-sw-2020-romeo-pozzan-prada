@@ -180,9 +180,6 @@ public class ButtonHandler implements ActionListener {
             }
         }
     }
-
-
-
 }
 
 

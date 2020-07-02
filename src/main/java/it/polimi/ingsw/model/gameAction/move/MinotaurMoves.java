@@ -103,8 +103,16 @@ public class MinotaurMoves implements MoveBehavior{
                 }
             }
         }
-        selectedToken.setTokenPosition(targetCell);
-        battlefield.getCell(targetCell).setOccupied();
-        battlefield.getCell(copy.getPosX(),copy.getPosY()).setFree();
+        // Set token's old height
+        selectedToken.setOldHeight(battlefield.getCell(selectedToken.getTokenPosition()).getHeight());
+
+        // Set free old position
+        battlefield.getCell(selectedToken.getTokenPosition()).setFree();
+
+        // Set new token position
+        selectedToken.setTokenPosition(battlefield.getCell(targetCell));
+
+        // Set new position occupied
+        battlefield.getCell(selectedToken.getTokenPosition()).setOccupied();
     }
 }
