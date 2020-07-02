@@ -669,6 +669,7 @@ public class Model extends Observable<ServerResponse> implements Cloneable {
                 String winner = getPlayerInTurn().getUsername();
                 notify(gameOver(winner));
             }
+            return;
         }
 
         pack.setValidBuilds(validBuilds);
