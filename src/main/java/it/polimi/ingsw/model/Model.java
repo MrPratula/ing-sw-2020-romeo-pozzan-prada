@@ -1,15 +1,15 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.gameAction.build.*;
-import it.polimi.ingsw.gameAction.move.*;
-import it.polimi.ingsw.gameAction.win.PanWin;
-import it.polimi.ingsw.gameAction.win.SimpleWin;
-import it.polimi.ingsw.gameAction.win.WinContext;
-import it.polimi.ingsw.gameAction.move.ApolloMoves;
-import it.polimi.ingsw.gameAction.move.ArtemisMoves;
-import it.polimi.ingsw.gameAction.move.MoveContext;
-import it.polimi.ingsw.gameAction.move.SimpleMoves;
-import it.polimi.ingsw.gameAction.win.*;
+import it.polimi.ingsw.model.gameAction.build.*;
+import it.polimi.ingsw.model.gameAction.move.*;
+import it.polimi.ingsw.model.gameAction.win.PanWin;
+import it.polimi.ingsw.model.gameAction.win.SimpleWin;
+import it.polimi.ingsw.model.gameAction.win.WinContext;
+import it.polimi.ingsw.model.gameAction.move.ApolloMoves;
+import it.polimi.ingsw.model.gameAction.move.ArtemisMoves;
+import it.polimi.ingsw.model.gameAction.move.MoveContext;
+import it.polimi.ingsw.model.gameAction.move.SimpleMoves;
+import it.polimi.ingsw.model.gameAction.win.*;
 import it.polimi.ingsw.utils.*;
 import it.polimi.ingsw.utils.Observable;
 
