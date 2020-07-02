@@ -1,0 +1,16 @@
+#IGNORE EVERYTHING
+*
+
+#QUESTO PER LE CARTELLE E ** VUOL DIRE RICORSIVO
+!*/
+
+#EXCEPT THIS
+
+#Folders
+!deliveries/**
+!src/**
+
+#Files
+!.gitignore
+!README.md
+!pom.xml
