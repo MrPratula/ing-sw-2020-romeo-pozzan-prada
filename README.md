@@ -39,6 +39,7 @@ Advanced feature: ADVANCED GODS
 Inside this folder you can find the following things:
 - UML diagrams;
 - executables JAR;
+- JavaDoc;
 - Presentation.
 
 ### UML
@@ -76,6 +77,9 @@ It can be runned passing the IPv4 address and the port where the server is liste
 ```
 java -jar path/to/ClientGUI.jar -ip MY_IP_ADDRESS -port MY_PORT
 ```
+
+#### JAVADOC
+In the folder doc there will be the auto generated JavaDoc of the whole project.
 
 #### PRESENTATION
 [This](https://github.com/MrPratula/ing-sw-2020-romeo-pozzan-prada/tree/master/deliveries/slide) is a brief presentation we used to explain how our project works during the project exposition.
