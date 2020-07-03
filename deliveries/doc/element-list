@@ -1,0 +1,12 @@
+it.polimi.ingsw
+it.polimi.ingsw.cli
+it.polimi.ingsw.client
+it.polimi.ingsw.controller
+it.polimi.ingsw.gui
+it.polimi.ingsw.model
+it.polimi.ingsw.model.gameAction
+it.polimi.ingsw.model.gameAction.build
+it.polimi.ingsw.model.gameAction.move
+it.polimi.ingsw.model.gameAction.win
+it.polimi.ingsw.server
+it.polimi.ingsw.utils
