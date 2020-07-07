@@ -325,13 +325,13 @@ public class Server  {
             if (playerAction.getAction().equals(Action.NUMBER_OF_PLAYERS)) {
 
                 // Double check for nasty client
-                // Set the number and brake the loop
+                // Set the number and break the loop
                 if (playerAction.getTokenMain() == 2 || playerAction.getTokenMain() == 3) {
                     setNumberOfPlayers(playerAction.getTokenMain());
                     c1.asyncSend(new ServerResponse(null, new Pack(Action.NUMBER_RECEIVED)));
                     needToLoop = false;
 
-                    // Cached a nasty client. It is not accepted
+                // Cached a nasty client. It is not accepted
                 } else {
                     c1.asyncSend(new ServerResponse(null, new Pack(Action.WRONG_NUMBER_OF_PLAYER)));
                 }
@@ -343,7 +343,7 @@ public class Server  {
     /**
      * Set the turn on first player, than create a random list of 2 or 3 god cards
      * and update the turn to the second player
-     * Ask the second player what god he want to use and send a wait message to the 1st and 3rd players.
+     * Ask the second player what god does he want to use and send a wait message to the 1st and 3rd players.
      */
     public void initGame() {
 
@@ -413,7 +413,7 @@ public class Server  {
 
 
     /**
-     * It receive the deck and the subDeck
+     * It receives the deck and the subDeck
      * It draws a card from deck and add it to the subDeck
      * @param godsDeck the deck
      * @param godInGame the subDeck
