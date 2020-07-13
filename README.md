@@ -31,11 +31,8 @@ Socket | ![#c5f015](https://via.placeholder.com/15/c5f015/000000?text=+) | --- |
 2 Advanced feature | ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+)  | --- |
 
 Advanced feature: ADVANCED GODS
-  + Chronus;
-  + Hera;
-  + Hestia;
-  + Limus;
-  + Zeus.
+
+[ Chronus - Hera - Hestia - Limus - Zeus ]
 
 ## Deliveries
 Inside this folder you can find the following things:
