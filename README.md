@@ -11,7 +11,7 @@ Riccardo Pozzan     10581128         891097
 Santorini is a simple table-game playable in 2 or 3 players.
 Choose your God Card, place your tokens onto the battlefield and get ready to climb the 3rd level before your enemies even notice it.
 
-[Here](https://github.com/MrPratula/ing-sw-2020-romeo-pozzan-prada/blob/master/deliveries/slide/santorini_rules_en.pdf) your can find the official rules.
+[Here](https://github.com/MrPratula/ing-sw-2020-romeo-pozzan-prada/blob/master/deliveries/slide/santorini_rules_en.pdf) you can find the official rules.
 
 
 ## Introduction
@@ -31,11 +31,8 @@ Socket | ![#c5f015](https://via.placeholder.com/15/c5f015/000000?text=+) | --- |
 2 Advanced feature | ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+)  | --- |
 
 Advanced feature: ADVANCED GODS
-  + Chronus;
-  + Hera;
-  + Hestia;
-  + Limus;
-  + Zeus.
+
+[ Chronus - Hera - Hestia - Limus - Zeus ]
 
 ## Deliveries
 Inside this folder you can find the following things:
